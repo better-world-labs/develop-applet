@@ -1,0 +1,11 @@
+/** 全局覆盖 naive ui 组件的样式 **/
+
+.n-dialog {
+  background: var(--bg-color-1);
+  border-radius: 16px;
+  padding: 24px;
+  .n-dialog__title {
+    color: var(--text-color-primary);
+  }
+}
+ 
