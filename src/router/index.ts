@@ -22,6 +22,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/home/index.vue'),
       },
       {
+        path: 'builder',
+        name: 'builder',
+        meta: {
+          title: '构建应用',
+        },
+        component: () => import('@/views/builder/index.vue'),
+      },
+      {
         path: 'small-program',
         name: 'small-program',
         meta: {
@@ -49,12 +57,12 @@ const router = createRouter({
 /**
  * 路由前置守卫
  */
-router.beforeEach((guard) => {});
+router.beforeEach((guard) => { });
 
 /**
  * 路由后置守卫
  */
-router.afterEach((guard) => {});
+router.afterEach((guard) => { });
 
 export function useRouter(app: App) {
   app.use(router);
