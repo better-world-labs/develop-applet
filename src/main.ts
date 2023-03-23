@@ -1,14 +1,20 @@
- 
+/*
+ * @Author: Sandy
+ * @Date: 2023-03-22 14:01:29
+ * @Description: 
+ */
+
 import { createApp } from 'vue';
 import App from './App.vue';
 import { AppProvider } from '@/components/app-provider';
 import { useStore } from '@/store';
 import { useRouter } from '@/router';
-import { useDirectives } from '@/plugins'; 
+import { useDirectives } from '@/plugins';
+import { useInit } from './hooks/useInit';
 
 import '@/styles/index.scss';
 import { loadIconFont } from '@/utils/iconfont';
- 
+
 if (process.env['VITE_ENV_MODE'] === 'development') loadIconFont();
 import '@/assets/iconfonts/iconfont.css';
 
@@ -17,9 +23,10 @@ function createProvider() {
   appProvider.mount('#appProvider', true);
 }
 
-function useService() { 
+function useService() {
+  // 初始化持久化数据
+  useInit().init();
 }
-
 function initApp() {
   const app = createApp(App);
 

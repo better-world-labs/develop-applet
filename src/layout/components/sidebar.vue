@@ -11,12 +11,14 @@
               <n-menu class="menu" :options="menuOptions" default-value="home"  @update:value="handleUpdateValue"/>
             </n-layout-sider>  
         </n-layout>
+        <n-button type="success" @click="goAuth">登录</n-button>
     </div>
 </template>
 <script lang="ts" setup> 
 import { RouterLink } from 'vue-router'
 import type { MenuOption } from 'naive-ui'
 import { ref , h} from "vue"
+import { useInit } from '@/hooks/useInit';
 const currentMenu = ref('home');
 
 const menuOptions: MenuOption[] = [
@@ -66,6 +68,8 @@ const menuOptions: MenuOption[] = [
     }
 ]
 
+// Tips: 页面需要登录的地方 使用
+const {goAuth} = useInit()
 const handleUpdateValue = (key: string) => {
    currentMenu.value = key;
 };

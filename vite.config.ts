@@ -1,4 +1,9 @@
- import type { UserConfig, ConfigEnv } from 'vite';
+/*
+ * @Author: Sandy
+ * @Date: 2023-03-22 14:01:29
+ * @Description: 
+ */
+import type { UserConfig, ConfigEnv } from 'vite';
 import { loadEnv } from 'vite';
 import { resolve } from 'path';
 import { wrapperEnv } from './build/utils';
@@ -60,9 +65,9 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       hmr: true,
       proxy: {
         '/api': {
-          target: 'https://xxxx',
+          target: 'https://ai.moyu.dev.openviewtech.com/',
           changeOrigin: true,
-        }, 
+        },
       },
     },
     optimizeDeps: {

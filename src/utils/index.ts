@@ -1,4 +1,9 @@
- 
+/*
+ * @Author: Sandy
+ * @Date: 2023-03-22 14:01:29
+ * @Description: 
+ */
+
 import { isObject } from './is/index';
 export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
   let key: string;
@@ -40,7 +45,42 @@ export function guid(len = 32, firstM = true, radix = 0): string {
 // 获取时间戳
 export function timestamp() {
   return new Date().getTime();
-} 
+}
 export const cssVar = (key: string, el: HTMLElement = document.documentElement) => {
   return getComputedStyle(el).getPropertyValue(key);
+};
+
+// key :参数名
+export function getUrlParams(search?: string): { [idx: string]: string } {
+  search = search || location.search;
+  const paramsSplit = search.replace(/^[^\?]*\?/i, '').split('&');
+  const params: { [idx: string]: string } = {};
+
+  if (Array.isArray(paramsSplit)) {
+    paramsSplit.forEach(function (item) {
+      const itemSplit = item.split('=');
+      params[itemSplit[0]] = itemSplit[1];
+    });
+  }
+  return params;
+}
+
+export const setStorageItem = (key: string, value = '') => {
+  window.localStorage.setItem(key, value);
+};
+
+export const removeStorageItem = (key: string) => {
+  window.localStorage.removeItem(key);
+};
+
+export const getStorageItem = (key: string): string => {
+  return window.localStorage.getItem(key) || '';
+};
+
+export const getSessionItem = (key: string): string => {
+  return window.sessionStorage.getItem(key) || '';
+};
+
+export const setSessionItem = (key: string, value = '') => {
+  window.sessionStorage.setItem(key, value);
 };
