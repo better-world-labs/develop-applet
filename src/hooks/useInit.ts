@@ -44,6 +44,7 @@ export function useInit() {
   // 初始化, (刷新|初次进入)
   const init = (flag = true) => {
     if (user.value) userStore.setUser(user.value);
+
     if (localToken.value) {
       userStore.setToken(localToken.value);
       flag && getUserData();
@@ -53,9 +54,7 @@ export function useInit() {
 
     // 处理Auth认证平台问题
     const urlParams = getUrlParams();
-    const code = decodeURIComponent(urlParams['code']);
-    console.log('code', code);
-    console.log(process.env);
+    const code = urlParams['code'] && decodeURIComponent(urlParams['code']);
 
     if (code) {
       login({ csrfToken: code })
