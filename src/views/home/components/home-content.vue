@@ -6,7 +6,7 @@
 <template>
     <div class="home-content">
         <n-grid :x-gap="12" :y-gap="8" :cols="3">
-            <n-grid-item>
+            <n-grid-item @click="useTemplate">
                 <div class="template-item">
                     <div class="desc-text">
                         测一测你的生辰八字！用过的都惊
@@ -142,7 +142,11 @@
     </div>
 </template>
 <script setup>
-
+import $router from '@/router/index';
+// 使用模版
+function useTemplate() {
+    $router.push({ name: 'view-template-details' });
+}
 </script>
 <style lang="scss" scoped> .home-content {
      padding: 48px 32px 48px 52px;

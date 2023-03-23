@@ -22,6 +22,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/home/index.vue'),
       },
       {
+        path: 'view-template-details',
+        name: 'view-template-details',
+        meta: {
+          title: '模版详情',
+        },
+        component: () => import('@/views/home/view-template-details.vue'),
+      },
+      {
         path: 'small-program',
         name: 'small-program',
         meta: {
