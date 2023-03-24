@@ -19,31 +19,9 @@
                     }" />
                 </n-form-item>
             </n-form>
-            <n-form ref="formRef" v-show="i == 1" :model="props.appData" :rules="rules" label-placement="left"
-                label-width="auto" require-mark-placement="right-hanging">
-                <n-form-item path="age" label="小程序标题">
-                    <n-input v-model:value="props.appData.name" @keydown.enter.prevent />
-                </n-form-item>
-                <n-form-item path="age" label="小程序描述">
-                    <n-input v-model:value="props.appData.description" @keydown.enter.prevent type="textarea" :autosize="{
-                        minRows: 3,
-                        maxRows: 5
-                    }" />
-                </n-form-item>
-            </n-form>
-            <div class="save-share" v-show="i == 3">
-                <div class="des"></div>
-                <p>模版分类</p>
-                <div class="tags">
-                    <n-radio-group v-model:value="props.appData.category">
-                        <n-radio :value="tag.id" v-for="tag in categoryList" :key="tag.id">
-                            <div class="tag" :class="{ active: props.appData.category == tag.id }">{{
-                                tag.text
-                            }}</div>
-                        </n-radio>
-                    </n-radio-group>
-                </div>
-            </div>
+            <diy-form v-show="i == 1" :app-data="props.appData"></diy-form>
+            <publish v-show="i == 3" :app-data="props.appData">
+            </publish>
             <template #header-extra>
                 {{ item.status }}
             </template>
@@ -51,6 +29,8 @@
     </n-collapse>
 </template>
 <script setup>
+import Publish from "./process/publish.vue"
+import DiyForm from "./process/diy-form.vue"
 const props = defineProps(['appData'])
 const cardList = reactive([
     {
@@ -74,18 +54,6 @@ const cardList = reactive([
         key: ''
     }
 ])
-const categoryList = reactive([{
-    "id": 1,
-    "text": "文学"
-},
-{
-    "id": 2,
-    "text": "生活"
-},
-{
-    "id": 3,
-    "text": "办公神器"
-}])
 const rules = {
     name: {
         required: true,
@@ -133,50 +101,6 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
         padding: 0;
     }
 
-    .save-share {
-        .des {
-            background: #F3F3F7;
-            border-radius: 12px;
-            padding: 16px 16px 24px;
-        }
-
-        p {
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 16px;
-            color: #5B5D62;
-            margin-top: 32px;
-            margin-bottom: 16px;
-        }
-
-        .tags {
-            .tag {
-                font-size: 16px;
-                line-height: 16px;
-                color: #5B5D62;
-                padding: 12px 24px;
-                border: 1px solid #ABACAE;
-                border-radius: 8px;
-
-                &.active {
-                    background: #EEEDFE;
-                    border: 1px solid #5652FF;
-                }
-            }
-
-            :deep(.n-radio__dot-wrapper) {
-                display: none;
-            }
-
-            :deep(.n-radio) {
-                &:first-child {
-                    padding-left: 0px;
-                }
-
-                --n-label-padding: 0 4px !important;
-            }
-        }
-    }
 
     :deep(.n-form) {
 
@@ -193,6 +117,10 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
             --n-font-size: 16px !important;
             --n-height: 42px !important;
             background: #F3F3F7;
+            --n-caret-color: #5652FF !important;
+            --n-border-hover: 1px solid #5652FF !important;
+            --n-border-focus: 1px solid #5652FF !important;
+            --n-loading-color: #5652FF !important;
         }
 
         --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);
@@ -204,12 +132,9 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
         --n-padding-left: 12px;
         --n-padding-right: 12px;
         --n-text-color: rgb(51, 54, 57);
-        --n-caret-color: #18a058;
         --n-text-decoration-color: rgb(51, 54, 57);
         --n-border: 1px solid rgb(224, 224, 230);
         --n-border-disabled: 1px solid rgb(224, 224, 230);
-        --n-border-hover: 1px solid #36ad6a;
-        --n-border-focus: 1px solid #36ad6a;
         --n-placeholder-color: rgba(194, 194, 194, 1);
         --n-placeholder-color-disabled: rgba(209, 209, 209, 1);
         --n-icon-size: 16px;
@@ -218,7 +143,6 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
         --n-color-focus: rgba(255, 255, 255, 1);
         --n-text-color-disabled: rgba(194, 194, 194, 1);
         --n-box-shadow-focus: 0 0 0 2px rgba(24, 160, 88, 0.2);
-        --n-loading-color: #18a058;
         --n-caret-color-warning: #f0a020;
         --n-color-focus-warning: rgba(255, 255, 255, 1);
         --n-box-shadow-focus-warning: 0 0 0 2px rgba(240, 160, 32, 0.2);

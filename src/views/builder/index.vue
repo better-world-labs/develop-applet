@@ -40,7 +40,7 @@ const state = reactive({
         {
             "id": "uuid",
             "label": "性别",
-            "type": "select",
+            "type": "text",
             "properties": {
                 "placeholder": "xxx",
                 "values": "男\n女"
