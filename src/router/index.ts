@@ -22,12 +22,12 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('@/views/home/index.vue'),
       },
       {
-        path: 'view-template-details',
-        name: 'view-template-details',
+        path: 'builder',
+        name: 'builder',
         meta: {
-          title: '模版详情',
+          title: '构建应用',
         },
-        component: () => import('@/views/home/view-template-details.vue'),
+        component: () => import('@/views/builder/index.vue'),
       },
       {
         path: 'small-program',
@@ -57,12 +57,12 @@ const router = createRouter({
 /**
  * 路由前置守卫
  */
-router.beforeEach((guard) => {});
+router.beforeEach((guard) => { });
 
 /**
  * 路由后置守卫
  */
-router.afterEach((guard) => {});
+router.afterEach((guard) => { });
 
 export function useRouter(app: App) {
   app.use(router);
