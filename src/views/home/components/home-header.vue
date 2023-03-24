@@ -6,21 +6,29 @@
 <template>
     <div class="home-header">
         <n-tabs animated>
-            <n-tab-pane name="oasis" tab="Oasis">
-            </n-tab-pane>
-            <n-tab-pane name="the beatles" tab="the Beatles">
-            </n-tab-pane>
-            <n-tab-pane name="jay chou" tab="周杰伦">
+            <n-tab-pane v-for="tab in applicationStore.tabs" :name="tab.id" :tab="tab.text">
             </n-tab-pane>
         </n-tabs>
-        <n-button type="info">
+        <n-button type="info" @click="createTemplate">
             创建我的小程序
         </n-button>
         <user-integral></user-integral>
     </div>
 </template>
 <script setup>
+import $router from '@/router/index';
 import UserIntegral from "./user-integral.vue"
+import { useApplicationStore } from "@/store/modules/application"
+const applicationStore = useApplicationStore();
+// 创建模版
+function createTemplate() {
+    $router.push({ name: 'builder' });
+}
+
+onMounted(() => {
+    applicationStore.getTabs();
+})
+
 </script>
 <style lang="scss">
 .home-header .n-tabs {

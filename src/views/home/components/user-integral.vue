@@ -5,10 +5,10 @@
 -->
 <template>
     <div class="user-integral">
-        <n-image width="36" src="../../../assets/test.jpg" />
+        <img src="@/assets/test.jpg" />
         <div>
             <div>章三</div>
-            <div><span class="active-text">323</span>积分</div>
+            <div><span class="active-text">100</span>积分</div>
         </div>
     </div>
 </template>
@@ -32,7 +32,7 @@
     display: flex;
     flex-direction: row;
 
-    image {
+    img {
         width: 36px !important;
         height: 36px !important;
         border-radius: 36px;

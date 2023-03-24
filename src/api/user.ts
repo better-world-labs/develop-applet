@@ -1,12 +1,11 @@
 /*
  * @Author: Sandy
  * @Date: 2023-03-22 14:01:29
- * @Description: 
+ * @Description:
  */
 import { http } from '@/utils/http';
 import { Result, ResultList } from '@/utils/http/types';
 import { RequestOptions } from '@/utils/http/types';
-
 
 export function getUsersList(
   data: { ids: number[] },
