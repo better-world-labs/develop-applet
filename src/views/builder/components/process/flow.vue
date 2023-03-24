@@ -14,24 +14,36 @@
         <div class="description">
             <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
             <p class="expression">
-                <span class="tags-input" @keydown.enter.prevent="" placeholder="输入提示词"></span>
-                <span class="tag">你的姓名<a class="tag-close"></a></span>
-                <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词"></span>
+                <template v-for="item in props.appData.flow[0].prompt" :key="item.id">
+                    <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }" class="tags-input"
+                        @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal" @focus="changeVal"
+                        placeholder="输入提示词">{{
+                            item.properties.value }}</span>
+                    <span v-else class="tag">{{ getTag(item.properties.character) }}<a class="tag-close"></a></span>
+                </template>
+                <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span>
             </p>
             <div class="line"></div>
             <div class="tags">
-                <div class="tag">你的姓名<a class="tag-close"></a></div>
-                <div class="tag">你的姓名<a class="tag-close"></a></div>
+                <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
+                    <a @click="addTag(item)" class="tag-close"></a>
+                </div>
+                <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
             </div>
         </div>
     </div>
 </template>
 <script setup>
 const props = defineProps(['appData'])
-const model = reactive({
-    age: '',
-    password: '',
-    selectValue: ''
+const state = reactive({
+    currentItem: {
+        "id": "123",
+        "type": "text",
+        "properties": {
+            "value": "从"
+        }
+    }, //prompt
+    currentIndex: 0,
 })
 const onCreate = () => {
     return {
@@ -41,6 +53,60 @@ const onCreate = () => {
         "properties": {
             "placeholder": ""
         }
+    }
+}
+
+const addPrompt = () => {
+    const newItem = {
+        "id": "",
+        "type": "text",
+        "properties": {
+            "value": ""
+        }
+    }
+    props.appData.flow[0].prompt.push(newItem)
+    // const index = props.appData.flow[0].prompt.length;
+    // insertPrompt(index, newItem)
+}
+const insertPrompt = (index, item) => {
+    const list = props.appData.flow[0].prompt;
+    list.splice(index, 0, item)
+}
+const delPrompt = (index, item = {}) => {
+    const list = props.appData.flow[0].prompt;
+    list.splice(index, 1)
+}
+
+const getTag = (uuid) => {
+    const list = props.appData.form;
+    const findTag = list.find(f => f.id == uuid);
+    if (findTag) {
+        return findTag['label']
+    }
+}
+// TODO 焦点有问题
+const changeVal = (e) => {
+    state.currentIndex = getSelection().getRangeAt(0);
+    console.log("change", getSelection().getRangeAt(0).startOffset)
+    var CaretPos = 0, ctrl = e.target;
+    if (document.selection) {
+        ctrl.focus()
+        var Sel = document.selection.createRange()
+        Sel.moveStart('character', -ctrl.value.length)
+        CaretPos = Sel.text.length
+    } else if (ctrl.selectionStart || ctrl.selectionStart === '0') {
+        CaretPos = ctrl.selectionStart
+    }
+    console.log(CaretPos)
+}
+
+const handleBlurEvent = (e, uuid) => {
+    // this.data = e.target.innerHTML;
+    console.log("handleBlurEvent", e, uuid)
+    const list = props.appData.flow[0].prompt;
+    const findTag = list.find(f => f.id == uuid);
+    if (findTag) {
+        findTag['properties']['value'] = e.target.innerHTML
     }
 }
 
@@ -139,12 +205,16 @@ const onCreate = () => {
             padding: 3px 0;
             font-size: 14px;
             line-height: 23px;
-            display: inline;
             display: inline-block;
             min-width: 20%;
             background: transparent;
             word-break: break-all;
             -webkit-user-modify: read-write-plaintext-only;
+
+            &.hasVal {
+                display: inline;
+                min-width: 8px;
+            }
         }
 
         .tags-input:focus-within,
@@ -161,13 +231,6 @@ const onCreate = () => {
             // outline: auto #4F46E5;
         }
 
-        .tags-input:empty {
-            min-width: 8px;
-
-            &:last-child {
-                min-width: 20%;
-            }
-        }
 
         .tags-input:empty::before {
             content: ' ';

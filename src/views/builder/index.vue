@@ -30,7 +30,7 @@ const state = reactive({
     "description": "模板描述",
     "form": [
         {
-            "id": "uuid",
+            "id": "321",
             "label": "姓名",
             "type": "text",
             "properties": {
@@ -53,18 +53,18 @@ const state = reactive({
             "outputVisible": true,
             "prompt": [
                 {
-                    "id": "uuid",
+                    "id": "123",
                     "type": "text",
                     "properties": {
                         "value": "从"
                     }
                 },
                 {
-                    "id": "uuid",
+                    "id": "321",
                     "type": "tag",
                     "properties": {
                         "from": "result", //form 或者 result
-                        "index": 0
+                        "character": '321'
                     }
                 },
                 {
@@ -94,9 +94,9 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
 )
 
 onMounted(() => {
-    // setInterval(() => {
-    //     console.log(state);
-    // }, 3000)
+    setInterval(() => {
+        console.log(state);
+    }, 3000)
 })
 </script>
 <style lang="scss" scoped>
