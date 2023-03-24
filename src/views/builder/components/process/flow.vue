@@ -7,20 +7,16 @@
 <template>
     <div class="not-model" v-if="false"></div>
     <div class="has-model" v-else>
-    <div class="flow">
-        <p><span>输入提示词</span><span>ChatGPT</span><span>生成结果（ChatGPT）</span></p>
-        <i class="del">删除</i>
-    </div>
+        <div class="flow">
+            <p><span>输入提示词</span><span>ChatGPT</span><span>生成结果（ChatGPT）</span></p>
+            <i class="del">删除</i>
+        </div>
         <div class="description">
-            <!-- <div class="expression">
-                                                                                                                                                                                                                                                                                <div class="tags-input" @keydown.enter.prevent="" placeholder="添加标签"></div>
-                                                                                                                                                                                                                                                                            <div class="tag">你的姓名<a class="tag-close"></a></div>
-                                                                                                                                                                                                                                                                                <div class="tags-input" @keydown.enter.prevent placeholder="添加标签"> </div>
-                                                                                                                                                                                                                                                                            </div> -->
+            <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
             <p class="expression">
                 <span class="tags-input" @keydown.enter.prevent="" placeholder="输入提示词"></span>
-                <!-- <span class="tag">你的姓名<a class="tag-close"></a></span>
-                    <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词">提示词</span> -->
+                <span class="tag">你的姓名<a class="tag-close"></a></span>
+                <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词"></span>
             </p>
             <div class="line"></div>
             <div class="tags">
@@ -81,6 +77,7 @@ const onCreate = () => {
 
         .expression {
             // display: flex;
+            word-break: break-all;
             flex-wrap: wrap;
             align-items: flex-start;
             gap: 4px;
@@ -142,7 +139,11 @@ const onCreate = () => {
             padding: 3px 0;
             font-size: 14px;
             line-height: 23px;
+            display: inline;
+            display: inline-block;
+            min-width: 20%;
             background: transparent;
+            word-break: break-all;
             -webkit-user-modify: read-write-plaintext-only;
         }
 
@@ -160,19 +161,20 @@ const onCreate = () => {
             // outline: auto #4F46E5;
         }
 
-        // .tags-input:empty {
-        //     min-width: 8px;
-        // }
+        .tags-input:empty {
+            min-width: 8px;
 
-        // .tags-input:last-child {
-        //     width: 20%;
-        // }
+            &:last-child {
+                min-width: 20%;
+            }
+        }
 
         .tags-input:empty::before {
-            content: attr(placeholder);
+            content: ' ';
             color: #828282;
         }
 
+        .tags-input:last-child:empty::before,
         .tags-input:only-child:empty::before {
             content: attr(placeholder);
             color: #828282;
