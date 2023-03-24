@@ -15,79 +15,78 @@
             <user-integral></user-integral>
         </div>
         <div class="template-details-content">
+
             <div>
                 <div class="template">
-                    <div>
-                        <n-grid x-gap="12" :cols="2">
-                            <n-gi style="margin-right:8px">
-                                <div class="title"> 测一测你的生辰八字！用过的都惊呆了🤯</div>
-                                <div class="user">
-                                    <div>
-                                        <img width="36" src="@/assets/test.jpg" />
-                                    </div>
-                                    <div>Tu啊黑科</div>
-                                </div>
+                    <n-grid x-gap="12" :cols="2">
+                        <n-gi style="margin-right:8px">
+                            <div class="title"> 测一测你的生辰八字！用过的都惊呆了🤯</div>
+                            <div class="user">
                                 <div>
-                                    这是一个为你专业分析你的生辰八字的小程序，按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！是vahvvhkvaakvb啊哈撒谎
-                                    想哈手机哈哈欧股
-                                    沙拉金德拉克撒撒浪嘿拉升大了啥快乐生活垃圾上来看
-                                    阿萨是卢卡斯了
-                                    啊设计阿斯利康
+                                    <img width="36" src="@/assets/test.jpg" />
                                 </div>
-                            </n-gi>
-                            <n-gi>
-                                <div class="form-box">
-                                    <div>
-                                        <div class="form-item">
-                                            <div class="label">
-                                                你的姓名
-                                            </div>
-                                            <div>
-                                                <n-input size="large" round autosize placeholder="大"
-                                                    style="height:56px;width:100%;" />
-                                            </div>
+                                <div>Tu啊黑科</div>
+                            </div>
+                            <div>
+                                这是一个为你专业分析你的生辰八字的小程序，按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！是vahvvhkvaakvb啊哈撒谎
+                                想哈手机哈哈欧股
+                                沙拉金德拉克撒撒浪嘿拉升大了啥快乐生活垃圾上来看
+                                阿萨是卢卡斯了
+                                啊设计阿斯利康
+                            </div>
+                        </n-gi>
+                        <n-gi>
+                            <div class="form-box">
+                                <div>
+                                    <div class="form-item">
+                                        <div class="label">
+                                            你的姓名
                                         </div>
-                                        <div class="form-item">
-                                            <div class="label">
-                                                你的姓名
-                                            </div>
-                                            <div>
-                                                <n-input size="large" round autosize placeholder="大"
-                                                    style="height:56px;width:100%;" />
-                                            </div>
+                                        <div>
+                                            <n-input size="large" round autosize placeholder="大"
+                                                style="height:56px;width:100%;" />
                                         </div>
-                                        <div class="form-item">
-                                            <div class="label">
-                                                你的姓名
-                                            </div>
-                                            <div>
-                                                <n-input size="large" round autosize placeholder="大"
-                                                    style="height:56px;width:100%;" />
-                                            </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="label">
+                                            你的姓名
                                         </div>
-                                        <div class="form-item">
-                                            <div class="label">
-                                                你的姓名
-                                            </div>
-                                            <div>
-                                                <n-input size="large" round autosize placeholder="大"
-                                                    style="height:56px;width:100%;" />
-                                            </div>
+                                        <div>
+                                            <n-input size="large" round autosize placeholder="大"
+                                                style="height:56px;width:100%;" />
                                         </div>
-                                        <div class="form-item">
-                                            <div class="label">
-                                                你的姓名
-                                            </div>
-                                            <div>
-                                                <n-input size="large" round autosize placeholder="大"
-                                                    style="height:56px;width:100%;" />
-                                            </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="label">
+                                            你的姓名
+                                        </div>
+                                        <div>
+                                            <n-input size="large" round autosize placeholder="大"
+                                                style="height:56px;width:100%;" />
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="label">
+                                            你的姓名
+                                        </div>
+                                        <div>
+                                            <n-input size="large" round autosize placeholder="大"
+                                                style="height:56px;width:100%;" />
+                                        </div>
+                                    </div>
+                                    <div class="form-item">
+                                        <div class="label">
+                                            你的姓名
+                                        </div>
+                                        <div>
+                                            <n-input size="large" round autosize placeholder="大"
+                                                style="height:56px;width:100%;" />
                                         </div>
                                     </div>
                                 </div>
-                            </n-gi>
-                        </n-grid>
-                    </div>
+                            </div>
+                        </n-gi>
+                    </n-grid>
                     <div class="footer">
                         <n-grid x-gap="12" :cols="2">
                             <n-gi>
@@ -109,7 +108,7 @@
                                     公开我的模板结果（用于社区构建）
                                 </n-checkbox>
                                 <n-button type="info">
-                                    立即生成 <br>5积分
+                                    立即生成 <br />5积分
                                 </n-button>
                             </n-gi>
                         </n-grid>
@@ -121,13 +120,20 @@
                         结果：
                     </div>
                     <div class="result-content">
+                        <div class="loading">
+                            结果生成中，AI正在奋笔疾书中.......
+                            <n-progress type="line" :percentage="60" color="#5652FF" rail-color="#DCDBFF"
+                                :show-indicator="false" processing />
+                        </div>
                         年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格
                         总体来看，您的八字五行比较均衡，命格偏向偏印生财的类型，事业上可能会有一定的成就，但必须加强自我修养和意志力，才能更好的发挥自己的长处。
-                    </div>
-                    <div class="option">
-                        <span>踩</span>
+                        <p class='typewriter'>{{ typewriter }}</p>
+                        <div class="option">
+                            <span>踩</span>
+                        </div>
                     </div>
                 </div>
+
                 <div class="public-results">
                     <n-carousel :space-between="20" :loop="false" slides-per-view="auto" draggable>
                         <n-carousel-item style="width: 40%">
@@ -204,38 +210,86 @@
 import UserIntegral from "./components/user-integral.vue"
 
 const value = ref(true);
+
+// const typewriter = ref("");
+// const i = ref(0);
+// const timer = ref(0);
+// const str = "年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格"
+// function typeing() {
+//     if (i.value <= str.length) {
+//         typewriter.value = str.slice(0, i.value++) + '_'
+//         timer.value = setTimeout(() => {
+//             typeing()
+//         }, 100)
+//     } else {
+//         clearTimeout(timer.value)
+//     }
+// }
+// onMounted(() => {
+//     // typeing();
+// }),
 </script>
 
-<style lang="scss">
-.template-details-c.template-details-content {
-    .n-input {
-        background: white;
-        box-shadow: 0px 4px 5px rgba(215, 212, 225, 0.5);
-        border-radius: 12px;
-    }
+<style lang="scss"> .template-details-content {
+     .n-input {
+         background: white;
+         box-shadow: 0px 4px 5px rgba(215, 212, 225, 0.5);
+         border-radius: 12px;
+     }
 
-    .n-input .n-input__border,
-    .n-input .n-input__state-border {
-        border: none !important;
-    }
+     .n-input .n-input__border,
+     .n-input .n-input__state-border {
+         border: none !important;
+     }
 
-    .n-input.n-input--focus {
-        border: none;
-    }
+     .n-input.n-input--focus {
+         border: none;
+     }
 
-    .n-input[type=text]:focus {
-        outline: none;
-    }
-}
+     .n-input[type=text]:focus {
+         outline: none;
+     }
 
-.n-carousel__dot.n-carousel__dot--active {
-    background: #5652FF !important;
-    opacity: 0.6;
-}
 
-.n-carousel__dot {
-    background: #F7F7FB !important;
-}
+     .n-carousel__dot.n-carousel__dot--active {
+         background: #5652FF !important;
+         opacity: 0.6;
+     }
+
+     .n-carousel__dot {
+         background: #F7F7FB !important;
+     }
+
+
+     .n-checkbox-box {
+         background: #EEEDFE !important;
+         width: 20px !important;
+         height: 20px !important;
+         border-radius: 20px !important;
+         margin-right: 8px;
+
+         .n-checkbox-box__border {
+             border: 5px solid #EEEDFE !important;
+         }
+
+     }
+
+     .n-checkbox--checked {
+         .n-checkbox-icon {
+             margin: 4px;
+             width: 10px !important;
+             height: 10px !important;
+             border-radius: 10px !important;
+             color: #5652FF !important;
+             background: #5652FF !important;
+
+             svg {
+                 opacity: 0 !important;
+             }
+         }
+     }
+
+ }
 </style>
 
 <style scoped lang="scss">
@@ -362,6 +416,9 @@ const value = ref(true);
                     line-height: 16px;
                     color: #FFFFFF;
                     float: right;
+                    --n-border: none !important;
+                    --n-border-hover: none !important;
+                    --n-border-focus: none !important;
                 }
             }
 
@@ -390,6 +447,20 @@ const value = ref(true);
                 padding: 16px;
                 background: linear-gradient(132.93deg, #F1F7FF 5.27%, #FAF8FF 59.89%, #EEEDFE 98.91%);
                 border-radius: 16px;
+                min-height: 128px;
+
+                .loading {
+                    padding: 40px 64px;
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 16px;
+                    color: #5B5D62;
+
+                    .n-progress {
+                        margin-top: 8px;
+                    }
+                }
+
             }
 
             .option {
@@ -447,7 +518,5 @@ const value = ref(true);
             }
         }
     }
-
-
 }
 </style>

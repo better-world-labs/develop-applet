@@ -181,13 +181,15 @@ function useTemplate() {
 
          .result-text {
              height: 170px;
-             background: #F3F3F7;
+             background-color: #F3F3F7;
              border-radius: 10px;
              padding: 20px 12px;
              font-weight: 400;
              font-size: 14px;
              line-height: 18px;
              color: rgba(91, 93, 98, 1);
+             background-image: url(../../../assets/bg.png);
+             background-repeat: no-repeat;
 
              >div:first-child {
                  margin-bottom: 24px;
