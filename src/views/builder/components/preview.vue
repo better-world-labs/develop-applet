@@ -13,7 +13,7 @@
             这是一个为你专业分析你的生辰八字的小程序，按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！是vahvvhkvaakvb啊哈撒谎这是一个为你专业分析你的生辰八字的小程序，按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！
         </div>
         <div class="body">
-            <n-form ref="formRef" :model="model" :rules="rules">
+            <n-form ref="formRef" :model="model">
                 <n-form-item path="age" label="年龄">
                     <n-input v-model:value="model.age" @keydown.enter.prevent />
                 </n-form-item>
@@ -39,6 +39,7 @@
     </div>
 </template>
 <script setup>
+const props = defineProps(['appData'])
 const model = reactive({
     age: '',
     password: '',
@@ -50,6 +51,12 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
         value: v
     })
 )
+const handleValidateButtonClick = () => {
+
+}
+const handlePasswordInput = () => {
+
+}
 </script>
 <style lang="scss" scoped>
 .title {}

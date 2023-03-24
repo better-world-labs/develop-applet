@@ -5,10 +5,10 @@
 -->
 
 <template>
-    <n-collapse default-expanded-names="0" accordion arrow-placement="right">
+    <n-collapse default-expanded-names="0" accordion arrow-placement="right" @item-header-click="handleItem">
         <n-collapse-item :title="item.label" :name="i" v-for="(item, i) in cardList" :key="i" class="item-box">
-            <n-form ref="formRef" v-show="i == 0" :model="props.appData" :rules="rules" label-placement="left"
-                label-width="auto" require-mark-placement="right-hanging">
+            <n-form ref="formRef" v-show="i == 0" :model="props.appData" label-placement="left" label-width="auto"
+                require-mark-placement="right-hanging">
                 <n-form-item path="age" label="小程序标题">
                     <n-input v-model:value="props.appData.name" @keydown.enter.prevent />
                 </n-form-item>
@@ -20,6 +20,7 @@
                 </n-form-item>
             </n-form>
             <diy-form v-show="i == 1" :app-data="props.appData"></diy-form>
+            <flow v-show="i == 2" :app-data="props.appData"></flow>
             <publish v-show="i == 3" :app-data="props.appData">
             </publish>
             <template #header-extra>
@@ -31,6 +32,7 @@
 <script setup>
 import Publish from "./process/publish.vue"
 import DiyForm from "./process/diy-form.vue"
+import Flow from "./process/flow.vue"
 const props = defineProps(['appData'])
 const cardList = reactive([
     {
@@ -54,6 +56,7 @@ const cardList = reactive([
         key: ''
     }
 ])
+const current = ref(2)
 const rules = {
     name: {
         required: true,
@@ -65,6 +68,10 @@ const rules = {
         min: 2,
         message: '最短长度为 2'
     }
+}
+const handleItem = ({ name }) => {
+    console.log(name);
+    current.value = name
 }
 const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
     (v) => ({

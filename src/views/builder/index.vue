@@ -94,9 +94,9 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
 )
 
 onMounted(() => {
-    setInterval(() => {
-        console.log(state);
-    }, 3000)
+    // setInterval(() => {
+    //     console.log(state);
+    // }, 3000)
 })
 </script>
 <style lang="scss" scoped>
