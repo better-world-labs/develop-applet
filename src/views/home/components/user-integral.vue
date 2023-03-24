@@ -5,14 +5,17 @@
 -->
 <template>
     <div class="user-integral">
-        <img src="@/assets/test.jpg" />
+        <img :src="userStore.info.nickname | '@/assets/default-user.jpg'" />
         <div>
-            <div>章三</div>
+            <div>{{ userStore.info.nickname }}</div>
             <div><span class="active-text">100</span>积分</div>
         </div>
     </div>
 </template>
 <script setup>
+import { useUserStore } from "@/store/modules/user"
+const userStore = useUserStore();
+userStore.info
 
 </script>
 <style lang="scss" scoped>

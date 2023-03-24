@@ -6,7 +6,7 @@
 <template>
     <div>
         <div class="home-header">
-            <div class="back-btn">
+            <div class="back-btn" @click="backPrePage">
                 返回
             </div>
             <n-button type="info">
@@ -23,7 +23,7 @@
                             <div class="title"> 测一测你的生辰八字！用过的都惊呆了🤯</div>
                             <div class="user">
                                 <div>
-                                    <img width="36" src="@/assets/test.jpg" />
+                                    <img width="36" src="@/assets/default-user.jpg" />
                                 </div>
                                 <div>Tu啊黑科</div>
                             </div>
@@ -136,67 +136,19 @@
 
                 <div class="public-results">
                     <n-carousel :space-between="20" :loop="false" slides-per-view="auto" draggable>
-                        <n-carousel-item style="width: 40%">
+                        <n-carousel-item style="width: 40%" v-for="result in resultList" :key="result.id">
                             <div class="result-item">
                                 <div class="user">
                                     <div>
-                                        <img width="36" src="@/assets/test.jpg" />
+                                        <img width="36" :src="result.createdBy.avatar | '@/assets/default-user.jpg'" />
                                     </div>
-                                    <div>Tu啊黑科</div>
+                                    <div>{{ result.createdBy.avatar }}</div>
                                 </div>
                                 <div class="label">
-                                    黄雨萱 · 1998年12月31日 · 女 · 猪
+                                    {{ result.inputArgs.join('.') }}
                                 </div>
                                 <div>
-                                    这是一个为你专业分析你的生辰八字的小程序按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！阿不会上课吧vhkvaakvb啊哈撒
-                                </div>
-                            </div>
-                        </n-carousel-item>
-                        <n-carousel-item style="width: 40%">
-                            <div class="result-item">
-                                <div class="user">
-                                    <div>
-                                        <img width="36" src="@/assets/test.jpg" />
-                                    </div>
-                                    <div>Tu啊黑科</div>
-                                </div>
-                                <div class="label">
-                                    黄雨萱 · 1998年12月31日 · 女 · 猪
-                                </div>
-                                <div>
-                                    这是一个为你专业分析你的生辰八字的小程序按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！阿不会上课吧vhkvaakvb啊哈撒
-                                </div>
-                            </div>
-                        </n-carousel-item>
-                        <n-carousel-item style="width: 40%">
-                            <div class="result-item">
-                                <div class="user">
-                                    <div>
-                                        <img width="36" src="@/assets/test.jpg" />
-                                    </div>
-                                    <div>Tu啊黑科</div>
-                                </div>
-                                <div class="label">
-                                    黄雨萱 · 1998年12月31日 · 女 · 猪
-                                </div>
-                                <div>
-                                    这是一个为你专业分析你的生辰八字的小程序按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！阿不会上课吧vhkvaakvb啊哈撒
-                                </div>
-                            </div>
-                        </n-carousel-item>
-                        <n-carousel-item style="width: 40%">
-                            <div class="result-item">
-                                <div class="user">
-                                    <div>
-                                        <img width="36" src="@/assets/test.jpg" />
-                                    </div>
-                                    <div>Tu啊黑科</div>
-                                </div>
-                                <div class="label">
-                                    黄雨萱 · 1998年12月31日 · 女 · 猪
-                                </div>
-                                <div>
-                                    这是一个为你专业分析你的生辰八字的小程序按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！阿不会上课吧vhkvaakvb啊哈撒
+                                    {{ result.content }}
                                 </div>
                             </div>
                         </n-carousel-item>
@@ -208,10 +160,17 @@
 </template>
 <script setup>
 import UserIntegral from "./components/user-integral.vue"
+import { useApplicationStore } from "@/store/modules/application"
+
+import $router from '@/router/index';
+import { useRouter } from 'vue-router';
 
 const value = ref(true);
+const applicationStore = useApplicationStore();
+const resultList = reactive([]);
 
-// const typewriter = ref("");
+const typewriter = ref("");
+
 // const i = ref(0);
 // const timer = ref(0);
 // const str = "年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格"
@@ -227,7 +186,22 @@ const value = ref(true);
 // }
 // onMounted(() => {
 //     // typeing();
-// }),
+// }), 
+
+
+// 返回上一页
+function backPrePage() {
+    $router.go(-1);
+}
+
+
+onMounted(() => {
+    const router = useRouter();
+    const uuid = router.currentRoute.value.query.uuid;
+    resultList.value = applicationStore.getAppResultList(uuid);
+
+})
+
 </script>
 
 <style lang="scss"> .template-details-content {
@@ -300,6 +274,7 @@ const value = ref(true);
         font-size: 16px;
         line-height: 52px;
         color: #5B5D62;
+        cursor: pointer;
     }
 }
 

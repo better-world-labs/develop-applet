@@ -27,4 +27,13 @@ declare namespace Application {
     updatedAt: string;
     status: Number; // 生命周期 (0.未发布 1.已发布)
   }
+
+  export interface appResultItf {
+    id: number;
+    type: string;
+    inputArgs: string[];
+    content: string;
+    createdAt: string;
+    createdBy: User.UserInfoItf;
+  }
 }

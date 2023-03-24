@@ -6,7 +6,7 @@
 <template>
     <div class="home-content">
         <n-grid :x-gap="12" :y-gap="8" :cols="3">
-            <n-grid-item @click="useTemplate" v-for="item in applicationStore.appList" :key="item.id">
+            <n-grid-item @click="useTemplate(item)" v-for="item in applicationStore.appList" :key="item.id">
                 <div class="template-item">
                     <div class="desc-text">
                         {{ item.name }}
@@ -22,8 +22,10 @@
                     </div>
                     <div class="footer-options">
                         <div class="left">
-                            <n-image width="36" :src="item.createdBy.avatar | '../../assets/test.jpg'" />
-                            {{ item.createdBy.name }}
+                            <img :src="item.createdBy.avatar | '../../assets/default-user.jpg'" />
+                            <div>
+                                {{ item.createdBy.nickname }}
+                            </div>
                         </div>
                         <div class="right">
                             <span style="margin-right:24px">65</span>
@@ -37,11 +39,16 @@
 </template>
 <script setup>
 import $router from '@/router/index';
+import { useInit } from '@/hooks/useInit';
+import { useUserStore } from "@/store/modules/user"
 import { useApplicationStore } from "@/store/modules/application"
 const applicationStore = useApplicationStore();
+const userStore = useUserStore();
+const { goAuth } = useInit()
 // 使用模版
-function useTemplate() {
-    $router.push({ name: 'view-template-details' });
+function useTemplate(item) {
+    if (!userStore.token) goAuth();
+    $router.push({ name: 'view-template-details', query: { uuid: item.uuid } });
 }
 </script>
 <style lang="scss" scoped> .home-content {
@@ -61,6 +68,7 @@ function useTemplate() {
          padding: 24px;
          margin-right: 20px;
 
+
          .desc-text {
              font-weight: 500;
              font-size: 28px;
@@ -73,6 +81,7 @@ function useTemplate() {
              display: -webkit-box;
              -webkit-line-clamp: 2;
              -webkit-box-orient: vertical;
+             cursor: pointer;
 
          }
 
@@ -87,6 +96,8 @@ function useTemplate() {
              color: rgba(91, 93, 98, 1);
              background-image: url(../../../assets/bg.png);
              background-repeat: no-repeat;
+             cursor: pointer;
+
 
              >div:first-child {
                  margin-bottom: 24px;
@@ -104,14 +115,18 @@ function useTemplate() {
              flex-direction: row;
              font-weight: 400;
              font-size: 16px;
-             line-height: 20px;
+             line-height: 32px;
              color: #5B5D62;
 
              .left {
+                 display: flex;
+                 flex-direction: row;
 
-                 image {
+                 img {
                      width: 32px;
                      height: 32px;
+                     border-radius: 32px;
+                     margin-right: 8px;
                  }
              }
 

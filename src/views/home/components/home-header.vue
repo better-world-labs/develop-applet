@@ -5,8 +5,8 @@
 -->
 <template>
     <div class="home-header">
-        <n-tabs animated>
-            <n-tab-pane v-for="tab in applicationStore.tabs" :name="tab.id" :tab="tab.text">
+        <n-tabs animated :default-value="applicationStore.currentTab" @update:value="handleUpdateValue">
+            <n-tab-pane v-for="tab in applicationStore.tabs" :name="tab.category" :tab="tab.label">
             </n-tab-pane>
         </n-tabs>
         <n-button type="info" @click="createTemplate">
@@ -19,15 +19,28 @@
 import $router from '@/router/index';
 import UserIntegral from "./user-integral.vue"
 import { useApplicationStore } from "@/store/modules/application"
+import { useInit } from '@/hooks/useInit';
+import { useUserStore } from "@/store/modules/user"
+
 const applicationStore = useApplicationStore();
+
+const userStore = useUserStore();
+const { goAuth } = useInit()
 // 创建模版
 function createTemplate() {
+    if (!userStore.token) goAuth();
     $router.push({ name: 'builder' });
 }
+
+const handleUpdateValue = (category) => {
+    applicationStore.setCurrentTab(category);
+};
+
 
 onMounted(() => {
     applicationStore.getTabs();
 })
+
 
 </script>
 <style lang="scss">

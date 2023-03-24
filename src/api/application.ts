@@ -16,9 +16,25 @@ export function getAppList(categoryId: number) {
 }
 
 // 读取系统设置
-export function getSystemConfig(key: string) {
+export function getTabs(key: string) {
   return http.request({
     method: 'get',
-    url: `/api/system-configs?key=${key}`,
+    url: `/api/app-tabs?key=${key}`,
+  });
+}
+
+// 读取某个应用
+export function getAppInfo(uuid: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/${uuid}`,
+  });
+}
+
+// 读取应用的结果列表
+export function getAppResultList(uuid: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/${uuid}/outputs`,
   });
 }
