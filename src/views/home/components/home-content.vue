@@ -6,129 +6,26 @@
 <template>
     <div class="home-content">
         <n-grid :x-gap="12" :y-gap="8" :cols="3">
-            <n-grid-item>
+            <n-grid-item @click="useTemplate(item)" v-for="item in applicationStore.appList" :key="item.id">
                 <div class="template-item">
                     <div class="desc-text">
-                        测一测你的生辰八字！用过的都惊
-                        呆了 测一测你的生辰八字！用过的都惊
-                        呆了 测一测你的生辰八字！用过的都惊
-                        呆了
+                        {{ item.name }}
                     </div>
                     <div class="result-text">
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
+                        <div v-if="item.results[0]">
+                            <span>精彩结果1:</span>
+                            {{ item.results[0]?.content }}
                         </div>
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
+                        <div v-if="item.results[1]">
+                            <span>精彩结果1:</span> {{ item.results[1]?.content }}
                         </div>
                     </div>
                     <div class="footer-options">
                         <div class="left">
-                            <n-image width="36" src="../../assets/test.jpg" />
-                            我是用户
-                        </div>
-                        <div class="right">
-                            <span style="margin-right:24px">65</span>
-                            <span>348</span>
-                        </div>
-                    </div>
-                </div>
-            </n-grid-item>
-            <n-grid-item>
-                <div class="template-item">
-                    <div class="desc-text">
-                        测一测你的生辰八字！
-                    </div>
-                    <div class="result-text">
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
-                        </div>
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
-                        </div>
-                    </div>
-                    <div class="footer-options">
-                        <div class="left">
-                            <n-image width="36" src="../../assets/test.jpg" />
-                            我是用户
-                        </div>
-                        <div class="right">
-                            <span style="margin-right:24px">65</span>
-                            <span>348</span>
-                        </div>
-                    </div>
-                </div>
-            </n-grid-item>
-            <n-grid-item>
-                <div class="template-item">
-                    <div class="desc-text">
-                        测一测你的生辰八字！用过的都惊
-                        呆了
-                    </div>
-                    <div class="result-text">
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
-                        </div>
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
-                        </div>
-                    </div>
-                    <div class="footer-options">
-                        <div class="left">
-                            <n-image width="36" src="../../assets/test.jpg" />
-                            我是用户
-                        </div>
-                        <div class="right">
-                            <span style="margin-right:24px">65</span>
-                            <span>348</span>
-                        </div>
-                    </div>
-                </div>
-            </n-grid-item>
-            <n-grid-item>
-                <div class="template-item">
-                    <div class="desc-text">
-                        测一测你的生辰八字！用过的都惊
-                        呆了
-                    </div>
-                    <div class="result-text">
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
-                        </div>
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
-                        </div>
-                    </div>
-                    <div class="footer-options">
-                        <div class="left">
-                            <n-image width="36" src="../../assets/test.jpg" />
-                            我是用户
-                        </div>
-                        <div class="right">
-                            <span style="margin-right:24px">65</span>
-                            <span>348</span>
-                        </div>
-                    </div>
-                </div>
-            </n-grid-item>
-            <n-grid-item>
-                <div class="template-item">
-                    <div class="desc-text">
-                        测一测你的生辰八字！用过的都惊
-                        呆了
-                    </div>
-                    <div class="result-text">
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
-                        </div>
-                        <div>
-                            <span>精彩结果1:</span> 年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格。
-                        </div>
-                    </div>
-                    <div class="footer-options">
-                        <div class="left">
-                            <n-image width="36" src="../../assets/test.jpg" />
-                            我是用户
+                            <img :src="item.createdBy.avatar | '../../assets/default-user.jpg'" />
+                            <div>
+                                {{ item.createdBy.nickname }}
+                            </div>
                         </div>
                         <div class="right">
                             <span style="margin-right:24px">65</span>
@@ -138,17 +35,28 @@
                 </div>
             </n-grid-item>
         </n-grid>
-
     </div>
 </template>
 <script setup>
-
+import $router from '@/router/index';
+import { useInit } from '@/hooks/useInit';
+import { useUserStore } from "@/store/modules/user"
+import { useApplicationStore } from "@/store/modules/application"
+const applicationStore = useApplicationStore();
+const userStore = useUserStore();
+const { goAuth } = useInit()
+// 使用模版
+function useTemplate(item) {
+    if (!userStore.token) goAuth();
+    $router.push({ name: 'view-template-details', query: { uuid: item.uuid } });
+}
 </script>
 <style lang="scss" scoped> .home-content {
      padding: 48px 32px 48px 52px;
      background: linear-gradient(180deg, #F3F3F6 0%, #EDEFFC 100%);
      position: absolute;
      height: calc(100% - 124px);
+     width: calc(100% - 312px);
      overflow-x: hidden;
      overflow-y: scroll;
 
@@ -159,6 +67,7 @@
          margin-bottom: 24px;
          padding: 24px;
          margin-right: 20px;
+
 
          .desc-text {
              font-weight: 500;
@@ -172,18 +81,23 @@
              display: -webkit-box;
              -webkit-line-clamp: 2;
              -webkit-box-orient: vertical;
+             cursor: pointer;
 
          }
 
          .result-text {
              height: 170px;
-             background: #F3F3F7;
+             background-color: #F3F3F7;
              border-radius: 10px;
              padding: 20px 12px;
              font-weight: 400;
              font-size: 14px;
              line-height: 18px;
              color: rgba(91, 93, 98, 1);
+             background-image: url(../../../assets/bg.png);
+             background-repeat: no-repeat;
+             cursor: pointer;
+
 
              >div:first-child {
                  margin-bottom: 24px;
@@ -201,14 +115,18 @@
              flex-direction: row;
              font-weight: 400;
              font-size: 16px;
-             line-height: 20px;
+             line-height: 32px;
              color: #5B5D62;
 
              .left {
+                 display: flex;
+                 flex-direction: row;
 
-                 image {
+                 img {
                      width: 32px;
                      height: 32px;
+                     border-radius: 32px;
+                     margin-right: 8px;
                  }
              }
 
