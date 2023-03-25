@@ -7,9 +7,11 @@
     <div>
         <div class="home-header">
             <div class="back-btn" @click="backPrePage">
+                <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
                 返回
             </div>
             <n-button type="info">
+                <IconFont name="icon-icon-yijiantongkuan" />
                 一键同款小程序
             </n-button>
             <user-integral></user-integral>
@@ -20,66 +22,27 @@
                 <div class="template">
                     <n-grid x-gap="12" :cols="2">
                         <n-gi style="margin-right:8px">
-                            <div class="title"> 测一测你的生辰八字！用过的都惊呆了🤯</div>
+                            <div class="title"> {{ appInfo.name }}</div>
                             <div class="user">
                                 <div>
-                                    <img width="36" src="@/assets/default-user.jpg" />
+                                    <img width="36" :src="appInfo.createdBy?.avatar || '@/assets/default-user.jpg'" />
                                 </div>
-                                <div>Tu啊黑科</div>
+                                <div>{{ appInfo.createdBy?.nickname }}</div>
                             </div>
                             <div>
-                                这是一个为你专业分析你的生辰八字的小程序，按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！是vahvvhkvaakvb啊哈撒谎
-                                想哈手机哈哈欧股
-                                沙拉金德拉克撒撒浪嘿拉升大了啥快乐生活垃圾上来看
-                                阿萨是卢卡斯了
-                                啊设计阿斯利康
+                                {{ appInfo.description }}
                             </div>
                         </n-gi>
                         <n-gi>
                             <div class="form-box">
                                 <div>
-                                    <div class="form-item">
+                                    <div class="form-item" v-for="form in appInfo.form" :key="form.id">
                                         <div class="label">
-                                            你的姓名
+                                            {{ form.label }}
                                         </div>
                                         <div>
-                                            <n-input size="large" round autosize placeholder="大"
-                                                style="height:56px;width:100%;" />
-                                        </div>
-                                    </div>
-                                    <div class="form-item">
-                                        <div class="label">
-                                            你的姓名
-                                        </div>
-                                        <div>
-                                            <n-input size="large" round autosize placeholder="大"
-                                                style="height:56px;width:100%;" />
-                                        </div>
-                                    </div>
-                                    <div class="form-item">
-                                        <div class="label">
-                                            你的姓名
-                                        </div>
-                                        <div>
-                                            <n-input size="large" round autosize placeholder="大"
-                                                style="height:56px;width:100%;" />
-                                        </div>
-                                    </div>
-                                    <div class="form-item">
-                                        <div class="label">
-                                            你的姓名
-                                        </div>
-                                        <div>
-                                            <n-input size="large" round autosize placeholder="大"
-                                                style="height:56px;width:100%;" />
-                                        </div>
-                                    </div>
-                                    <div class="form-item">
-                                        <div class="label">
-                                            你的姓名
-                                        </div>
-                                        <div>
-                                            <n-input size="large" round autosize placeholder="大"
+                                            <n-input size="large" round autosize
+                                                :placeholder="form?.properties?.placeholder"
                                                 style="height:56px;width:100%;" />
                                         </div>
                                     </div>
@@ -91,16 +54,22 @@
                         <n-grid x-gap="12" :cols="2">
                             <n-gi>
                                 <div class="icon">
-                                    <span></span>
-                                    <span>分享</span>
+                                    <div>
+                                        <IconFont name="icon-icon-fenxiang" />
+                                    </div>
+                                    <div>分享</div>
                                 </div>
                                 <div class="icon">
-                                    <span></span>
-                                    <span>分享</span>
+                                    <div>
+                                        <IconFont name="icon-icon-pinglun" />
+                                    </div>
+                                    <div>123</div>
                                 </div>
                                 <div class="icon">
-                                    <span></span>
-                                    <span>分享</span>
+                                    <div>
+                                        <IconFont name="icon-icon-yidianzan" style="color:#5652FF" />
+                                    </div>
+                                    <div>456</div>
                                 </div>
                             </n-gi>
                             <n-gi>
@@ -129,25 +98,26 @@
                         总体来看，您的八字五行比较均衡，命格偏向偏印生财的类型，事业上可能会有一定的成就，但必须加强自我修养和意志力，才能更好的发挥自己的长处。
                         <p class='typewriter'>{{ typewriter }}</p>
                         <div class="option">
-                            <span>踩</span>
+                            <IconFont name="icon-icon-dianzan" />
+                            <IconFont name="icon-icon-cai" />
                         </div>
                     </div>
                 </div>
 
                 <div class="public-results">
                     <n-carousel :space-between="20" :loop="false" slides-per-view="auto" draggable>
-                        <n-carousel-item style="width: 40%" v-for="result in resultList" :key="result.id">
+                        <n-carousel-item style="width: 40%" v-for="result in applicationStore.resultList" :key="result.id">
                             <div class="result-item">
                                 <div class="user">
                                     <div>
-                                        <img width="36" :src="result.createdBy.avatar | '@/assets/default-user.jpg'" />
+                                        <img width="36" :src="result.createdBy.avatar || '@/assets/default-user.jpg'" />
                                     </div>
-                                    <div>{{ result.createdBy.avatar }}</div>
+                                    <div>{{ result.createdBy.nickname }}</div>
                                 </div>
                                 <div class="label">
-                                    {{ result.inputArgs.join('.') }}
+                                    {{ result.inputArgs.join('·') }}
                                 </div>
-                                <div>
+                                <div class="content">
                                     {{ result.content }}
                                 </div>
                             </div>
@@ -161,13 +131,13 @@
 <script setup>
 import UserIntegral from "./components/user-integral.vue"
 import { useApplicationStore } from "@/store/modules/application"
-
+import { storeToRefs } from 'pinia';
 import $router from '@/router/index';
 import { useRouter } from 'vue-router';
 
 const value = ref(true);
 const applicationStore = useApplicationStore();
-const resultList = reactive([]);
+const { appInfo } = storeToRefs(applicationStore);
 
 const typewriter = ref("");
 
@@ -198,8 +168,8 @@ function backPrePage() {
 onMounted(() => {
     const router = useRouter();
     const uuid = router.currentRoute.value.query.uuid;
-    resultList.value = applicationStore.getAppResultList(uuid);
-
+    applicationStore.getAppResult(uuid);
+    applicationStore.getApp(uuid);
 })
 
 </script>
@@ -378,6 +348,14 @@ onMounted(() => {
                 .icon {
                     margin-right: 24px;
                     float: left;
+                    display: flex;
+                    flex-direction: row;
+
+                    .iconfont {
+                        padding-right: 8px;
+                        font-size: 24px;
+                    }
+
                 }
 
                 .n-button {
@@ -394,6 +372,10 @@ onMounted(() => {
                     --n-border: none !important;
                     --n-border-hover: none !important;
                     --n-border-focus: none !important;
+
+                    &:hover {
+                        background: linear-gradient(109.65deg, #A994FF 30.38%, #657EFF 98.29%);
+                    }
                 }
             }
 
@@ -442,6 +424,12 @@ onMounted(() => {
                 height: 20px;
                 margin-top: 12px;
                 text-align: right;
+
+                .iconfont {
+                    font-size: 24px;
+                    margin-right: 8px;
+                }
+
             }
         }
 
@@ -489,6 +477,14 @@ onMounted(() => {
                     height: 30px;
                     padding: 0 8px;
 
+                }
+
+                .content {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 5;
+                    -webkit-box-orient: vertical;
                 }
             }
         }

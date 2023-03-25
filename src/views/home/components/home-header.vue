@@ -10,7 +10,7 @@
             </n-tab-pane>
         </n-tabs>
         <n-button type="info" @click="createTemplate">
-            <IconFont name="icon-icon-biaoqing" />
+            <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
             创建我的小程序
         </n-button>
         <user-integral></user-integral>

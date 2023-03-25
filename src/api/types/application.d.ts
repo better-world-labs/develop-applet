@@ -28,6 +28,28 @@ declare namespace Application {
     status: Number; // 生命周期 (0.未发布 1.已发布)
   }
 
+  export interface formItemItf {
+    id: string;
+    label: string;
+    type: string;
+    properties: {
+      placeholder: string;
+    };
+  }
+
+  export interface appDetailItf {
+    id: number;
+    uuid: string;
+    name: string;
+    category: number;
+    description: string;
+    form: formItemItf[];
+    createdBy: User.UserInfoItf;
+    createdAt: string;
+    updatedAt: string;
+    status: number; // 生命周期 (0.未发布 1.已发布)
+  }
+
   export interface appResultItf {
     id: number;
     type: string;

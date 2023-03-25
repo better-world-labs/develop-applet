@@ -23,6 +23,12 @@ import type { MenuOption } from 'naive-ui'
 import { ref, h } from "vue"
 import { useInit } from '@/hooks/useInit';
 const currentMenu = ref('home');
+import IconFont from "@/components/icon-font/icon-font.vue"
+
+
+function renderIcon(str: string) {
+    return () => h(IconFont, { class: str, style: { 'font-size': '30px', 'margin-right': '10px' } })
+}
 
 const menuOptions: MenuOption[] = [
     {
@@ -37,6 +43,7 @@ const menuOptions: MenuOption[] = [
                 { default: () => '小程序广场' }
             ),
         key: 'home',
+        icon: renderIcon('icon-icon-xiaochengxuguangchang-moren')
     },
     {
         label: () =>
@@ -50,11 +57,13 @@ const menuOptions: MenuOption[] = [
                 { default: () => '我的小程序' }
             ),
         key: 'small-program',
+        icon: renderIcon('icon-icon-wodexiaochengxu-moren')
     },
     {
         label: '我参与的',
         key: 'my-participation',
         disabled: true,
+        icon: renderIcon('icon-icon-wocanyude-moren')
     },
     {
         label: () =>
@@ -68,6 +77,7 @@ const menuOptions: MenuOption[] = [
                 { default: () => '我的积分' }
             ),
         key: 'my-integral',
+        icon: renderIcon('icon-icon-wodejifen-moren')
     }
 ]
 // 创建模版
@@ -112,16 +122,34 @@ const handleUpdateValue = (key: string) => {
         padding: 0 20rpx;
         color: #5B5D62;
         font-weight: 400;
+        margin-top: 0 !important;
+
+
 
         .n-menu-item-content.n-menu-item-content--selected::before {
             background-color: #EEEDFE;
         }
 
         .n-menu-item-content.n-menu-item-content--selected .n-menu-item-content-header a {
-            color: #5652FF !important;
+            color: #5652FF;
             font-weight: 500 !important;
         }
 
+    }
+
+    .n-menu .n-menu-item-content:hover {
+        &::before {
+            background: #F9F9FC;
+        }
+    }
+
+
+    .n-menu .n-menu-item-content .n-menu-item-content__icon {
+        color: rgba(91, 93, 98, 1);
+    }
+
+    .n-menu .n-menu-item-content.n-menu-item-content--selected .n-menu-item-content__icon {
+        color: #5652FF;
     }
 
 }

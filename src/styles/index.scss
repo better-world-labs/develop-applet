@@ -41,6 +41,14 @@ textarea,
     --n-border: none !important;
     --n-border-hover: none !important;
     --n-border-focus: none !important;
+    .iconfont {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+
+    &:hover {
+      background: #716efe;
+    }
   }
 }
 
