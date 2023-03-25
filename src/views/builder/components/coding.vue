@@ -24,7 +24,8 @@
             <publish v-show="i == 3" :app-data="props.appData">
             </publish>
             <template #header-extra>
-                {{ item.status }}
+                <IconFont :style="{ color: item.status ? '#5652FF' : '#E3E4E5', fontSize: '24px' }"
+                    :name="item.status ? 'icon-icon-yitianwan' : 'icon-a-icon-weitianxiewanStroke'"></IconFont>
             </template>
         </n-collapse-item>
     </n-collapse>

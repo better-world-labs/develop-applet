@@ -8,26 +8,30 @@
     <div class="not-model" v-if="false"></div>
     <div class="has-model" v-else>
         <div class="flow">
-            <p><span>输入提示词</span><span>ChatGPT</span><span>生成结果（ChatGPT）</span></p>
-            <i class="del">删除</i>
+            <p><span>输入提示词</span>-><span>
+                    <IconFont name="icon-icon-ChatGPT" style="color:#5652FF" />
+                    ChatGPT
+                </span>-><span>生成结果（ChatGPT）</span></p>
+            <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
         </div>
         <div class="description">
             <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
             <p class="expression">
-                <template v-for="item in props.appData.flow[0].prompt" :key="item.id">
+                <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
                     <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }" class="tags-input"
                         :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal"
                         @click="changeVal" placeholder="输入提示词">{{
                             item.properties.value }}</span>
-                    <span v-else class="tag">{{ getTag(item.properties.character) }}<a @click="removeTag(item)"
-                            class="tag-close"></a></span>
+                    <span v-else class="tag">{{ getTag(item.properties.character) }}
+                        <IconFont @click="removeTag(i)" class="tag-close" name="icon-icon-shanchubiaoqian" />
+                    </span>
                 </template>
                 <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
             </p>
             <div class="line"></div>
             <div class="tags">
                 <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
-                    <a @click="addTag(item)" class="tag-close"></a>
+                    <IconFont @click="addTag(item)" class="tag-close" name="icon-icon-tianjiabiaoqian" />
                 </div>
                 <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
             </div>
@@ -76,9 +80,17 @@ const insertPrompt = (index, item) => {
     const list = props.appData.flow[0].prompt;
     list.splice(index, 0, item)
 }
+// 备用
 const delPrompt = (index, item = {}) => {
     const list = props.appData.flow[0].prompt;
     list.splice(index, 1)
+}
+const removeTag = (index, item = {}) => {
+    const list = props.appData.flow[0].prompt;
+    list.splice(index, 1)
+}
+const clear = () => {
+    props.appData.flow[0].prompt = [getNewPrompt()]
 }
 
 const getTag = (uuid) => {
@@ -210,10 +222,11 @@ const handleBlurEvent = (e, uuid) => {
             padding: 2px 4px 2px 8px;
 
             .tag-close {
-                width: 22px;
-                height: 20px;
+                // width: 22px;
+                // height: 20px;
+                margin-left: 4px;
                 cursor: pointer;
-                background: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.578 5l2.93-3.493a.089.089 0 0 0-.068-.146h-.891a.182.182 0 0 0-.137.064l-2.417 2.88-2.416-2.88a.178.178 0 0 0-.137-.064h-.89a.089.089 0 0 0-.069.146L4.413 5l-2.93 3.493a.089.089 0 0 0 .068.146h.89a.182.182 0 0 0 .138-.064l2.416-2.88 2.417 2.88c.033.04.083.064.137.064h.89a.089.089 0 0 0 .069-.146l-2.93-3.493z' fill='%23000' fill-opacity='.45'/%3E%3C/svg%3E") center no-repeat;
+                // background: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.578 5l2.93-3.493a.089.089 0 0 0-.068-.146h-.891a.182.182 0 0 0-.137.064l-2.417 2.88-2.416-2.88a.178.178 0 0 0-.137-.064h-.89a.089.089 0 0 0-.069.146L4.413 5l-2.93 3.493a.089.089 0 0 0 .068.146h.89a.182.182 0 0 0 .138-.064l2.416-2.88 2.417 2.88c.033.04.083.064.137.064h.89a.089.089 0 0 0 .069-.146l-2.93-3.493z' fill='%23000' fill-opacity='.45'/%3E%3C/svg%3E") center no-repeat;
             }
         }
 

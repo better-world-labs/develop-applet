@@ -64,3 +64,12 @@ textarea,
   border-radius: 4px;
   background: none;
 }
+
+i.default {
+  font-size: 24px;
+  cursor: pointer;
+  color: #bec3c5;
+  &:hover {
+    color: #181d24;
+  }
+}
