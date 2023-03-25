@@ -6,12 +6,12 @@
 <template>
     <div class="home-content">
         <n-grid :x-gap="12" :y-gap="8" :cols="3">
-            <n-grid-item @click="useTemplate(item)" v-for="item in applicationStore.appList" :key="item.id">
+            <n-grid-item v-for="item in applicationStore.appList" :key="item.id">
                 <div class="template-item">
-                    <div class="desc-text">
+                    <div class="desc-text" @click="useTemplate(item)">
                         {{ item.name }}
                     </div>
-                    <div class="result-text">
+                    <div class="result-text" @click="useTemplate(item)">
                         <div v-if="item.results[0]">
                             <span>精彩结果1:</span>
                             {{ item.results[0]?.content }}
@@ -28,8 +28,12 @@
                             </div>
                         </div>
                         <div class="right">
-                            <span style="margin-right:24px">65</span>
-                            <span>348</span>
+                            <span style="margin-right:24px">
+                                <IconFont name="icon-icon-dianzan" />65
+                            </span>
+                            <span>
+                                <IconFont name="icon-icon-cai" />348
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -132,6 +136,11 @@ function useTemplate(item) {
 
              .right {
                  margin-left: auto;
+
+                 .iconfont {
+                     font-size: 18px;
+                     margin-right: 6px;
+                 }
              }
 
          }
