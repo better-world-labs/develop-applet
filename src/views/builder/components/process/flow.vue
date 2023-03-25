@@ -16,12 +16,13 @@
             <p class="expression">
                 <template v-for="item in props.appData.flow[0].prompt" :key="item.id">
                     <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }" class="tags-input"
-                        @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal" @focus="changeVal"
-                        placeholder="输入提示词">{{
+                        :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal"
+                        @click="changeVal" placeholder="输入提示词">{{
                             item.properties.value }}</span>
-                    <span v-else class="tag">{{ getTag(item.properties.character) }}<a class="tag-close"></a></span>
+                    <span v-else class="tag">{{ getTag(item.properties.character) }}<a @click="removeTag(item)"
+                            class="tag-close"></a></span>
                 </template>
-                <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span>
+                <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
             </p>
             <div class="line"></div>
             <div class="tags">
@@ -34,6 +35,8 @@
     </div>
 </template>
 <script setup>
+import { v4 as uuid } from 'uuid';
+// ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 const props = defineProps(['appData'])
 const state = reactive({
     currentItem: {
@@ -47,7 +50,7 @@ const state = reactive({
 })
 const onCreate = () => {
     return {
-        "id": "uuid",
+        "id": uuid(),
         "label": "",
         "type": "text",
         "properties": {
@@ -56,15 +59,16 @@ const onCreate = () => {
     }
 }
 
-const addPrompt = () => {
+const getNewPrompt = (str = "") => {
     const newItem = {
-        "id": "",
+        "id": uuid(),
         "type": "text",
         "properties": {
-            "value": ""
+            "value": str
         }
     }
-    props.appData.flow[0].prompt.push(newItem)
+    return newItem
+    // props.appData.flow[0].prompt.push(newItem)
     // const index = props.appData.flow[0].prompt.length;
     // insertPrompt(index, newItem)
 }
@@ -84,10 +88,36 @@ const getTag = (uuid) => {
         return findTag['label']
     }
 }
+const addTag = (item) => {
+    const newTag = {
+        "id": uuid(),
+        "type": "tag",
+        "properties": {
+            "character": item.id,
+            "from": "form"
+        }
+    }
+    const { currentIndex, currentItem } = state
+
+    const list = props.appData.flow[0].prompt;
+    const findIndex = list.findIndex(f => f.id == currentItem.id);
+    // list.splice(findIndex, 0, newTag)
+    console.log(list, newTag);
+    if (currentIndex == 0) {
+        insertPrompt(findIndex, newTag)
+    } else if (currentIndex == currentItem.properties.value.length - 1) {
+        insertPrompt(findIndex + 1, newTag)
+    } else {
+        const str = currentItem.properties.value;
+        const textL = getNewPrompt(str.slice(0, currentIndex))
+        const textR = getNewPrompt(str.slice(currentIndex))
+        list.splice(findIndex, 1, textL, newTag, textR)
+    }
+}
 // TODO 焦点有问题
 const changeVal = (e) => {
     state.currentIndex = getSelection().getRangeAt(0);
-    console.log("change", getSelection().getRangeAt(0).startOffset)
+    console.log("change", getSelection().getRangeAt(0).startOffset, e.target.dataset['num'])
     var CaretPos = 0, ctrl = e.target;
     if (document.selection) {
         ctrl.focus()
@@ -98,6 +128,9 @@ const changeVal = (e) => {
         CaretPos = ctrl.selectionStart
     }
     console.log(CaretPos)
+    state.currentIndex = getSelection().getRangeAt(0).startOffset
+    const list = props.appData.flow[0].prompt;
+    state.currentItem = list.find(f => f.id == e.target.dataset['num'])
 }
 
 const handleBlurEvent = (e, uuid) => {

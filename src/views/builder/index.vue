@@ -53,14 +53,14 @@ const state = reactive({
             "outputVisible": true,
             "prompt": [
                 {
-                    "id": "123",
+                    "id": "12",
                     "type": "text",
                     "properties": {
                         "value": "从"
                     }
                 },
                 {
-                    "id": "321",
+                    "id": "11",
                     "type": "tag",
                     "properties": {
                         "from": "result", //form 或者 result
@@ -68,7 +68,7 @@ const state = reactive({
                     }
                 },
                 {
-                    "id": "uuid",
+                    "id": "13",
                     "type": "text",
                     "properties": {
                         "value": "选出最好的结果"
