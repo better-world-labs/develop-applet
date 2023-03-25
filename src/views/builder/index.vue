@@ -10,14 +10,14 @@
             <div class="back">返回</div>
 
             <n-button>
-                <IconFont name="icon-icon-fabu"></IconFont>
-                发布
+            <IconFont name="icon-icon-fabu"></IconFont>
+            发布
             </n-button>
         </header>
         <div class="body">
-            <div class="coding scroll-y">
-                <coding :app-data="state"></coding>
-            </div>
+            <!-- <div class="coding scroll-y">
+                                                <coding :app-data="state"></coding>
+                                            </div> -->
             <div>
                 <preview :app-data="state"></preview>
             </div>
@@ -31,7 +31,7 @@ const state = reactive({
     "uuid": "uuid",
     "name": "未命名模板",
     "category": 1,
-    "description": "模板描述",
+    "description": "模板模板描述模板描述模板描述模板描述模板描述模板描述模板描述asdjlsjoiejljrlekjlkej模板描述模板描述模板描述模板描述模板描述模板描述模板描述描述",
     "form": [
         {
             "id": "321",
@@ -83,7 +83,7 @@ const state = reactive({
     ],
     "createdBy": {
         "id": 12,
-        "name": "xxxx",
+        "name": "不知道是谁",
         "avatar": "http://xxx/xxx"
     },
     "createdAt": "2023-03-22T07:08:02.851Z",

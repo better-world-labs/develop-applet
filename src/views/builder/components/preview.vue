@@ -6,51 +6,33 @@
 
 <template>
     <div class="title">预览区</div>
-    <div class="preview-box">
-        <div class="app-title">测一测你的生辰八字！用过的都惊呆了🤯</div>
-        <div class="user">东门过儿</div>
+    <div class="preview-box scroll-y">
+        <div class="app-title">{{ props.appData.name }}</div>
+        <div class="user">
+            <img :src="props.appData.avatar" />{{ props.appData.createdBy.name }}
+        </div>
         <div class="des">
-            这是一个为你专业分析你的生辰八字的小程序，按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！是vahvvhkvaakvb啊哈撒谎这是一个为你专业分析你的生辰八字的小程序，按照右边的提示问题填写相关信息，立即可以生成你的八字信息，用过的都说好！
+            {{ props.appData.description }}
         </div>
         <div class="body">
-            <n-form ref="formRef" :model="model">
-                <n-form-item path="age" label="年龄">
-                    <n-input v-model:value="model.age" @keydown.enter.prevent />
-                </n-form-item>
-                <n-form-item path="password" label="密码">
-                    <n-input v-model:value="model.password" type="password" @input="handlePasswordInput"
+            <n-form ref="formRef" :model="props.appData.form">
+                <n-form-item :label="item.label" v-for="(item, i) in props.appData.form" :key="item.id">
+                    <n-input v-model:value="state.form[i]" :placeholder="item.properties.placeholder"
                         @keydown.enter.prevent />
                 </n-form-item>
-                <n-form-item ref="rPasswordFormItemRef" first path="reenteredPassword" label="重复密码"><n-select
-                        v-model:value="model.selectValue" placeholder="Select" :options="generalOptions" />
-                </n-form-item>
-                <n-row :gutter="[0, 24]">
-                    <n-col :span="24">
-                        <div style="display: flex; justify-content: flex-end">
-                            <n-button :disabled="model.age === null" round type="primary"
-                                @click="handleValidateButtonClick">
-                                验证
-                            </n-button>
-                        </div>
-                    </n-col>
-                </n-row>
             </n-form>
+        </div>
+        <div class="action">
+            <span>立即生成</span>
+            <em>5积分</em>
         </div>
     </div>
 </template>
 <script setup>
 const props = defineProps(['appData'])
-const model = reactive({
-    age: '',
-    password: '',
-    selectValue: ''
+const state = reactive({
+    form: new Array(props.appData.form.length)
 })
-const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
-    (v) => ({
-        label: v,
-        value: v
-    })
-)
 const handleValidateButtonClick = () => {
 
 }
@@ -59,9 +41,135 @@ const handlePasswordInput = () => {
 }
 </script>
 <style lang="scss" scoped>
-.title {}
+.title {
+    height: 50px;
+    line-height: 50px;
+    font-weight: 500;
+    font-size: 18px;
+    color: #181D24;
+    background: #EEEDFE;
+}
 
-.preview-box {}
+.preview-box {
+    height: 100%;
+    background: linear-gradient(132.93deg, #F1F7FF 5.27%, #FAF8FF 59.89%, #EEEDFE 98.91%);
+    padding: 56px 80px;
+
+    .app-title {
+        font-weight: 500;
+        font-size: 40px;
+        line-height: 40px;
+        color: #181D24;
+    }
+
+    .user {
+        margin: 32px 0 24px;
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        line-height: 20px;
+        color: #5B5D62;
+
+        img {
+            width: 40px;
+            height: 40px;
+            margin-right: 8px;
+        }
+    }
+
+    .des {
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 28px;
+        color: #202226;
+        word-break: break-all;
+    }
+
+    .action {
+        margin-left: auto;
+        margin-top: 16px;
+        width: 132px;
+        height: 88px;
+        background: linear-gradient(101.85deg, #957BFB 0%, #5652FF 98.88%);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        span {
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 16px;
+            color: #FFFFFF;
+        }
+
+        em {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 12px;
+            margin-top: 6px;
+            color: #FFFFFF;
+            font-style: normal;
+        }
+    }
+
+    .body {
+        margin-top: 48px;
+
+        :deep(.n-form-item) {
+            --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+            --n-line-height: 1.6;
+            --n-blank-height: 34px;
+            --n-label-font-size: 14px;
+            --n-label-text-align: flex-start;
+            --n-label-height: 26px;
+            --n-label-padding: 0 0 6px 2px;
+            --n-label-font-weight: 400;
+            --n-asterisk-color: #d03050;
+            --n-label-text-color: #202226 !important;
+            --n-feedback-padding: 4px 0 0 2px;
+            --n-feedback-font-size: 14px;
+            --n-feedback-height: 24px;
+            --n-feedback-text-color: rgb(118, 124, 130);
+            --n-feedback-text-color-warning: #f0a020;
+            --n-feedback-text-color-error: #d03050;
+
+            .n-form-item-label {
+                font-weight: 500;
+                font-size: 24px !important;
+                line-height: 24px !important;
+                margin-bottom: 20px;
+                color: #181D24;
+
+                grid-area: label;
+                align-items: center;
+                line-height: 1.25;
+                text-align: var(--n-label-text-align);
+                font-size: var(--n-label-font-size);
+                min-height: var(--n-label-height);
+                padding: var(--n-label-padding);
+                color: var(--n-label-text-color);
+                transition: color .3s var(--n-bezier);
+                box-sizing: border-box;
+                font-weight: var(--n-label-font-weight);
+            }
+
+            .n-input {
+                height: 80px;
+                line-height: 80px;
+                background: #FFFFFF;
+                box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
+                border-radius: 12px;
+                margin-bottom: 8px;
+                font-size: 22px;
+                color: #202226;
+                padding: 0 24px;
+            }
+        }
+
+    }
+}
 
 .scroll-y::-webkit-scrollbar {
     /*滚动条整体样式*/
