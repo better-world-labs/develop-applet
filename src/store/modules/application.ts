@@ -10,6 +10,8 @@ interface ApplicationState {
   tabs: Application.tabInfoItf[];
   currentTab: number | null;
   appList: Application.appInfoItf[];
+  resultList: Application.appResultItf[];
+  appInfo: Application.appDetailItf;
 }
 
 export const useApplicationStore = defineStore('application', {
@@ -17,6 +19,8 @@ export const useApplicationStore = defineStore('application', {
     tabs: [],
     currentTab: 0,
     appList: [],
+    resultList: [],
+    appInfo: {},
   }),
   getters: {},
   actions: {
@@ -39,12 +43,12 @@ export const useApplicationStore = defineStore('application', {
     // 请求应用信息
     async getApp(uuid: string) {
       const { data } = await getAppInfo(uuid as string);
-      return data;
+      this.appInfo = data;
     },
     // 请求应用结果列表
-    async getAppResultList(uuid: string) {
+    async getAppResult(uuid: string) {
       const { data } = await getAppResultList(uuid as string);
-      return data.list;
+      this.resultList = data.list;
     },
   },
 });
