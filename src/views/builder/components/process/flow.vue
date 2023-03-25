@@ -8,25 +8,30 @@
     <div class="not-model" v-if="false"></div>
     <div class="has-model" v-else>
         <div class="flow">
-            <p><span>输入提示词</span><span>ChatGPT</span><span>生成结果（ChatGPT）</span></p>
-            <i class="del">删除</i>
+            <p><span>输入提示词</span>-><span>
+                    <IconFont name="icon-icon-ChatGPT" style="color:#5652FF" />
+                    ChatGPT
+                </span>-><span>生成结果（ChatGPT）</span></p>
+            <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
         </div>
         <div class="description">
             <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
             <p class="expression">
-                <template v-for="item in props.appData.flow[0].prompt" :key="item.id">
+                <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
                     <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }" class="tags-input"
-                        @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal" @focus="changeVal"
-                        placeholder="输入提示词">{{
+                        :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal"
+                        @click="changeVal" placeholder="输入提示词">{{
                             item.properties.value }}</span>
-                    <span v-else class="tag">{{ getTag(item.properties.character) }}<a class="tag-close"></a></span>
+                    <span v-else class="tag">{{ getTag(item.properties.character) }}
+                        <IconFont @click="removeTag(i)" class="tag-close" name="icon-icon-shanchubiaoqian" />
+                    </span>
                 </template>
-                <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span>
+                <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
             </p>
             <div class="line"></div>
             <div class="tags">
                 <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
-                    <a @click="addTag(item)" class="tag-close"></a>
+                    <IconFont @click="addTag(item)" class="tag-close" name="icon-icon-tianjiabiaoqian" />
                 </div>
                 <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
             </div>
@@ -34,6 +39,8 @@
     </div>
 </template>
 <script setup>
+import { v4 as uuid } from 'uuid';
+// ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 const props = defineProps(['appData'])
 const state = reactive({
     currentItem: {
@@ -47,7 +54,7 @@ const state = reactive({
 })
 const onCreate = () => {
     return {
-        "id": "uuid",
+        "id": uuid(),
         "label": "",
         "type": "text",
         "properties": {
@@ -56,15 +63,16 @@ const onCreate = () => {
     }
 }
 
-const addPrompt = () => {
+const getNewPrompt = (str = "") => {
     const newItem = {
-        "id": "",
+        "id": uuid(),
         "type": "text",
         "properties": {
-            "value": ""
+            "value": str
         }
     }
-    props.appData.flow[0].prompt.push(newItem)
+    return newItem
+    // props.appData.flow[0].prompt.push(newItem)
     // const index = props.appData.flow[0].prompt.length;
     // insertPrompt(index, newItem)
 }
@@ -72,9 +80,17 @@ const insertPrompt = (index, item) => {
     const list = props.appData.flow[0].prompt;
     list.splice(index, 0, item)
 }
+// 备用
 const delPrompt = (index, item = {}) => {
     const list = props.appData.flow[0].prompt;
     list.splice(index, 1)
+}
+const removeTag = (index, item = {}) => {
+    const list = props.appData.flow[0].prompt;
+    list.splice(index, 1)
+}
+const clear = () => {
+    props.appData.flow[0].prompt = [getNewPrompt()]
 }
 
 const getTag = (uuid) => {
@@ -84,10 +100,36 @@ const getTag = (uuid) => {
         return findTag['label']
     }
 }
+const addTag = (item) => {
+    const newTag = {
+        "id": uuid(),
+        "type": "tag",
+        "properties": {
+            "character": item.id,
+            "from": "form"
+        }
+    }
+    const { currentIndex, currentItem } = state
+
+    const list = props.appData.flow[0].prompt;
+    const findIndex = list.findIndex(f => f.id == currentItem.id);
+    // list.splice(findIndex, 0, newTag)
+    console.log(list, newTag);
+    if (currentIndex == 0) {
+        insertPrompt(findIndex, newTag)
+    } else if (currentIndex == currentItem.properties.value.length - 1) {
+        insertPrompt(findIndex + 1, newTag)
+    } else {
+        const str = currentItem.properties.value;
+        const textL = getNewPrompt(str.slice(0, currentIndex))
+        const textR = getNewPrompt(str.slice(currentIndex))
+        list.splice(findIndex, 1, textL, newTag, textR)
+    }
+}
 // TODO 焦点有问题
 const changeVal = (e) => {
     state.currentIndex = getSelection().getRangeAt(0);
-    console.log("change", getSelection().getRangeAt(0).startOffset)
+    console.log("change", getSelection().getRangeAt(0).startOffset, e.target.dataset['num'])
     var CaretPos = 0, ctrl = e.target;
     if (document.selection) {
         ctrl.focus()
@@ -98,6 +140,9 @@ const changeVal = (e) => {
         CaretPos = ctrl.selectionStart
     }
     console.log(CaretPos)
+    state.currentIndex = getSelection().getRangeAt(0).startOffset
+    const list = props.appData.flow[0].prompt;
+    state.currentItem = list.find(f => f.id == e.target.dataset['num'])
 }
 
 const handleBlurEvent = (e, uuid) => {
@@ -177,10 +222,11 @@ const handleBlurEvent = (e, uuid) => {
             padding: 2px 4px 2px 8px;
 
             .tag-close {
-                width: 22px;
-                height: 20px;
+                // width: 22px;
+                // height: 20px;
+                margin-left: 4px;
                 cursor: pointer;
-                background: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.578 5l2.93-3.493a.089.089 0 0 0-.068-.146h-.891a.182.182 0 0 0-.137.064l-2.417 2.88-2.416-2.88a.178.178 0 0 0-.137-.064h-.89a.089.089 0 0 0-.069.146L4.413 5l-2.93 3.493a.089.089 0 0 0 .068.146h.89a.182.182 0 0 0 .138-.064l2.416-2.88 2.417 2.88c.033.04.083.064.137.064h.89a.089.089 0 0 0 .069-.146l-2.93-3.493z' fill='%23000' fill-opacity='.45'/%3E%3C/svg%3E") center no-repeat;
+                // background: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.578 5l2.93-3.493a.089.089 0 0 0-.068-.146h-.891a.182.182 0 0 0-.137.064l-2.417 2.88-2.416-2.88a.178.178 0 0 0-.137-.064h-.89a.089.089 0 0 0-.069.146L4.413 5l-2.93 3.493a.089.089 0 0 0 .068.146h.89a.182.182 0 0 0 .138-.064l2.416-2.88 2.417 2.88c.033.04.083.064.137.064h.89a.089.089 0 0 0 .069-.146l-2.93-3.493z' fill='%23000' fill-opacity='.45'/%3E%3C/svg%3E") center no-repeat;
             }
         }
 

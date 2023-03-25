@@ -25,7 +25,10 @@
                 </n-radio>
             </n-radio-group>
         </div>
-        <n-button type="primary">发布</n-button>
+        <n-button type="primary">
+            <IconFont name="icon-icon-fabu"></IconFont>
+            发布
+        </n-button>
     </div>
 </template>
 <script setup>
@@ -58,6 +61,41 @@ const desList = [{
 <style lang="scss" scoped>
 .save-share {
     overflow: hidden;
+
+    :deep(.n-button) {
+        i {
+            margin-right: 8px;
+        }
+
+        --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+        --n-bezier-ease-out: cubic-bezier(0, 0, 0.2, 1);
+        --n-ripple-duration: 0.6s;
+        --n-opacity-disabled: 0.5;
+        --n-wave-opacity: 0.6;
+        font-weight: 500 !important;
+        --n-color: #5652FF !important;
+        --n-color-hover: #5652FF !important;
+        --n-color-pressed: #5652FF !important;
+        --n-color-focus: #5652FF !important;
+        --n-color-disabled: #5652FF !important;
+        --n-ripple-color: #5652FF !important;
+        --n-text-color: #FFF !important;
+        --n-text-color-hover: #FFF !important;
+        --n-text-color-pressed: #FFF !important;
+        --n-text-color-focus: #FFF !important;
+        --n-text-color-disabled: #FFF !important;
+        --n-border: 1px solid #5652FF !important;
+        --n-border-hover: 1px solid #5652FF !important;
+        --n-border-pressed: 1px solid #5652FF !important;
+        --n-border-focus: 1px solid #5652FF !important;
+        --n-border-disabled: 1px solid #5652FF !important;
+        --n-height: 40px !important;
+        --n-font-size: 16px !important;
+        --n-padding: 0 36px !important;
+        --n-icon-size: 18px !important;
+        --n-icon-margin: 8px !important;
+        --n-border-radius: 8px !important;
+    }
 
     .des {
         background: #F3F3F7;
