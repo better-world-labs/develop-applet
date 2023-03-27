@@ -1,6 +1,6 @@
- 
+
 // 定义iconfont库
-const iconfontUrlCss = `//at.alicdn.com/t/c/font_3675919_067uzpuqygnq.css`;
+const iconfontUrlCss = `//at.alicdn.com/t/c/font_3974722_19gx08cll5h.css`;
 
 // 定义动态插入方法
 const loadIconFont = (url: string = iconfontUrlCss) => {

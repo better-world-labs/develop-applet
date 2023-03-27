@@ -8,10 +8,14 @@
     <div class="not-model" v-if="false"></div>
     <div class="has-model" v-else>
         <div class="flow">
-            <p><span>输入提示词</span>-><span>
+            <p><span>输入提示词</span>
+                <IconFont :size="18" name="icon-icon-jiantou" />
+                <span>
                     <IconFont name="icon-icon-ChatGPT" style="color:#5652FF" />
                     ChatGPT
-                </span>-><span>生成结果（ChatGPT）</span></p>
+                </span>
+                <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
+            </p>
             <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
         </div>
         <div class="description">
@@ -170,11 +174,18 @@ const handleBlurEvent = (e, uuid) => {
             align-items: center;
 
             span {
-                margin-right: 12px;
                 font-weight: 500;
                 font-size: 16px;
                 line-height: 16px;
                 color: #5B5D62;
+
+                i {
+                    margin: 0 4px 0 0;
+                }
+            }
+
+            i {
+                margin: 0 11px;
             }
         }
 

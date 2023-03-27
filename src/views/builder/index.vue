@@ -7,17 +7,19 @@
 <template>
     <div class="builder">
         <header>
-            <div class="back">返回</div>
+            <div class="back">
+                <IconFont name="icon-icon-fanhui" />返回
+            </div>
 
             <n-button>
-            <IconFont name="icon-icon-fabu"></IconFont>
-            发布
+                <IconFont name="icon-icon-fabu"></IconFont>
+                发布
             </n-button>
         </header>
         <div class="body">
-            <!-- <div class="coding scroll-y">
-                                                <coding :app-data="state"></coding>
-                                            </div> -->
+            <div class="coding scroll-y">
+                <coding :app-data="state"></coding>
+            </div>
             <div>
                 <preview :app-data="state"></preview>
             </div>
@@ -53,6 +55,7 @@ const state = reactive({
     ],
     "flow": [
         {
+            "id": 'uuid122',
             "type": "chatgpt",
             "outputVisible": true,
             "prompt": [
@@ -146,6 +149,14 @@ onMounted(() => {
             font-weight: 400;
             font-size: 16px;
             color: #5B5D62;
+            margin-left: 24px;
+            display: flex;
+            align-items: center;
+
+            i {
+                font-size: 20px;
+                margin-right: 4px;
+            }
         }
 
         :deep(.n-button) {
