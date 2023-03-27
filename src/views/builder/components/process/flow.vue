@@ -28,10 +28,13 @@
                 <p class="expression">
                     <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
                         <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }"
-                            class="tags-input" :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)"
-                            @input="changeVal" @click="changeVal" placeholder="输入提示词">{{
+                            :ref="$event => setItemRef($event, i)" @keyup.delete="backspace(i)" class="tags-input"
+                            :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal"
+                            @click="changeVal" placeholder="输入提示词">{{
                                 item.properties.value }}</span>
-                        <span v-else class="tag">{{ getTag(item.properties.character) }}
+                        <span v-else class="tag" :ref="$event => setItemRef($event, i)" :data-num="item.id">{{
+                            getTag(item.properties.character)
+                        }}
                             <IconFont @click="removeTag(i)" class="tag-close" name="icon-icon-shanchubiaoqian" />
                         </span>
                     </template>
@@ -78,7 +81,7 @@ const addModel = () => {
 }
 const choose = (model) => {
     if (model.available) {
-        props.appData.flow.type = model.name
+        props.appData.flow[0].type = model.name
         showModal.value = false;
     }
 }
@@ -93,6 +96,13 @@ const state = reactive({
     currentIndex: 0,
     aiList: [],
 })
+const itemRefs = new Array(100).fill('')
+const setItemRef = (el, i) => {
+    // && !itemRefs.some(s => s.dataset['num'] == el.dataset['num'])
+    if (el) {
+        itemRefs[i] = el
+    }
+}
 const onCreate = () => {
     return {
         "id": uuid(),
@@ -139,6 +149,55 @@ const clear = () => {
     props.appData.flow[0].type = ''
     props.appData.flow[0].prompt = [getNewPrompt()]
 }
+let isFirstDel = true;
+// 设置光标 支持性有问题一
+const backspace = (i) => {
+    console.log('进来了', i, itemRefs, state.currentIndex);
+    const start = itemRefs[i].target?.selectionStart || getSelection().getRangeAt(0).startOffset
+    if (i > 0 && start == 0 && !isFirstDel) {
+        isFirstDel = true
+        const item = props.appData.flow[0].prompt[i - 1]
+        if (item.type == 'tag') {
+            delPrompt(i - 1)
+            nextTick(() => {
+                state.currentIndex = 0
+                itemRefs[i - 1].focus()
+            })
+        } else {
+            const list = props.appData.flow[0].prompt;
+            const text = list[i].properties.value
+            console.log(text.length, 'text.length');
+            if (text.length <= 1) {
+                delPrompt(i)
+                itemRefs[i - 1].focus()
+                nextTick(() => {
+                    const oldIndex = list[i - 1].properties.value.length - 1
+                    console.log(itemRefs[i - 1], 'itemRefs[i - 1]');
+                    itemRefs[i - 1].target.setSelectionRange(oldIndex, oldIndex)
+                })
+            } else {
+                delPrompt(i - 1)
+                // itemRefs[i - 1].focus()
+                // nextTick(() => {
+                //     console.log(itemRefs[i - 1], 'itemRefs[i - 1]');
+                //     const oldIndex = list[i - 1].properties.value.length - 1
+                //     itemRefs[i - 1].target.setSelectionRange(oldIndex, oldIndex)
+                // })
+            }
+            // nextTick(() => {
+            //     const list = props.appData.flow[0].prompt;
+            //     state.currentItem = list[i - 1]
+            //     state.currentItem.properties.value = state.currentItem.properties.value.slice(0, -1)
+            //     const oldIndex = state.currentItem.properties.value.length - 1
+            //     state.currentItem.properties.value += text;
+            //     state.currentIndex = oldIndex
+            //     itemRefs[i - 1].focus()
+            // })
+        }
+    } else {
+        isFirstDel = false
+    }
+}
 
 const getTag = (uuid) => {
     const list = props.appData.form;
@@ -161,16 +220,19 @@ const addTag = (item) => {
     const list = props.appData.flow[0].prompt;
     const findIndex = list.findIndex(f => f.id == currentItem.id);
     // list.splice(findIndex, 0, newTag)
-    console.log(list, newTag);
+    console.log(currentIndex, currentItem.properties.value, currentItem.properties.value.length - 1);
     if (currentIndex == 0) {
         insertPrompt(findIndex, newTag)
-    } else if (currentIndex == currentItem.properties.value.length - 1) {
+    } else if (currentIndex == currentItem.properties.value.length) {
         insertPrompt(findIndex + 1, newTag)
     } else {
         const str = currentItem.properties.value;
         const textL = getNewPrompt(str.slice(0, currentIndex))
         const textR = getNewPrompt(str.slice(currentIndex))
         list.splice(findIndex, 1, textL, newTag, textR)
+        state.currentItem = list[findIndex + 2]
+        // 重置选择的位置为0
+        state.currentIndex = 0
     }
 }
 // TODO 焦点有问题
@@ -263,6 +325,7 @@ const handleBlurEvent = (e, uuid) => {
 
         .expression {
             // display: flex;
+            min-height: 42px;
             word-break: break-all;
             flex-wrap: wrap;
             align-items: flex-start;
@@ -272,10 +335,13 @@ const handleBlurEvent = (e, uuid) => {
             padding: 8px 16px;
             font-size: 14px;
             line-height: 24px;
+            margin: 0;
             overflow: auto;
             cursor: text;
 
-            span {}
+            span {
+                &.tag {}
+            }
         }
 
         .line {
@@ -290,6 +356,7 @@ const handleBlurEvent = (e, uuid) => {
             height: 24px;
             line-height: 24px;
             border: 1px solid #ABACAE;
+            box-sizing: border-box;
             border-radius: 15px;
             display: inline-flex;
             width: fit-content;
