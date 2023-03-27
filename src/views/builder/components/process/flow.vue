@@ -5,7 +5,11 @@
 -->
 
 <template>
-    <div class="not-model" v-if="false"></div>
+    <div class="not-model" v-if="true">
+        <p @click="addModel">
+            <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
+        </p>
+    </div>
     <div class="has-model" v-else>
         <div class="flow">
             <p><span>输入提示词</span>
@@ -41,11 +45,41 @@
             </div>
         </div>
     </div>
+    <n-modal v-model:show="showModal" preset="dialog" title="Dialog" class="model-box" :trap-focus="false"
+        :show-icon="false">
+        <template #header>
+            <div>选择AI模型</div>
+        </template>
+        <div class="body">
+            <template v-for="item in state.aiList" :key="item.id">
+                <div class="label">语言类模型</div>
+                <div class="items">
+                    <div class="item" @click="model.available && choose(model)" v-for="model in item" :key="model.id"
+                        :class="{ available: model.available }">
+                        <img :src="model.icon" alt="">
+                        <span>{{ model.name }}</span>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </n-modal>
 </template>
 <script setup>
 import { v4 as uuid } from 'uuid';
+import { getAIList } from '@/api/application'
 // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 const props = defineProps(['appData'])
+const showModal = ref(false)
+const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
+const addModel = () => {
+    showModal.value = true;
+}
+const choose = (model) => {
+    if (model.available) {
+        props.appData.flow.type = model.name
+        showModal.value = false;
+    }
+}
 const state = reactive({
     currentItem: {
         "id": "123",
@@ -55,6 +89,7 @@ const state = reactive({
         }
     }, //prompt
     currentIndex: 0,
+    aiList: [],
 })
 const onCreate = () => {
     return {
@@ -66,6 +101,13 @@ const onCreate = () => {
         }
     }
 }
+
+onMounted(async () => {
+    const aiList = await getAIList()
+    state.aiList = category.map(m => {
+        return aiList.data.list.filter(f => f.category == m.type)
+    })
+})
 
 const getNewPrompt = (str = "") => {
     const newItem = {
@@ -161,6 +203,27 @@ const handleBlurEvent = (e, uuid) => {
 
 </script>
 <style lang="scss" scoped>
+.not-model {
+    p {
+        color: #D9D9D9;
+        border-top: 2px dashed rgba(0, 0, 0, 0.2);
+        position: relative;
+        cursor: pointer;
+
+        svg {
+            position: absolute;
+            left: 0;
+            top: -12px;
+            width: 24px;
+            height: 24px;
+            margin-left: 13px;
+        }
+    }
+
+
+}
+
+
 .has-model {
     .flow {
         display: flex;
@@ -366,5 +429,69 @@ const handleBlurEvent = (e, uuid) => {
     /*滚动条里面轨道*/
     border-radius: 4px;
     background: transparent;
+}
+</style>
+
+<style lang="scss">
+.model-box.n-dialog.n-modal {
+    background: #fff !important;
+    padding: 32px !important;
+    width: 624px;
+
+    .n-dialog__title {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 20px;
+        color: #181D24;
+    }
+
+    .n-dialog__content {
+        margin-top: 0 !important;
+
+        .label {
+            margin-top: 32px;
+            margin-bottom: 16px;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 16px;
+            color: #5B5D62;
+        }
+
+        .items {
+            .item {
+                width: 124px;
+                height: 112px;
+                border: 1px solid #5B5D62;
+                border-radius: 8px;
+                display: inline-flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: .5;
+
+                &+.item {
+                    margin-left: 16px;
+                }
+
+                &.available {
+                    opacity: 1;
+                    cursor: pointer;
+                }
+
+                img {
+                    margin-bottom: 6px;
+                    width: 40px;
+                    height: 40px;
+                }
+
+                span {
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 24px;
+                    color: #5B5D62;
+                }
+            }
+        }
+    }
 }
 </style>
