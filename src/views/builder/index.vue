@@ -33,7 +33,7 @@ const state = reactive({
     "uuid": "uuid",
     "name": "未命名模板",
     "category": 1,
-    "description": "模板模板描述模板描述模板描述模板描述模板描述模板描述模板描述asdjlsjoiejljrlekjlkej模板描述模板描述模板描述模板描述模板描述模板描述模板描述描述",
+    "description": "",
     "form": [
         {
             "id": "321",

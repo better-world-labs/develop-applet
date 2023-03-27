@@ -5,64 +5,66 @@
 -->
 
 <template>
-    <div class="not-model" v-if="true">
-        <p @click="addModel">
-            <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
-        </p>
-    </div>
-    <div class="has-model" v-else>
-        <div class="flow">
-            <p><span>输入提示词</span>
-                <IconFont :size="18" name="icon-icon-jiantou" />
-                <span>
-                    <IconFont name="icon-icon-ChatGPT" style="color:#5652FF" />
-                    ChatGPT
-                </span>
-                <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
+    <div>
+        <div class="not-model" v-if="!props.appData.flow[0].type">
+            <p @click="addModel">
+                <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
             </p>
-            <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
         </div>
-        <div class="description">
-            <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
-            <p class="expression">
-                <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
-                    <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }" class="tags-input"
-                        :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal"
-                        @click="changeVal" placeholder="输入提示词">{{
-                            item.properties.value }}</span>
-                    <span v-else class="tag">{{ getTag(item.properties.character) }}
-                        <IconFont @click="removeTag(i)" class="tag-close" name="icon-icon-shanchubiaoqian" />
+        <div class="has-model" v-else>
+            <div class="flow">
+                <p><span>输入提示词</span>
+                    <IconFont :size="18" name="icon-icon-jiantou" />
+                    <span>
+                        <IconFont name="icon-icon-ChatGPT" style="color:#5652FF" />
+                        ChatGPT
                     </span>
-                </template>
-                <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
-            </p>
-            <div class="line"></div>
-            <div class="tags">
-                <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
-                    <IconFont @click="addTag(item)" class="tag-close" name="icon-icon-tianjiabiaoqian" />
+                    <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
+                </p>
+                <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
+            </div>
+            <div class="description">
+                <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
+                <p class="expression">
+                    <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
+                        <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }"
+                            class="tags-input" :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)"
+                            @input="changeVal" @click="changeVal" placeholder="输入提示词">{{
+                                item.properties.value }}</span>
+                        <span v-else class="tag">{{ getTag(item.properties.character) }}
+                            <IconFont @click="removeTag(i)" class="tag-close" name="icon-icon-shanchubiaoqian" />
+                        </span>
+                    </template>
+                    <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
+                </p>
+                <div class="line"></div>
+                <div class="tags">
+                    <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
+                        <IconFont @click="addTag(item)" class="tag-close" name="icon-icon-tianjiabiaoqian" />
+                    </div>
+                    <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
                 </div>
-                <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
             </div>
         </div>
-    </div>
-    <n-modal v-model:show="showModal" preset="dialog" title="Dialog" class="model-box" :trap-focus="false"
-        :show-icon="false">
-        <template #header>
-            <div>选择AI模型</div>
-        </template>
-        <div class="body">
-            <template v-for="item in state.aiList" :key="item.id">
-                <div class="label">语言类模型</div>
-                <div class="items">
-                    <div class="item" @click="model.available && choose(model)" v-for="model in item" :key="model.id"
-                        :class="{ available: model.available }">
-                        <img :src="model.icon" alt="">
-                        <span>{{ model.name }}</span>
-                    </div>
-                </div>
+        <n-modal v-model:show="showModal" preset="dialog" title="Dialog" class="model-box" :trap-focus="false"
+            :show-icon="false">
+            <template #header>
+                <div>选择AI模型</div>
             </template>
-        </div>
-    </n-modal>
+            <div class="body">
+                <template v-for="item in state.aiList" :key="item.id">
+                    <div class="label">{{ item["category"] }}</div>
+                    <div class="items">
+                        <div class="item" @click="model.available && choose(model)" v-for="model in item.models"
+                            :key="model.id" :class="{ available: model.available }">
+                            <img :src="model.icon" alt="">
+                            <span>{{ model.name }}</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </n-modal>
+    </div>
 </template>
 <script setup>
 import { v4 as uuid } from 'uuid';
@@ -70,7 +72,7 @@ import { getAIList } from '@/api/application'
 // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 const props = defineProps(['appData'])
 const showModal = ref(false)
-const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
+// const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
 const addModel = () => {
     showModal.value = true;
 }
@@ -104,9 +106,7 @@ const onCreate = () => {
 
 onMounted(async () => {
     const aiList = await getAIList()
-    state.aiList = category.map(m => {
-        return aiList.data.list.filter(f => f.category == m.type)
-    })
+    state.aiList = aiList.data.list
 })
 
 const getNewPrompt = (str = "") => {
@@ -136,6 +136,7 @@ const removeTag = (index, item = {}) => {
     list.splice(index, 1)
 }
 const clear = () => {
+    props.appData.flow[0].type = ''
     props.appData.flow[0].prompt = [getNewPrompt()]
 }
 

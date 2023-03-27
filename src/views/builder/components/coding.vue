@@ -57,7 +57,7 @@ const cardList = reactive([
         key: ''
     }
 ])
-const current = ref(2)
+const current = ref(1)
 const rules = {
     name: {
         required: true,
@@ -70,6 +70,12 @@ const rules = {
         message: '最短长度为 2'
     }
 }
+watchEffect(() => {
+    cardList[0].status = props.appData.name && props.appData.description
+    cardList[1].status = props.appData.form && props.appData.form.length > 0
+    cardList[2].status = props.appData.flow && props.appData.flow[0] && props.appData.flow[0].type && props.appData.flow[0].prompt.length > 0
+    cardList[3].status = props.appData.category
+})
 const handleItem = ({ name }) => {
     console.log(name);
     current.value = name
