@@ -129,7 +129,6 @@
     </div>
 </template>
 <script setup>
-import UserIntegral from "./components/user-integral.vue"
 import { useApplicationStore } from "@/store/modules/application"
 import { storeToRefs } from 'pinia';
 import $router from '@/router/index';
@@ -350,10 +349,16 @@ onMounted(() => {
                     float: left;
                     display: flex;
                     flex-direction: row;
+                    cursor: pointer;
 
                     .iconfont {
                         padding-right: 8px;
                         font-size: 24px;
+                        color: #5B5D62;
+                    }
+
+                    &:hover {
+                        color: #202226;
                     }
 
                 }

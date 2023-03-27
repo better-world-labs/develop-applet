@@ -38,3 +38,11 @@ export function getAppResultList(uuid: string) {
     url: `/api/apps/${uuid}/outputs`,
   });
 }
+
+// 读取我的小程序
+export function getMineApp() {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/mine`,
+  });
+}

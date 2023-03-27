@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     IconFontSymbol: typeof import('./../src/components/icon-font/icon-font-symbol.vue')['default']
     MessageContent: typeof import('./../src/components/message-content/index.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
+    NCard: typeof import('naive-ui')['NCard']
     NCarousel: typeof import('naive-ui')['NCarousel']
     NCarouselItem: typeof import('naive-ui')['NCarouselItem']
     NCheckbox: typeof import('naive-ui')['NCheckbox']
@@ -47,5 +48,6 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     ShowAnimation: typeof import('./../src/components/show-animation/index.vue')['default']
     UploadImage: typeof import('./../src/bizComponents/dialogs/upload-image.vue')['default']
+    UserIntegral: typeof import('./../src/components/user-integral/user-integral.vue')['default']
   }
 }

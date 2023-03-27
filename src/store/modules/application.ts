@@ -4,7 +4,7 @@
  * @Description:
  */
 import { defineStore } from 'pinia';
-import { getTabs, getAppList, getAppResultList, getAppInfo } from '@/api/application';
+import { getTabs, getAppList, getAppResultList, getAppInfo, getMineApp } from '@/api/application';
 
 interface ApplicationState {
   tabs: Application.tabInfoItf[];
@@ -12,6 +12,7 @@ interface ApplicationState {
   appList: Application.appInfoItf[];
   resultList: Application.appResultItf[];
   appInfo: Application.appDetailItf;
+  mineAppList: Application.appInfoItf[];
 }
 
 export const useApplicationStore = defineStore('application', {
@@ -21,6 +22,7 @@ export const useApplicationStore = defineStore('application', {
     appList: [],
     resultList: [],
     appInfo: {},
+    mineAppList: [],
   }),
   getters: {},
   actions: {
@@ -49,6 +51,11 @@ export const useApplicationStore = defineStore('application', {
     async getAppResult(uuid: string) {
       const { data } = await getAppResultList(uuid as string);
       this.resultList = data.list;
+    },
+    // 请求应用结果列表
+    async getMineAppList() {
+      const { data } = await getMineApp();
+      this.mineAppList = data.list;
     },
   },
 });
