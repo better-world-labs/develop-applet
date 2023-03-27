@@ -190,13 +190,13 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
 .scroll-y::-webkit-scrollbar-thumb {
     /*滚动条里面小方块*/
     border-radius: 4px;
-    background: var(--bg-color-scrollbar-thumb);
+    background: #D2D1DC;
     border-radius: 4px;
 }
 
 .scroll-y::-webkit-scrollbar-track {
     /*滚动条里面轨道*/
     border-radius: 4px;
-    background: var(--bg-color-scrollbar-track);
+    background: transparent;
 }
 </style>
