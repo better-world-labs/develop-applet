@@ -66,17 +66,19 @@ const menuOptions: MenuOption[] = [
         icon: renderIcon('icon-icon-wocanyude-moren')
     },
     {
-        label: () =>
-            h(
-                RouterLink,
-                {
-                    to: {
-                        name: 'my-integral',
-                    }
-                },
-                { default: () => '我的积分' }
-            ),
+         label: '我的积分',
+        // label: () =>
+        //     h(
+        //         RouterLink,
+        //         {
+        //             to: {
+        //                 name: 'my-integral',
+        //             }
+        //         },
+        //         { default: () => '我的积分' }
+        //     ),
         key: 'my-integral',
+        disabled: true,
         icon: renderIcon('icon-icon-wodejifen-moren')
     }
 ]
