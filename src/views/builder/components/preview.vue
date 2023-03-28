@@ -9,7 +9,7 @@
     <div class="preview-box scroll-y">
         <div class="app-title">{{ props.appData.name }}</div>
         <div class="user">
-            <img :src="props.appData.avatar" />{{ props.appData.createdBy.name }}
+            <img :src="props.appData.createdBy.avatar" />{{ props.appData.createdBy.name }}
         </div>
         <div class="des">
             {{ props.appData.description }}
@@ -78,6 +78,7 @@ const handlePasswordInput = () => {
             width: 40px;
             height: 40px;
             margin-right: 8px;
+            border-radius: 50%;
         }
     }
 

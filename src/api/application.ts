@@ -52,6 +52,13 @@ export function getTabs(key: string) {
     url: `/api/app-tabs?key=${key}`,
   });
 }
+// 分类
+export function getCategories() {
+  return http.request({
+    method: 'get',
+    url: `/api/app-categories`,
+  });
+}
 
 // 读取某个应用
 export function getAppInfo(uuid: string) {
@@ -75,4 +82,4 @@ export function getMineApp() {
     method: 'get',
     url: `/api/apps/mine`,
   });
-} 
+}  
