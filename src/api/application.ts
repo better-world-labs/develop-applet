@@ -82,12 +82,4 @@ export function getMineApp() {
     method: 'get',
     url: `/api/apps/mine`,
   });
-}
-// 运行应用
-export function runApp(uuid: string, data: { values: string[], open: boolean }) {
-  return http.request({
-    method: 'post',
-    url: `/api/apps/${uuid}/run`,
-    data,
-  });
-}
+}  

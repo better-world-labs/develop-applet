@@ -48,10 +48,10 @@
                     <div class="footer">
                         <n-grid x-gap="12" :cols="2">
                             <n-gi>
-                                <div class="icon">
+                                <div class="icon" @click="shareTemplate">
                                     <div>
                                         <IconFont name="icon-icon-fenxiang" />
-                                    </div>
+                                    </div> 
                                     <div>分享</div>
                                 </div>
                                 <div class="icon">
@@ -89,8 +89,8 @@
                             <n-progress type="line" :percentage="60" color="#5652FF" rail-color="#DCDBFF"
                                 :show-indicator="false" processing />
                         </div>
-                        <div v-else>
-                            <p class='typewriter'>{{ typewriter }}</p>
+                        <div v-else> 
+                            <p>{{ printContent }} <span v-if="cacheContent.length != printContent.length"></span></p>
                             <div class="option">
                                 <IconFont name="icon-icon-dianzan" />
                                 <IconFont name="icon-icon-cai" />
@@ -129,34 +129,39 @@ import { useUserStore } from "@/store/modules/user";
 import $router from '@/router/index';
 import { useRouter } from 'vue-router';
 import { getAppInfo } from "@/api/application";
-import { ref } from "vue";
-import { EventSourcePolyfill } from 'event-source-polyfill';
+import { ref } from "vue";  
+import { fetchEventSource } from '@microsoft/fetch-event-source';  
+import useClipboard from 'vue-clipboard3'; 
+import { useMessage } from 'naive-ui'
+
+const { toClipboard } = useClipboard();
+const message = useMessage()
+
 const userStore = useUserStore();
 const applicationStore = useApplicationStore();
 const uuid = ref();
 const appInfo = ref({});
 const openData = ref(true);
 
-const showResult = ref(false);
-const showLoading = ref(false);
-const typewriter = ref(""); // 打印结果
-
 const formRef = ref(null);
 const model = ref({});
 const rules = {};
 
+const showResult = ref(false);
+const showLoading = ref(false);
+const printContent = ref("");// 结果内容 
+const cacheContent = ref("");  
+ 
 // 打印内容
-function typeing(str) {
-    const i = ref(0);
+function printout() {
     const timer = ref(0);
-    if (i.value <= str.length) {
-        typewriter.value = str.slice(0, i.value++) + '_'
-        timer.value = setTimeout(() => {
-            typeing();
-        }, 100)
-    } else {
-        clearTimeout(timer.value)
-    }
+    timer.value = setInterval(() => {
+        if (cacheContent.value.length > printContent.value.length) {
+            printContent.value = cacheContent.value.slice(0, printContent.value.length + 1); 
+        } else {
+            clearInterval(timer.value);
+        }
+    }, 80)
 }
 
 function init() {
@@ -186,7 +191,8 @@ function requestSave() {
         values.push(model.value[item.label]);
     });
 
-    typewriter.value = "";
+    cacheContent.value = "";
+    printContent.value = "";
     showResult.value = true;
     showLoading.value = true;
     const data = {
@@ -194,57 +200,53 @@ function requestSave() {
         "open": openData.value
     };
 
-    receiveMessage(data)
-    // 运行应用
-    // runApp(uuid.value, {
-    //     "values": values,
-    //     "open": openData.value
-    // }).then((res) => {
-    // console.log(111111, res);
-
-    // showLoading.value = false;
-    // const str = "年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格";
-    // typeing(str);
-    // });
-
-
+    receiveMessage(data)  
 }
 
+// 生成结果 
 function receiveMessage(data) {
-    var eventSourceUrl = `/api/apps/mine`;
-    // var eventSourceUrl = `/api/apps/${uuid.value}/run`;
-    var eventSource = new EventSourcePolyfill(eventSourceUrl, {
+    if (!('EventSource' in window)) return;  
+
+    const eventSourceUrl = `/api/apps/${uuid.value}/run`;
+    new fetchEventSource(eventSourceUrl, {  
         method: "POST",
         headers: {
             "Accept": "text/event-stream",
             "Content-type": "application/json; charset=utf-8",
             "X-CSRF-TOKEN": `${userStore.token}`
         },
-        body: JSON.stringify(data)
-    });
-    eventSource.onopen = function () {
-        console.log('EventSource连接成功', eventSourceUrl);
-    };
-    eventSource.onmessage = function (event) {
-        try {
-            if (event.data && typeof event.data === 'string') {
-                let data = JSON.parse(JSON.parse(event.data));
-                /*
-                *业务逻辑代码块
-                */
-            }
-        } catch (error) {
-            console.log('EventSource结束消息异常', error);
+        body: JSON.stringify(data),
+        async onopen(response) {
+            if (response.status == 200) {
+                console.log("连接成功!", response);
+                showLoading.value = false; 
+                printout();
+            } 
+        },
+        onmessage(msg) { 
+            // console.log("收到服务器发来的数据!", msg) 
+            cacheContent.value += JSON.parse(msg.data).content;
+        },
+        onclose() { 
+               console.log("连接关闭!")
+        },
+        onerror(err) {
+             console.log("连接失败!",err)
         }
-    };
-    eventSource.onclose = function () {
-        console.log('EventSource连接断开', eventSourceUrl);
-    };
 
-    eventSource.onerror = function (error) {
-        console.log('EventSource连接异常', error);
-    };
+    }); 
 }
+
+// 分享模版
+async function shareTemplate() {     
+    try {
+        await toClipboard(window.location.href);
+        message.success('已复制，快去分享给朋友吧~');
+    } catch (e) {
+        console.error(e);
+    } 
+} 
+
 
 // 返回上一页
 function backPrePage() {
@@ -253,7 +255,7 @@ function backPrePage() {
 
 // 创建同款app 
 function createApp() {
-    $router.push({ name: 'builder', query: { uuid: item.uuid, type: "text" } });
+    $router.push({ name: 'builder', query: { id: uuid.value, type: "new" } });
 }
 
 onMounted(() => {
@@ -533,6 +535,15 @@ onMounted(() => {
                         margin-top: 8px;
                     }
                 }
+                p{
+                    min-height: 80px;
+                    span{
+                        display: inline-block;
+                        width: 16px;
+                        height: 4px;
+                        background: #5F58FF;
+                    } 
+                }
 
             }
 
@@ -544,6 +555,7 @@ onMounted(() => {
                 .iconfont {
                     font-size: 24px;
                     margin-right: 8px;
+                    cursor: pointer;
                 }
 
             }
