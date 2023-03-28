@@ -255,7 +255,7 @@ function backPrePage() {
 
 // 创建同款app 
 function createApp() {
-    $router.push({ name: 'builder', query: { uuid: item.uuid, type: "text" } });
+    $router.push({ name: 'builder', query: { id: uuid.value, type: "new" } });
 }
 
 onMounted(() => {
