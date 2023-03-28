@@ -7,18 +7,18 @@
 <template>
     <div class="builder">
         <header>
-            <div class="back">
+            <div class="back" @click="back">
                 <IconFont name="icon-icon-fanhui" />返回
             </div>
 
-            <n-button>
+            <n-button @click="submit">
                 <IconFont name="icon-icon-fabu"></IconFont>
                 发布
             </n-button>
         </header>
         <div class="body">
             <div class="coding scroll-y">
-                <coding :app-data="state"></coding>
+                <coding ref="refCoding" @back="back" :app-data="state"></coding>
             </div>
             <div>
                 <preview :app-data="state"></preview>
@@ -27,84 +27,91 @@
     </div>
 </template>
 <script setup>
+import { v4 as uuid } from 'uuid';
 import preview from './components/preview.vue'
 import coding from './components/coding.vue'
+import { getApp } from '@/api/application'
+import { useRouter, useRoute } from 'vue-router';
+import { useUserStore } from "@/store/modules/user"
+const userStore = useUserStore();
+const route = useRoute();
+const router = useRouter();
+const isEditId = route.query.id
+const refCoding = ref('')
 const state = reactive({
-    "uuid": "uuid",
+    "uuid": uuid(),
     "name": "未命名模板",
-    "category": 1,
+    "category": undefined,
     "description": "",
     "form": [
         {
             "id": "321",
-            "label": "姓名",
+            "label": "选项名1",
             "type": "text",
             "properties": {
-                "placeholder": "xxx"
-            }
-        },
-        {
-            "id": "uuid",
-            "label": "性别",
-            "type": "text",
-            "properties": {
-                "placeholder": "xxx",
-                "values": "男\n女"
+                "placeholder": ""
             }
         }
     ],
     "flow": [
         {
-            "id": 'uuid122',
-            "type": "chatgpt",
+            "id": uuid(),
+            "type": "",
             "outputVisible": true,
             "prompt": [
                 {
-                    "id": "12",
+                    "id": uuid(),
                     "type": "text",
                     "properties": {
-                        "value": "从"
+                        "value": ""
                     }
                 },
-                {
-                    "id": "11",
-                    "type": "tag",
-                    "properties": {
-                        "from": "result", //form 或者 result
-                        "character": '321'
-                    }
-                },
-                {
-                    "id": "13",
-                    "type": "text",
-                    "properties": {
-                        "value": "选出最好的结果"
-                    }
-                },
+                // {
+                //     "id": "11",
+                //     "type": "tag",
+                //     "properties": {
+                //         "from": "result", //form 或者 result
+                //         "character": '321'
+                //     }
+                // },
+                // {
+                //     "id": "13",
+                //     "type": "text",
+                //     "properties": {
+                //         "value": "选出最好的结果"
+                //     }
+                // },
             ]
         }
     ],
     "createdBy": {
-        "id": 12,
-        "name": "不知道是谁",
-        "avatar": "http://xxx/xxx"
+        // "id": 12,
+        // "name": "不知道是谁",
+        // "avatar": "http://xxx/xxx"
     },
-    "createdAt": "2023-03-22T07:08:02.851Z",
-    "updatedAt": "2023-03-22T07:08:02.851Z",
+    // "createdAt": "2023-03-22T07:08:02.851Z",
+    // "updatedAt": "2023-03-22T07:08:02.851Z",
     "status": 1 // 状态 (0.未发布 1.已发布)
 })
-const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
-    (v) => ({
-        label: v,
-        value: v
-    })
-)
 
-onMounted(() => {
+onMounted(async () => {
     // setInterval(() => {
     //     console.log(state);
     // }, 3000)
+    if (isEditId) {
+        const appData = await getApp(isEditId);
+        state.value = appData.data;
+    } else {
+        state.createdBy = { ...userStore.info, name: userStore.info.nickname }
+    }
 })
+
+const submit = () => {
+    refCoding.value.publishApp()
+}
+const back = () => {
+    router.push({ name: 'home' });
+}
 </script>
 <style lang="scss" scoped>
 .scroll-y::-webkit-scrollbar {
@@ -152,6 +159,7 @@ onMounted(() => {
             margin-left: 24px;
             display: flex;
             align-items: center;
+            cursor: pointer;
 
             i {
                 font-size: 20px;

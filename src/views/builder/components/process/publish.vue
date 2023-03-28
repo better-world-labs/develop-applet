@@ -26,25 +26,19 @@
             </n-radio-group>
         </div>
         <n-button type="primary">
-            <IconFont name="icon-icon-fabu"></IconFont>
+            <IconFont name="icon-icon-fabu" @click="$emit('submit')"></IconFont>
             发布
         </n-button>
     </div>
 </template>
 <script setup>
 const props = defineProps(['appData']);
-const categoryList = reactive([{
-    "id": 1,
-    "text": "文学"
-},
-{
-    "id": 2,
-    "text": "生活"
-},
-{
-    "id": 3,
-    "text": "办公神器"
-}])
+import { getCategories } from '@/api/application'
+const categoryList = ref([])
+onMounted(async () => {
+    const tabsData = await getCategories()
+    categoryList.value = tabsData.data.list
+})
 const desList = [{
     "label": '积分定价',
     "value": "5积分"

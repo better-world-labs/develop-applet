@@ -87,7 +87,7 @@ const choose = (model) => {
 }
 const state = reactive({
     currentItem: {
-        "id": "123",
+        "id": uuid(),
         "type": "text",
         "properties": {
             "value": "从"
@@ -225,6 +225,7 @@ const addTag = (item) => {
         insertPrompt(findIndex, newTag)
     } else if (currentIndex == currentItem.properties.value.length) {
         insertPrompt(findIndex + 1, newTag)
+        if (findIndex + 2 == list.length) insertPrompt(list.length, getNewPrompt())
     } else {
         const str = currentItem.properties.value;
         const textL = getNewPrompt(str.slice(0, currentIndex))

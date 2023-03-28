@@ -21,7 +21,7 @@
             </n-form>
             <diy-form v-show="i == 1" :app-data="props.appData"></diy-form>
             <flow v-show="i == 2" :app-data="props.appData"></flow>
-            <publish v-show="i == 3" :app-data="props.appData">
+            <publish v-show="i == 3" :app-data="props.appData" @submit="publishApp">
             </publish>
             <template #header-extra>
                 <IconFont :style="{ color: item.status ? '#5652FF' : '#E3E4E5', fontSize: '24px' }"
@@ -31,10 +31,14 @@
     </n-collapse>
 </template>
 <script setup>
+import { useMessage } from 'naive-ui'
 import Publish from "./process/publish.vue"
 import DiyForm from "./process/diy-form.vue"
 import Flow from "./process/flow.vue"
+import { putApp } from '@/api/application'
 const props = defineProps(['appData'])
+const emit = defineEmits(['back'])
+const message = useMessage()
 const cardList = reactive([
     {
         label: '小程序详情',
@@ -71,7 +75,7 @@ const rules = {
     }
 }
 watchEffect(() => {
-    cardList[0].status = props.appData.name && props.appData.description
+    cardList[0].status = props.appData.name && props.appData.description && true
     cardList[1].status = props.appData.form && props.appData.form.length > 0
     cardList[2].status = props.appData.flow && props.appData.flow[0] && props.appData.flow[0].type && props.appData.flow[0].prompt.length > 0
     cardList[3].status = props.appData.category
@@ -80,12 +84,15 @@ const handleItem = ({ name }) => {
     console.log(name);
     current.value = name
 }
-const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
-    (v) => ({
-        label: v,
-        value: v
-    })
-)
+const publishApp = async () => {
+    if (cardList.some(a => a.status != true)) {
+        return message.warning("信息未补充完整")
+    }
+    await putApp(props.appData.uuid, props.appData)
+    message.success("发布成功")
+    emit('back')
+}
+defineExpose({ publishApp })
 </script>
 <style lang="scss" scoped>
 .item-box {
