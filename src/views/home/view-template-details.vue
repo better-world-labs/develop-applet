@@ -7,10 +7,10 @@
     <div>
         <div class="home-header">
             <div class="back-btn" @click="backPrePage">
-                <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
+                <IconFont name="icon-icon-fanhui" />
                 返回
             </div>
-            <n-button type="info">
+            <n-button type="info" @click="createApp">
                 <IconFont name="icon-icon-yijiantongkuan" />
                 一键同款小程序
             </n-button>
@@ -35,18 +35,13 @@
                         </n-gi>
                         <n-gi>
                             <div class="form-box">
-                                <div>
-                                    <div class="form-item" v-for="form in appInfo.form" :key="form.id">
-                                        <div class="label">
-                                            {{ form.label }}
-                                        </div>
-                                        <div>
-                                            <n-input size="large" round autosize
-                                                :placeholder="form?.properties?.placeholder"
-                                                style="height:56px;width:100%;" />
-                                        </div>
-                                    </div>
-                                </div>
+                                <n-form ref="formRef" :model="model" :rules="rules">
+                                    <n-form-item class="form-item" :path="form.label" :label="form.label"
+                                        v-for="(form, index) in appInfo.form" :key="index">
+                                        <n-input v-model:value="model[form.label]" @keydown.enter.prevent
+                                            :placeholder="form?.properties?.placeholder" />
+                                    </n-form-item>
+                                </n-form>
                             </div>
                         </n-gi>
                     </n-grid>
@@ -73,33 +68,33 @@
                                 </div>
                             </n-gi>
                             <n-gi>
-                                <n-checkbox v-model:checked="value">
+                                <n-checkbox v-model:checked="openData">
                                     公开我的模板结果（用于社区构建）
                                 </n-checkbox>
-                                <n-button type="info">
+                                <n-button type="info" @click="handleValidateButtonClick" :disabled="showLoading">
                                     立即生成 <br />5积分
                                 </n-button>
                             </n-gi>
                         </n-grid>
                     </div>
                 </div>
-                <div class="result-box">
+                <div class="result-box" v-show="showResult">
 
                     <div class="title">
                         结果：
                     </div>
                     <div class="result-content">
-                        <div class="loading">
+                        <div class="loading" v-if="showLoading">
                             结果生成中，AI正在奋笔疾书中.......
                             <n-progress type="line" :percentage="60" color="#5652FF" rail-color="#DCDBFF"
                                 :show-indicator="false" processing />
                         </div>
-                        年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格
-                        总体来看，您的八字五行比较均衡，命格偏向偏印生财的类型，事业上可能会有一定的成就，但必须加强自我修养和意志力，才能更好的发挥自己的长处。
-                        <p class='typewriter'>{{ typewriter }}</p>
-                        <div class="option">
-                            <IconFont name="icon-icon-dianzan" />
-                            <IconFont name="icon-icon-cai" />
+                        <div v-else>
+                            <p class='typewriter'>{{ typewriter }}</p>
+                            <div class="option">
+                                <IconFont name="icon-icon-dianzan" />
+                                <IconFont name="icon-icon-cai" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -127,48 +122,151 @@
             </div>
         </div>
     </div>
-</template>
+</template> 
 <script setup>
-import { useApplicationStore } from "@/store/modules/application"
-import { storeToRefs } from 'pinia';
+import { useApplicationStore } from "@/store/modules/application";
+import { useUserStore } from "@/store/modules/user";
 import $router from '@/router/index';
 import { useRouter } from 'vue-router';
-
-const value = ref(true);
+import { getAppInfo } from "@/api/application";
+import { ref } from "vue";
+import { EventSourcePolyfill } from 'event-source-polyfill';
+const userStore = useUserStore();
 const applicationStore = useApplicationStore();
-const { appInfo } = storeToRefs(applicationStore);
+const uuid = ref();
+const appInfo = ref({});
+const openData = ref(true);
 
-const typewriter = ref("");
+const showResult = ref(false);
+const showLoading = ref(false);
+const typewriter = ref(""); // 打印结果
 
-// const i = ref(0);
-// const timer = ref(0);
-// const str = "年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格"
-// function typeing() {
-//     if (i.value <= str.length) {
-//         typewriter.value = str.slice(0, i.value++) + '_'
-//         timer.value = setTimeout(() => {
-//             typeing()
-//         }, 100)
-//     } else {
-//         clearTimeout(timer.value)
-//     }
-// }
-// onMounted(() => {
-//     // typeing();
-// }), 
+const formRef = ref(null);
+const model = ref({});
+const rules = {};
 
+// 打印内容
+function typeing(str) {
+    const i = ref(0);
+    const timer = ref(0);
+    if (i.value <= str.length) {
+        typewriter.value = str.slice(0, i.value++) + '_'
+        timer.value = setTimeout(() => {
+            typeing();
+        }, 100)
+    } else {
+        clearTimeout(timer.value)
+    }
+}
+
+function init() {
+    appInfo.value.form.map((item) => {
+        model[item.label] = null;
+        rules[item.label] = [{
+            required: true,
+            message: item.properties?.placeholder
+        }]
+    });
+}
+
+function handleValidateButtonClick(e) {
+    e.preventDefault();
+    formRef.value?.validate((errors) => {
+        if (!errors) {
+            requestSave();
+        } else {
+            console.log(errors);
+        }
+    });
+}
+
+function requestSave() {
+    let values = [];
+    appInfo.value.form.map((item) => {
+        values.push(model.value[item.label]);
+    });
+
+    typewriter.value = "";
+    showResult.value = true;
+    showLoading.value = true;
+    const data = {
+        "values": values,
+        "open": openData.value
+    };
+
+    receiveMessage(data)
+    // 运行应用
+    // runApp(uuid.value, {
+    //     "values": values,
+    //     "open": openData.value
+    // }).then((res) => {
+    // console.log(111111, res);
+
+    // showLoading.value = false;
+    // const str = "年柱：丙戌，丙火戌土，火土之年，丙火得地而旺，与戌土相合，为偏印生财之命。月柱：甲辰，甲木辰土，木土之气，甲木嫩根有泄，但得相生，为食神生财之格";
+    // typeing(str);
+    // });
+
+
+}
+
+function receiveMessage(data) {
+    var eventSourceUrl = `/api/apps/mine`;
+    // var eventSourceUrl = `/api/apps/${uuid.value}/run`;
+    var eventSource = new EventSourcePolyfill(eventSourceUrl, {
+        method: "POST",
+        headers: {
+            "Accept": "text/event-stream",
+            "Content-type": "application/json; charset=utf-8",
+            "X-CSRF-TOKEN": `${userStore.token}`
+        },
+        body: JSON.stringify(data)
+    });
+    eventSource.onopen = function () {
+        console.log('EventSource连接成功', eventSourceUrl);
+    };
+    eventSource.onmessage = function (event) {
+        try {
+            if (event.data && typeof event.data === 'string') {
+                let data = JSON.parse(JSON.parse(event.data));
+                /*
+                *业务逻辑代码块
+                */
+            }
+        } catch (error) {
+            console.log('EventSource结束消息异常', error);
+        }
+    };
+    eventSource.onclose = function () {
+        console.log('EventSource连接断开', eventSourceUrl);
+    };
+
+    eventSource.onerror = function (error) {
+        console.log('EventSource连接异常', error);
+    };
+}
 
 // 返回上一页
 function backPrePage() {
     $router.go(-1);
 }
 
+// 创建同款app 
+function createApp() {
+    $router.push({ name: 'builder', query: { uuid: item.uuid, type: "text" } });
+}
 
 onMounted(() => {
     const router = useRouter();
-    const uuid = router.currentRoute.value.query.uuid;
-    applicationStore.getAppResult(uuid);
-    applicationStore.getApp(uuid);
+    uuid.value = router.currentRoute.value.query.uuid;
+
+    applicationStore.getAppResult(uuid.value);
+    // 获取应用信息
+    getAppInfo(uuid.value).then(({ data }) => {
+        appInfo.value = data;
+        init();
+    })
+
 })
 
 </script>
@@ -231,6 +329,39 @@ onMounted(() => {
              }
          }
      }
+
+     .n-form {
+         padding-top: 16px;
+         padding-right: 16px;
+         overflow-x: hidden;
+         height: 422px;
+         overflow-y: scroll;
+
+         .n-form-item {
+             margin-bottom: 12px;
+             padding-left: 2px;
+
+             .n-form-item-label__text {
+                 font-weight: 500;
+                 font-size: 20px;
+                 line-height: 20px;
+                 color: #181D24;
+                 margin-bottom: 16px;
+
+             }
+
+             .n-input {
+                 width: 100% !important;
+                 height: 56px !important;
+             }
+
+             .n-input__input .n-input__input-el {
+                 height: 56px !important;
+                 line-height: 56px !important;
+             }
+         }
+     }
+
 
  }
 </style>
@@ -312,28 +443,8 @@ onMounted(() => {
                     max-width: 456px;
                     height: 454px;
                     box-sizing: border-box;
-                    padding: 8px 8px 8px 32px;
+                    padding: 8px 8px 8px 30px;
 
-                    >div {
-                        padding-top: 16px;
-                        padding-right: 16px;
-                        overflow-x: hidden;
-                        height: 422px;
-                        overflow-y: scroll;
-                    }
-
-                    .form-item {
-                        margin-bottom: 32px;
-
-                        .label {
-                            font-weight: 500;
-                            font-size: 20px;
-                            line-height: 20px;
-                            color: #181D24;
-                            margin-bottom: 16px;
-
-                        }
-                    }
                 }
             }
 
