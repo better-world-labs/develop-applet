@@ -5,8 +5,9 @@
 -->
 <template>
     <div class="home-header">
-        <n-tabs animated :default-value="applicationStore.currentTab" @update:value="handleUpdateValue">
-            <n-tab-pane v-for="tab in applicationStore.tabs" :name="tab.category" :tab="tab.label">
+        <n-tabs animated v-if="applicationStore.tabs.length">
+            <n-tab-pane v-for="tab in applicationStore.tabs" :key="tab.category" :name="`${tab.category}`"
+                :tab="`${tab.label}`">
             </n-tab-pane>
         </n-tabs>
         <n-button type="info" @click="createTemplate">
@@ -18,7 +19,6 @@
 </template>
 <script setup>
 import $router from '@/router/index';
-import UserIntegral from "./user-integral.vue"
 import { useApplicationStore } from "@/store/modules/application"
 import { useInit } from '@/hooks/useInit';
 import { useUserStore } from "@/store/modules/user"
