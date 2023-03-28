@@ -1,7 +1,7 @@
 <!--
  * @Author: Sandy
- * @Date: 2023-03-24 14:10:20
- * @Description: 只能删除文本的版本
+ * @Date: 2023-03-28 14:14:29
+ * @Description: 备份
 -->
 
 <template>
@@ -24,17 +24,18 @@
                 <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
             </div>
             <div class="description">
+                <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
                 <p class="expression">
                     <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
-                        <span v-if="item.type == 'text'"
-                            :class="{ hasVal: item.properties.value?.length || i + 1 !== props.appData.flow[0].prompt.length }"
-                            class="tags-input" :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)"
-                            @input.stop="changeVal" @click.stop="changeVal" placeholder="输入提示词">{{
+                        <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }"
+                            :ref="$event => setItemRef($event, i)" @keyup.delete="backspace(i)" class="tags-input"
+                            :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal"
+                            @click="changeVal" placeholder="输入提示词">{{
                                 item.properties.value }}</span>
-                        <span v-else class="tag">{{
+                        <span v-else class="tag" :ref="$event => setItemRef($event, i)" :data-num="item.id">{{
                             getTag(item.properties.character)
                         }}
-                            <icon-font-symbol @click.stop="removeTag(i)" class="tag-close remove-icon"
+                            <icon-font-symbol @click="removeTag(i)" class="tag-close remove-icon"
                                 name="icon-icon-shanchubiaoqian" />
                         </span>
                     </template>
@@ -96,35 +97,12 @@ const state = reactive({
     currentIndex: 0,
     aiList: [],
 })
-const refreshPromptList = () => {
-    nextTick(() => {
-        const list = props.appData.flow[0].prompt
-        const arr = [];
-        list.reduce((p, c) => {
-            if (c.type && p.type !== c.type) {
-                arr.push(c)
-                return c
-            } else if (p.type === 'text' && p.type === c.type) {
-                p.properties.value += c.properties.value
-                // arr[arr.length - 1].properties.value += c.properties.value
-                return p
-                // 连续tag 之间不能添加内容
-                // } else if (p.type === 'tag' && p.type === c.type) {
-                //     // arr[arr.length - 1].properties.value += c.properties.value
-                //     p.value += c.properties.value
-                //     return p
-                // 连续tag 之间有空标签
-                // } else if (p.type === 'tag' && p.type === c.type) {
-                //     // arr[arr.length - 1].properties.value += c.properties.value
-                //     p.value += c.properties.value
-                //     return p
-            } else {
-                arr.push(c)
-                return c
-            }
-        }, {});
-        props.appData.flow[0].prompt = arr
-    })
+const itemRefs = new Array(100).fill('')
+const setItemRef = (el, i) => {
+    // && !itemRefs.some(s => s.dataset['num'] == el.dataset['num'])
+    if (el) {
+        itemRefs[i] = el
+    }
 }
 const onCreate = () => {
     return {
@@ -165,16 +143,62 @@ const delPrompt = (index, item = {}) => {
     list.splice(index, 1)
 }
 const removeTag = (index, item = {}) => {
-    console.log('removeTag');
     const list = props.appData.flow[0].prompt;
     list.splice(index, 1)
-    refreshPromptList()
 }
 const clear = () => {
     props.appData.flow[0].type = ''
     props.appData.flow[0].prompt = [getNewPrompt()]
 }
 let isFirstDel = true;
+// 设置光标 支持性有问题一
+const backspace = (i) => {
+    console.log('进来了', i, itemRefs, state.currentIndex);
+    const start = itemRefs[i].target?.selectionStart || getSelection().getRangeAt(0).startOffset
+    if (i > 0 && start == 0 && !isFirstDel) {
+        isFirstDel = true
+        const item = props.appData.flow[0].prompt[i - 1]
+        if (item.type == 'tag') {
+            delPrompt(i - 1)
+            nextTick(() => {
+                state.currentIndex = 0
+                itemRefs[i - 1].focus()
+            })
+        } else {
+            const list = props.appData.flow[0].prompt;
+            const text = list[i].properties.value
+            console.log(text.length, 'text.length');
+            if (text.length <= 1) {
+                delPrompt(i)
+                itemRefs[i - 1].focus()
+                nextTick(() => {
+                    const oldIndex = list[i - 1].properties.value.length - 1
+                    console.log(itemRefs[i - 1], 'itemRefs[i - 1]');
+                    itemRefs[i - 1].target.setSelectionRange(oldIndex, oldIndex)
+                })
+            } else {
+                delPrompt(i - 1)
+                // itemRefs[i - 1].focus()
+                // nextTick(() => {
+                //     console.log(itemRefs[i - 1], 'itemRefs[i - 1]');
+                //     const oldIndex = list[i - 1].properties.value.length - 1
+                //     itemRefs[i - 1].target.setSelectionRange(oldIndex, oldIndex)
+                // })
+            }
+            // nextTick(() => {
+            //     const list = props.appData.flow[0].prompt;
+            //     state.currentItem = list[i - 1]
+            //     state.currentItem.properties.value = state.currentItem.properties.value.slice(0, -1)
+            //     const oldIndex = state.currentItem.properties.value.length - 1
+            //     state.currentItem.properties.value += text;
+            //     state.currentIndex = oldIndex
+            //     itemRefs[i - 1].focus()
+            // })
+        }
+    } else {
+        isFirstDel = false
+    }
+}
 
 const getTag = (uuid) => {
     const list = props.appData.form;
@@ -197,14 +221,7 @@ const addTag = (item) => {
     const list = props.appData.flow[0].prompt;
     const findIndex = list.findIndex(f => f.id == currentItem.id);
     // list.splice(findIndex, 0, newTag)
-    console.log(currentIndex, findIndex, currentItem.properties.value, currentItem.properties.value.length - 1);
-    // 特殊处理 长度为1 最后一个text tag加载后面
-    if (findIndex + 1 == list.length && currentItem.properties.value.length === 1) {
-        insertPrompt(findIndex + 1, newTag)
-        if (findIndex + 2 == list.length) insertPrompt(list.length, getNewPrompt())
-        return
-    }
-    // 常规逻辑
+    console.log(currentIndex, currentItem.properties.value, currentItem.properties.value.length - 1);
     if (currentIndex == 0) {
         insertPrompt(findIndex, newTag)
     } else if (currentIndex == currentItem.properties.value.length) {
@@ -222,7 +239,8 @@ const addTag = (item) => {
 }
 // TODO 焦点有问题
 const changeVal = (e) => {
-    // state.currentIndex = getSelection().getRangeAt(0);
+    state.currentIndex = getSelection().getRangeAt(0);
+    console.log("change", getSelection().getRangeAt(0).startOffset, e.target.dataset['num'])
     var CaretPos = 0, ctrl = e.target;
     if (document.selection) {
         ctrl.focus()
@@ -234,22 +252,18 @@ const changeVal = (e) => {
     }
     console.log(CaretPos)
     state.currentIndex = getSelection().getRangeAt(0).startOffset
-    console.log("change", state.currentIndex, e.target.dataset['num'])
     const list = props.appData.flow[0].prompt;
     state.currentItem = list.find(f => f.id == e.target.dataset['num'])
 }
 
 const handleBlurEvent = (e, uuid) => {
     // this.data = e.target.innerHTML;
-    nextTick(() => {
-        console.log("handleBlurEvent", e, uuid)
-        const list = props.appData.flow[0].prompt;
-        const findTag = list.find(f => f.id == uuid);
-        if (findTag && findTag['type'] == 'text') {
-            findTag['properties']['value'] = e.target.innerHTML
-        }
-        refreshPromptList()
-    })
+    console.log("handleBlurEvent", e, uuid)
+    const list = props.appData.flow[0].prompt;
+    const findTag = list.find(f => f.id == uuid);
+    if (findTag) {
+        findTag['properties']['value'] = e.target.innerHTML
+    }
 }
 
 </script>
@@ -383,7 +397,7 @@ const handleBlurEvent = (e, uuid) => {
             flex: auto;
             border: 0;
             outline: 0;
-            padding: 0;
+            padding: 3px 0;
             font-size: 14px;
             line-height: 23px;
             display: inline-block;
