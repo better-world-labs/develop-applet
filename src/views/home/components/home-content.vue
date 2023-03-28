@@ -62,6 +62,7 @@ function useTemplate(item) {
      height: calc(100% - 124px);
      width: calc(100% - 312px);
      overflow-x: hidden;
+     box-sizing: border-box;
      overflow-y: scroll;
 
      .template-item {

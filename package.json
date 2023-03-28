@@ -12,11 +12,12 @@
   },
   "dependencies": {
     "@aliyun-sls/web-track-browser": "^0.0.3",
+    "@microsoft/fetch-event-source": "^2.0.1",
     "@vueuse/core": "^9.3.0",
     "axios": "^0.27.2",
     "core-js": "^3.6.5",
     "dayjs": "^1.11.5",
-    "event-source-polyfill": "^1.0.31", 
+    "event-source-polyfill": "^1.0.31",
     "lodash-es": "^4.17.21",
     "naive-ui": "^2.33.3",
     "pinia": "^2.0.22",
