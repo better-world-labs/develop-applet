@@ -7,11 +7,8 @@ COPY package.json package.json
 RUN npm install --registry=https://registry.npm.taobao.org
 
 COPY public public
-COPY mock mock
 COPY src src
 COPY build build
-COPY types types
-COPY .env .env
 ARG ENVIRONMENT
 COPY environments/.env.${ENVIRONMENT} .env.production 
 COPY tsconfig.json tsconfig.json
