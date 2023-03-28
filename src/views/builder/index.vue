@@ -7,17 +7,19 @@
 <template>
     <div class="builder">
         <header>
-            <div class="back">返回</div>
+            <div class="back">
+                <IconFont name="icon-icon-fanhui" />返回
+            </div>
 
             <n-button>
-            <IconFont name="icon-icon-fabu"></IconFont>
-            发布
+                <IconFont name="icon-icon-fabu"></IconFont>
+                发布
             </n-button>
         </header>
         <div class="body">
-            <!-- <div class="coding scroll-y">
-                                                <coding :app-data="state"></coding>
-                                            </div> -->
+            <div class="coding scroll-y">
+                <coding :app-data="state"></coding>
+            </div>
             <div>
                 <preview :app-data="state"></preview>
             </div>
@@ -31,7 +33,7 @@ const state = reactive({
     "uuid": "uuid",
     "name": "未命名模板",
     "category": 1,
-    "description": "模板模板描述模板描述模板描述模板描述模板描述模板描述模板描述asdjlsjoiejljrlekjlkej模板描述模板描述模板描述模板描述模板描述模板描述模板描述描述",
+    "description": "",
     "form": [
         {
             "id": "321",
@@ -53,6 +55,7 @@ const state = reactive({
     ],
     "flow": [
         {
+            "id": 'uuid122',
             "type": "chatgpt",
             "outputVisible": true,
             "prompt": [
@@ -98,9 +101,9 @@ const generalOptions = ['groode', 'veli good', 'emazing', 'lidiculous'].map(
 )
 
 onMounted(() => {
-    setInterval(() => {
-        console.log(state);
-    }, 3000)
+    // setInterval(() => {
+    //     console.log(state);
+    // }, 3000)
 })
 </script>
 <style lang="scss" scoped>
@@ -115,14 +118,14 @@ onMounted(() => {
 .scroll-y::-webkit-scrollbar-thumb {
     /*滚动条里面小方块*/
     border-radius: 4px;
-    background: var(--bg-color-scrollbar-thumb);
+    background: #D2D1DC;
     border-radius: 4px;
 }
 
 .scroll-y::-webkit-scrollbar-track {
     /*滚动条里面轨道*/
     border-radius: 4px;
-    background: var(--bg-color-scrollbar-track);
+    background: #E5E5EE;
 }
 
 .builder {
@@ -146,6 +149,14 @@ onMounted(() => {
             font-weight: 400;
             font-size: 16px;
             color: #5B5D62;
+            margin-left: 24px;
+            display: flex;
+            align-items: center;
+
+            i {
+                font-size: 20px;
+                margin-right: 4px;
+            }
         }
 
         :deep(.n-button) {
@@ -201,7 +212,8 @@ onMounted(() => {
 
         >div:last-child {
             flex: 1;
-
+            display: flex;
+            flex-direction: column;
         }
 
 

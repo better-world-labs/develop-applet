@@ -5,43 +5,86 @@
 -->
 
 <template>
-    <div class="not-model" v-if="false"></div>
-    <div class="has-model" v-else>
-        <div class="flow">
-            <p><span>输入提示词</span>-><span>
-                    <IconFont name="icon-icon-ChatGPT" style="color:#5652FF" />
-                    ChatGPT
-                </span>-><span>生成结果（ChatGPT）</span></p>
-            <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
-        </div>
-        <div class="description">
-            <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
-            <p class="expression">
-                <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
-                    <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }" class="tags-input"
-                        :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal"
-                        @click="changeVal" placeholder="输入提示词">{{
-                            item.properties.value }}</span>
-                    <span v-else class="tag">{{ getTag(item.properties.character) }}
-                        <IconFont @click="removeTag(i)" class="tag-close" name="icon-icon-shanchubiaoqian" />
-                    </span>
-                </template>
-                <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
+    <div>
+        <div class="not-model" v-if="!props.appData.flow[0].type">
+            <p @click="addModel">
+                <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
             </p>
-            <div class="line"></div>
-            <div class="tags">
-                <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
-                    <IconFont @click="addTag(item)" class="tag-close" name="icon-icon-tianjiabiaoqian" />
+        </div>
+        <div class="has-model" v-else>
+            <div class="flow">
+                <p><span>输入提示词</span>
+                    <IconFont :size="18" name="icon-icon-jiantou" />
+                    <span>
+                        <IconFont name="icon-icon-ChatGPT" style="color:#5652FF" />
+                        ChatGPT
+                    </span>
+                    <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
+                </p>
+                <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
+            </div>
+            <div class="description">
+                <!-- <div class="expression">                                                                                                                                                                                                                             </div> -->
+                <p class="expression">
+                    <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
+                        <span v-if="item.type == 'text'" :class="{ hasVal: item.properties.value?.length }"
+                            :ref="$event => setItemRef($event, i)" @keyup.delete="backspace(i)" class="tags-input"
+                            :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)" @input="changeVal"
+                            @click="changeVal" placeholder="输入提示词">{{
+                                item.properties.value }}</span>
+                        <span v-else class="tag" :ref="$event => setItemRef($event, i)" :data-num="item.id">{{
+                            getTag(item.properties.character)
+                        }}
+                            <IconFont @click="removeTag(i)" class="tag-close" name="icon-icon-shanchubiaoqian" />
+                        </span>
+                    </template>
+                    <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
+                </p>
+                <div class="line"></div>
+                <div class="tags">
+                    <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
+                        <IconFont @click="addTag(item)" class="tag-close" name="icon-icon-tianjiabiaoqian" />
+                    </div>
+                    <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
                 </div>
-                <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
             </div>
         </div>
+        <n-modal v-model:show="showModal" preset="dialog" title="Dialog" class="model-box" :trap-focus="false"
+            :show-icon="false">
+            <template #header>
+                <div>选择AI模型</div>
+            </template>
+            <div class="body">
+                <template v-for="item in state.aiList" :key="item.id">
+                    <div class="label">{{ item["category"] }}</div>
+                    <div class="items">
+                        <div class="item" @click="model.available && choose(model)" v-for="model in item.models"
+                            :key="model.id" :class="{ available: model.available }">
+                            <img :src="model.icon" alt="">
+                            <span>{{ model.name }}</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </n-modal>
     </div>
 </template>
 <script setup>
 import { v4 as uuid } from 'uuid';
+import { getAIList } from '@/api/application'
 // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 const props = defineProps(['appData'])
+const showModal = ref(false)
+// const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
+const addModel = () => {
+    showModal.value = true;
+}
+const choose = (model) => {
+    if (model.available) {
+        props.appData.flow[0].type = model.name
+        showModal.value = false;
+    }
+}
 const state = reactive({
     currentItem: {
         "id": "123",
@@ -51,7 +94,15 @@ const state = reactive({
         }
     }, //prompt
     currentIndex: 0,
+    aiList: [],
 })
+const itemRefs = new Array(100).fill('')
+const setItemRef = (el, i) => {
+    // && !itemRefs.some(s => s.dataset['num'] == el.dataset['num'])
+    if (el) {
+        itemRefs[i] = el
+    }
+}
 const onCreate = () => {
     return {
         "id": uuid(),
@@ -62,6 +113,11 @@ const onCreate = () => {
         }
     }
 }
+
+onMounted(async () => {
+    const aiList = await getAIList()
+    state.aiList = aiList.data.list
+})
 
 const getNewPrompt = (str = "") => {
     const newItem = {
@@ -90,7 +146,57 @@ const removeTag = (index, item = {}) => {
     list.splice(index, 1)
 }
 const clear = () => {
+    props.appData.flow[0].type = ''
     props.appData.flow[0].prompt = [getNewPrompt()]
+}
+let isFirstDel = true;
+// 设置光标 支持性有问题一
+const backspace = (i) => {
+    console.log('进来了', i, itemRefs, state.currentIndex);
+    const start = itemRefs[i].target?.selectionStart || getSelection().getRangeAt(0).startOffset
+    if (i > 0 && start == 0 && !isFirstDel) {
+        isFirstDel = true
+        const item = props.appData.flow[0].prompt[i - 1]
+        if (item.type == 'tag') {
+            delPrompt(i - 1)
+            nextTick(() => {
+                state.currentIndex = 0
+                itemRefs[i - 1].focus()
+            })
+        } else {
+            const list = props.appData.flow[0].prompt;
+            const text = list[i].properties.value
+            console.log(text.length, 'text.length');
+            if (text.length <= 1) {
+                delPrompt(i)
+                itemRefs[i - 1].focus()
+                nextTick(() => {
+                    const oldIndex = list[i - 1].properties.value.length - 1
+                    console.log(itemRefs[i - 1], 'itemRefs[i - 1]');
+                    itemRefs[i - 1].target.setSelectionRange(oldIndex, oldIndex)
+                })
+            } else {
+                delPrompt(i - 1)
+                // itemRefs[i - 1].focus()
+                // nextTick(() => {
+                //     console.log(itemRefs[i - 1], 'itemRefs[i - 1]');
+                //     const oldIndex = list[i - 1].properties.value.length - 1
+                //     itemRefs[i - 1].target.setSelectionRange(oldIndex, oldIndex)
+                // })
+            }
+            // nextTick(() => {
+            //     const list = props.appData.flow[0].prompt;
+            //     state.currentItem = list[i - 1]
+            //     state.currentItem.properties.value = state.currentItem.properties.value.slice(0, -1)
+            //     const oldIndex = state.currentItem.properties.value.length - 1
+            //     state.currentItem.properties.value += text;
+            //     state.currentIndex = oldIndex
+            //     itemRefs[i - 1].focus()
+            // })
+        }
+    } else {
+        isFirstDel = false
+    }
 }
 
 const getTag = (uuid) => {
@@ -114,16 +220,19 @@ const addTag = (item) => {
     const list = props.appData.flow[0].prompt;
     const findIndex = list.findIndex(f => f.id == currentItem.id);
     // list.splice(findIndex, 0, newTag)
-    console.log(list, newTag);
+    console.log(currentIndex, currentItem.properties.value, currentItem.properties.value.length - 1);
     if (currentIndex == 0) {
         insertPrompt(findIndex, newTag)
-    } else if (currentIndex == currentItem.properties.value.length - 1) {
+    } else if (currentIndex == currentItem.properties.value.length) {
         insertPrompt(findIndex + 1, newTag)
     } else {
         const str = currentItem.properties.value;
         const textL = getNewPrompt(str.slice(0, currentIndex))
         const textR = getNewPrompt(str.slice(currentIndex))
         list.splice(findIndex, 1, textL, newTag, textR)
+        state.currentItem = list[findIndex + 2]
+        // 重置选择的位置为0
+        state.currentIndex = 0
     }
 }
 // TODO 焦点有问题
@@ -157,6 +266,27 @@ const handleBlurEvent = (e, uuid) => {
 
 </script>
 <style lang="scss" scoped>
+.not-model {
+    p {
+        color: #D9D9D9;
+        border-top: 2px dashed rgba(0, 0, 0, 0.2);
+        position: relative;
+        cursor: pointer;
+
+        svg {
+            position: absolute;
+            left: 0;
+            top: -12px;
+            width: 24px;
+            height: 24px;
+            margin-left: 13px;
+        }
+    }
+
+
+}
+
+
 .has-model {
     .flow {
         display: flex;
@@ -170,11 +300,18 @@ const handleBlurEvent = (e, uuid) => {
             align-items: center;
 
             span {
-                margin-right: 12px;
                 font-weight: 500;
                 font-size: 16px;
                 line-height: 16px;
                 color: #5B5D62;
+
+                i {
+                    margin: 0 4px 0 0;
+                }
+            }
+
+            i {
+                margin: 0 11px;
             }
         }
 
@@ -188,6 +325,7 @@ const handleBlurEvent = (e, uuid) => {
 
         .expression {
             // display: flex;
+            min-height: 42px;
             word-break: break-all;
             flex-wrap: wrap;
             align-items: flex-start;
@@ -197,10 +335,13 @@ const handleBlurEvent = (e, uuid) => {
             padding: 8px 16px;
             font-size: 14px;
             line-height: 24px;
+            margin: 0;
             overflow: auto;
             cursor: text;
 
-            span {}
+            span {
+                &.tag {}
+            }
         }
 
         .line {
@@ -215,6 +356,7 @@ const handleBlurEvent = (e, uuid) => {
             height: 24px;
             line-height: 24px;
             border: 1px solid #ABACAE;
+            box-sizing: border-box;
             border-radius: 15px;
             display: inline-flex;
             width: fit-content;
@@ -347,13 +489,77 @@ const handleBlurEvent = (e, uuid) => {
 .scroll-y::-webkit-scrollbar-thumb {
     /*滚动条里面小方块*/
     border-radius: 4px;
-    background: var(--bg-color-scrollbar-thumb);
+    background: #D2D1DC;
     border-radius: 4px;
 }
 
 .scroll-y::-webkit-scrollbar-track {
     /*滚动条里面轨道*/
     border-radius: 4px;
-    background: var(--bg-color-scrollbar-track);
+    background: transparent;
+}
+</style>
+
+<style lang="scss">
+.model-box.n-dialog.n-modal {
+    background: #fff !important;
+    padding: 32px !important;
+    width: 624px;
+
+    .n-dialog__title {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 20px;
+        color: #181D24;
+    }
+
+    .n-dialog__content {
+        margin-top: 0 !important;
+
+        .label {
+            margin-top: 32px;
+            margin-bottom: 16px;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 16px;
+            color: #5B5D62;
+        }
+
+        .items {
+            .item {
+                width: 124px;
+                height: 112px;
+                border: 1px solid #5B5D62;
+                border-radius: 8px;
+                display: inline-flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: .5;
+
+                &+.item {
+                    margin-left: 16px;
+                }
+
+                &.available {
+                    opacity: 1;
+                    cursor: pointer;
+                }
+
+                img {
+                    margin-bottom: 6px;
+                    width: 40px;
+                    height: 40px;
+                }
+
+                span {
+                    font-weight: 400;
+                    font-size: 14px;
+                    line-height: 24px;
+                    color: #5B5D62;
+                }
+            }
+        }
+    }
 }
 </style>

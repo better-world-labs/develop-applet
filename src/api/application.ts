@@ -14,6 +14,36 @@ export function getAppList(categoryId: number) {
     url: `/api/apps?category=${categoryId}`,
   });
 }
+//  读取AI模型列表
+export function getAIList() {
+  return http.request({
+    method: 'get',
+    url: `/api/ai-models`,
+  });
+}
+//  读取AI模型
+export function getApp(id: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/${id}`,
+  });
+}
+//  保存App模型
+export function putApp(id: string, data: any) {
+  return http.request({
+    method: 'put',
+    url: `/api/apps/${id}`,
+    data
+  });
+}
+//  运行App模型
+export function postApp(id: string, data: any) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${id}/run `,
+    data
+  });
+}
 
 // 读取系统设置
 export function getTabs(key: string) {

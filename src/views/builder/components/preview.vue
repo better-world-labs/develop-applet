@@ -48,12 +48,16 @@ const handlePasswordInput = () => {
     font-size: 18px;
     color: #181D24;
     background: #EEEDFE;
+    text-align: center;
 }
 
 .preview-box {
     height: 100%;
     background: linear-gradient(132.93deg, #F1F7FF 5.27%, #FAF8FF 59.89%, #EEEDFE 98.91%);
     padding: 56px 80px;
+    overflow-y: auto;
+    position: relative;
+    box-sizing: border-box;
 
     .app-title {
         font-weight: 500;
@@ -96,6 +100,7 @@ const handlePasswordInput = () => {
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         span {
             font-weight: 500;
@@ -182,13 +187,13 @@ const handlePasswordInput = () => {
 .scroll-y::-webkit-scrollbar-thumb {
     /*滚动条里面小方块*/
     border-radius: 4px;
-    background: var(--bg-color-scrollbar-thumb);
+    background: #D2D1DC;
     border-radius: 4px;
 }
 
 .scroll-y::-webkit-scrollbar-track {
     /*滚动条里面轨道*/
     border-radius: 4px;
-    background: var(--bg-color-scrollbar-track);
+    background: transparent;
 }
 </style>

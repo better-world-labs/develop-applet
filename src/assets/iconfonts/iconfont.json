@@ -6,6 +6,27 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "34763893",
+      "name": "icon-关闭-小",
+      "font_class": "icon-guanbi-xiao",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "34763847",
+      "name": "icon-返回",
+      "font_class": "icon-fanhui",
+      "unicode": "e652",
+      "unicode_decimal": 58962
+    },
+    {
+      "icon_id": "34759435",
+      "name": "icon-箭头",
+      "font_class": "icon-jiantou",
+      "unicode": "e651",
+      "unicode_decimal": 58961
+    },
+    {
       "icon_id": "34752224",
       "name": "icon-创建我的小程序",
       "font_class": "icon-chuangjianwodexiaochengxu",
