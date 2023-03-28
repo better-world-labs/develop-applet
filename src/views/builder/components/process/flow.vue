@@ -35,7 +35,8 @@
                         <span v-else class="tag" :ref="$event => setItemRef($event, i)" :data-num="item.id">{{
                             getTag(item.properties.character)
                         }}
-                            <IconFont @click="removeTag(i)" class="tag-close" name="icon-icon-shanchubiaoqian" />
+                            <icon-font-symbol @click="removeTag(i)" class="tag-close remove-icon"
+                                name="icon-icon-shanchubiaoqian" />
                         </span>
                     </template>
                     <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
@@ -43,7 +44,7 @@
                 <div class="line"></div>
                 <div class="tags">
                     <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
-                        <IconFont @click="addTag(item)" class="tag-close" name="icon-icon-tianjiabiaoqian" />
+                        <IconFont @click="addTag(item)" :size="18" class="tag-close" name="icon-icon-tianjiabiaoqian" />
                     </div>
                     <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
                 </div>
@@ -370,6 +371,11 @@ const handleBlurEvent = (e, uuid) => {
                 margin-left: 4px;
                 cursor: pointer;
                 // background: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.578 5l2.93-3.493a.089.089 0 0 0-.068-.146h-.891a.182.182 0 0 0-.137.064l-2.417 2.88-2.416-2.88a.178.178 0 0 0-.137-.064h-.89a.089.089 0 0 0-.069.146L4.413 5l-2.93 3.493a.089.089 0 0 0 .068.146h.89a.182.182 0 0 0 .138-.064l2.416-2.88 2.417 2.88c.033.04.083.064.137.064h.89a.089.089 0 0 0 .069-.146l-2.93-3.493z' fill='%23000' fill-opacity='.45'/%3E%3C/svg%3E") center no-repeat;
+            }
+
+            .remove-icon {
+                width: 18px;
+                height: 18px;
             }
         }
 
