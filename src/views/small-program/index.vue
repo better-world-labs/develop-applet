@@ -46,7 +46,7 @@
                     </div>
                     <div style="text-align: right;">
                         <n-button @click="editApp(item)">编辑</n-button>
-                        <n-button>分享</n-button>
+                        <n-button @click="shareTemplate">分享</n-button>
                     </div>
                 </n-grid-item>
             </n-grid>
@@ -57,6 +57,11 @@
 import { useInit } from '@/hooks/useInit';
 import { useApplicationStore } from "@/store/modules/application"
 import { useUserStore } from "@/store/modules/user"
+import useClipboard from 'vue-clipboard3';
+import { useMessage } from 'naive-ui'
+
+const message = useMessage()
+const { toClipboard } = useClipboard();
 const value = ref(true);
 const applicationStore = useApplicationStore();
 const userStore = useUserStore();
@@ -66,6 +71,18 @@ function editApp(item) {
     if (!userStore.token) goAuth();
     $router.push({ name: 'builder', query: { uuid: item.uuid } });
 }
+
+// 分享模版
+async function shareTemplate() {
+   
+    try {
+        await toClipboard(window.location.href);
+        message.success('已复制，快去分享给朋友吧~');
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 onMounted(() => {
     applicationStore.getMineAppList();
 })

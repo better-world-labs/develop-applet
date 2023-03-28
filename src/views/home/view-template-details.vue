@@ -48,10 +48,10 @@
                     <div class="footer">
                         <n-grid x-gap="12" :cols="2">
                             <n-gi>
-                                <div class="icon">
+                                <div class="icon" @click="shareTemplate">
                                     <div>
                                         <IconFont name="icon-icon-fenxiang" />
-                                    </div>
+                                    </div> 
                                     <div>分享</div>
                                 </div>
                                 <div class="icon">
@@ -131,7 +131,11 @@ import { useRouter } from 'vue-router';
 import { getAppInfo } from "@/api/application";
 import { ref } from "vue";  
 import { fetchEventSource } from '@microsoft/fetch-event-source';  
+import useClipboard from 'vue-clipboard3'; 
+import { useMessage } from 'naive-ui'
 
+const { toClipboard } = useClipboard();
+const message = useMessage()
 
 const userStore = useUserStore();
 const applicationStore = useApplicationStore();
@@ -146,7 +150,7 @@ const rules = {};
 const showResult = ref(false);
 const showLoading = ref(false);
 const printContent = ref("");// 结果内容 
-const cacheContent = ref(""); 
+const cacheContent = ref("");  
  
 // 打印内容
 function printout() {
@@ -232,6 +236,17 @@ function receiveMessage(data) {
 
     }); 
 }
+
+// 分享模版
+async function shareTemplate() {     
+    try {
+        await toClipboard(window.location.href);
+        message.success('已复制，快去分享给朋友吧~');
+    } catch (e) {
+        console.error(e);
+    } 
+} 
+
 
 // 返回上一页
 function backPrePage() {
