@@ -78,7 +78,7 @@ watchEffect(() => {
     cardList[0].status = props.appData.name && props.appData.description && true
     cardList[1].status = props.appData.form && props.appData.form.length > 0
     cardList[2].status = props.appData.flow && props.appData.flow[0] && props.appData.flow[0].type && props.appData.flow[0].prompt.length > 0
-    cardList[3].status = props.appData.category
+    cardList[3].status = props.appData.category && true
 })
 const handleItem = ({ name }) => {
     console.log(name);
