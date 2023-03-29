@@ -22,7 +22,7 @@
                     </div>
                     <div class="footer-options">
                         <div class="left">
-                            <img :src="item.createdBy.avatar | '../../assets/default-user.jpg'" />
+                            <img :src="item.createdBy.avatar || '../../assets/default-user.jpg'" />
                             <div>
                                 {{ item.createdBy.nickname }}
                             </div>
@@ -103,6 +103,13 @@ function useTemplate(item) {
              background-repeat: no-repeat;
              cursor: pointer;
 
+             >div {
+                 overflow: hidden;
+                 text-overflow: ellipsis;
+                 display: -webkit-box;
+                 -webkit-line-clamp: 4;
+                 -webkit-box-orient: vertical;
+             }
 
              >div:first-child {
                  margin-bottom: 24px;
@@ -137,17 +144,19 @@ function useTemplate(item) {
 
              .right {
                  margin-left: auto;
-                 span{
-                    cursor: pointer;
-                    &:hover{
-                        color: #202226;
-                    }
+
+                 span {
+                     cursor: pointer;
+
+                     &:hover {
+                         color: #202226;
+                     }
                  }
 
                  .iconfont {
                      font-size: 18px;
                      margin-right: 6px;
-                     
+
                  }
              }
 

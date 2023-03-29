@@ -29,8 +29,9 @@
                                 </div>
                                 <div>{{ appInfo.createdBy?.nickname }}</div>
                             </div>
-                            <div>
-                                {{ appInfo.description }}
+                            <div class="description">
+                                {{ appInfo.description
+                                }}一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序
                             </div>
                         </n-gi>
                         <n-gi>
@@ -51,7 +52,7 @@
                                 <div class="icon" @click="shareTemplate">
                                     <div>
                                         <IconFont name="icon-icon-fenxiang" />
-                                    </div> 
+                                    </div>
                                     <div>分享</div>
                                 </div>
                                 <div class="icon">
@@ -89,7 +90,7 @@
                             <n-progress type="line" :percentage="60" color="#5652FF" rail-color="#DCDBFF"
                                 :show-indicator="false" processing />
                         </div>
-                        <div v-else> 
+                        <div v-else>
                             <p>{{ printContent }} <span v-if="cacheContent.length != printContent.length"></span></p>
                             <div class="option">
                                 <IconFont name="icon-icon-dianzan" />
@@ -129,9 +130,9 @@ import { useUserStore } from "@/store/modules/user";
 import $router from '@/router/index';
 import { useRouter } from 'vue-router';
 import { getAppInfo } from "@/api/application";
-import { ref } from "vue";  
-import { fetchEventSource } from '@microsoft/fetch-event-source';  
-import useClipboard from 'vue-clipboard3'; 
+import { ref } from "vue";
+import { fetchEventSource } from '@microsoft/fetch-event-source';
+import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui'
 
 const { toClipboard } = useClipboard();
@@ -150,14 +151,14 @@ const rules = {};
 const showResult = ref(false);
 const showLoading = ref(false);
 const printContent = ref("");// 结果内容 
-const cacheContent = ref("");  
- 
+const cacheContent = ref("");
+
 // 打印内容
 function printout() {
     const timer = ref(0);
     timer.value = setInterval(() => {
         if (cacheContent.value.length > printContent.value.length) {
-            printContent.value = cacheContent.value.slice(0, printContent.value.length + 1); 
+            printContent.value = cacheContent.value.slice(0, printContent.value.length + 1);
         } else {
             clearInterval(timer.value);
         }
@@ -200,15 +201,15 @@ function requestSave() {
         "open": openData.value
     };
 
-    receiveMessage(data)  
+    receiveMessage(data)
 }
 
 // 生成结果 
 function receiveMessage(data) {
-    if (!('EventSource' in window)) return;  
+    if (!('EventSource' in window)) return;
 
     const eventSourceUrl = `/api/apps/${uuid.value}/run`;
-    new fetchEventSource(eventSourceUrl, {  
+    new fetchEventSource(eventSourceUrl, {
         method: "POST",
         headers: {
             "Accept": "text/event-stream",
@@ -219,33 +220,35 @@ function receiveMessage(data) {
         async onopen(response) {
             if (response.status == 200) {
                 console.log("连接成功!", response);
-                showLoading.value = false; 
+                showLoading.value = false;
                 printout();
-            } 
+            }
         },
-        onmessage(msg) { 
-            // console.log("收到服务器发来的数据!", msg) 
-            cacheContent.value += JSON.parse(msg.data).content;
+        onmessage(msg) {
+            // console.log("收到服务器发来的数据!", JSON.parse(msg.data).content)
+            if (JSON.parse(msg.data).content != undefined) {
+                cacheContent.value += JSON.parse(msg.data).content;
+            }
         },
-        onclose() { 
-               console.log("连接关闭!")
+        onclose() {
+            console.log("连接关闭!")
         },
         onerror(err) {
-             console.log("连接失败!",err)
+            console.log("连接失败!", err)
         }
 
-    }); 
+    });
 }
 
 // 分享模版
-async function shareTemplate() {     
+async function shareTemplate() {
     try {
         await toClipboard(window.location.href);
         message.success('已复制，快去分享给朋友吧~');
     } catch (e) {
         console.error(e);
-    } 
-} 
+    }
+}
 
 
 // 返回上一页
@@ -413,7 +416,7 @@ onMounted(() => {
                     font-size: 28px;
                     line-height: 40px;
                     color: #181D24;
-                    height: 80px;
+                    max-height: 80px;
                     margin-bottom: 16px;
                     overflow: hidden;
                     text-overflow: ellipsis;
@@ -437,6 +440,14 @@ onMounted(() => {
                         border-radius: 36px;
                         margin-right: 8px;
                     }
+                }
+
+                .description {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 9;
+                    -webkit-box-orient: vertical;
                 }
 
                 .form-box {
@@ -535,14 +546,16 @@ onMounted(() => {
                         margin-top: 8px;
                     }
                 }
-                p{
+
+                p {
                     min-height: 80px;
-                    span{
+
+                    span {
                         display: inline-block;
                         width: 16px;
                         height: 4px;
                         background: #5F58FF;
-                    } 
+                    }
                 }
 
             }
