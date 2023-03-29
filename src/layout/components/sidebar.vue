@@ -15,7 +15,6 @@
                     :default-value="applicationStore.currentMenu" @update:value="handleUpdateValue" />
             </n-layout-sider>
         </n-layout>
-        <!-- <n-button type="success" @click="goAuth">登录</n-button> -->
     </div>
 </template>
 <script lang="ts" setup>
@@ -23,13 +22,12 @@ import $router from '@/router/index';
 import { RouterLink } from 'vue-router'
 import type { MenuOption } from 'naive-ui'
 import { h } from "vue"
-import { useInit } from '@/hooks/useInit';
-import IconFont from "@/components/icon-font/icon-font.vue"
+import IconFontSymbol from "@/components/icon-font/icon-font-symbol.vue"
 import { useApplicationStore } from "@/store/modules/application";
 const applicationStore = useApplicationStore();
 
-function renderIcon(str: string) {
-    return () => h(IconFont, { class: str, style: { 'font-size': '30px', 'margin-right': '10px' } })
+function renderIcon(name: string, str: string, activeIcon: string) {
+    return () => h(IconFontSymbol, { size: 30, name: name == applicationStore.currentMenu ? activeIcon : str })
 }
 
 function redirectLink(name: string, label: string) {
@@ -49,18 +47,18 @@ const menuOptions: MenuOption[] = [
     {
         label: () => redirectLink('home', "小程序广场"),
         key: 'home',
-        icon: renderIcon('icon-icon-xiaochengxuguangchang-moren')
+        icon: renderIcon('home', 'icon-icon-xiaochengxuguangchang-moren', 'icon-icon-xiaochengxuguangchang-xuanzhong')
     },
     {
         label: () => redirectLink('small-program', "我的小程序"),
         key: 'small-program',
-        icon: renderIcon('icon-icon-wodexiaochengxu-moren')
+        icon: renderIcon('small-program', 'icon-icon-wodexiaochengxu-moren', 'icon-icon-wodexiaochengxu-xuanzhong')
     },
     {
         label: '我参与的',
         key: 'my-participation',
-        disabled: true,
-        icon: renderIcon('icon-icon-wocanyude-moren')
+        // disabled: true,
+        icon: renderIcon('my-participation', 'icon-icon-wocanyude-moren', 'icon-icon-wodejifen-xuanzhong')
     },
     {
         label: '我的积分',
@@ -75,16 +73,14 @@ const menuOptions: MenuOption[] = [
         //         { default: () => '我的积分' }
         //     ),
         key: 'my-integral',
-        disabled: true,
-        icon: renderIcon('icon-icon-wodejifen-moren')
+        // disabled: true,
+        icon: renderIcon('my-integral', 'icon-icon-wodejifen-moren', 'icon-icon-wocanyude-xuanzhong')
     }
 ]
 // 创建模版
 function toHome() {
     $router.push({ name: 'home' });
 }
-// Tips: 页面需要登录的地方 使用
-const { goAuth } = useInit()
 
 const handleUpdateValue = (key: string) => {
     applicationStore.setCurrentMenu(key);
@@ -149,7 +145,7 @@ const handleUpdateValue = (key: string) => {
     }
 
     .n-menu .n-menu-item-content.n-menu-item-content--selected .n-menu-item-content__icon {
-        color: #5652FF;
+        color: #5652FF !important;
     }
 
 }

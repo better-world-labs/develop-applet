@@ -30,8 +30,7 @@
                                 <div>{{ appInfo.createdBy?.nickname }}</div>
                             </div>
                             <div class="description">
-                                {{ appInfo.description
-                                }}一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序一键同款小程序
+                                {{ appInfo.description }}
                             </div>
                         </n-gi>
                         <n-gi>
@@ -91,7 +90,8 @@
                                 :show-indicator="false" processing />
                         </div>
                         <div v-else>
-                            <p>{{ printContent }} <span v-if="cacheContent.length != printContent.length"></span></p>
+                            <p style="white-space: pre-line">{{ printContent }} <span
+                                    v-if="cacheContent.length != printContent.length"></span></p>
                             <div class="option">
                                 <IconFont name="icon-icon-dianzan" />
                                 <IconFont name="icon-icon-cai" />
@@ -158,7 +158,7 @@ function printout() {
     const timer = ref(0);
     timer.value = setInterval(() => {
         if (cacheContent.value.length > printContent.value.length) {
-            printContent.value = cacheContent.value.slice(0, printContent.value.length + 1);
+            printContent.value = cacheContent.value.slice(0, printContent.value.length + 2);
         } else {
             clearInterval(timer.value);
         }
@@ -232,6 +232,8 @@ function receiveMessage(data) {
         },
         onclose() {
             console.log("连接关闭!")
+            // 刷新结果列表
+            getAppResultList();
         },
         onerror(err) {
             console.log("连接失败!", err)
@@ -251,6 +253,11 @@ async function shareTemplate() {
 }
 
 
+// 请求结果列表
+function getAppResultList() {
+    applicationStore.getAppResult(uuid.value);
+}
+
 // 返回上一页
 function backPrePage() {
     $router.go(-1);
@@ -265,7 +272,7 @@ onMounted(() => {
     const router = useRouter();
     uuid.value = router.currentRoute.value.query.uuid;
 
-    applicationStore.getAppResult(uuid.value);
+    getAppResultList();
     // 获取应用信息
     getAppInfo(uuid.value).then(({ data }) => {
         appInfo.value = data;
@@ -626,6 +633,7 @@ onMounted(() => {
                     display: -webkit-box;
                     -webkit-line-clamp: 5;
                     -webkit-box-orient: vertical;
+                    white-space: pre-line
                 }
             }
         }

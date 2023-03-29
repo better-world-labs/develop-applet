@@ -6,12 +6,12 @@
 <template>
     <div class="home-content">
         <n-grid :x-gap="12" :y-gap="8" :cols="3">
-            <n-grid-item v-for="item in applicationStore.appList" :key="item.id">
+            <n-grid-item v-for="item in applicationStore.appList" :key="item.id" @click="useTemplate(item)">
                 <div class="template-item">
-                    <div class="desc-text" @click="useTemplate(item)">
+                    <div class="desc-text">
                         {{ item.name }}
                     </div>
-                    <div class="result-text" @click="useTemplate(item)">
+                    <div class="result-text">
                         <div v-if="item.results[0]">
                             <span>精彩结果1:</span>
                             {{ item.results[0]?.content }}
@@ -28,12 +28,18 @@
                             </div>
                         </div>
                         <div class="right">
-                            <span style="margin-right:24px">
-                                <IconFont name="icon-icon-dianzan" />65
-                            </span>
-                            <span>
-                                <IconFont name="icon-icon-cai" />348
-                            </span>
+                            <div class="text-box" style="margin-right:24px">
+                                <icon-font-symbol name="icon-icon-pinglun" />
+                                <div>
+                                    65
+                                </div>
+                            </div>
+                            <div class="text-box">
+                                <IconFontSymbol name="icon-icon-dianzan" />
+                                <div>
+                                    348
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -102,6 +108,8 @@ function useTemplate(item) {
              background-image: url(../../../assets/bg.png);
              background-repeat: no-repeat;
              cursor: pointer;
+             white-space: pre-line;
+
 
              >div {
                  overflow: hidden;
@@ -144,20 +152,32 @@ function useTemplate(item) {
 
              .right {
                  margin-left: auto;
+                 font-size: 16px;
+                 line-height: 18px;
+                 color: #5B5D62;
+                 display: flex;
+                 flex-direction: row;
 
-                 span {
-                     cursor: pointer;
+                 .text-box {
+                     display: flex;
+                     flex-direction: row;
 
-                     &:hover {
-                         color: #202226;
+
+                     .iconfont-svg {
+                         width: 24px;
+                         height: 24px;
+                         display: flex;
+                         flex-direction: row;
+                         margin-right: 6px;
+                     }
+
+                     div {
+                         display: flex;
+                         flex-direction: row;
+                         line-height: 25px;
                      }
                  }
 
-                 .iconfont {
-                     font-size: 18px;
-                     margin-right: 6px;
-
-                 }
              }
 
          }
