@@ -74,7 +74,7 @@ function editApp(item) {
 
 // 分享模版
 async function shareTemplate() {
-   
+
     try {
         await toClipboard(window.location.href);
         message.success('已复制，快去分享给朋友吧~');
@@ -84,6 +84,7 @@ async function shareTemplate() {
 }
 
 onMounted(() => {
+    if (!userStore.token) goAuth();
     applicationStore.getMineAppList();
 })
 </script>
