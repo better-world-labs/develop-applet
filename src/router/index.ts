@@ -69,7 +69,7 @@ const router = createRouter({
  * 路由前置守卫
  */
 router.beforeEach((to, from, next) => {
-  if (from.name !== undefined && from.name != 'home') {
+  if (from.name !== undefined && from.name == 'builder' && to.query.type !== 'save') {
     dialog.open('prompt-save', {
       title: '提示信息',
       positiveText: '确认',
