@@ -84,13 +84,16 @@ const handleItem = ({ name }) => {
     console.log(name);
     current.value = name
 }
-const publishApp = async () => {
+const publishApp = async (isBack = true) => {
     if (cardList.some(a => a.status != true)) {
         return message.warning("信息未补充完整")
     }
     await putApp(props.appData.uuid, props.appData)
-    message.success("发布成功")
-    emit('back')
+    
+    if(isBack) {
+        message.success("发布成功")
+        emit('back')
+    }
 }
 defineExpose({ publishApp })
 </script>

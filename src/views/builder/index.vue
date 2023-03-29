@@ -21,7 +21,7 @@
                 <coding ref="refCoding" @back="back" :app-data="state"></coding>
             </div>
             <div>
-                <preview :app-data="state"></preview>
+                <preview @submit="submit" :app-data="state"></preview>
             </div>
         </div>
     </div>
@@ -115,8 +115,8 @@ onMounted(async () => {
     state.createdBy = { ...userStore.info, name: userStore.info.nickname }
 })
 
-const submit = () => {
-    refCoding.value.publishApp()
+const submit = async (isBack=true) => {
+    await refCoding.value.publishApp(isBack)
 }
 const back = () => {
     router.push({ name: 'home' });

@@ -22,22 +22,28 @@
                 </n-form-item>
             </n-form>
         </div>
-        <div class="action">
+        <div class="action" @click="getAppRun">
             <span>立即生成</span>
             <em>5积分</em>
         </div>
+        <Result ref="resultRef" :form="state.form" :uuid="props.appData.uuid" v-show="state.showResult"></Result>
     </div>
 </template>
 <script setup>
+import Result from './process/result.vue'
 const props = defineProps(['appData'])
+const emits = defineEmits(['submit'])
+const resultRef = ref('');
 const state = reactive({
-    form: new Array(props.appData.form.length)
+    showResult:false,
+    form: new Array(props.appData.form?.length||0)
 })
-const handleValidateButtonClick = () => {
-
-}
-const handlePasswordInput = () => {
-
+const getAppRun = async() => {
+    await emits('submit',false)
+    await nextTick()
+    
+    state.showResult = true;
+    resultRef.value.requestSave()
 }
 </script>
 <style lang="scss" scoped>
