@@ -138,10 +138,15 @@ defineExpose({ publishApp })
             --n-font-size: 16px !important;
             --n-height: 42px !important;
             background: #F3F3F7;
-            --n-caret-color: #5652FF !important;
-            --n-border-hover: 1px solid #5652FF !important;
-            --n-border-focus: 1px solid #5652FF !important;
-            --n-loading-color: #5652FF !important;
+            --n-caret-color: rgb(51, 54, 57) !important;
+            --n-border-hover: 1px solid transparent !important;
+            --n-border-focus: 1px solid transparent !important;
+            --n-loading-color: transparent !important;
+            --n-box-shadow-focus: 0 0 0 2px transparent !important;
+            // --n-caret-color: #5652FF !important;
+            // --n-border-hover: 1px solid #5652FF !important;
+            // --n-border-focus: 1px solid #5652FF !important;
+            // --n-loading-color: #5652FF !important;
         }
 
         --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);

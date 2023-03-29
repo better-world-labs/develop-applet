@@ -171,6 +171,10 @@ const handlePasswordInput = () => {
                 font-size: 22px;
                 color: #202226;
                 padding: 0 24px;
+                --n-caret-color: #5652FF !important;
+                --n-border-hover: 1px solid #5652FF !important;
+                --n-border-focus: 1px solid #5652FF !important;
+                --n-loading-color: #5652FF !important;
             }
         }
 
