@@ -46,7 +46,7 @@
                     </div>
                     <div style="text-align: right;">
                         <n-button @click="editApp(item)">编辑</n-button>
-                        <n-button @click="shareTemplate">分享</n-button>
+                        <n-button @click="shareTemplate(item)">分享</n-button>
                     </div>
                 </n-grid-item>
             </n-grid>
@@ -59,6 +59,7 @@ import { useApplicationStore } from "@/store/modules/application"
 import { useUserStore } from "@/store/modules/user"
 import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui'
+import $router from '@/router/index';
 
 const message = useMessage()
 const { toClipboard } = useClipboard();
@@ -73,10 +74,12 @@ function editApp(item) {
 }
 
 // 分享模版
-async function shareTemplate() {
+async function shareTemplate(item) {
+    const com = window.location.href.substr(0, window.location.href.lastIndexOf('/'));
+    const url = `${com}/view-template-details?uuid=${item.uuid}`
 
     try {
-        await toClipboard(window.location.href);
+        await toClipboard(url);
         message.success('已复制，快去分享给朋友吧~');
     } catch (e) {
         console.error(e);
