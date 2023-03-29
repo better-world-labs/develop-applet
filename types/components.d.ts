@@ -7,6 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    Aaa: typeof import('./../src/bizComponents/dialogs/aaa.vue')['default']
+    ChannelApply: typeof import('./../src/bizComponents/dialogs/channel-apply.vue')['default']
     DialogContent: typeof import('./../src/components/dialog-content/index.vue')['default']
     IconFont: typeof import('./../src/components/icon-font/icon-font.vue')['default']
     IconFontSymbol: typeof import('./../src/components/icon-font/icon-font-symbol.vue')['default']
@@ -19,6 +21,7 @@ declare module '@vue/runtime-core' {
     NCollapseItem: typeof import('naive-ui')['NCollapseItem']
     NCollapseTransition: typeof import('naive-ui')['NCollapseTransition']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
+    NCountdown: typeof import('naive-ui')['NCountdown']
     NDialogProvider: typeof import('naive-ui')['NDialogProvider']
     NDynamicInput: typeof import('naive-ui')['NDynamicInput']
     NForm: typeof import('naive-ui')['NForm']
@@ -41,6 +44,7 @@ declare module '@vue/runtime-core' {
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
     PointerPopover: typeof import('./../src/components/pointer-popover/index.vue')['default']
+    PromptSave: typeof import('./../src/bizComponents/dialogs/prompt-save.vue')['default']
     Provider: typeof import('./../src/components/app-provider/provider.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

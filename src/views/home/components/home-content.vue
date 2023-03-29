@@ -59,7 +59,7 @@ function useTemplate(item) {
      padding: 48px 32px 48px 52px;
      background: linear-gradient(180deg, #F3F3F6 0%, #EDEFFC 100%);
      position: absolute;
-     height: calc(100% - 124px);
+     height: calc(100% - 72px);
      width: calc(100% - 312px);
      overflow-x: hidden;
      box-sizing: border-box;
@@ -137,10 +137,17 @@ function useTemplate(item) {
 
              .right {
                  margin-left: auto;
+                 span{
+                    cursor: pointer;
+                    &:hover{
+                        color: #202226;
+                    }
+                 }
 
                  .iconfont {
                      font-size: 18px;
                      margin-right: 6px;
+                     
                  }
              }
 

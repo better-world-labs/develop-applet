@@ -1,3 +1,4 @@
+ 
 <!--
  * @Author: Lemon
  * @Date: 2023-03-22 09:30:35
@@ -10,7 +11,8 @@
         </div>
         <n-layout has-sider>
             <n-layout-sider :width="296">
-                <n-menu class="menu" :options="menuOptions" default-value="home" @update:value="handleUpdateValue" />
+                <n-menu class="menu" :options="menuOptions" :value="applicationStore.currentMenu"
+                    :default-value="applicationStore.currentMenu" @update:value="handleUpdateValue" />
             </n-layout-sider>
         </n-layout>
         <n-button type="success" @click="goAuth">登录</n-button>
@@ -20,42 +22,37 @@
 import $router from '@/router/index';
 import { RouterLink } from 'vue-router'
 import type { MenuOption } from 'naive-ui'
-import { ref, h } from "vue"
+import { h } from "vue"
 import { useInit } from '@/hooks/useInit';
-const currentMenu = ref('home');
 import IconFont from "@/components/icon-font/icon-font.vue"
-
+import { useApplicationStore } from "@/store/modules/application";
+const applicationStore = useApplicationStore();
 
 function renderIcon(str: string) {
     return () => h(IconFont, { class: str, style: { 'font-size': '30px', 'margin-right': '10px' } })
 }
 
+function redirectLink(name: string, label: string) {
+    return h(
+        RouterLink,
+        {
+            to: {
+                name: name,
+            }
+        },
+        { default: () => label }
+    )
+}
+
+
 const menuOptions: MenuOption[] = [
     {
-        label: () =>
-            h(
-                RouterLink,
-                {
-                    to: {
-                        name: 'home',
-                    }
-                },
-                { default: () => '小程序广场' }
-            ),
+        label: () => redirectLink('home', "小程序广场"),
         key: 'home',
         icon: renderIcon('icon-icon-xiaochengxuguangchang-moren')
     },
     {
-        label: () =>
-            h(
-                RouterLink,
-                {
-                    to: {
-                        name: 'small-program',
-                    }
-                },
-                { default: () => '我的小程序' }
-            ),
+        label: () => redirectLink('small-program', "我的小程序"),
         key: 'small-program',
         icon: renderIcon('icon-icon-wodexiaochengxu-moren')
     },
@@ -66,17 +63,19 @@ const menuOptions: MenuOption[] = [
         icon: renderIcon('icon-icon-wocanyude-moren')
     },
     {
-        label: () =>
-            h(
-                RouterLink,
-                {
-                    to: {
-                        name: 'my-integral',
-                    }
-                },
-                { default: () => '我的积分' }
-            ),
+        label: '我的积分',
+        // label: () =>
+        //     h(
+        //         RouterLink,
+        //         {
+        //             to: {
+        //                 name: 'my-integral',
+        //             }
+        //         },
+        //         { default: () => '我的积分' }
+        //     ),
         key: 'my-integral',
+        disabled: true,
         icon: renderIcon('icon-icon-wodejifen-moren')
     }
 ]
@@ -86,8 +85,9 @@ function toHome() {
 }
 // Tips: 页面需要登录的地方 使用
 const { goAuth } = useInit()
+
 const handleUpdateValue = (key: string) => {
-    currentMenu.value = key;
+    applicationStore.setCurrentMenu(key);
 };
 
 </script>

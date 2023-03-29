@@ -5,7 +5,7 @@
 -->
 <template>
     <div class="home-header">
-        <n-tabs animated v-if="applicationStore.tabs.length">
+        <n-tabs animated v-if="applicationStore.tabs.length" @update:value="handleUpdateValue">
             <n-tab-pane v-for="tab in applicationStore.tabs" :key="tab.category" :name="`${tab.category}`"
                 :tab="`${tab.label}`">
             </n-tab-pane>
