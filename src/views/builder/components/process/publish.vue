@@ -25,8 +25,8 @@
                 </n-radio>
             </n-radio-group>
         </div>
-        <n-button type="primary">
-            <IconFont name="icon-icon-fabu" @click="$emit('submit')"></IconFont>
+        <n-button type="primary" @click="$emit('submit')">
+            <IconFont name="icon-icon-fabu"></IconFont>
             发布
         </n-button>
     </div>

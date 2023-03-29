@@ -9,7 +9,7 @@
     <div class="preview-box scroll-y">
         <div class="app-title">{{ props.appData.name }}</div>
         <div class="user">
-            <img :src="props.appData.createdBy.avatar" />{{ props.appData.createdBy.name }}
+            <img :src="props.appData.createdBy.avatar || userStore.info.avatar" />{{ props.appData.createdBy.name || userStore.info.nickname }}
         </div>
         <div class="des">
             {{ props.appData.description }}
@@ -22,22 +22,30 @@
                 </n-form-item>
             </n-form>
         </div>
-        <div class="action">
+        <div class="action" @click="getAppRun">
             <span>立即生成</span>
             <em>5积分</em>
         </div>
+        <Result ref="resultRef" :form="state.form" :uuid="props.appData.uuid" v-show="state.showResult"></Result>
     </div>
 </template>
 <script setup>
+import Result from './process/result.vue'
+import { useUserStore } from "@/store/modules/user"
+const userStore = useUserStore();
 const props = defineProps(['appData'])
+const emits = defineEmits(['submit'])
+const resultRef = ref('');
 const state = reactive({
-    form: new Array(props.appData.form.length)
+    showResult:false,
+    form: new Array(props.appData.form?.length||0)
 })
-const handleValidateButtonClick = () => {
-
-}
-const handlePasswordInput = () => {
-
+const getAppRun = async() => {
+    await emits('submit',false)
+    await nextTick()
+    
+    state.showResult = true;
+    resultRef.value.requestSave()
 }
 </script>
 <style lang="scss" scoped>
@@ -171,6 +179,10 @@ const handlePasswordInput = () => {
                 font-size: 22px;
                 color: #202226;
                 padding: 0 24px;
+                --n-caret-color: #5652FF !important;
+                --n-border-hover: 1px solid #5652FF !important;
+                --n-border-focus: 1px solid #5652FF !important;
+                --n-loading-color: #5652FF !important;
             }
         }
 

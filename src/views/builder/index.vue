@@ -21,7 +21,7 @@
                 <coding ref="refCoding" @back="back" :app-data="state"></coding>
             </div>
             <div>
-                <preview :app-data="state"></preview>
+                <preview @submit="submit" :app-data="state"></preview>
             </div>
         </div>
     </div>
@@ -37,6 +37,7 @@ const userStore = useUserStore();
 const route = useRoute();
 const router = useRouter();
 const isEditId = route.query.id
+const isCopy = route.query.type == 'new'
 const refCoding = ref('')
 const state = reactive({
     "uuid": uuid(),
@@ -100,14 +101,22 @@ onMounted(async () => {
     // }, 3000)
     if (isEditId) {
         const appData = await getApp(isEditId);
-        state.value = appData.data;
-    } else {
-        state.createdBy = { ...userStore.info, name: userStore.info.nickname }
+        if (isCopy) {
+            appData.data.uuid = uuid();
+            appData.data.name += "-1";
+        }
+        state.uuid = appData.data.uuid;
+        state.name = appData.data.name;
+        state.description = appData.data.description;
+        state.category = appData.data.category;
+        state.form = appData.data.form;
+        state.flow = appData.data.flow;
     }
+    state.createdBy = { ...userStore.info, name: userStore.info.nickname }
 })
 
-const submit = () => {
-    refCoding.value.publishApp()
+const submit = async (isBack=true) => {
+    await refCoding.value.publishApp(isBack)
 }
 const back = () => {
     router.push({ name: 'home' });

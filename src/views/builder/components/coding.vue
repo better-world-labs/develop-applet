@@ -23,6 +23,9 @@
             <flow v-show="i == 2" :app-data="props.appData"></flow>
             <publish v-show="i == 3" :app-data="props.appData" @submit="publishApp">
             </publish>
+            <template #arrow>
+                <span></span>
+            </template>
             <template #header-extra>
                 <IconFont :style="{ color: item.status ? '#5652FF' : '#E3E4E5', fontSize: '24px' }"
                     :name="item.status ? 'icon-icon-yitianwan' : 'icon-a-icon-weitianxiewanStroke'"></IconFont>
@@ -84,13 +87,16 @@ const handleItem = ({ name }) => {
     console.log(name);
     current.value = name
 }
-const publishApp = async () => {
+const publishApp = async (isBack = true) => {
     if (cardList.some(a => a.status != true)) {
         return message.warning("信息未补充完整")
     }
     await putApp(props.appData.uuid, props.appData)
-    message.success("发布成功")
-    emit('back')
+    
+    if(isBack) {
+        message.success("发布成功")
+        emit('back')
+    }
 }
 defineExpose({ publishApp })
 </script>
@@ -138,10 +144,15 @@ defineExpose({ publishApp })
             --n-font-size: 16px !important;
             --n-height: 42px !important;
             background: #F3F3F7;
-            --n-caret-color: #5652FF !important;
-            --n-border-hover: 1px solid #5652FF !important;
-            --n-border-focus: 1px solid #5652FF !important;
-            --n-loading-color: #5652FF !important;
+            --n-caret-color: rgb(51, 54, 57) !important;
+            --n-border-hover: 1px solid transparent !important;
+            --n-border-focus: 1px solid transparent !important;
+            --n-loading-color: transparent !important;
+            --n-box-shadow-focus: 0 0 0 2px transparent !important;
+            // --n-caret-color: #5652FF !important;
+            // --n-border-hover: 1px solid #5652FF !important;
+            // --n-border-focus: 1px solid #5652FF !important;
+            // --n-loading-color: #5652FF !important;
         }
 
         --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);

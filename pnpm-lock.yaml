@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@aliyun-sls/web-track-browser': ^0.0.3
   '@babel/eslint-parser': ^7.19.1
+  '@microsoft/fetch-event-source': ^2.0.1
   '@types/node': ^18.7.18
   '@typescript-eslint/eslint-plugin': ^5.38.0
   '@typescript-eslint/parser': ^5.38.0
@@ -20,6 +21,7 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   eslint-plugin-vue: ^9.5.1
   esno: ^0.16.3
+  event-source-polyfill: ^1.0.31
   husky: ^8.0.1
   lint-staged: ^13.0.3
   lodash-es: ^4.17.21
@@ -51,10 +53,12 @@ specifiers:
 
 dependencies:
   '@aliyun-sls/web-track-browser': 0.0.3
+  '@microsoft/fetch-event-source': 2.0.1
   '@vueuse/core': 9.13.0_vue@3.2.47
   axios: 0.27.2
   core-js: 3.29.1
   dayjs: 1.11.7
+  event-source-polyfill: 1.0.31
   lodash-es: 4.17.21
   naive-ui: 2.34.3_vue@3.2.47
   pinia: 2.0.33_7h6e7cvei2rsgyre2mq4fyhehq
@@ -499,6 +503,10 @@ packages:
 
   /@juggle/resize-observer/3.4.0:
     resolution: {integrity: sha512-dfLbk+PwWvFzSxwk3n5ySL0hfBog779o8h68wK/7/APo/7cgyWp5jcXockbxdk5kFRkbeXWm4Fbi9FrdN381sA==}
+    dev: false
+
+  /@microsoft/fetch-event-source/2.0.1:
+    resolution: {integrity: sha512-W6CLUJ2eBMw3Rec70qrsEW0jOm/3twwJv21mrmj2yORiaVmVYGS4sSS5yUwvQc1ZlDLYGPnClVWmUUMagKNsfA==}
     dev: false
 
   /@nicolo-ribaudo/eslint-scope-5-internals/5.1.1-v1:
@@ -1977,6 +1985,10 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
     dev: true
+
+  /event-source-polyfill/1.0.31:
+    resolution: {integrity: sha512-4IJSItgS/41IxN5UVAVuAyczwZF7ZIEsM1XAoUzIHA6A+xzusEZUutdXz2Nr+MQPLxfTiCvqE79/C8HT8fKFvA==}
+    dev: false
 
   /evtd/0.2.4:
     resolution: {integrity: sha512-qaeGN5bx63s/AXgQo8gj6fBkxge+OoLddLniox5qtLAEY5HSnuSlISXVPxnSae1dWblvTh4/HoMIB+mbMsvZzw==}
