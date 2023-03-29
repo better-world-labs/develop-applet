@@ -69,7 +69,7 @@ const { goAuth } = useInit()
 // 编辑应用
 function editApp(item) {
     if (!userStore.token) goAuth();
-    $router.push({ name: 'builder', query: { uuid: item.uuid } });
+    $router.push({ name: 'builder', query: { id: uuid.value } });
 }
 
 // 分享模版

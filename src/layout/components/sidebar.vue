@@ -15,7 +15,6 @@
                     :default-value="applicationStore.currentMenu" @update:value="handleUpdateValue" />
             </n-layout-sider>
         </n-layout>
-        <!-- <n-button type="success" @click="goAuth">登录</n-button> -->
     </div>
 </template>
 <script lang="ts" setup>
@@ -23,13 +22,12 @@ import $router from '@/router/index';
 import { RouterLink } from 'vue-router'
 import type { MenuOption } from 'naive-ui'
 import { h } from "vue"
-import { useInit } from '@/hooks/useInit';
-import IconFont from "@/components/icon-font/icon-font.vue"
+import IconFontSymbol from "@/components/icon-font/icon-font-symbol.vue"
 import { useApplicationStore } from "@/store/modules/application";
 const applicationStore = useApplicationStore();
 
 function renderIcon(name: string, str: string, activeIcon: string) {
-    return () => h(IconFont, { class: name == applicationStore.currentMenu ? activeIcon : str, style: { 'font-size': '30px', 'margin-right': '10px' } })
+    return () => h(IconFontSymbol, { size: 30, name: name == applicationStore.currentMenu ? activeIcon : str })
 }
 
 function redirectLink(name: string, label: string) {
@@ -83,8 +81,6 @@ const menuOptions: MenuOption[] = [
 function toHome() {
     $router.push({ name: 'home' });
 }
-// Tips: 页面需要登录的地方 使用
-const { goAuth } = useInit()
 
 const handleUpdateValue = (key: string) => {
     applicationStore.setCurrentMenu(key);
