@@ -15,7 +15,7 @@
                     :default-value="applicationStore.currentMenu" @update:value="handleUpdateValue" />
             </n-layout-sider>
         </n-layout>
-        <n-button type="success" @click="goAuth">登录</n-button>
+        <!-- <n-button type="success" @click="goAuth">登录</n-button> -->
     </div>
 </template>
 <script lang="ts" setup>

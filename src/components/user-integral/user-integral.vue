@@ -5,7 +5,7 @@
 -->
 <template>
     <div class="user-integral">
-        <img :src="userStore.info.nickname | '@/assets/default-user.jpg'" />
+        <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
         <div>
             <div>{{ userStore.info.nickname }}</div>
             <div><span class="active-text">100</span>积分</div>
