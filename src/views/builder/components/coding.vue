@@ -23,6 +23,9 @@
             <flow v-show="i == 2" :app-data="props.appData"></flow>
             <publish v-show="i == 3" :app-data="props.appData" @submit="publishApp">
             </publish>
+            <template #arrow>
+                <span></span>
+            </template>
             <template #header-extra>
                 <IconFont :style="{ color: item.status ? '#5652FF' : '#E3E4E5', fontSize: '24px' }"
                     :name="item.status ? 'icon-icon-yitianwan' : 'icon-a-icon-weitianxiewanStroke'"></IconFont>

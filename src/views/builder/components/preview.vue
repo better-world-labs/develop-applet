@@ -9,7 +9,7 @@
     <div class="preview-box scroll-y">
         <div class="app-title">{{ props.appData.name }}</div>
         <div class="user">
-            <img :src="props.appData.createdBy.avatar" />{{ props.appData.createdBy.name }}
+            <img :src="props.appData.createdBy.avatar || userStore.info.avatar" />{{ props.appData.createdBy.name || userStore.info.nickname }}
         </div>
         <div class="des">
             {{ props.appData.description }}
@@ -31,6 +31,8 @@
 </template>
 <script setup>
 import Result from './process/result.vue'
+import { useUserStore } from "@/store/modules/user"
+const userStore = useUserStore();
 const props = defineProps(['appData'])
 const emits = defineEmits(['submit'])
 const resultRef = ref('');
