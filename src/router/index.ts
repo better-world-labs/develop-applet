@@ -6,7 +6,10 @@
 import { App } from 'vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Layout from '@/layout/index.vue';
+import { useBizDialog } from '@/plugins';
+import { useApplicationStore } from '@/store/modules/application';
 
+const dialog = useBizDialog();
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -65,7 +68,24 @@ const router = createRouter({
 /**
  * 路由前置守卫
  */
-router.beforeEach((guard) => {});
+router.beforeEach((to, from, next) => {
+  if (from.name !== undefined && from.name != 'home') {
+    dialog.open('prompt-save', {
+      title: '提示信息',
+      positiveText: '确认',
+      negativeText: '取消',
+      handlePositiveClick() {
+        next();
+      },
+      onNegativeClick: () => {
+        const applicationStore = useApplicationStore();
+        applicationStore.setCurrentMenu(from.name as string);
+      },
+    });
+  } else {
+    next(); // 继续执行路由
+  }
+});
 
 /**
  * 路由后置守卫

@@ -5,8 +5,10 @@
  */
 import { defineStore } from 'pinia';
 import { getTabs, getAppList, getAppResultList, getAppInfo, getMineApp } from '@/api/application';
+import $router from '@/router/index';
 
 interface ApplicationState {
+  currentMenu: string;
   tabs: Application.tabInfoItf[];
   currentTab: number | null;
   appList: Application.appInfoItf[];
@@ -17,6 +19,7 @@ interface ApplicationState {
 
 export const useApplicationStore = defineStore('application', {
   state: (): ApplicationState => ({
+    currentMenu: $router.currentRoute.value.name as string,
     tabs: [],
     currentTab: 0,
     appList: [],
@@ -26,6 +29,9 @@ export const useApplicationStore = defineStore('application', {
   }),
   getters: {},
   actions: {
+    setCurrentMenu(menu: string) {
+      this.currentMenu = menu;
+    },
     // 请求分类
     async getTabs() {
       const { data } = await getTabs('MINI_APP_HOME_TABS');
