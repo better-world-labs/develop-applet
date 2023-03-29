@@ -9,7 +9,6 @@
         <div class="logo" @click="toHome">
             <img src="@/assets/logo.png" alt="">
         </div>
-        <icon-font-symbol :size="30" name="icon-icon-xiaochengxuguangchang-xuanzhong" />
         <n-layout has-sider>
             <n-layout-sider :width="296">
                 <n-menu class="menu" :options="menuOptions" :value="applicationStore.currentMenu"
