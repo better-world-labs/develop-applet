@@ -57,7 +57,7 @@ const menuOptions: MenuOption[] = [
     {
         label: '我参与的',
         key: 'my-participation',
-        // disabled: true,
+        disabled: true,
         icon: renderIcon('my-participation', 'icon-icon-wocanyude-moren', 'icon-icon-wodejifen-xuanzhong')
     },
     {
@@ -73,7 +73,7 @@ const menuOptions: MenuOption[] = [
         //         { default: () => '我的积分' }
         //     ),
         key: 'my-integral',
-        // disabled: true,
+        disabled: true,
         icon: renderIcon('my-integral', 'icon-icon-wodejifen-moren', 'icon-icon-wocanyude-xuanzhong')
     }
 ]

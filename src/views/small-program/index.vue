@@ -171,6 +171,14 @@ onMounted(() => {
              line-height: 16px;
              color: #5652FF;
              margin-left: 16px;
+             --n-border: none !important;
+             --n-border-hover: none !important;
+             --n-border-focus: none !important;
+
+             &:hover {
+                 background: #D6D3FF;
+
+             }
 
          }
 

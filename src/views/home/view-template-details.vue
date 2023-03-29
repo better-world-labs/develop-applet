@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="public-results">
-                    <n-carousel :space-between="20" :loop="false" slides-per-view="auto" draggable>
+                    <n-carousel :space-between="20" :loop="false" draggable>
                         <n-carousel-item style="width: 40%" v-for="result in applicationStore.resultList" :key="result.id">
                             <div class="result-item">
                                 <div class="user">
