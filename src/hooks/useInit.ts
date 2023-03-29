@@ -48,8 +48,8 @@ export function useInit() {
     if (localToken.value) {
       userStore.setToken(localToken.value);
       flag && getUserData();
-      // } else if (path === '/app') {
-      //   $router.replace({ name: 'index' });
+    } else if (path !== '/home') {
+      $router.replace({ name: 'home' });
     }
 
     // 处理Auth认证平台问题
@@ -83,7 +83,7 @@ export function useInit() {
     removeStorageItem('user');
     localToken.value = '';
     user.value = undefined;
-    await $router.replace({ name: 'index' });
+    await $router.replace({ name: 'home' });
   };
 
   // 登录 设置数据缓存 和 路由更新
