@@ -5,11 +5,13 @@
 -->
 <template>
     <div class="home-header">
-        <n-tabs animated v-if="applicationStore.tabs.length" @update:value="handleUpdateValue">
-            <n-tab-pane v-for="tab in applicationStore.tabs" :key="tab.category" :name="`${tab.category}`"
-                :tab="`${tab.label}`">
-            </n-tab-pane>
-        </n-tabs>
+        <div class="tabs">
+            <n-tabs animated v-if="applicationStore.tabs.length" @update:value="handleUpdateValue">
+                <n-tab-pane v-for="tab in applicationStore.tabs" :key="tab.category" :name="`${tab.category}`"
+                    :tab="`${tab.label}`">
+                </n-tab-pane>
+            </n-tabs>
+        </div>
         <n-button type="info" @click="createTemplate">
             <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
             创建我的小程序
@@ -45,8 +47,11 @@ onMounted(() => {
 
 </script>
 <style lang="scss">
-.home-header .n-tabs {
+.home-header .tabs {
     flex: 1;
+}
+
+.home-header .n-tabs {
     height: 50px;
     padding-top: 10px;
 

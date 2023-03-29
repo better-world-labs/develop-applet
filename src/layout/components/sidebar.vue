@@ -28,8 +28,8 @@ import IconFont from "@/components/icon-font/icon-font.vue"
 import { useApplicationStore } from "@/store/modules/application";
 const applicationStore = useApplicationStore();
 
-function renderIcon(str: string) {
-    return () => h(IconFont, { class: str, style: { 'font-size': '30px', 'margin-right': '10px' } })
+function renderIcon(name: string, str: string, activeIcon: string) {
+    return () => h(IconFont, { class: name == applicationStore.currentMenu ? activeIcon : str, style: { 'font-size': '30px', 'margin-right': '10px' } })
 }
 
 function redirectLink(name: string, label: string) {
@@ -49,18 +49,18 @@ const menuOptions: MenuOption[] = [
     {
         label: () => redirectLink('home', "小程序广场"),
         key: 'home',
-        icon: renderIcon('icon-icon-xiaochengxuguangchang-moren')
+        icon: renderIcon('home', 'icon-icon-xiaochengxuguangchang-moren', 'icon-icon-xiaochengxuguangchang-xuanzhong')
     },
     {
         label: () => redirectLink('small-program', "我的小程序"),
         key: 'small-program',
-        icon: renderIcon('icon-icon-wodexiaochengxu-moren')
+        icon: renderIcon('small-program', 'icon-icon-wodexiaochengxu-moren', 'icon-icon-wodexiaochengxu-xuanzhong')
     },
     {
         label: '我参与的',
         key: 'my-participation',
-        disabled: true,
-        icon: renderIcon('icon-icon-wocanyude-moren')
+        // disabled: true,
+        icon: renderIcon('my-participation', 'icon-icon-wocanyude-moren', 'icon-icon-wodejifen-xuanzhong')
     },
     {
         label: '我的积分',
@@ -75,8 +75,8 @@ const menuOptions: MenuOption[] = [
         //         { default: () => '我的积分' }
         //     ),
         key: 'my-integral',
-        disabled: true,
-        icon: renderIcon('icon-icon-wodejifen-moren')
+        // disabled: true,
+        icon: renderIcon('my-integral', 'icon-icon-wodejifen-moren', 'icon-icon-wocanyude-xuanzhong')
     }
 ]
 // 创建模版
@@ -149,7 +149,7 @@ const handleUpdateValue = (key: string) => {
     }
 
     .n-menu .n-menu-item-content.n-menu-item-content--selected .n-menu-item-content__icon {
-        color: #5652FF;
+        color: #5652FF !important;
     }
 
 }
