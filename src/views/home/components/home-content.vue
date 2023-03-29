@@ -103,6 +103,13 @@ function useTemplate(item) {
              background-repeat: no-repeat;
              cursor: pointer;
 
+             >div {
+                 overflow: hidden;
+                 text-overflow: ellipsis;
+                 display: -webkit-box;
+                 -webkit-line-clamp: 4;
+                 -webkit-box-orient: vertical;
+             }
 
              >div:first-child {
                  margin-bottom: 24px;
