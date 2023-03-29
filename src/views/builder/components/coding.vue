@@ -116,7 +116,7 @@
   };
   const publishApp = async (isBack = true) => {
     if (cardList.some((a) => a.status != true)) {
-      return message.warning('信息未补充完整');
+      return message.warning('请检查模板配置，完整填写后再提交哟~');
     }
     await putApp(props.appData.uuid, props.appData);
 
@@ -133,7 +133,7 @@
     border-radius: 16px;
     padding: 0 24px;
     box-sizing: border-box;
-
+    user-select: none;
     &.n-collapse-item--active {
       border: 1px solid #5652ff;
     }

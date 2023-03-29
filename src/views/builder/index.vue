@@ -7,7 +7,7 @@
 <template>
   <div class="builder">
     <header>
-      <div class="back" @click="back"><IconFont name="icon-icon-fanhui" />返回</div>
+      <div class="back" @click="$router.go(-1)"><IconFont name="icon-icon-fanhui" />返回</div>
 
       <n-button @click="submit">
         <IconFont name="icon-icon-fabu"></IconFont>
@@ -117,7 +117,10 @@
     await refCoding.value.publishApp(isBack);
   };
   const back = () => {
-    router.push({ name: 'home', query: { type: 'save' } });
+    router.push({
+      name: 'view-template-details',
+      query: { type: 'save', uuid: state.uuid },
+    });
   };
 </script>
 <style lang="scss" scoped>
