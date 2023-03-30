@@ -5,55 +5,56 @@
 -->
 
 <template>
-  <n-collapse
-    default-expanded-names="0"
-    accordion
-    arrow-placement="right"
-    @item-header-click="handleItem"
-  >
-    <n-collapse-item
-      :title="item.label"
-      :name="i"
+  <div class="n-collapse">
+    <div
       v-for="(item, i) in cardList"
       :key="i"
-      class="item-box"
+      @click="handleItem(i)"
+      :class="{ 'n-collapse-item--active': i === current }"
+      class="n-collapse-item n-collapse-item--right-arrow-placement item-box"
     >
-      <n-form
-        ref="formRef"
-        v-show="i == 0"
-        :model="props.appData"
-        label-placement="left"
-        label-width="auto"
-        require-mark-placement="right-hanging"
-      >
-        <n-form-item path="age" label="小程序标题">
-          <n-input v-model:value="props.appData.name" @keydown.enter.prevent />
-        </n-form-item>
-        <n-form-item path="age" label="小程序描述">
-          <n-input
-            v-model:value="props.appData.description"
-            type="textarea"
-            :autosize="{
-              minRows: 3,
-              maxRows: 5,
-            }"
-          />
-        </n-form-item>
-      </n-form>
-      <diy-form v-show="i == 1" :app-data="props.appData"></diy-form>
-      <flow v-show="i == 2" :app-data="props.appData"></flow>
-      <publish v-show="i == 3" :app-data="props.appData" @submit="publishApp"> </publish>
-      <template #arrow>
-        <span></span>
-      </template>
-      <template #header-extra>
-        <IconFont
-          :style="{ color: item.status ? '#5652FF' : '#E3E4E5', fontSize: '24px' }"
-          :name="item.status ? 'icon-icon-yitianwan' : 'icon-a-icon-weitianxiewanStroke'"
-        ></IconFont>
-      </template>
-    </n-collapse-item>
-  </n-collapse>
+      <div class="n-collapse-item__header n-collapse-item__header--active">
+        <div class="n-collapse-item__header-main">{{ item.label }}</div>
+        <div class="n-collapse-item__header-extra">
+          <IconFont
+            :style="{ color: item.status ? '#5652FF' : '#E3E4E5', fontSize: '24px' }"
+            :name="item.status ? 'icon-icon-yitianwan' : 'icon-a-icon-weitianxiewanStroke'"
+          ></IconFont>
+        </div>
+      </div>
+      <n-collapse-transition :show="i === current">
+        <div class="n-collapse-item__content-wrapper" style="">
+          <div class="n-collapse-item__content-inner">
+            <n-form
+              ref="formRef"
+              v-show="i == 0"
+              :model="props.appData"
+              label-placement="left"
+              label-width="auto"
+              require-mark-placement="right-hanging"
+            >
+              <n-form-item path="age" label="小程序标题">
+                <n-input v-model:value="props.appData.name" @keydown.enter.prevent />
+              </n-form-item>
+              <n-form-item path="age" label="小程序描述">
+                <n-input
+                  v-model:value="props.appData.description"
+                  type="textarea"
+                  :autosize="{
+                    minRows: 3,
+                    maxRows: 5,
+                  }"
+                />
+              </n-form-item>
+            </n-form>
+            <diy-form v-show="i == 1" :app-data="props.appData"></diy-form>
+            <flow v-show="i == 2" :app-data="props.appData"></flow>
+            <publish v-show="i == 3" :app-data="props.appData" @submit="publishApp"> </publish>
+          </div>
+        </div>
+      </n-collapse-transition>
+    </div>
+  </div>
 </template>
 <script setup>
   import { useMessage } from 'naive-ui';
@@ -86,7 +87,7 @@
       key: '',
     },
   ]);
-  const current = ref(1);
+  const current = ref(0);
   const rules = {
     name: {
       required: true,
@@ -109,9 +110,8 @@
       props.appData.flow[0].prompt.length > 0;
     cardList[3].status = props.appData.category && true;
   });
-  const handleItem = ({ name }) => {
-    console.log(name);
-    current.value = name;
+  const handleItem = (i) => {
+    current.value = i;
   };
   const publishApp = async (isBack = true) => {
     if (cardList.some((a) => a.status != true)) {
@@ -127,14 +127,31 @@
   defineExpose({ publishApp });
 </script>
 <style lang="scss" scoped>
+  .n-collapse {
+    --n-font-size: 14px;
+    --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+    --n-text-color: rgb(51, 54, 57);
+    --n-divider-color: rgb(239, 239, 245);
+    --n-title-font-size: 14px;
+    --n-title-text-color: rgb(31, 34, 37);
+    --n-title-text-color-disabled: rgba(194, 194, 194, 1);
+    --n-title-font-weight: 400;
+    --n-arrow-color: rgb(51, 54, 57);
+    --n-arrow-color-disabled: rgba(194, 194, 194, 1);
+    --n-item-margin: 16px 0 0 0;
+  }
   .item-box {
     background: #ffffff;
     border-radius: 16px;
     padding: 0 24px;
     box-sizing: border-box;
     user-select: none;
+    cursor: pointer;
     &.n-collapse-item--active {
       border: 1px solid #5652ff;
+    }
+    & + .item-box {
+      margin-top: 16px;
     }
 
     :deep(.n-collapse-item__content-inner) {
@@ -152,6 +169,11 @@
 
     :deep(.n-collapse-item__header) {
       padding: 24px 0 !important;
+      display: flex;
+      align-items: center;
+      .n-collapse-item__header-extra {
+        margin-left: auto;
+      }
     }
 
     :deep(.n-form) {
