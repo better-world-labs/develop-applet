@@ -308,25 +308,6 @@ onUnmounted(() => {
 </script>
 
 <style lang="scss"> .template-details-content {
-     .n-input {
-         background: white;
-         box-shadow: 0px 4px 5px rgba(215, 212, 225, 0.5);
-         border-radius: 12px;
-     }
-
-     .n-input .n-input__border,
-     .n-input .n-input__state-border {
-         border: none !important;
-     }
-
-     .n-input.n-input--focus {
-         border: none;
-     }
-
-     .n-input[type=text]:focus {
-         outline: none;
-     }
-
 
      .n-carousel__dot.n-carousel__dot--active {
          background: #5652FF !important;
@@ -391,26 +372,21 @@ onUnmounted(() => {
              }
 
              .n-input {
-                 width: 100% !important;
-                 height: 56px;
-                 line-height: 56px;
+                 height: 56px !important;
+                 line-height: 56px !important;
                  background: #ffffff;
                  box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
-                 border-radius: 12px;
-                 margin-bottom: 8px;
-                 font-size: 22px;
-                 color: #202226;
-                 padding: 0 24px;
+                 border-radius: 12px !important;
+                 margin-bottom: 8px !important;
+                 font-size: 22px !important;
+                 color: #202226 !important;
+                 padding: 0 24px !important;
                  --n-caret-color: #5652ff !important;
                  --n-border-hover: 1px solid #5652ff !important;
                  --n-border-focus: 1px solid #5652ff !important;
                  --n-loading-color: #5652ff !important;
              }
 
-             .n-input__input .n-input__input-el {
-                 height: 56px !important;
-                 line-height: 56px !important;
-             }
          }
      }
 
@@ -505,7 +481,6 @@ onUnmounted(() => {
                      height: 454px;
                      box-sizing: border-box;
                      padding: 8px 8px 8px 30px;
-
                  }
              }
 

@@ -21,7 +21,7 @@
                         {{ item.name }}
                     </div>
                     <div class="date">
-                        {{ item.createdAt }}
+                        {{ dayjs(item.createdAt).format('YYYY/MM/DD HH:mm:ss') }}
                     </div>
                     <div>
                         已售： <span class="active-text">100</span>积分
@@ -60,6 +60,7 @@ import { useUserStore } from "@/store/modules/user"
 import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui'
 import $router from '@/router/index';
+import dayjs from 'dayjs';
 
 const message = useMessage()
 const { toClipboard } = useClipboard();

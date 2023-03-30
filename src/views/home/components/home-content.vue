@@ -153,10 +153,10 @@ function useTemplate(item) {
              .right {
                  margin-left: auto;
                  font-size: 16px;
-                 line-height: 18px;
                  color: #5B5D62;
                  display: flex;
                  flex-direction: row;
+                 padding-top: 5px;
 
                  .text-box {
                      display: flex;
