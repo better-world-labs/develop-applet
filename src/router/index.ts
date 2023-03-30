@@ -90,7 +90,10 @@ router.beforeEach((to, from, next) => {
 /**
  * 路由后置守卫
  */
-router.afterEach((guard) => {});
+router.afterEach((to) => {
+  const applicationStore = useApplicationStore();
+  applicationStore.setCurrentMenu(to.name as string);
+});
 
 export function useRouter(app: App) {
   app.use(router);
