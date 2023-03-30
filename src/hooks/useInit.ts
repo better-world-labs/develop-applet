@@ -63,6 +63,7 @@ export function useInit() {
 
 
   const goAuth = () => {
+    console.log('进入去登录, goAuth');
     const redirectUrls = [
       'https://moyu.com',
       'https://moyu.dev.openviewtech.com/entry',
