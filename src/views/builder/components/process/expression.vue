@@ -5,6 +5,7 @@
 -->
 <template>
   <div>
+    <div id="editor"></div>
     <div id="editor2"></div>
     <div class="expression">
       <!-- <quill-mention></quill-mention> -->
@@ -92,34 +93,34 @@
         { id: '9', value: 'Weston McKennie', team: 'Schalke 04' },
       ];
 
-      //   var quill = new Quill('#editor', {
-      //     placeholder: 'Start by typing @ for mentions or # for hashtags...',
-      //     modules: {
-      //       mention: {
-      //         allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      //         mentionDenotationChars: ['@', '#'],
-      //         source: function (searchTerm, renderList, mentionChar) {
-      //           let values;
+      var quill = new Quill('#editor', {
+        placeholder: 'Start by typing @ for mentions or # for hashtags...',
+        modules: {
+          mention: {
+            allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+            mentionDenotationChars: ['@', '#'],
+            source: function (searchTerm, renderList, mentionChar) {
+              let values;
 
-      //           if (mentionChar === '@') {
-      //             values = atValues;
-      //           } else {
-      //             values = hashValues;
-      //           }
+              if (mentionChar === '@') {
+                values = atValues;
+              } else {
+                values = hashValues;
+              }
 
-      //           if (searchTerm.length === 0) {
-      //             renderList(values, searchTerm);
-      //           } else {
-      //             const matches = [];
-      //             for (i = 0; i < values.length; i++)
-      //               if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
-      //                 matches.push(values[i]);
-      //             renderList(matches, searchTerm);
-      //           }
-      //         },
-      //       },
-      //     },
-      //   });
+              if (searchTerm.length === 0) {
+                renderList(values, searchTerm);
+              } else {
+                const matches = [];
+                for (i = 0; i < values.length; i++)
+                  if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
+                    matches.push(values[i]);
+                renderList(matches, searchTerm);
+              }
+            },
+          },
+        },
+      });
 
       this.quill2 = new Quill('#editor2', {
         placeholder: 'Start by typing @ for mentions',
