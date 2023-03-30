@@ -27,3 +27,10 @@ export function getUserInfo() {
     url: '/api/users/me/info',
   });
 }
+// 请求积分
+export function getIntegral() {
+  return http.request({
+    method: 'get',
+    url: '/api/points/total',
+  });
+}

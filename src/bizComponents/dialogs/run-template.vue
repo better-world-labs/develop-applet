@@ -13,7 +13,7 @@
       </span>
       <img :src="user.avatar">
       <span>
-        @{{ user.nickname }}，打赏 <span>{{ price }}</span> 积分，请确认扣除积分～
+        @{{ user.nickname }}打赏<span>{{ price }}</span>积分，请确认扣除积分～
       </span>
     </div>
   </div>
