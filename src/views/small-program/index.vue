@@ -15,7 +15,7 @@
             <user-integral></user-integral>
         </div>
         <div class="small-program">
-            <n-grid :x-gap="12" :y-gap="8" :cols="3">
+            <n-grid :x-gap="12" cols="1 s:1 m:2 l:3 xl:3 2xl:4" responsive="screen">
                 <n-grid-item class="item" v-for="item in applicationStore.mineAppList" :key="item.id">
                     <div class="title">
                         {{ item.name }}
@@ -32,15 +32,15 @@
                                 被使用
                             </div>
                             <div>
-                                14次
+                                {{ item.runTimes }} 次
                             </div>
                         </div>
                         <div>
                             <div>
-                                被使用
+                                被采用
                             </div>
                             <div>
-                                15次
+                                {{ item.useTimes }}次
                             </div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@ const { goAuth } = useInit()
 // 编辑应用
 function editApp(item) {
     if (!userStore.token) goAuth();
-    $router.push({ name: 'builder', query: { id: uuid.value } });
+    $router.push({ name: 'builder', query: { id: item.uuid } });
 }
 
 // 分享模版
