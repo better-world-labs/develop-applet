@@ -80,7 +80,6 @@ const menuOptions: MenuOption[] = [
 // 创建模版
 function toHome() {
     $router.push({ name: 'home' });
-    applicationStore.setCurrentMenu('home');
 }
 
 const handleUpdateValue = (key: string) => {
