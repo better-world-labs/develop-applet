@@ -87,7 +87,7 @@
       key: '',
     },
   ]);
-  const current = ref(1);
+  const current = ref(0);
   const rules = {
     name: {
       required: true,
@@ -150,6 +150,9 @@
     &.n-collapse-item--active {
       border: 1px solid #5652ff;
     }
+    & + .item-box {
+      margin-top: 16px;
+    }
 
     :deep(.n-collapse-item__content-inner) {
       padding: 24px 0 !important;
@@ -166,6 +169,11 @@
 
     :deep(.n-collapse-item__header) {
       padding: 24px 0 !important;
+      display: flex;
+      align-items: center;
+      .n-collapse-item__header-extra {
+        margin-left: auto;
+      }
     }
 
     :deep(.n-form) {
