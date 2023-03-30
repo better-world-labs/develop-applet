@@ -72,7 +72,9 @@
                                     公开我的模板结果（用于社区构建）
                                 </n-checkbox>
                                 <n-button type="info" @click="handleValidateButtonClick" :disabled="showLoading">
-                                    立即生成 <br />5积分
+                                    <span>立即生成</span>
+                                    <em> {{ appInfo.price }}积分</em>
+
                                 </n-button>
                             </n-gi>
                         </n-grid>
@@ -111,7 +113,10 @@
                                     <div>{{ result.createdBy.nickname }}</div>
                                 </div>
                                 <div class="label">
-                                    {{ result.inputArgs.join('·') }}
+                                    <span>
+                                        {{ result.inputArgs.join('·')
+                                        }}
+                                    </span>
                                 </div>
                                 <div class="content">
                                     {{ result.content }}
@@ -230,7 +235,6 @@ function receiveMessage(data) {
         },
         onclose() {
             console.log("连接关闭!")
-            clearInterval(timer.value);
             // 刷新结果列表
             getAppResultList();
         },
@@ -280,104 +284,122 @@ onMounted(() => {
 
 })
 
+onUnmounted(() => {
+    if (timer && timer.value) clearInterval(timer.value);
+});
+
 </script>
 
 <style lang="scss">
 .template-details-content {
     .n-input {
-        .template-details-content {
-            .n-input {
-                background: white;
-                box-shadow: 0px 4px 5px rgba(215, 212, 225, 0.5);
-                border-radius: 12px;
-            }
+        background: white;
+        box-shadow: 0px 4px 5px rgba(215, 212, 225, 0.5);
+        border-radius: 12px;
+    }
 
-            .n-input .n-input__border,
-            .n-input .n-input__state-border {
-                border: none !important;
-            }
+    .n-input .n-input__border,
+    .n-input .n-input__state-border {
+        border: none !important;
+    }
 
-            .n-input.n-input--focus {
-                border: none;
-            }
+    .n-input.n-input--focus {
+        border: none;
+    }
 
-            .n-input[type=text]:focus {
-                outline: none;
-            }
+    .n-input[type=text]:focus {
+        outline: none;
+    }
 
 
-            .n-carousel__dot.n-carousel__dot--active {
-                background: #5652FF !important;
-                opacity: 0.6;
-            }
+    .n-carousel__dot.n-carousel__dot--active {
+        background: #5652FF !important;
+        opacity: 0.6;
+    }
 
-            .n-carousel__dot {
-                background: #F7F7FB !important;
-            }
-
-
-            .n-checkbox-box {
-                background: #EEEDFE !important;
-                width: 20px !important;
-                height: 20px !important;
-                border-radius: 20px !important;
-                margin-right: 8px;
-
-                .n-checkbox-box__border {
-                    border: 5px solid #EEEDFE !important;
-                }
-
-            }
-
-            .n-checkbox--checked {
-                .n-checkbox-icon {
-                    margin: 4px;
-                    width: 10px !important;
-                    height: 10px !important;
-                    border-radius: 10px !important;
-                    color: #5652FF !important;
-                    background: #5652FF !important;
-
-                    svg {
-                        opacity: 0 !important;
-                    }
-                }
-            }
-
-            .n-form {
-                padding-top: 16px;
-                padding-right: 16px;
-                overflow-x: hidden;
-                height: 422px;
-                overflow-y: scroll;
-
-                .n-form-item {
-                    margin-bottom: 12px;
-                    padding-left: 2px;
-
-                    .n-form-item-label__text {
-                        font-weight: 500;
-                        font-size: 20px;
-                        line-height: 20px;
-                        color: #181D24;
-                        margin-bottom: 16px;
-
-                    }
-
-                    .n-input {
-                        width: 100% !important;
-                        height: 56px !important;
-                    }
-
-                    .n-input__input .n-input__input-el {
-                        height: 56px !important;
-                        line-height: 56px !important;
-                    }
-                }
-            }
+    .n-carousel__dot {
+        background: #F7F7FB !important;
+    }
 
 
+    .n-checkbox-box {
+        background: #EEEDFE !important;
+        width: 20px !important;
+        height: 20px !important;
+        border-radius: 20px !important;
+        margin-right: 8px;
+
+        .n-checkbox-box__border {
+            border: 5px solid #EEEDFE !important;
         }
+
+    }
+
+    .n-checkbox--checked {
+        .n-checkbox-icon {
+            margin: 4px;
+            width: 10px !important;
+            height: 10px !important;
+            border-radius: 10px !important;
+            color: #5652FF !important;
+            background: #5652FF !important;
+
+            svg {
+                opacity: 0 !important;
+            }
+        }
+    }
+
+    .n-form {
+        padding-top: 16px;
+        padding-right: 16px;
+        overflow-x: hidden;
+        height: 422px;
+        overflow-y: scroll;
+
+        .n-form-item {
+            margin-bottom: 12px;
+            padding-left: 2px;
+
+            .n-form-item-label__text {
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 20px;
+                color: #181D24;
+                margin-bottom: 16px;
+
+            }
+
+            .n-form-item-label__asterisk {
+                display: none;
+            }
+
+            .n-input {
+                width: 100% !important;
+                height: 56px;
+                line-height: 56px;
+                background: #ffffff;
+                box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
+                border-radius: 12px;
+                margin-bottom: 8px;
+                font-size: 22px;
+                color: #202226;
+                padding: 0 24px;
+                --n-caret-color: #5652ff !important;
+                --n-border-hover: 1px solid #5652ff !important;
+                --n-border-focus: 1px solid #5652ff !important;
+                --n-loading-color: #5652ff !important;
+            }
+
+            .n-input__input .n-input__input-el {
+                height: 56px !important;
+                line-height: 56px !important;
+            }
+        }
+    }
+
+    .n-button .n-button__content {
+        display: block;
     }
 }
 </style>
@@ -503,9 +525,9 @@ onMounted(() => {
                     border-radius: 8px;
                     height: 54px;
                     box-sizing: border-box;
-                    font-weight: 500;
+                    font-weight: 500 !important;
                     font-size: 16px;
-                    line-height: 16px;
+                    line-height: 16px !important;
                     color: #FFFFFF;
                     float: right;
                     --n-border: none !important;
@@ -514,6 +536,26 @@ onMounted(() => {
 
                     &:hover {
                         background: linear-gradient(109.65deg, #A994FF 30.38%, #657EFF 98.29%);
+                    }
+
+                    span {
+                        display: flex !important;
+                        flex-direction: column;
+                        font-weight: 500;
+                        font-size: 16px;
+                        line-height: 16px;
+                        color: #ffffff;
+                    }
+
+                    em {
+                        display: flex !important;
+                        flex-direction: column;
+                        font-weight: 400;
+                        font-size: 12px;
+                        line-height: 12px;
+                        margin-top: 6px;
+                        color: #ffffff;
+                        font-style: normal;
                     }
                 }
             }
@@ -618,7 +660,6 @@ onMounted(() => {
                 }
 
                 .label {
-                    background: #FFFFFF;
                     border-radius: 4px;
                     font-weight: 400;
                     font-size: 14px;
@@ -626,8 +667,19 @@ onMounted(() => {
                     color: #000000;
                     margin: 12px 0;
                     height: 30px;
-                    padding: 0 8px;
 
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    white-space: pre-line;
+
+                    span {
+                        display: inline-block;
+                        background: #FFFFFF;
+                        padding: 0 8px;
+                    }
                 }
 
                 .content {

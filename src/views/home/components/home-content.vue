@@ -17,7 +17,7 @@
                             {{ item.results[0]?.content }}
                         </div>
                         <div v-if="item.results[1]">
-                            <span>精彩结果1:</span> {{ item.results[1]?.content }}
+                            <span>精彩结果2:</span> {{ item.results[1]?.content }}
                         </div>
                     </div>
                     <div class="footer-options">
