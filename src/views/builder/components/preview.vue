@@ -6,32 +6,34 @@
 
 <template>
   <div class="title">预览区</div>
-  <div class="preview-box scroll-y">
-    <div class="app-title">{{ props.appData.name }}</div>
-    <div class="user">
-      <img :src="props.appData.createdBy.avatar || userStore.info.avatar" />{{
-        props.appData.createdBy.name || userStore.info.nickname
-      }}
-    </div>
-    <div class="des" style="white-space: pre-wrap">
-      {{ props.appData.description }}
-    </div>
-    <div class="body">
-      <n-form ref="formRef" :model="props.appData.form">
-        <n-form-item :label="item.label" v-for="(item, i) in props.appData.form" :key="item.id">
-          <n-input
-            v-model:value="state.form[i]"
-            :placeholder="item.properties.placeholder"
-            @keydown.enter.prevent
-          />
-        </n-form-item>
-      </n-form>
-    </div>
-    <!-- <div class="action" @click="getAppRun">
+  <div class="bg">
+    <div class="preview-box scroll-y">
+      <div class="app-title">{{ props.appData.name }}</div>
+      <div class="user">
+        <img :src="props.appData.createdBy.avatar || userStore.info.avatar" />{{
+          props.appData.createdBy.name || userStore.info.nickname
+        }}
+      </div>
+      <div class="des" style="white-space: pre-wrap">
+        {{ props.appData.description }}
+      </div>
+      <div class="body">
+        <n-form ref="formRef" :model="props.appData.form">
+          <n-form-item :label="item.label" v-for="(item, i) in props.appData.form" :key="item.id">
+            <n-input
+              v-model:value="state.form[i]"
+              :placeholder="item.properties.placeholder"
+              @keydown.enter.prevent
+            />
+          </n-form-item>
+        </n-form>
+      </div>
+      <!-- <div class="action" @click="getAppRun">
             <span>立即生成</span>
             <em>5积分</em>
         </div>
         <Result ref="resultRef" :form="state.form" :uuid="props.appData.uuid" v-show="state.showResult"></Result> -->
+    </div>
   </div>
 </template>
 <script setup>
@@ -64,10 +66,15 @@
     text-align: center;
   }
 
-  .preview-box {
+  .bg {
     height: 100%;
     background: linear-gradient(132.93deg, #f1f7ff 5.27%, #faf8ff 59.89%, #eeedfe 98.91%);
+  }
+  .preview-box {
+    min-width: 800px;
+    max-width: 1200px;
     padding: 56px 80px;
+    margin: 0 auto;
     overflow-y: auto;
     position: relative;
     box-sizing: border-box;
@@ -155,11 +162,11 @@
         --n-feedback-text-color-error: #d03050;
 
         .n-form-item-label {
-          font-weight: 500;
+          font-weight: 500 !important;
           font-size: 24px !important;
           line-height: 24px !important;
-          margin-bottom: 20px;
-          color: #181d24;
+          margin-bottom: 20px !important;
+          color: #181d24 !important;
 
           grid-area: label;
           align-items: center;
@@ -175,15 +182,15 @@
         }
 
         .n-input {
-          height: 80px;
-          line-height: 80px;
+          height: 78px !important;
+          line-height: 78px !important;
           background: #ffffff;
           box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
-          border-radius: 12px;
-          margin-bottom: 8px;
-          font-size: 22px;
-          color: #202226;
-          padding: 0 24px;
+          border-radius: 12px !important;
+          margin-bottom: 8px !important;
+          font-size: 22px !important;
+          color: #202226 !important;
+          padding: 0 24px !important;
           --n-caret-color: #5652ff !important;
           --n-border-hover: 1px solid #5652ff !important;
           --n-border-focus: 1px solid #5652ff !important;
