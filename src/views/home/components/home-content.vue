@@ -17,7 +17,7 @@
                             {{ item.results[0]?.content }}
                         </div>
                         <div v-if="item.results[1]">
-                            <span>精彩结果1:</span> {{ item.results[1]?.content }}
+                            <span>精彩结果2:</span> {{ item.results[1]?.content }}
                         </div>
                     </div>
                     <div class="footer-options">
@@ -153,10 +153,10 @@ function useTemplate(item) {
              .right {
                  margin-left: auto;
                  font-size: 16px;
-                 line-height: 18px;
                  color: #5B5D62;
                  display: flex;
                  flex-direction: row;
+                 padding-top: 5px;
 
                  .text-box {
                      display: flex;

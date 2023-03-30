@@ -8,7 +8,7 @@
         <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
         <div>
             <div>{{ userStore.info.nickname }}</div>
-            <div><span class="active-text">100</span>积分</div>
+            <div><span class="active-text">{{ userStore.total }}</span>积分</div>
         </div>
     </div>
 </template>

@@ -1,10 +1,10 @@
 /*
  * @Author: Sandy
  * @Date: 2023-03-22 17:10:55
- * @Description: 
+ * @Description:
  */
 import { defineStore } from 'pinia';
-import { getUserInfo, } from '@/api/user';
+import { getUserInfo } from '@/api/user';
 
 const defaultUser = {
   id: 0,
@@ -19,6 +19,7 @@ export const useUserStore = defineStore('user', {
     //avatar: "xxx"  id: 2  nickname: "xx"
     // 成员分享链接
     inviteUrl: '' as string,
+    total: 0,
   }),
   getters: {
     userId(): number {
@@ -29,6 +30,9 @@ export const useUserStore = defineStore('user', {
     },
   },
   actions: {
+    setTotal(total: number) {
+      this.total = total;
+    },
     setInviteUrl(url: string) {
       this.inviteUrl = url;
     },

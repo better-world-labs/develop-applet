@@ -21,7 +21,7 @@
                         {{ item.name }}
                     </div>
                     <div class="date">
-                        {{ item.createdAt }}
+                        {{ dayjs(item.createdAt).format('YYYY/MM/DD HH:mm:ss') }}
                     </div>
                     <div>
                         已售： <span class="active-text">100</span>积分
@@ -31,15 +31,15 @@
                             <div>
                                 被使用
                             </div>
-                            <div>
-                                {{ item.runTimes }} 次
+                            <div class="number">
+                                {{ item.runTimes }}次
                             </div>
                         </div>
                         <div>
                             <div>
                                 被采用
                             </div>
-                            <div>
+                            <div class="number">
                                 {{ item.useTimes }}次
                             </div>
                         </div>
@@ -60,6 +60,7 @@ import { useUserStore } from "@/store/modules/user"
 import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui'
 import $router from '@/router/index';
+import dayjs from 'dayjs';
 
 const message = useMessage()
 const { toClipboard } = useClipboard();
@@ -156,6 +157,10 @@ onMounted(() => {
              div {
                  flex-basis: 50%;
                  text-align: center;
+             }
+
+             .number {
+                 color: #5B5D62;
              }
 
          }
