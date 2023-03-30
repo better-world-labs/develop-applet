@@ -361,6 +361,8 @@
 
         span {
           &.tag {
+            color: #5652ff;
+            border: 1px solid #5652ff;
           }
         }
       }
@@ -372,7 +374,7 @@
 
       .tag {
         font-size: 12px;
-        color: #5652ff;
+        color: #202226;
         padding-left: 10px;
         height: 24px;
         line-height: 24px;
