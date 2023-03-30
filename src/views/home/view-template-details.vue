@@ -95,8 +95,8 @@
                             <p style="white-space: pre-line">{{ printContent }} <span
                                     v-if="cacheContent.length != printContent.length"></span></p>
                             <div class="option">
-                                <IconFont name="icon-icon-dianzan" />
-                                <IconFont name="icon-icon-cai" />
+                                <icon-font-symbol name="icon-icon-dianzan" />
+                                <icon-font-symbol name="icon-icon-cai" />
                             </div>
                         </div>
                     </div>
@@ -239,7 +239,7 @@ function receiveMessage(data) {
         body: JSON.stringify(data),
         async onopen(response) {
             if (response.status == 200) {
-                console.log("连接成功!", response);
+                console.log("连接成功!");
                 showLoading.value = false;
                 printout();
             }
@@ -612,8 +612,9 @@ onUnmounted(() => {
                  margin-top: 12px;
                  text-align: right;
 
-                 .iconfont {
-                     font-size: 24px;
+                 .iconfont-svg {
+                     width: 24px;
+                     height: 24px;
                      margin-right: 8px;
                      cursor: pointer;
                  }
