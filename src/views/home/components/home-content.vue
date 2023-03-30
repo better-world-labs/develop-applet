@@ -5,7 +5,7 @@
 -->
 <template>
     <div class="home-content">
-        <n-grid :x-gap="12" :y-gap="8" :cols="3">
+        <n-grid :x-gap="12" cols="1 s:1 m:2 l:3 xl:3 2xl:4" responsive="screen">
             <n-grid-item v-for="item in applicationStore.appList" :key="item.id" @click="useTemplate(item)">
                 <div class="template-item">
                     <div class="desc-text">
