@@ -8,13 +8,10 @@
   <div class="dialog-content">
     <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" />
     <div class="content">
-      <span>
-        使用该模版，需要给原创作者
-      </span>
-      <img :src="user.avatar">
-      <span>
-        @{{ user.nickname }}打赏<span>{{ price }}</span>积分，请确认扣除积分～
-      </span>
+      使用该模版，需要给原创作者
+      <img :src="user.avatar"> <span class="active">
+        {{ user.nickname }}
+      </span>打赏<span class="active">{{ price }}</span>积分，请确认扣除积分～
     </div>
   </div>
 </template>
@@ -73,15 +70,16 @@ function onCancel() {
   color: #5B5D62;
 
   .content {
-    span {
-      display: inline;
-      line-height: 30px;
-    }
-
     img {
       width: 24px;
       height: 24px;
       border-radius: 24px;
+      vertical-align: middle;
+    }
+
+    .active {
+      color: #5652FF;
+      font-weight: 500;
     }
   }
 

@@ -50,19 +50,19 @@
                             <n-gi>
                                 <div class="icon" @click="shareTemplate">
                                     <div>
-                                        <IconFont name="icon-icon-fenxiang" />
+                                        <icon-font-symbol name="icon-icon-fenxiang" />
                                     </div>
                                     <div>分享</div>
                                 </div>
                                 <div class="icon">
                                     <div>
-                                        <IconFont name="icon-icon-pinglun" />
+                                        <icon-font-symbol name="icon-icon-pinglun" />
                                     </div>
                                     <div>123</div>
                                 </div>
                                 <div class="icon">
                                     <div>
-                                        <IconFont name="icon-icon-yidianzan" style="color:#5652FF" />
+                                        <icon-font-symbol name="icon-icon-yidianzan" />
                                     </div>
                                     <div>456</div>
                                 </div>
@@ -378,7 +378,7 @@ onUnmounted(() => {
                  box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
                  border-radius: 12px !important;
                  margin-bottom: 8px !important;
-                 font-size: 22px !important;
+                 font-size: 18px !important;
                  color: #202226 !important;
                  padding: 0 24px !important;
                  --n-caret-color: #5652ff !important;
@@ -496,12 +496,16 @@ onUnmounted(() => {
                      float: left;
                      display: flex;
                      flex-direction: row;
+                     align-items: center;
+                     align-content: center;
                      cursor: pointer;
 
-                     .iconfont {
-                         padding-right: 8px;
-                         font-size: 24px;
-                         color: #5B5D62;
+                     .iconfont-svg {
+                         width: 18px;
+                         height: 18px;
+                         display: flex;
+                         flex-direction: row;
+                         margin-right: 6px;
                      }
 
                      &:hover {
