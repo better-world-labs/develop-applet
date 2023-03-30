@@ -71,7 +71,7 @@
     background: linear-gradient(132.93deg, #f1f7ff 5.27%, #faf8ff 59.89%, #eeedfe 98.91%);
   }
   .preview-box {
-    min-width: 800px;
+    min-width: 600px;
     max-width: 1200px;
     padding: 56px 80px;
     margin: 0 auto;
