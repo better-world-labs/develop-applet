@@ -5,554 +5,584 @@
 -->
 
 <template>
-    <div>
-        <div class="not-model" v-if="!props.appData.flow[0].type">
-            <p @click="addModel">
-                <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
-            </p>
-        </div>
-        <div class="has-model" v-else>
-            <div class="flow">
-                <p><span>输入提示词</span>
-                    <IconFont :size="18" name="icon-icon-jiantou" />
-                    <span>
-                        <IconFont name="icon-icon-ChatGPT" style="color:#5652FF" />
-                        ChatGPT
-                    </span>
-                    <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
-                </p>
-                <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
-            </div>
-            <div class="description">
-                <p class="expression">
-                    <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
-                        <span v-if="item.type == 'text'"
-                            :class="{ hasVal: item.properties.value?.length || i + 1 !== props.appData.flow[0].prompt.length }"
-                            class="tags-input" :data-num="item.id" @blur="$event => handleBlurEvent($event, item.id)"
-                            @input.stop="changeVal" @click.stop="changeVal" placeholder="输入提示词">{{
-                                item.properties.value }}</span>
-                        <span v-else class="tag">{{
-                            getTag(item.properties.character)
-                        }}
-                            <icon-font-symbol @click.stop="removeTag(i)" class="tag-close remove-icon"
-                                name="icon-icon-shanchubiaoqian" />
-                        </span>
-                    </template>
-                    <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
-                </p>
-                <div class="line"></div>
-                <div class="tags">
-                    <div class="tag" v-for="item in props.appData.form" :key="item.id">{{ item.label }}
-                        <IconFont @click="addTag(item)" :size="18" class="tag-close" name="icon-icon-tianjiabiaoqian" />
-                    </div>
-                    <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
-                </div>
-            </div>
-        </div>
-        <n-modal v-model:show="showModal" preset="dialog" title="Dialog" class="model-box" :trap-focus="false"
-            :show-icon="false">
-            <template #header>
-                <div>选择AI模型</div>
-            </template>
-            <div class="body">
-                <template v-for="item in state.aiList" :key="item.id">
-                    <div class="label">{{ item["category"] }}</div>
-                    <div class="items">
-                        <div class="item" @click="model.available && choose(model)" v-for="model in item.models"
-                            :key="model.id" :class="{ available: model.available }">
-                            <img :src="model.icon" alt="">
-                            <span>{{ model.name }}</span>
-                        </div>
-                    </div>
-                </template>
-            </div>
-        </n-modal>
+  <div>
+    <div class="not-model" v-if="!props.appData.flow[0].type">
+      <p @click="addModel">
+        <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
+      </p>
     </div>
+    <div class="has-model" v-else>
+      <div class="flow">
+        <p>
+          <span>输入提示词</span>
+          <IconFont :size="18" name="icon-icon-jiantou" />
+          <span>
+            <IconFont name="icon-icon-ChatGPT" style="color: #5652ff" />
+            ChatGPT
+          </span>
+          <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
+        </p>
+        <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
+      </div>
+      <div class="description">
+        <p class="expression">
+          <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
+            <span
+              v-if="item.type == 'text'"
+              :class="{
+                hasVal:
+                  item.properties.value?.length || i + 1 !== props.appData.flow[0].prompt.length,
+              }"
+              class="tags-input"
+              :data-num="item.id"
+              @blur="($event) => handleBlurEvent($event, item.id)"
+              @input.stop="changeVal"
+              @click.stop="changeVal"
+              placeholder="输入提示词"
+              >{{ item.properties.value }}</span
+            >
+            <span v-else class="tag"
+              >{{ getTag(item.properties.character) }}
+              <icon-font-symbol
+                @click.stop="removeTag(i)"
+                class="tag-close remove-icon"
+                name="icon-icon-shanchubiaoqian"
+              />
+            </span>
+          </template>
+          <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
+        </p>
+        <div class="line"></div>
+        <div class="tags">
+          <div class="tag" v-for="item in props.appData.form" :key="item.id">
+            {{ item.label }}
+            <IconFont
+              @click="addTag(item)"
+              :size="18"
+              class="tag-close"
+              name="icon-icon-tianjiabiaoqian"
+            />
+          </div>
+          <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
+        </div>
+      </div>
+    </div>
+    <n-modal
+      v-model:show="showModal"
+      preset="dialog"
+      title="Dialog"
+      class="model-box"
+      :trap-focus="false"
+      :show-icon="false"
+    >
+      <template #header>
+        <div>选择AI模型</div>
+      </template>
+      <div class="body">
+        <template v-for="item in state.aiList" :key="item.id">
+          <div class="label">{{ item['category'] }}</div>
+          <div class="items">
+            <div
+              class="item"
+              @click="model.available && choose(model)"
+              v-for="model in item.models"
+              :key="model.id"
+              :class="{ available: model.available }"
+            >
+              <img :src="model.icon" alt="" />
+              <span>{{ model.name }}</span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </n-modal>
+  </div>
 </template>
 <script setup>
-import { v4 as uuid } from 'uuid';
-import { getAIList } from '@/api/application'
-// ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
-const props = defineProps(['appData'])
-const showModal = ref(false)
-// const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
-const addModel = () => {
+  import { v4 as uuid } from 'uuid';
+  import { getAIList } from '@/api/application';
+  // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+  const props = defineProps(['appData']);
+  const showModal = ref(false);
+  // const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
+  const addModel = () => {
     showModal.value = true;
-}
-const choose = (model) => {
+  };
+  const choose = (model) => {
     if (model.available) {
-        props.appData.flow[0].type = model.name
-        showModal.value = false;
+      props.appData.flow[0].type = model.name;
+      showModal.value = false;
     }
-}
-const state = reactive({
+  };
+  const state = reactive({
     currentItem: {
-        "id": uuid(),
-        "type": "text",
-        "properties": {
-            "value": "从"
-        }
+      id: uuid(),
+      type: 'text',
+      properties: {
+        value: '从',
+      },
     }, //prompt
     currentIndex: 0,
     aiList: [],
-})
-const refreshPromptList = () => {
+  });
+  const refreshPromptList = () => {
     nextTick(() => {
-        const list = props.appData.flow[0].prompt
-        const arr = [];
-        list.reduce((p, c) => {
-            if (c.type && p.type !== c.type) {
-                arr.push(c)
-                return c
-            } else if (p.type === 'text' && p.type === c.type) {
-                p.properties.value += c.properties.value
-                // arr[arr.length - 1].properties.value += c.properties.value
-                return p
-                // 连续tag 之间不能添加内容
-                // } else if (p.type === 'tag' && p.type === c.type) {
-                //     // arr[arr.length - 1].properties.value += c.properties.value
-                //     p.value += c.properties.value
-                //     return p
-                // 连续tag 之间有空标签
-                // } else if (p.type === 'tag' && p.type === c.type) {
-                //     // arr[arr.length - 1].properties.value += c.properties.value
-                //     p.value += c.properties.value
-                //     return p
-            } else {
-                arr.push(c)
-                return c
-            }
-        }, {});
-        props.appData.flow[0].prompt = arr
-    })
-}
-const onCreate = () => {
+      const list = props.appData.flow[0].prompt;
+      const arr = [];
+      list.reduce((p, c) => {
+        if (c.type && p.type !== c.type) {
+          arr.push(c);
+          return c;
+        } else if (p.type === 'text' && p.type === c.type) {
+          p.properties.value += c.properties.value;
+          // arr[arr.length - 1].properties.value += c.properties.value
+          return p;
+          // 连续tag 之间不能添加内容
+          // } else if (p.type === 'tag' && p.type === c.type) {
+          //     // arr[arr.length - 1].properties.value += c.properties.value
+          //     p.value += c.properties.value
+          //     return p
+          // 连续tag 之间有空标签
+          // } else if (p.type === 'tag' && p.type === c.type) {
+          //     // arr[arr.length - 1].properties.value += c.properties.value
+          //     p.value += c.properties.value
+          //     return p
+        } else {
+          arr.push(c);
+          return c;
+        }
+      }, {});
+      props.appData.flow[0].prompt = arr;
+    });
+  };
+  const onCreate = () => {
     return {
-        "id": uuid(),
-        "label": "",
-        "type": "text",
-        "properties": {
-            "placeholder": ""
-        }
-    }
-}
+      id: uuid(),
+      label: '',
+      type: 'text',
+      properties: {
+        placeholder: '',
+      },
+    };
+  };
 
-onMounted(async () => {
-    const aiList = await getAIList()
-    state.aiList = aiList.data.list
-})
+  onMounted(async () => {
+    const aiList = await getAIList();
+    state.aiList = aiList.data.list;
+  });
 
-const getNewPrompt = (str = "") => {
+  const getNewPrompt = (str = '') => {
     const newItem = {
-        "id": uuid(),
-        "type": "text",
-        "properties": {
-            "value": str
-        }
-    }
-    return newItem
+      id: uuid(),
+      type: 'text',
+      properties: {
+        value: str,
+      },
+    };
+    return newItem;
     // props.appData.flow[0].prompt.push(newItem)
     // const index = props.appData.flow[0].prompt.length;
     // insertPrompt(index, newItem)
-}
-const insertPrompt = (index, item) => {
+  };
+  const insertPrompt = (index, item) => {
     const list = props.appData.flow[0].prompt;
-    list.splice(index, 0, item)
-}
-// 备用
-const delPrompt = (index, item = {}) => {
+    list.splice(index, 0, item);
+  };
+  // 备用
+  const delPrompt = (index, item = {}) => {
     const list = props.appData.flow[0].prompt;
-    list.splice(index, 1)
-}
-const removeTag = (index, item = {}) => {
+    list.splice(index, 1);
+  };
+  const removeTag = (index, item = {}) => {
     console.log('removeTag');
     const list = props.appData.flow[0].prompt;
-    list.splice(index, 1)
-    refreshPromptList()
-}
-const clear = () => {
-    props.appData.flow[0].type = ''
-    props.appData.flow[0].prompt = [getNewPrompt()]
-}
-let isFirstDel = true;
+    list.splice(index, 1);
+    refreshPromptList();
+  };
+  const clear = () => {
+    props.appData.flow[0].type = '';
+    props.appData.flow[0].prompt = [getNewPrompt()];
+  };
+  let isFirstDel = true;
 
-const getTag = (uuid) => {
+  const getTag = (uuid) => {
     const list = props.appData.form;
-    const findTag = list.find(f => f.id == uuid);
+    const findTag = list.find((f) => f.id == uuid);
     if (findTag) {
-        return findTag['label']
+      return findTag['label'];
     }
-}
-const addTag = (item) => {
+  };
+  const addTag = (item) => {
     const newTag = {
-        "id": uuid(),
-        "type": "tag",
-        "properties": {
-            "character": item.id,
-            "from": "form"
-        }
-    }
-    const { currentIndex, currentItem } = state
+      id: uuid(),
+      type: 'tag',
+      properties: {
+        character: item.id,
+        from: 'form',
+      },
+    };
+    const { currentIndex, currentItem } = state;
 
     const list = props.appData.flow[0].prompt;
-    const findIndex = list.findIndex(f => f.id == currentItem.id);
+    const findIndex = list.findIndex((f) => f.id == currentItem.id);
     // list.splice(findIndex, 0, newTag)
-    console.log(currentIndex, findIndex, currentItem.properties.value, currentItem.properties.value.length - 1);
+    console.log(
+      currentIndex,
+      findIndex,
+      currentItem.properties.value,
+      currentItem.properties.value.length - 1
+    );
     // 特殊处理 长度为1 最后一个text tag加载后面
     if (findIndex + 1 == list.length && currentItem.properties.value.length === 1) {
-        insertPrompt(findIndex + 1, newTag)
-        if (findIndex + 2 == list.length) insertPrompt(list.length, getNewPrompt())
-        return
+      insertPrompt(findIndex + 1, newTag);
+      if (findIndex + 2 == list.length) insertPrompt(list.length, getNewPrompt());
+      return;
     }
     // 常规逻辑
     if (currentIndex == 0) {
-        insertPrompt(findIndex, newTag)
+      insertPrompt(findIndex, newTag);
     } else if (currentIndex == currentItem.properties.value.length) {
-        insertPrompt(findIndex + 1, newTag)
-        if (findIndex + 2 == list.length) insertPrompt(list.length, getNewPrompt())
+      insertPrompt(findIndex + 1, newTag);
+      if (findIndex + 2 == list.length) insertPrompt(list.length, getNewPrompt());
     } else {
-        const str = currentItem.properties.value;
-        const textL = getNewPrompt(str.slice(0, currentIndex))
-        const textR = getNewPrompt(str.slice(currentIndex))
-        list.splice(findIndex, 1, textL, newTag, textR)
-        state.currentItem = list[findIndex + 2]
-        // 重置选择的位置为0
-        state.currentIndex = 0
+      const str = currentItem.properties.value;
+      const textL = getNewPrompt(str.slice(0, currentIndex));
+      const textR = getNewPrompt(str.slice(currentIndex));
+      list.splice(findIndex, 1, textL, newTag, textR);
+      state.currentItem = list[findIndex + 2];
+      // 重置选择的位置为0
+      state.currentIndex = 0;
     }
-}
-// TODO 焦点有问题
-const changeVal = (e) => {
+  };
+  // TODO 焦点有问题
+  const changeVal = (e) => {
     // state.currentIndex = getSelection().getRangeAt(0);
-    var CaretPos = 0, ctrl = e.target;
+    var CaretPos = 0,
+      ctrl = e.target;
     if (document.selection) {
-        ctrl.focus()
-        var Sel = document.selection.createRange()
-        Sel.moveStart('character', -ctrl.value.length)
-        CaretPos = Sel.text.length
+      ctrl.focus();
+      var Sel = document.selection.createRange();
+      Sel.moveStart('character', -ctrl.value.length);
+      CaretPos = Sel.text.length;
     } else if (ctrl.selectionStart || ctrl.selectionStart === '0') {
-        CaretPos = ctrl.selectionStart
+      CaretPos = ctrl.selectionStart;
     }
-    console.log(CaretPos)
-    state.currentIndex = getSelection().getRangeAt(0).startOffset
-    console.log("change", state.currentIndex, e.target.dataset['num'])
+    console.log(CaretPos);
+    state.currentIndex = getSelection().getRangeAt(0).startOffset;
+    console.log('change', state.currentIndex, e.target.dataset['num']);
     const list = props.appData.flow[0].prompt;
-    state.currentItem = list.find(f => f.id == e.target.dataset['num'])
-}
+    state.currentItem = list.find((f) => f.id == e.target.dataset['num']);
+  };
 
-const handleBlurEvent = (e, uuid) => {
+  const handleBlurEvent = (e, uuid) => {
     // this.data = e.target.innerHTML;
     nextTick(() => {
-        console.log("handleBlurEvent", e, uuid)
-        const list = props.appData.flow[0].prompt;
-        const findTag = list.find(f => f.id == uuid);
-        if (findTag && findTag['type'] == 'text') {
-            findTag['properties']['value'] = e.target.innerHTML
-        }
-        refreshPromptList()
-    })
-}
-
+      console.log('handleBlurEvent', e, uuid);
+      const list = props.appData.flow[0].prompt;
+      const findTag = list.find((f) => f.id == uuid);
+      if (findTag && findTag['type'] == 'text') {
+        findTag['properties']['value'] = e.target.innerHTML;
+      }
+      refreshPromptList();
+    });
+  };
 </script>
 <style lang="scss" scoped>
-.not-model {
+  .not-model {
     p {
-        color: #D9D9D9;
-        border-top: 2px dashed rgba(0, 0, 0, 0.2);
-        position: relative;
-        cursor: pointer;
+      color: #d9d9d9;
+      border-top: 2px dashed rgba(0, 0, 0, 0.2);
+      position: relative;
+      cursor: pointer;
 
-        svg {
-            position: absolute;
-            left: 0;
-            top: -12px;
-            width: 24px;
-            height: 24px;
-            margin-left: 13px;
-        }
+      svg {
+        position: absolute;
+        left: 0;
+        top: -12px;
+        width: 24px;
+        height: 24px;
+        margin-left: 13px;
+      }
     }
+  }
 
-
-}
-
-
-.has-model {
+  .has-model {
     .flow {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      margin-bottom: 12px;
+
+      p {
+        flex: 1;
         display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin-bottom: 12px;
+        align-items: center;
 
-        p {
-            flex: 1;
-            display: flex;
-            align-items: center;
+        span {
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 16px;
+          color: #5b5d62;
 
-            span {
-                font-weight: 500;
-                font-size: 16px;
-                line-height: 16px;
-                color: #5B5D62;
-
-                i {
-                    margin: 0 4px 0 0;
-                }
-            }
-
-            i {
-                margin: 0 11px;
-            }
+          i {
+            margin: 0 4px 0 0;
+          }
         }
 
-        .del {}
+        i {
+          margin: 0 11px;
+        }
+      }
+
+      .del {
+      }
     }
 
     .description {
-        color: #5B5D62;
-        background: #F3F3F7;
-        border-radius: 21px;
+      color: #5b5d62;
+      background: #f3f3f7;
+      border-radius: 21px;
 
-        .expression {
-            // display: flex;
-            min-height: 42px;
-            word-break: break-all;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            gap: 4px;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 8px 16px;
-            font-size: 14px;
-            line-height: 24px;
-            margin: 0;
-            overflow: auto;
-            cursor: text;
+      .expression {
+        // display: flex;
+        min-height: 42px;
+        word-break: break-all;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 4px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 16px;
+        font-size: 14px;
+        line-height: 24px;
+        margin: 0;
+        overflow: auto;
+        cursor: text;
 
-            span {
-                &.tag {}
-            }
+        span {
+          &.tag {
+          }
+        }
+      }
+
+      .line {
+        background: #ffffff;
+        height: 2px;
+      }
+
+      .tag {
+        font-size: 12px;
+        color: #5652ff;
+        padding-left: 10px;
+        height: 24px;
+        line-height: 24px;
+        border: 1px solid #abacae;
+        box-sizing: border-box;
+        border-radius: 15px;
+        display: inline-flex;
+        width: fit-content;
+        align-items: center;
+        padding: 2px 4px 2px 8px;
+
+        .tag-close {
+          // width: 22px;
+          // height: 20px;
+          margin-left: 4px;
+          cursor: pointer;
+          // background: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.578 5l2.93-3.493a.089.089 0 0 0-.068-.146h-.891a.182.182 0 0 0-.137.064l-2.417 2.88-2.416-2.88a.178.178 0 0 0-.137-.064h-.89a.089.089 0 0 0-.069.146L4.413 5l-2.93 3.493a.089.089 0 0 0 .068.146h.89a.182.182 0 0 0 .138-.064l2.416-2.88 2.417 2.88c.033.04.083.064.137.064h.89a.089.089 0 0 0 .069-.146l-2.93-3.493z' fill='%23000' fill-opacity='.45'/%3E%3C/svg%3E") center no-repeat;
         }
 
-        .line {
-            background: #FFFFFF;
-            height: 2px;
+        .remove-icon {
+          width: 18px;
+          height: 18px;
         }
+      }
+
+      .tags {
+        padding: 9px 16px 1px 16px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        width: 100%;
+        box-sizing: border-box;
 
         .tag {
-            font-size: 12px;
-            color: #5652FF;
-            padding-left: 10px;
-            height: 24px;
-            line-height: 24px;
-            border: 1px solid #ABACAE;
-            box-sizing: border-box;
-            border-radius: 15px;
-            display: inline-flex;
-            width: fit-content;
-            align-items: center;
-            padding: 2px 4px 2px 8px;
+          margin-bottom: 8px;
+          margin-right: 10px;
+        }
+      }
 
-            .tag-close {
-                // width: 22px;
-                // height: 20px;
-                margin-left: 4px;
-                cursor: pointer;
-                // background: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.578 5l2.93-3.493a.089.089 0 0 0-.068-.146h-.891a.182.182 0 0 0-.137.064l-2.417 2.88-2.416-2.88a.178.178 0 0 0-.137-.064h-.89a.089.089 0 0 0-.069.146L4.413 5l-2.93 3.493a.089.089 0 0 0 .068.146h.89a.182.182 0 0 0 .138-.064l2.416-2.88 2.417 2.88c.033.04.083.064.137.064h.89a.089.089 0 0 0 .069-.146l-2.93-3.493z' fill='%23000' fill-opacity='.45'/%3E%3C/svg%3E") center no-repeat;
-            }
+      .tags-input {
+        flex: auto;
+        border: 0;
+        outline: 0;
+        padding: 0;
+        font-size: 14px;
+        line-height: 23px;
+        display: inline-block;
+        min-width: 20%;
+        background: transparent;
+        word-break: break-all;
+        -webkit-user-modify: read-write-plaintext-only;
 
-            .remove-icon {
-                width: 18px;
-                height: 18px;
-            }
+        &.hasVal {
+          display: inline;
+          min-width: 8px;
+        }
+      }
+
+      .tags-input:focus-within,
+      .tags-input:active {
+        &::before {
+          content: '';
         }
 
-        .tags {
-            padding: 9px 16px 1px 16px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
-            width: 100%;
-            box-sizing: border-box;
+        // outline: auto #4F46E5;
+      }
 
-            .tag {
-                margin-bottom: 8px;
-                margin-right: 10px;
-            }
-        }
+      .expression:focus-within,
+      .expression:active {
+        // outline: auto #4F46E5;
+      }
 
-        .tags-input {
-            flex: auto;
-            border: 0;
-            outline: 0;
-            padding: 0;
-            font-size: 14px;
-            line-height: 23px;
-            display: inline-block;
-            min-width: 20%;
-            background: transparent;
-            word-break: break-all;
-            -webkit-user-modify: read-write-plaintext-only;
+      .tags-input:empty::before {
+        content: ' ';
+        color: #828282;
+      }
 
-            &.hasVal {
-                display: inline;
-                min-width: 8px;
-            }
-        }
-
-        .tags-input:focus-within,
-        .tags-input:active {
-            &::before {
-                content: ''
-            }
-
-            // outline: auto #4F46E5;
-        }
-
-        .expression:focus-within,
-        .expression:active {
-            // outline: auto #4F46E5;
-        }
-
-
-        .tags-input:empty::before {
-            content: ' ';
-            color: #828282;
-        }
-
-        .tags-input:last-child:empty::before,
-        .tags-input:only-child:empty::before {
-            content: attr(placeholder);
-            color: #828282;
-        }
+      .tags-input:last-child:empty::before,
+      .tags-input:only-child:empty::before {
+        content: attr(placeholder);
+        color: #828282;
+      }
     }
-
 
     :deep(.diy-group) {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-
-        .n-input {
-            font-size: 16px;
-            --n-border-radius: 21px !important;
-            --n-font-size: 16px !important;
-            --n-height: 42px !important;
-            background: #F3F3F7;
-            margin-bottom: 16px;
-            // --n-caret-color: #5652FF !important;
-            // --n-border-hover: 1px solid #5652FF !important;
-            // --n-border-focus: 1px solid #5652FF !important;
-            // --n-loading-color: #5652FF !important;
-            --n-caret-color: rgb(51, 54, 57) !important;
-            --n-border-hover: 1px solid transparent !important;
-            --n-border-focus: 1px solid transparent !important;
-            --n-loading-color: transparent !important;
-            --n-box-shadow-focus: 0 0 0 2px transparent !important;
-        }
-
+      .n-input {
+        font-size: 16px;
+        --n-border-radius: 21px !important;
+        --n-font-size: 16px !important;
+        --n-height: 42px !important;
+        background: #f3f3f7;
+        margin-bottom: 16px;
+        // --n-caret-color: #5652FF !important;
+        // --n-border-hover: 1px solid #5652FF !important;
+        // --n-border-focus: 1px solid #5652FF !important;
+        // --n-loading-color: #5652FF !important;
+        --n-caret-color: rgb(51, 54, 57) !important;
+        --n-border-hover: 1px solid transparent !important;
+        --n-border-focus: 1px solid transparent !important;
+        --n-loading-color: transparent !important;
+        --n-box-shadow-focus: 0 0 0 2px transparent !important;
+      }
     }
-}
+  }
 
-:deep(.n-dynamic-input-item__action) {
+  :deep(.n-dynamic-input-item__action) {
     margin-top: 3px !important;
-}
+  }
 
-
-:deep(button.n-button) {
-    --n-text-color-hover: #5652FF !important;
-    --n-text-color-pressed: #5652FF !important;
-    --n-text-color-focus: #5652FF !important;
-    --n-border-hover: 1px solid #5652FF !important;
-    --n-border-pressed: 1px solid #5652FF !important;
-    --n-border-focus: 1px solid #5652FF !important;
+  :deep(button.n-button) {
+    --n-text-color-hover: #5652ff !important;
+    --n-text-color-pressed: #5652ff !important;
+    --n-text-color-focus: #5652ff !important;
+    --n-border-hover: 1px solid #5652ff !important;
+    --n-border-pressed: 1px solid #5652ff !important;
+    --n-border-focus: 1px solid #5652ff !important;
     --n-text-color-focus: rgb(51, 54, 57) !important;
     --n-border-focus: 1px solid rgb(224, 224, 230) !important;
-}
+  }
 
-
-.scroll-y::-webkit-scrollbar {
+  .scroll-y::-webkit-scrollbar {
     /*滚动条整体样式*/
     width: 8px;
     /*高宽分别对应横竖滚动条的尺寸*/
     height: 1px;
     padding-right: 4px;
-}
+  }
 
-.scroll-y::-webkit-scrollbar-thumb {
+  .scroll-y::-webkit-scrollbar-thumb {
     /*滚动条里面小方块*/
     border-radius: 4px;
-    background: #D2D1DC;
+    background: #d2d1dc;
     border-radius: 4px;
-}
+  }
 
-.scroll-y::-webkit-scrollbar-track {
+  .scroll-y::-webkit-scrollbar-track {
     /*滚动条里面轨道*/
     border-radius: 4px;
     background: transparent;
-}
+  }
 </style>
 
 <style lang="scss">
-.model-box.n-dialog.n-modal {
+  .model-box.n-dialog.n-modal {
     background: #fff !important;
     padding: 32px !important;
     width: 624px;
 
     .n-dialog__title {
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 20px;
-        color: #181D24;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 20px;
+      color: #181d24;
     }
 
     .n-dialog__content {
-        margin-top: 0 !important;
+      margin-top: 0 !important;
 
-        .label {
-            margin-top: 32px;
-            margin-bottom: 16px;
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 16px;
-            color: #5B5D62;
-        }
+      .label {
+        margin-top: 32px;
+        margin-bottom: 16px;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 16px;
+        color: #5b5d62;
+      }
 
-        .items {
-            .item {
-                width: 124px;
-                height: 112px;
-                border: 1px solid #5B5D62;
-                border-radius: 8px;
-                display: inline-flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                opacity: .5;
+      .items {
+        .item {
+          width: 124px;
+          height: 112px;
+          border: 1px solid #5b5d62;
+          border-radius: 8px;
+          display: inline-flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          opacity: 0.5;
 
-                &+.item {
-                    margin-left: 16px;
-                }
+          & + .item {
+            margin-left: 16px;
+          }
 
-                &.available {
-                    opacity: 1;
-                    cursor: pointer;
-                }
-
-                img {
-                    margin-bottom: 6px;
-                    width: 40px;
-                    height: 40px;
-                }
-
-                span {
-                    font-weight: 400;
-                    font-size: 14px;
-                    line-height: 24px;
-                    color: #5B5D62;
-                }
+          &.available {
+            opacity: 1;
+            cursor: pointer;
+            &:hover {
+              background: #eeedfe;
             }
+          }
+
+          img {
+            margin-bottom: 6px;
+            width: 40px;
+            height: 40px;
+          }
+
+          span {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 24px;
+            color: #5b5d62;
+          }
         }
+      }
     }
-}
+  }
 </style>
