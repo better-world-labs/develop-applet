@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    copy: typeof import('./../src/bizComponents/dialogs/prompt-save copy.vue')['default']
     DialogContent: typeof import('./../src/components/dialog-content/index.vue')['default']
     IconFont: typeof import('./../src/components/icon-font/icon-font.vue')['default']
     IconFontSymbol: typeof import('./../src/components/icon-font/icon-font-symbol.vue')['default']
@@ -43,6 +44,7 @@ declare module '@vue/runtime-core' {
     Provider: typeof import('./../src/components/app-provider/provider.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    RunTemplate: typeof import('./../src/bizComponents/dialogs/run-template.vue')['default']
     ShowAnimation: typeof import('./../src/components/show-animation/index.vue')['default']
     UploadImage: typeof import('./../src/bizComponents/dialogs/upload-image.vue')['default']
     UserIntegral: typeof import('./../src/components/user-integral/user-integral.vue')['default']

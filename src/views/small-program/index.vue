@@ -31,15 +31,15 @@
                             <div>
                                 被使用
                             </div>
-                            <div>
-                                {{ item.runTimes }} 次
+                            <div class="number">
+                                {{ item.runTimes }}次
                             </div>
                         </div>
                         <div>
                             <div>
                                 被采用
                             </div>
-                            <div>
+                            <div class="number">
                                 {{ item.useTimes }}次
                             </div>
                         </div>
@@ -156,6 +156,10 @@ onMounted(() => {
              div {
                  flex-basis: 50%;
                  text-align: center;
+             }
+
+             .number {
+                 color: #5B5D62;
              }
 
          }

@@ -124,6 +124,7 @@ const handleUpdateValue = (key: string) => {
 
         .n-menu-item-content.n-menu-item-content--selected::before {
             background-color: #EEEDFE;
+            border-radius: 8px !important;
         }
 
         .n-menu-item-content.n-menu-item-content--selected .n-menu-item-content-header a {
@@ -136,6 +137,7 @@ const handleUpdateValue = (key: string) => {
     .n-menu .n-menu-item-content:hover {
         &::before {
             background: #F9F9FC;
+            border-radius: 8px !important;
         }
     }
 
