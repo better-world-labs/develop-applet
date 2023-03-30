@@ -245,7 +245,7 @@ function receiveMessage(data) {
             }
         },
         onmessage(msg) {
-            console.log("收到服务器发来的数据!", JSON.parse(msg.data).content)
+            // console.log("收到服务器发来的数据!", JSON.parse(msg.data).content)
             if (JSON.parse(msg.data).content != undefined) {
                 cacheContent.value += JSON.parse(msg.data).content;
             }
@@ -325,10 +325,6 @@ onUnmounted(() => {
          height: 20px !important;
          border-radius: 20px !important;
          margin-right: 8px;
-         --n-caret-color: #5652ff !important;
-         --n-border-hover: 1px solid #5652ff !important;
-         --n-border-focus: 1px solid #5652ff !important;
-         --n-loading-color: #5652ff !important;
 
          .n-checkbox-box__border {
              border: 5px solid #EEEDFE !important;
