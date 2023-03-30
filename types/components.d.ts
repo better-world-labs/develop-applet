@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     NCheckbox: typeof import('naive-ui')['NCheckbox']
     NCollapse: typeof import('naive-ui')['NCollapse']
     NCollapseItem: typeof import('naive-ui')['NCollapseItem']
+    NCollapseTransition: typeof import('naive-ui')['NCollapseTransition']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
     NDialogProvider: typeof import('naive-ui')['NDialogProvider']
     NDynamicInput: typeof import('naive-ui')['NDynamicInput']
