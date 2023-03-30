@@ -32,7 +32,6 @@
         <n-form-item path="age" label="小程序描述">
           <n-input
             v-model:value="props.appData.description"
-            @keydown.enter.prevent
             type="textarea"
             :autosize="{
               minRows: 3,

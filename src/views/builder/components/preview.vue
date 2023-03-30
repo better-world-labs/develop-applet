@@ -13,7 +13,7 @@
         props.appData.createdBy.name || userStore.info.nickname
       }}
     </div>
-    <div class="des">
+    <div class="des" style="white-space: pre-wrap">
       {{ props.appData.description }}
     </div>
     <div class="body">
