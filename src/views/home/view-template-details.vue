@@ -95,8 +95,8 @@
                             <p style="white-space: pre-line">{{ printContent }} <span
                                     v-if="cacheContent.length != printContent.length"></span></p>
                             <div class="option">
-                                <IconFont name="icon-icon-dianzan" />
-                                <IconFont name="icon-icon-cai" />
+                                <icon-font-symbol name="icon-icon-dianzan" />
+                                <icon-font-symbol name="icon-icon-cai" />
                             </div>
                         </div>
                     </div>
@@ -239,13 +239,13 @@ function receiveMessage(data) {
         body: JSON.stringify(data),
         async onopen(response) {
             if (response.status == 200) {
-                console.log("连接成功!", response);
+                console.log("连接成功!");
                 showLoading.value = false;
                 printout();
             }
         },
         onmessage(msg) {
-            // console.log("收到服务器发来的数据!", JSON.parse(msg.data).content)
+            console.log("收到服务器发来的数据!", JSON.parse(msg.data).content)
             if (JSON.parse(msg.data).content != undefined) {
                 cacheContent.value += JSON.parse(msg.data).content;
             }
@@ -325,6 +325,10 @@ onUnmounted(() => {
          height: 20px !important;
          border-radius: 20px !important;
          margin-right: 8px;
+         --n-caret-color: #5652ff !important;
+         --n-border-hover: 1px solid #5652ff !important;
+         --n-border-focus: 1px solid #5652ff !important;
+         --n-loading-color: #5652ff !important;
 
          .n-checkbox-box__border {
              border: 5px solid #EEEDFE !important;
@@ -612,8 +616,9 @@ onUnmounted(() => {
                  margin-top: 12px;
                  text-align: right;
 
-                 .iconfont {
-                     font-size: 24px;
+                 .iconfont-svg {
+                     width: 24px;
+                     height: 24px;
                      margin-right: 8px;
                      cursor: pointer;
                  }
