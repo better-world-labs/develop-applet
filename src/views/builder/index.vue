@@ -101,6 +101,7 @@
       const appData = await getApp(isEditId);
       if (isCopy) {
         appData.data.uuid = uuid();
+        appData.data.duplicateFrom = isEditId;
         appData.data.name += '-1';
       }
       state.uuid = appData.data.uuid;
