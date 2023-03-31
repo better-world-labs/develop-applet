@@ -7,31 +7,6 @@
   <div>
     <div class="expression">
       <div id="editor2"></div>
-      <!-- <quill-mention></quill-mention> -->
-      <!-- <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
-        <span
-          v-if="item.type == 'text'"
-          :class="{
-            hasVal: item.properties.value?.length || i + 1 !== props.appData.flow[0].prompt.length,
-          }"
-          class="tags-input"
-          :data-num="item.id"
-          @blur="($event) => handleBlurEvent($event, item.id)"
-          @input.stop="changeVal"
-          @click.stop="changeVal"
-          placeholder="输入提示词"
-          >{{ item.properties.value }}</span
-        >
-        <span v-else class="tag"
-          >{{ getTag(item.properties.character) }}
-          <icon-font-symbol
-            @click.stop="removeTag(i)"
-            class="tag-close remove-icon"
-            name="icon-icon-shanchubiaoqian"
-          />
-        </span>
-      </template> -->
-      <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
     </div>
     <div class="line"></div>
     <div class="tags">
@@ -44,12 +19,12 @@
           name="icon-icon-tianjiabiaoqian"
         />
       </div>
-      <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
     </div>
   </div>
 </template>
 
 <script>
+  import { v4 as uuid } from 'uuid';
   var quill2 = null;
   export default {
     data() {
@@ -57,75 +32,13 @@
     },
     props: ['tagList'],
     mounted() {
-      const atValues = [
-        { id: '515fd775-cb54-41f3-b921-56163871e2cf', value: 'Mickey Dooley' },
-        {
-          id: '3f0b7933-57b8-4d9d-b238-f8af62b2e945',
-          value: 'Desmond Waterstone',
-        },
-        { id: '711f68ab-ca20-4011-ab0f-d98c8fac4c05', value: 'Jeralee Fryd' },
-        { id: '775e05fc-72bc-48a1-9508-5c61674734f1', value: 'Eddie Hucquart' },
-        { id: 'e8701885-105e-4a21-b200-98e559776655', value: 'Nathalia Whear' },
-      ];
-
-      const hashValues = [
-        { id: '0075256a-19c2-4a2d-b549-627000bcc3bc', value: 'Accounting' },
-        {
-          id: '91e8901b-e3bf-4158-8ddf-7f5d9e8cbb7f',
-          value: 'Product Management',
-        },
-        { id: 'c3373e89-7ab8-4a45-8b69-0b0cc49d89a9', value: 'Marketing' },
-        { id: 'fa22f1d2-16c8-4bea-b869-8acad16e187a', value: 'Engineering' },
-        { id: 'fe681168-f315-42f0-b78b-b1ea787fa1fd', value: 'Accounting' },
-      ];
-
-      const advancedValues = [
-        { id: '1', value: 'Manuel Neuer', team: 'Bayern Munich' },
-        { id: '2', value: 'Robert Lewandowski', team: 'Bayern Munich' },
-        { id: '3', value: 'Thomas Muller', team: 'Bayern Munich' },
-        { id: '4', value: 'Roman Burki', team: 'Borussia Dortmund' },
-        { id: '5', value: 'Jadon Sancho', team: 'Borussia Dortmund' },
-        { id: '6', value: 'Marco Reus', team: 'Borussia Dortmund' },
-        { id: '7', value: 'Alexander Nubel', team: 'Schalke 04' },
-        { id: '8', value: 'Bastian Oczipka', team: 'Schalke 04' },
-        { id: '9', value: 'Weston McKennie', team: 'Schalke 04' },
-      ];
-
-      // var quill = new Quill('#editor', {
-      //   placeholder: 'Start by typing @ for mentions or # for hashtags...',
-      //   modules: {
-      //     mention: {
-      //       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      //       mentionDenotationChars: ['@', '#'],
-      //       source: function (searchTerm, renderList, mentionChar) {
-      //         let values;
-
-      //         if (mentionChar === '@') {
-      //           values = atValues;
-      //         } else {
-      //           values = hashValues;
-      //         }
-
-      //         if (searchTerm.length === 0) {
-      //           renderList(values, searchTerm);
-      //         } else {
-      //           const matches = [];
-      //           for (i = 0; i < values.length; i++)
-      //             if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
-      //               matches.push(values[i]);
-      //           renderList(matches, searchTerm);
-      //         }
-      //       },
-      //     },
-      //   },
-      // });
-
+      const self = this;
       quill2 = new Quill('#editor2', {
-        placeholder: 'Start by typing @ for mentions',
+        placeholder: '输入提示词',
         modules: {
           mention: {
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-            mentionDenotationChars: ['@'],
+            mentionDenotationChars: ['|||||'],
             positioningStrategy: 'fixed',
             renderItem: (data) => {
               if (data.disabled) {
@@ -140,11 +53,11 @@
               var matches = [];
 
               if (searchTerm.length === 0) {
-                matches = advancedValues;
+                matches = self.tagList;
               } else {
-                for (i = 0; i < advancedValues.length; i++)
-                  if (~advancedValues[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
-                    matches.push(advancedValues[i]);
+                for (i = 0; i < self.tagList.length; i++)
+                  if (~self.tagList[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
+                    matches.push(self.tagList[i]);
               }
 
               //create group header items
@@ -172,8 +85,26 @@
         },
       });
 
+      function getElementByAttr(tag, dataAttr, reg) {
+        var aElements = document.querySelectorAll(tag);
+        console.log(reg, aElements, dataAttr);
+        for (var i = 0; i < aElements.length; i++) {
+          var ele = aElements[i].getAttribute(dataAttr);
+          if (reg.test(ele)) {
+            return aElements[i];
+          }
+        }
+      }
+
       window.addEventListener('mention-clicked', function (event) {
         console.log(event);
+        const dom = getElementByAttr(
+          '.expression .mention',
+          `data-uuid`,
+          new RegExp(event.value.uuid)
+        );
+        console.log(dom);
+        dom.remove();
       });
     },
     methods: {
@@ -181,12 +112,13 @@
         quill2.getModule('mention').openMenu('@');
       },
 
-      addTag() {
+      addTag(item) {
         quill2.getModule('mention').insertItem(
           {
-            denotationChar: '',
-            id: '123abc',
-            value: 'Hello World',
+            denotationChar: item.label, //'',
+            id: item.id,
+            uuid: uuid(),
+            value: '', //item.label,
           },
           true
         );
@@ -239,6 +171,36 @@
     height: 2px;
   }
 
+  .mention {
+    // margin-right: 2px;
+    margin: 0 1px;
+
+    background-color: transparent;
+    color: #202226;
+    height: 24px;
+    cursor: pointer;
+    // padding-left: 10px;
+    > span {
+      user-select: none;
+      height: 22px;
+      line-height: 22px;
+      display: inline-flex;
+      width: fit-content;
+      align-items: center;
+      box-sizing: border-box;
+      border-radius: 15px;
+      font-size: 12px;
+      border: 1px solid #abacae;
+      padding: 2px 4px;
+      color: #5652ff;
+      border: 1px solid #5652ff;
+      margin: 0;
+    }
+    // padding: 2px 4px 2px 8px;
+  }
+  .expression span.mention > span {
+  }
+
   .tag {
     font-size: 12px;
     color: #202226;
@@ -265,5 +227,66 @@
       width: 18px;
       height: 18px;
     }
+  }
+
+  .tags {
+    padding: 9px 16px 1px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+
+    .tag {
+      margin-bottom: 8px;
+      margin-right: 10px;
+      i {
+        color: #5652ff;
+      }
+    }
+  }
+
+  .tags-input {
+    flex: auto;
+    border: 0;
+    outline: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 23px;
+    display: inline-block;
+    min-width: 20%;
+    background: transparent;
+    word-break: break-all;
+    -webkit-user-modify: read-write-plaintext-only;
+
+    &.hasVal {
+      display: inline;
+      min-width: 8px;
+    }
+  }
+
+  .tags-input:focus-within,
+  .tags-input:active {
+    &::before {
+      content: '';
+    }
+
+    // outline: auto #4F46E5;
+  }
+
+  .expression:focus-within,
+  .expression:active {
+    // outline: auto #4F46E5;
+  }
+
+  .tags-input:empty::before {
+    content: ' ';
+    color: #828282;
+  }
+
+  .tags-input:last-child:empty::before,
+  .tags-input:only-child:empty::before {
+    content: attr(placeholder);
+    color: #828282;
   }
 </style>
