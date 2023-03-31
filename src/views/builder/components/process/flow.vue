@@ -11,7 +11,7 @@
         <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
       </p>
     </div>
-    <div class="has-model" v-show="props.appData.flow[0].type">
+    <div class="has-model" v-if="props.appData.flow[0].type">
       <div class="flow">
         <p>
           <span>输入提示词</span>
@@ -27,6 +27,8 @@
       <div class="description">
         <!-- <mention @input="handleComment"></mention> -->
         <expression
+          ref="expressionRef"
+          @refreshPromptData="refreshPromptData"
           :tagList="props.appData.form"
           :prompt="props.appData.flow[0].prompt"
         ></expression>
@@ -71,6 +73,7 @@
   // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
   const props = defineProps(['appData']);
   const showModal = ref(false);
+  const expressionRef = ref('');
   // const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
   const addModel = () => {
     showModal.value = true;
@@ -256,6 +259,14 @@
       refreshPromptList();
     });
   };
+  const refreshPromptData = (data) => {
+    console.log(data, 'refreshPrompt');
+    props.appData.flow[0].prompt = data;
+  };
+  const getPromptData = () => {
+    // props.appData.flow[0].prompt = await expressionRef.value.getData();
+  };
+  // defineExpose({ getPromptData });
 </script>
 <style lang="scss" scoped>
   .not-model {

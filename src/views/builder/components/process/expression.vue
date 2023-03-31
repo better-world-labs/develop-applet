@@ -30,7 +30,7 @@
     data() {
       return {};
     },
-    props: ['tagList'],
+    props: ['tagList', 'prompt'],
     mounted() {
       const self = this;
       quill2 = new Quill('#editor2', {
@@ -40,6 +40,7 @@
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
             mentionDenotationChars: ['|||||'],
             positioningStrategy: 'fixed',
+            spaceAfterInsert: false,
             renderItem: (data) => {
               if (data.disabled) {
                 return `<div style="height:10px;line-height:10px;font-size:10px;background-color:#ccc;margin:0 -20px;padding:4px">${data.value}</div>`;
@@ -85,6 +86,10 @@
         },
       });
 
+      window.setTimeout(() => {
+        this.displayMention();
+      }, 500);
+
       function getElementByAttr(tag, dataAttr, reg) {
         var aElements = document.querySelectorAll(tag);
         console.log(reg, aElements, dataAttr);
@@ -104,12 +109,42 @@
           new RegExp(event.value.uuid)
         );
         console.log(dom);
-        dom.remove();
+        // event.remove();
+      });
+      window.addEventListener('click', function (event) {
+        self.getData();
       });
     },
     methods: {
       showMenu() {
         quill2.getModule('mention').openMenu('@');
+      },
+
+      async getData() {
+        const mentions = quill2.getContents();
+        const res = mentions.map((m) => {
+          if (typeof m.insert == 'string') {
+            return {
+              id: uuid(),
+              type: 'text',
+              properties: {
+                value: m.insert,
+              },
+            };
+          } else {
+            console.log(m);
+            return {
+              id: m.insert.mention.id,
+              type: 'tag',
+              properties: {
+                value: m.insert.mention.denotationChar,
+              },
+            };
+          }
+        });
+        console.log(res);
+        // return res;
+        this.$emit('refreshPromptData', res);
       },
 
       addTag(item) {
@@ -122,6 +157,37 @@
           },
           true
         );
+      },
+
+      getTag(uuid) {
+        const findTag = this.tagList.find((f) => f.id == uuid);
+        if (findTag) {
+          return findTag['label'];
+        }
+      },
+      displayMention() {
+        const dom = document.querySelector('.expression .ql-editor p');
+
+        console.log('displayMention', dom);
+        const { prompt } = this;
+        const html = prompt.reduce((p, c) => {
+          console.log(p, c);
+          const s =
+            c.type === 'tag'
+              ? `<span
+            class='mention'
+            data-denotation-char='${this.getTag(c.properties.character)}'
+            data-id='${c.properties.character}'
+            data-uuid='${c.id}'
+            data-value=''
+          >
+            <span class='ql-mention-denotation-char'>${this.getTag(c.properties.character)}</span>
+          </span>`
+              : c.properties.value;
+          p += s;
+          return p;
+        }, '');
+        dom.innerHTML = html || '';
       },
     },
   };
