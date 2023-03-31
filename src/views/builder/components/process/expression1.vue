@@ -5,46 +5,20 @@
 -->
 <template>
   <div>
-    <div class="expression">
-      <div id="editor2"></div>
-      <!-- <quill-mention></quill-mention> -->
-      <!-- <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
-        <span
-          v-if="item.type == 'text'"
-          :class="{
-            hasVal: item.properties.value?.length || i + 1 !== props.appData.flow[0].prompt.length,
-          }"
-          class="tags-input"
-          :data-num="item.id"
-          @blur="($event) => handleBlurEvent($event, item.id)"
-          @input.stop="changeVal"
-          @click.stop="changeVal"
-          placeholder="输入提示词"
-          >{{ item.properties.value }}</span
-        >
-        <span v-else class="tag"
-          >{{ getTag(item.properties.character) }}
-          <icon-font-symbol
-            @click.stop="removeTag(i)"
-            class="tag-close remove-icon"
-            name="icon-icon-shanchubiaoqian"
-          />
-        </span>
-      </template> -->
-      <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
-    </div>
-    <div class="line"></div>
-    <div class="tags">
-      <div class="tag" v-for="item in tagList" :key="item.id">
-        {{ item.label }}
-        <IconFont
-          @click="addTag(item)"
-          :size="18"
-          class="tag-close"
-          name="icon-icon-tianjiabiaoqian"
-        />
-      </div>
-      <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
+    <h1>test</h1>
+    <p>效果展示</p>
+
+    <h2>Simple Demo</h2>
+    <!-- Create the editor container -->
+    <div id="editor"></div>
+
+    <br />
+    <h2>Advanced Demo</h2>
+    <p>加载消息，编程方法</p>
+    <div id="editor2"></div>
+    <div style="margin-top: 5px">
+      <button onclick="showMenu()">Show @ Menu</button>
+      <button @click="addMention()">Add Tag</button>
     </div>
   </div>
 </template>
@@ -53,7 +27,9 @@
   var quill2 = null;
   export default {
     data() {
-      return {};
+      return {
+        // quill2: null,
+      };
     },
     props: ['tagList'],
     mounted() {
@@ -91,34 +67,34 @@
         { id: '9', value: 'Weston McKennie', team: 'Schalke 04' },
       ];
 
-      // var quill = new Quill('#editor', {
-      //   placeholder: 'Start by typing @ for mentions or # for hashtags...',
-      //   modules: {
-      //     mention: {
-      //       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-      //       mentionDenotationChars: ['@', '#'],
-      //       source: function (searchTerm, renderList, mentionChar) {
-      //         let values;
+      var quill = new Quill('#editor', {
+        placeholder: 'Start by typing @ for mentions or # for hashtags...',
+        modules: {
+          mention: {
+            allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+            mentionDenotationChars: ['@', '#'],
+            source: function (searchTerm, renderList, mentionChar) {
+              let values;
 
-      //         if (mentionChar === '@') {
-      //           values = atValues;
-      //         } else {
-      //           values = hashValues;
-      //         }
+              if (mentionChar === '@') {
+                values = atValues;
+              } else {
+                values = hashValues;
+              }
 
-      //         if (searchTerm.length === 0) {
-      //           renderList(values, searchTerm);
-      //         } else {
-      //           const matches = [];
-      //           for (i = 0; i < values.length; i++)
-      //             if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
-      //               matches.push(values[i]);
-      //           renderList(matches, searchTerm);
-      //         }
-      //       },
-      //     },
-      //   },
-      // });
+              if (searchTerm.length === 0) {
+                renderList(values, searchTerm);
+              } else {
+                const matches = [];
+                for (i = 0; i < values.length; i++)
+                  if (~values[i].value.toLowerCase().indexOf(searchTerm.toLowerCase()))
+                    matches.push(values[i]);
+                renderList(matches, searchTerm);
+              }
+            },
+          },
+        },
+      });
 
       quill2 = new Quill('#editor2', {
         placeholder: 'Start by typing @ for mentions',
@@ -172,19 +148,19 @@
         },
       });
 
+      function showMenu() {
+        quill2.getModule('mention').openMenu('@');
+      }
+
       window.addEventListener('mention-clicked', function (event) {
         console.log(event);
       });
     },
     methods: {
-      showMenu() {
-        quill2.getModule('mention').openMenu('@');
-      },
-
-      addTag() {
+      addMention() {
         quill2.getModule('mention').insertItem(
           {
-            denotationChar: '',
+            denotationChar: '@',
             id: '123abc',
             value: 'Hello World',
           },
@@ -196,10 +172,10 @@
 </script>
 
 <style lang="scss">
-  // .ql-editor {
-  //   border: 1px solid #a3a3a3;
-  //   border-radius: 6px;
-  // }
+  .ql-editor {
+    border: 1px solid #a3a3a3;
+    border-radius: 6px;
+  }
 
   .ql-editor-disabled {
     border-radius: 6px;
@@ -207,9 +183,9 @@
     transition-duration: 0.5s;
   }
 
-  // .ql-editor:focus {
-  //   border: 1px solid #025fae;
-  // }
+  .ql-editor:focus {
+    border: 1px solid #025fae;
+  }
   //   .expression {
   //     // display: flex;
   //     min-height: 42px;
