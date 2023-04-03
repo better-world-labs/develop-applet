@@ -11,7 +11,7 @@
         <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
       </p>
     </div>
-    <div class="has-model" v-if="props.appData.flow[0].type">
+    <div class="has-model" v-show="props.appData.flow[0].type">
       <div class="flow">
         <p>
           <span>输入提示词</span>
@@ -260,13 +260,9 @@
     });
   };
   const refreshPromptData = (data) => {
-    console.log(data, 'refreshPrompt');
+    // console.log(data, 'refreshPrompt');
     props.appData.flow[0].prompt = data;
   };
-  const getPromptData = () => {
-    // props.appData.flow[0].prompt = await expressionRef.value.getData();
-  };
-  // defineExpose({ getPromptData });
 </script>
 <style lang="scss" scoped>
   .not-model {

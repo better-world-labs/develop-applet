@@ -6,7 +6,7 @@
 <template>
   <div>
     <div class="expression">
-      <div id="editor2"></div>
+      <div id="editor2" @input="someEvent"></div>
     </div>
     <div class="line"></div>
     <div class="tags">
@@ -50,7 +50,7 @@
             renderLoading: () => {
               return 'Loading...';
             },
-            source: function (searchTerm, renderList, mentionChar) {
+            source: (searchTerm, renderList, mentionChar) => {
               var matches = [];
 
               if (searchTerm.length === 0) {
@@ -87,12 +87,12 @@
       });
 
       window.setTimeout(() => {
-        this.displayMention();
-      }, 500);
+        self.displayMention();
+      }, 600);
 
       function getElementByAttr(tag, dataAttr, reg) {
         var aElements = document.querySelectorAll(tag);
-        console.log(reg, aElements, dataAttr);
+        // console.log(reg, aElements, dataAttr);
         for (var i = 0; i < aElements.length; i++) {
           var ele = aElements[i].getAttribute(dataAttr);
           if (reg.test(ele)) {
@@ -102,22 +102,41 @@
       }
 
       window.addEventListener('mention-clicked', function (event) {
-        console.log(event);
-        const dom = getElementByAttr(
-          '.expression .mention',
-          `data-uuid`,
-          new RegExp(event.value.uuid)
-        );
-        console.log(dom);
-        // event.remove();
+        // console.log(event);
+        // TODO 点击删除, 暂缓
+        try {
+          // const dom = getElementByAttr(
+          //   '.expression .mention',
+          //   `data-uuid`,
+          //   new RegExp(event.value.uuid)
+          // );
+          //   dom.remove();
+          //   self.getData();
+        } catch (error) {}
       });
-      window.addEventListener('click', function (event) {
-        self.getData();
-      });
+      //   window.addEventListener('click', function (event) {
+      //     self.getData();
+      //   });
+    },
+    computed: {
+      options() {
+        const self = this;
+        return {};
+      },
+    },
+    async beforeUnmount() {
+      await this.getData();
+    },
+    unmounted() {
+      //   quill2 = null;
+      //   quill2 = new Quill('#editor2');
     },
     methods: {
       showMenu() {
         quill2.getModule('mention').openMenu('@');
+      },
+      someEvent() {
+        this.getData();
       },
 
       async getData() {
@@ -132,19 +151,19 @@
               },
             };
           } else {
-            console.log(m);
             return {
               id: m.insert.mention.id,
               type: 'tag',
               properties: {
                 value: m.insert.mention.denotationChar,
+                character: m.insert.mention.id,
+                from: 'form',
               },
             };
           }
         });
-        console.log(res);
         // return res;
-        this.$emit('refreshPromptData', res);
+        await this.$emit('refreshPromptData', res);
       },
 
       addTag(item) {
@@ -157,6 +176,7 @@
           },
           true
         );
+        this.$nextTick(this.getData);
       },
 
       getTag(uuid) {
@@ -166,28 +186,35 @@
         }
       },
       displayMention() {
-        const dom = document.querySelector('.expression .ql-editor p');
+        this.$nextTick(() => {
+          const dom = document.querySelector('#editor2 .ql-editor p');
 
-        console.log('displayMention', dom);
-        const { prompt } = this;
-        const html = prompt.reduce((p, c) => {
-          console.log(p, c);
-          const s =
-            c.type === 'tag'
-              ? `<span
-            class='mention'
-            data-denotation-char='${this.getTag(c.properties.character)}'
-            data-id='${c.properties.character}'
-            data-uuid='${c.id}'
-            data-value=''
-          >
-            <span class='ql-mention-denotation-char'>${this.getTag(c.properties.character)}</span>
-          </span>`
-              : c.properties.value;
-          p += s;
-          return p;
-        }, '');
-        dom.innerHTML = html || '';
+          console.log('displayMention', dom, this.prompt);
+          const { prompt } = this;
+          const html = prompt.reduce((p, c) => {
+            const s =
+              c.type === 'tag'
+                ? `<span
+        class='mention'
+        data-denotation-char='${this.getTag(c.properties.character)}'
+        data-id='${c.properties.character}'
+        data-uuid='${c.id}'
+        data-value=''
+      >
+        <span class='ql-mention-denotation-char'>${this.getTag(c.properties.character)}</span>
+      </span>`
+                : c.properties.value;
+            p += s;
+            return p;
+          }, '');
+          if (dom) dom.innerHTML = html || '';
+          else {
+            setTimeout(() => {
+              const dom = document.querySelector('#editor2 .ql-editor p');
+              dom.innerHTML = html || '';
+            }, 800);
+          }
+        });
       },
     },
   };
