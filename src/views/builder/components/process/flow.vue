@@ -27,6 +27,8 @@
       <div class="description">
         <!-- <mention @input="handleComment"></mention> -->
         <expression
+          ref="expressionRef"
+          @refreshPromptData="refreshPromptData"
           :tagList="props.appData.form"
           :prompt="props.appData.flow[0].prompt"
         ></expression>
@@ -71,6 +73,7 @@
   // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
   const props = defineProps(['appData']);
   const showModal = ref(false);
+  const expressionRef = ref('');
   // const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
   const addModel = () => {
     showModal.value = true;
@@ -256,6 +259,10 @@
       refreshPromptList();
     });
   };
+  const refreshPromptData = (data) => {
+    // console.log(data, 'refreshPrompt');
+    props.appData.flow[0].prompt = data;
+  };
 </script>
 <style lang="scss" scoped>
   .not-model {
@@ -300,6 +307,7 @@
         }
 
         i {
+          color: #5b5d62;
           margin: 0 11px;
         }
       }
@@ -312,64 +320,6 @@
       color: #5b5d62;
       background: #f3f3f7;
       border-radius: 21px;
-
-      .tags {
-        padding: 9px 16px 1px 16px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        width: 100%;
-        box-sizing: border-box;
-
-        .tag {
-          margin-bottom: 8px;
-          margin-right: 10px;
-        }
-      }
-
-      .tags-input {
-        flex: auto;
-        border: 0;
-        outline: 0;
-        padding: 0;
-        font-size: 14px;
-        line-height: 23px;
-        display: inline-block;
-        min-width: 20%;
-        background: transparent;
-        word-break: break-all;
-        -webkit-user-modify: read-write-plaintext-only;
-
-        &.hasVal {
-          display: inline;
-          min-width: 8px;
-        }
-      }
-
-      .tags-input:focus-within,
-      .tags-input:active {
-        &::before {
-          content: '';
-        }
-
-        // outline: auto #4F46E5;
-      }
-
-      .expression:focus-within,
-      .expression:active {
-        // outline: auto #4F46E5;
-      }
-
-      .tags-input:empty::before {
-        content: ' ';
-        color: #828282;
-      }
-
-      .tags-input:last-child:empty::before,
-      .tags-input:only-child:empty::before {
-        content: attr(placeholder);
-        color: #828282;
-      }
     }
 
     :deep(.diy-group) {
