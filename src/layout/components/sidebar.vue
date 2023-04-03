@@ -61,19 +61,9 @@ const menuOptions: MenuOption[] = [
         icon: renderIcon('my-participation', 'icon-icon-wocanyude-moren', 'icon-icon-wodejifen-xuanzhong')
     },
     {
-        label: '我的积分',
-        // label: () =>
-        //     h(
-        //         RouterLink,
-        //         {
-        //             to: {
-        //                 name: 'my-integral',
-        //             }
-        //         },
-        //         { default: () => '我的积分' }
-        //     ),
+       label:  () => redirectLink('my-integral', "我的积分"), 
         key: 'my-integral',
-        disabled: true,
+        // disabled: true,
         icon: renderIcon('my-integral', 'icon-icon-wodejifen-moren', 'icon-icon-wocanyude-xuanzhong')
     }
 ]
