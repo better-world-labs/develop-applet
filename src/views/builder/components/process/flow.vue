@@ -307,6 +307,7 @@
         }
 
         i {
+          color: #5b5d62;
           margin: 0 11px;
         }
       }
