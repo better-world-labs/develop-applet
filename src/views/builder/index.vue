@@ -220,13 +220,18 @@
       display: flex;
       height: calc(100vh - 72px);
 
+      //小屏适应
+      @media screen and (max-width: 1636px) {
+        flex-direction: column;
+      }
+
       .coding {
         padding: 48px 52px;
         box-sizing: border-box;
-        width: 712px;
+        min-width: 712px;
         background: #f3f3f3;
         height: inherit;
-        overflow-y: auto;
+        // overflow-y: auto;
       }
 
       > div:last-child {
