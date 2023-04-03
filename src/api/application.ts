@@ -33,7 +33,7 @@ export function putApp(id: string, data: any) {
   return http.request({
     method: 'put',
     url: `/api/apps/${id}`,
-    data
+    data,
   });
 }
 //  运行App模型
@@ -41,7 +41,7 @@ export function postApp(id: string, data: any) {
   return http.request({
     method: 'post',
     url: `/api/apps/${id}/run `,
-    data
+    data,
   });
 }
 
@@ -82,4 +82,12 @@ export function getMineApp() {
     method: 'get',
     url: `/api/apps/mine`,
   });
-}  
+}
+
+// 删除小程序
+export function deleteApp(uuid: string) {
+  return http.request({
+    method: 'delete',
+    url: `/api/apps/${uuid}`,
+  });
+}

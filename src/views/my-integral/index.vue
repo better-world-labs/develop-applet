@@ -45,8 +45,10 @@
 <script setup>
 import { useInit } from '@/hooks/useInit';
 import { getIntegralDetails } from "@/api/user";
+import { useUserStore } from '@/store/modules/user';
+import $router from '@/router/index';
 import dayjs from 'dayjs';
-
+const userStore = useUserStore();
 const { goAuth } = useInit()
 const total = ref(0);
 const dataList = ref([]);
