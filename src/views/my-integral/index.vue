@@ -19,16 +19,19 @@
                     我的积分
                 </div>
                 <div class="title2">
-                    积分余额 <span class="active-text ">{{ total }}分</span>
+                    积分余额 <span class="active-text" style="padding-left: 4px;">{{ total }}分</span>
                 </div>
-                <div class="title2">积分明细：</div>
+                <div class="title2" style="padding-top: 16px;">积分明细：</div>
                 <div class="item" v-for="item in dataList" :key="item.userId">
-                    <div>
+                    <div class="item-one-line">
                         <div>
                             {{ item.description }}
                         </div>
-                        <div class="active-text ">
-                            {{ item.points }}
+                        <div v-if="item.points > 0" class="active-text">
+                            {{ item.points }}积分
+                        </div>
+                        <div v-else>
+                            {{ item.points }}积分
                         </div>
                     </div>
                     <div class="small">
@@ -106,7 +109,34 @@ onMounted(() => {
 
         .item {
             border-bottom: 1px solid rgba(171, 172, 174, 0.2);
+            padding-bottom: 8px;
+            color: #202226;
 
+            .item-one-line {
+                display: flex;
+                flex-direction: row;
+                margin-bottom: 2px;
+
+                >div:first-child {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                }
+
+                >div:last-child {
+                    margin-left: auto;
+                    padding-left: 30px;
+                    white-space: nowrap;
+                    color: #5B5D62;
+                }
+
+                >div.active-text:last-child {
+                    color: rgba(86, 82, 255, 1)
+                }
+
+            }
         }
 
         .active-text {
