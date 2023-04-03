@@ -189,7 +189,7 @@
         this.$nextTick(() => {
           const dom = document.querySelector('#editor2 .ql-editor p');
 
-          console.log('displayMention', dom, this.prompt);
+          console.log(dom.style, 'displayMention', dom.style.counterReset, this.prompt);
           const { prompt } = this;
           const html = prompt.reduce((p, c) => {
             const s =
@@ -258,6 +258,11 @@
   //       }
   //     }
   //   }
+
+  .expression {
+    overflow-y: auto;
+    max-height: 380px;
+  }
 
   .line {
     background: #ffffff;

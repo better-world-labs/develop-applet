@@ -115,6 +115,8 @@
     current.value = i;
   };
   const publishApp = async (isBack = true) => {
+    if (current.value === 2) current.value = 0;
+    // return console.log(props.appData);
     if (cardList.some((a) => a.status != true)) {
       return message.warning('请检查模板配置，完整填写后再提交哟~');
     }
