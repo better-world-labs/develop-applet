@@ -58,13 +58,15 @@
                                     <div>
                                         <icon-font-symbol name="icon-icon-pinglun" />
                                     </div>
-                                    <div>123</div>
+                                    <div v-if="appInfo.commentTimes > 0">{{ appInfo.commentTimes }}</div>
+                                    <div v-else>评论</div>
                                 </div>
-                                <div class="icon">
+                                <div class="icon" @click="giveALike">
                                     <div>
-                                        <icon-font-symbol name="icon-icon-yidianzan" />
+                                        <icon-font-symbol :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
                                     </div>
-                                    <div>456</div>
+                                    <div v-if="appInfo.likeTimes > 0">{{ appInfo.likeTimes }}</div>
+                                    <div v-else> 点赞</div>
                                 </div>
                             </n-gi>
                             <n-gi>
@@ -90,14 +92,14 @@
                             结果生成中，AI正在奋笔疾书中.......
                             <n-progress type="line" :percentage="60" color="#5652FF" rail-color="#DCDBFF"
                                 :show-indicator="false" processing />
-                        </div>
-                        <div v-else>
-                            <p style="white-space: pre-line">{{ printContent }} <span
+                    </div>
+                    <div v-else>
+                        <p style="white-space: pre-line">{{ printContent }} <span
                                     v-if="cacheContent.length != printContent.length"></span></p>
-                            <div class="option">
-                                <icon-font-symbol name="icon-icon-dianzan" />
-                                <icon-font-symbol name="icon-icon-cai" />
-                            </div>
+                            <!-- <div class="option">
+                                                <icon-font-symbol name="icon-icon-dianzan" />
+                                                <icon-font-symbol name="icon-icon-cai" />
+                                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -125,6 +127,10 @@
                         </n-carousel-item>
                     </n-carousel>
                 </div>
+                <!-- 评论 -->
+                <div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -138,6 +144,7 @@ import { getAppInfo } from "@/api/application";
 import { ref } from "vue";
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
+import { readStateApp, giveLikeApp } from "@/api/application";
 
 import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui'
@@ -152,6 +159,9 @@ const applicationStore = useApplicationStore();
 const uuid = ref();
 const appInfo = ref({});
 const openData = ref(true);
+
+// 是否已经点赞
+const isLike = ref(false);
 
 const formRef = ref(null);
 const model = ref({});
@@ -288,6 +298,17 @@ function createApp() {
     $router.push({ name: 'builder', query: { id: uuid.value, type: "new" } });
 }
 
+function giveALike() {
+    giveLikeApp(!isLike.value).then(() => {
+        isLike.value = !isLike.value;
+        if (isLike.value) {
+            message.success('已点赞~');
+        } else {
+            message.info('已取消点赞');
+        }
+    })
+}
+
 onMounted(() => {
     const router = useRouter();
     uuid.value = router.currentRoute.value.query.uuid;
@@ -297,8 +318,11 @@ onMounted(() => {
     getAppInfo(uuid.value).then(({ data }) => {
         appInfo.value = data;
         init();
-    })
+    });
 
+    readStateApp(uuid.value).then(({ data }) => {
+        isLike.value = data.like;
+    });
 })
 
 onUnmounted(() => {

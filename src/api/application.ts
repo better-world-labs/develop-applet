@@ -91,3 +91,19 @@ export function deleteApp(uuid: string) {
     url: `/api/apps/${uuid}`,
   });
 }
+
+// 读取小程序当前是否被点赞状态
+export function readStateApp(uuid: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/${uuid}/like`,
+  });
+}
+
+export function giveLikeApp(uuid: string, data: { like: boolean }) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${uuid}/like`,
+    data: data,
+  });
+}
