@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    DefaultComposition: typeof import('./../src/components/default-composition/default-composition.vue')['default']
     DialogContent: typeof import('./../src/components/dialog-content/index.vue')['default']
     IconFont: typeof import('./../src/components/icon-font/icon-font.vue')['default']
     IconFontSymbol: typeof import('./../src/components/icon-font/icon-font-symbol.vue')['default']

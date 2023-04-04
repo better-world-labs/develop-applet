@@ -13,8 +13,9 @@
       </n-button>
       <user-integral></user-integral>
     </div>
-    <div class="small-program">
-      <n-grid :x-gap="12" cols="1 s:1 m:2 l:3 xl:3 2xl:4" responsive="screen">
+    <div class="small-program"> 
+      <default-composition v-if="applicationStore.mineAppList.length <= 0" content="暂无小程序哦~"></default-composition>
+      <n-grid :x-gap="12" v-else cols="1 s:1 m:2 l:3 xl:3 2xl:4" responsive="screen">
         <n-grid-item class="item" v-for="item in applicationStore.mineAppList" :key="item.id">
           <div class="delete-icon" @click="deleteTemplate(item.uuid)">
             <IconFont name="icon-icon-shanchu" />
@@ -129,6 +130,18 @@ onMounted(() => {
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: scroll;
+  // background-image: url(../../assets/default-bg.png);
+  // background-repeat: no-repeat;
+  // background-position: 50% 50%;
+  // background-size: 112px 112px;
+
+  // &::after{
+  //   content: "暂无小程序哦~";   
+  //   color: #ABACAE;
+  //   margin-left: calc(50% - 90px);
+  //   top: calc(50% + 66px); 
+  //   position: absolute;
+  //   }
 
   .item {
     background: #ffffff;

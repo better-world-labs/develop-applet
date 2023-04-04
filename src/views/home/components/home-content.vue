@@ -5,9 +5,10 @@
 -->
 <template>
     <div class="home-content">
+         <default-composition v-if="applicationStore.appList.length <= 0" content="暂无小程序哦~"></default-composition>
         <n-grid :x-gap="12" cols="1 s:1 m:2 l:3 xl:3 2xl:4" responsive="screen">
-            <n-grid-item v-for="item in applicationStore.appList" :key="item.id" @click="useTemplate(item)">
-                <div class="template-item">
+            <n-grid-item v-for="item in applicationStore.appList" :key="item.id" >
+                <div class="template-item" @click="useTemplate(item)">
                     <div class="desc-text">
                         {{ item.name }}
                     </div>
@@ -78,7 +79,7 @@ function useTemplate(item) {
          margin-bottom: 24px;
          padding: 24px;
          margin-right: 20px;
-
+         cursor: pointer;
 
          .desc-text {
              font-weight: 500;
@@ -92,7 +93,7 @@ function useTemplate(item) {
              display: -webkit-box;
              -webkit-line-clamp: 2;
              -webkit-box-orient: vertical;
-             cursor: pointer;
+            
 
          }
 
@@ -106,8 +107,7 @@ function useTemplate(item) {
              line-height: 18px;
              color: rgba(91, 93, 98, 1);
              background-image: url(../../../assets/bg.png);
-             background-repeat: no-repeat;
-             cursor: pointer;
+             background-repeat: no-repeat; 
              white-space: pre-line;
 
 
