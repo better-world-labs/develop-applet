@@ -70,18 +70,24 @@ const router = createRouter({
  */
 router.beforeEach((to, from, next) => {
   if (from.name !== undefined && from.name == 'builder' && to.query.type !== 'save') {
-    dialog.open('prompt-save', {
-      title: '提示信息',
-      positiveText: '确认',
-      negativeText: '取消',
-      handlePositiveClick() {
-        next();
+    dialog.open(
+      'regular-popup',
+      {
+        title: '提示信息',
+        positiveText: '确认',
+        negativeText: '取消',
+        handlePositiveClick() {
+          next();
+        },
+        onNegativeClick: () => {
+          const applicationStore = useApplicationStore();
+          applicationStore.setCurrentMenu(from.name as string);
+        },
       },
-      onNegativeClick: () => {
-        const applicationStore = useApplicationStore();
-        applicationStore.setCurrentMenu(from.name as string);
-      },
-    });
+      {
+        content: '当前页面有内容未保存，是否确认退出？',
+      }
+    );
   } else {
     next(); // 继续执行路由
   }
