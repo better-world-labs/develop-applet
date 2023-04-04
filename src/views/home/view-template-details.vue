@@ -317,7 +317,7 @@ function createApp() {
 }
 
 function giveALike() {
-    giveLikeApp(!isLike.value).then(() => {
+    giveLikeApp(uuid.value,{like: !isLike.value }).then(() => {
         isLike.value = !isLike.value;
         if (isLike.value) {
             message.success('已点赞~');
