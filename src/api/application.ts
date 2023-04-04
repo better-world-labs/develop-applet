@@ -123,3 +123,13 @@ export function addCommentsApp(uuid: string, data: { content: string }) {
     data: data,
   });
 }
+
+// 事件上报 
+export function addEvents(data: { content: string }) {
+  return http.request({
+    method: 'post',
+    url: `/api/events`,
+    data: data,
+  });
+}
+
