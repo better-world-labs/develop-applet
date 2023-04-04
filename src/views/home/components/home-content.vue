@@ -31,14 +31,14 @@
                         <div class="right">
                             <div class="text-box" style="margin-right:24px">
                                 <icon-font-symbol name="icon-icon-pinglun" />
-                                <div>
-                                    65
+                                <div> 
+                                    {{ item.commentTimes }} 
                                 </div>
                             </div>
                             <div class="text-box">
                                 <IconFontSymbol name="icon-icon-dianzan" />
                                 <div>
-                                    348
+                                  {{ item.likeTimes }}
                                 </div>
                             </div>
                         </div>
