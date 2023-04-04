@@ -332,7 +332,7 @@ onMounted(() => {
     uuid.value = router.currentRoute.value.query.uuid;
     addEvents({
         "type": "app-viewed",
-        "uuid": [uuid.value, userStore.info.id]
+        "uuid": [uuid.value]
     });
 
 
