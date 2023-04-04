@@ -39,7 +39,6 @@ declare module '@vue/runtime-core' {
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
     PointerPopover: typeof import('./../src/components/pointer-popover/index.vue')['default']
-    PromptSave: typeof import('./../src/bizComponents/dialogs/prompt-save.vue')['default']
     Provider: typeof import('./../src/components/app-provider/provider.vue')['default']
     RegularPopup: typeof import('./../src/bizComponents/dialogs/regular-popup.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
