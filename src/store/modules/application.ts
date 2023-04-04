@@ -67,7 +67,6 @@ export const useApplicationStore = defineStore('application', {
     },
     // 更新输入框内容
     updateEditorText(info: string) {
-      console.log(9191919, info);
       this.editorText = info;
     },
     // 追加内容

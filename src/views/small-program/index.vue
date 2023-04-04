@@ -52,11 +52,12 @@ import { useUserStore } from '@/store/modules/user';
 import useClipboard from 'vue-clipboard3';
 import $router from '@/router/index';
 import dayjs from 'dayjs';
-import { useMessage, useDialog } from 'naive-ui'
+import { useMessage } from 'naive-ui'
 import { deleteApp } from "@/api/application";
+import { useBizDialog } from '@/plugins';
 
 const message = useMessage();
-const dialog = useDialog();
+const dialog = useBizDialog();
 const { toClipboard } = useClipboard();
 const value = ref(true);
 const applicationStore = useApplicationStore();
@@ -88,20 +89,25 @@ async function shareTemplate(item) {
 }
 
 function deleteTemplate(uuid) {
-  dialog.warning({
-    title: '提示信息',
-    content: '你确定要删除该小程序模版吗？',
-    positiveText: '确定',
-    negativeText: '不确定',
-    onPositiveClick: () => {
+   dialog.open(
+    'regular-popup',
+    {
+      title: '提示信息',
+      positiveText: '确认',
+      negativeText: '取消',
+      handlePositiveClick() {
       deleteApp(uuid).then(({ data }) => {
-        init();
-      })
+          init();
+        })
+      },
+      onNegativeClick: () => {
+        
+      },
     },
-    onNegativeClick: () => {
-      message.error('不确定')
+    {
+      content: '你确定要删除该小程序模版吗？',
     }
-  })
+  );
 }
 
 function init() {

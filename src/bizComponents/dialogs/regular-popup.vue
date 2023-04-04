@@ -1,13 +1,13 @@
 <!--
  * @Author: Lemon
  * @Date: 2023-03-29 09:25:13
- * @Description: 
+ * @Description: 通用
 --> 
 <template>
   <div class="dialog-content">
     <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" />
     <div>
-      当前页面有内容未保存，是否确认退出？
+      {{ props.content }}
     </div>
   </div>
 </template>
@@ -16,7 +16,8 @@
 const emit = defineEmits(['close']);
 function onCancel() {
   emit('close');
-} 
+}
+const props = defineProps(['content'])
 </script>
 
 <style lang="scss">
