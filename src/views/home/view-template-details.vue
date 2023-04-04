@@ -145,7 +145,7 @@ import { getAppInfo } from "@/api/application";
 import { ref } from "vue";
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
-import { readStateApp, giveLikeApp } from "@/api/application";
+import { readStateApp, giveLikeApp , addEvents } from "@/api/application";
 
 import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui'
@@ -330,6 +330,11 @@ function giveALike() {
 onMounted(() => {
     const router = useRouter();
     uuid.value = router.currentRoute.value.query.uuid;
+    addEvents({
+        "type": "app-viewed",
+        "uuid": [uuid.value, userStore.info.id]
+    });
+
 
     getAppResultList();
     // 获取应用信息
