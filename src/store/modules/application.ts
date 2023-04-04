@@ -15,6 +15,7 @@ interface ApplicationState {
   resultList: Application.appResultItf[];
   appInfo: Application.appDetailItf;
   mineAppList: Application.appInfoItf[];
+  editorText: string;
 }
 
 export const useApplicationStore = defineStore('application', {
@@ -26,6 +27,7 @@ export const useApplicationStore = defineStore('application', {
     resultList: [],
     appInfo: {},
     mineAppList: [],
+    editorText: '',
   }),
   getters: {},
   actions: {
@@ -62,6 +64,15 @@ export const useApplicationStore = defineStore('application', {
     async getMineAppList() {
       const { data } = await getMineApp();
       this.mineAppList = data.list;
+    },
+    // 更新输入框内容
+    updateEditorText(info: string) {
+      console.log(9191919, info);
+      this.editorText = info;
+    },
+    // 追加内容
+    addEditorText(info: string) {
+      this.editorText += info;
     },
   },
 });

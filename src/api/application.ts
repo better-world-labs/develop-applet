@@ -99,11 +99,27 @@ export function readStateApp(uuid: string) {
     url: `/api/apps/${uuid}/like`,
   });
 }
-
+// 点赞小程序
 export function giveLikeApp(uuid: string, data: { like: boolean }) {
   return http.request({
     method: 'post',
     url: `/api/apps/${uuid}/like`,
+    data: data,
+  });
+}
+
+// 获取当前应用的评论列表
+export function getCommentListApp(uuid: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/${uuid}/comments`,
+  });
+}
+// 当前应用添加评论
+export function addCommentsApp(uuid: string, data: { content: string }) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${uuid}/comments`,
     data: data,
   });
 }

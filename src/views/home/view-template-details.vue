@@ -97,9 +97,9 @@
                         <p style="white-space: pre-line">{{ printContent }} <span
                                     v-if="cacheContent.length != printContent.length"></span></p>
                             <!-- <div class="option">
-                                                <icon-font-symbol name="icon-icon-dianzan" />
-                                                <icon-font-symbol name="icon-icon-cai" />
-                                            </div> -->
+                                                                                                        <icon-font-symbol name="icon-icon-dianzan" />
+                                                                                                        <icon-font-symbol name="icon-icon-cai" />
+                                                                                                    </div> -->
                         </div>
                     </div>
                 </div>
@@ -128,14 +128,15 @@
                     </n-carousel>
                 </div>
                 <!-- 评论 -->
-                <div>
-
+                <div style="margin-top:16px">
+                    <comment-box v-if="uuid" :uuid="uuid"></comment-box>
                 </div>
             </div>
         </div>
     </div>
 </template> 
 <script setup>
+import CommentBox from "./components/comment-box.vue";
 import { useApplicationStore } from "@/store/modules/application";
 import { useUserStore } from "@/store/modules/user";
 import $router from '@/router/index';
