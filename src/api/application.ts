@@ -33,7 +33,7 @@ export function putApp(id: string, data: any) {
   return http.request({
     method: 'put',
     url: `/api/apps/${id}`,
-    data
+    data,
   });
 }
 //  运行App模型
@@ -41,7 +41,7 @@ export function postApp(id: string, data: any) {
   return http.request({
     method: 'post',
     url: `/api/apps/${id}/run `,
-    data
+    data,
   });
 }
 
@@ -82,4 +82,54 @@ export function getMineApp() {
     method: 'get',
     url: `/api/apps/mine`,
   });
-}  
+}
+
+// 删除小程序
+export function deleteApp(uuid: string) {
+  return http.request({
+    method: 'delete',
+    url: `/api/apps/${uuid}`,
+  });
+}
+
+// 读取小程序当前是否被点赞状态
+export function readStateApp(uuid: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/${uuid}/like`,
+  });
+}
+// 点赞小程序
+export function giveLikeApp(uuid: string, data: { like: boolean }) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${uuid}/like`,
+    data: data,
+  });
+}
+
+// 获取当前应用的评论列表
+export function getCommentListApp(uuid: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/${uuid}/comments`,
+  });
+}
+// 当前应用添加评论
+export function addCommentsApp(uuid: string, data: { content: string }) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${uuid}/comments`,
+    data: data,
+  });
+}
+
+// 事件上报 
+export function addEvents(data: { content: string }) {
+  return http.request({
+    method: 'post',
+    url: `/api/events`,
+    data: data,
+  });
+}
+
