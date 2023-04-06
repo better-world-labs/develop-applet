@@ -64,7 +64,7 @@ const menuOptions: MenuOption[] = [
        label:  () => redirectLink('my-integral', "我的积分"), 
         key: 'my-integral',
         // disabled: true,
-        icon: renderIcon('my-integral', 'icon-icon-wodejifen-moren', 'icon-icon-wocanyude-xuanzhong')
+        icon: renderIcon('my-integral', 'icon-icon-wodejifen-moren', 'icon-icon-wodejifen-xuanzhong')
     }
 ]
 // 创建模版
