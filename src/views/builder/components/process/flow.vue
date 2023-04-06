@@ -284,9 +284,11 @@
   }
 
   .has-model {
+    margin-top: -12px;
     .flow {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       width: 100%;
       margin-bottom: 12px;
 
@@ -294,6 +296,8 @@
         flex: 1;
         display: flex;
         align-items: center;
+        height: 20px;
+        line-height: 20px;
 
         span {
           font-weight: 500;
