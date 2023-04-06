@@ -16,31 +16,33 @@
     <div class="small-program"> 
       <default-composition v-if="applicationStore.mineAppList.length <= 0" content="暂无小程序哦~"></default-composition>
       <n-grid :x-gap="12" v-else cols="1 s:1 m:2 l:3 xl:3 2xl:4" responsive="screen">
-        <n-grid-item class="item" v-for="item in applicationStore.mineAppList" :key="item.id">
-          <div class="delete-icon" @click="deleteTemplate(item.uuid)">
-            <IconFont name="icon-icon-shanchu" />
-          </div>
-          <div class="title">
-            {{ item.name }}
-          </div>
-          <div class="date">
-            {{ dayjs(item.createdAt).format('YYYY/MM/DD HH:mm:ss') }}
-          </div>
-          <div>已售： <span class="active-text">{{ item.soldPoints || 0 }}</span>积分</div>
-          <div class="options">
-            <div>
-              <div>被使用</div>
-              <div class="number">{{ item.runTimes }}次</div>
+        <n-grid-item  v-for="item in applicationStore.mineAppList" :key="item.id">
+         <div class="item" @click="detailApp(item)">
+           <div class="delete-icon" @click="deleteTemplate(item.uuid)">
+              <IconFont name="icon-icon-shanchu" />
             </div>
-            <div>
-              <div>被采用</div>
-              <div class="number">{{ item.useTimes }}次</div>
+            <div class="title">
+              {{ item.name }}
             </div>
-          </div>
-          <div style="text-align: right">
-            <n-button @click="editApp(item)">编辑</n-button>
-            <n-button @click="shareTemplate(item)">分享</n-button>
-          </div>
+            <div class="date">
+              {{ dayjs(item.createdAt).format('YYYY/MM/DD HH:mm:ss') }}
+            </div>
+            <div>已售： <span class="active-text">{{ item.soldPoints || 0 }}</span>积分</div>
+            <div class="options">
+              <div>
+                <div>被使用</div>
+                <div class="number">{{ item.runTimes }}次</div>
+              </div>
+              <div>
+                <div>被采用</div>
+                <div class="number">{{ item.useTimes }}次</div>
+              </div>
+            </div>
+            <div style="text-align: right">
+              <n-button @click="editApp($event,item)">编辑</n-button>
+              <n-button @click="shareTemplate($event,item)">分享</n-button>
+            </div>
+         </div>
         </n-grid-item>
       </n-grid>
     </div>
@@ -64,8 +66,17 @@ const value = ref(true);
 const applicationStore = useApplicationStore();
 const userStore = useUserStore();
 const { goAuth } = useInit();
+
+// 查看应用详情
+function detailApp(item) {
+  if (!userStore.token) goAuth();
+  $router.push({ name: 'view-template-details', query: { uuid: item.uuid } });
+}
+
 // 编辑应用
-function editApp(item) {
+function editApp(e, item) {
+  e.stopPropagation();
+  
   if (!userStore.token) goAuth();
   $router.push({ name: 'builder', query: { id: item.uuid } });
 }
@@ -77,7 +88,8 @@ function createTemplate() {
 }
 
 // 分享模版
-async function shareTemplate(item) {
+async function shareTemplate(e,item) {
+   e.stopPropagation();
   const com = window.location.href.substr(0, window.location.href.lastIndexOf('/'));
   const url = `${com}/view-template-details?uuid=${item.uuid}`;
 
@@ -154,6 +166,7 @@ onMounted(() => {
     color: #181d24;
     margin-bottom: 24px;
     margin-right: 16px;
+    cursor: pointer;
 
     .title {
       font-weight: 500;
@@ -170,20 +183,19 @@ onMounted(() => {
       height: 32px;
       border-radius: 32px;
       cursor: pointer;
-      padding: 6px;
+      padding: 5px;
       box-sizing: border-box;
       margin-top: 4px;
 
       .iconfont {
-        font-size: 20px;
+        font-size: 24px;
         color: #BEC3C5;
       }
 
       &:hover {
         background: #F3F3F8;
 
-        .iconfont {
-          font-size: 20px;
+        .iconfont { 
           color: #5B5D62;
         }
       }

@@ -74,8 +74,10 @@
                       :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'"
                     />
                   </div>
-                  <div v-if="appInfo.likeTimes > 0">{{ appInfo.likeTimes }}</div>
-                  <div v-else>点赞</div>
+                  <div :class="{'active-text': isLike}">
+                      <div v-if="appInfo.likeTimes > 0">{{ appInfo.likeTimes }}</div>
+                      <div v-else>点赞</div>
+                  </div> 
                 </div>
               </n-gi>
               <n-gi>
@@ -560,8 +562,8 @@
             cursor: pointer;
 
             .iconfont-svg {
-              width: 18px;
-              height: 18px;
+              width: 24px;
+              height: 24px;
               display: flex;
               flex-direction: row;
               margin-right: 6px;
@@ -569,6 +571,10 @@
 
             &:hover {
               color: #202226;
+            }
+
+            .active-text{
+              color: #5652FF;
             }
           }
 
