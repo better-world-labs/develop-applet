@@ -374,6 +374,9 @@ function addComment() {
     readStateApp(uuid.value).then(({ data }) => {
       isLike.value = data.like;
     });
+    nextTick(() => {
+      templateDetailRef.value.scrollTop = 0;
+    })
   });
 
   onUnmounted(() => {
