@@ -119,7 +119,9 @@
         </div>
 
         <div class="public-results" v-if="applicationStore.resultList.length > 0">
-          <n-carousel :space-between="20" :loop="false" draggable>
+          <n-carousel :space-between="20"  :loop="false"
+      slides-per-view="auto"
+      draggable>
             <n-carousel-item
               style="width: 40%"
               v-for="result in applicationStore.resultList"
@@ -374,6 +376,9 @@ function addComment() {
     readStateApp(uuid.value).then(({ data }) => {
       isLike.value = data.like;
     });
+    nextTick(() => {
+      templateDetailRef.value.scrollTop = 0;
+    })
   });
 
   onUnmounted(() => {
