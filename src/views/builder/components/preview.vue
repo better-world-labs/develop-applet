@@ -74,6 +74,7 @@
     min-width: 600px;
     max-width: 1200px;
     padding: 56px 80px;
+    height: calc(100% - 50px);
     margin: 0 auto;
     overflow-y: auto;
     position: relative;
