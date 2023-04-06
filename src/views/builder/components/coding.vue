@@ -88,7 +88,7 @@
       key: '',
     },
   ]);
-  const current = ref(2);
+  const current = ref(0);
   const rules = {
     name: {
       required: true,

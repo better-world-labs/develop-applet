@@ -219,25 +219,39 @@
       flex: 1;
       display: flex;
       height: calc(100vh - 72px);
-
       //小屏适应
       @media screen and (max-width: 1636px) {
         flex-direction: column;
+        overflow-y: auto;
+
+        .coding {
+          width: auto !important;
+          height: auto !important;
+          overflow-y: visible !important;
+        }
+        :deep(.preview-box) {
+          overflow-y: visible !important;
+        }
+        :deep(.bg) {
+          height: auto !important;
+        }
       }
 
       .coding {
         padding: 48px 52px;
         box-sizing: border-box;
         min-width: 712px;
+        width: 712px;
         background: #f3f3f3;
         height: inherit;
-        // overflow-y: auto;
+        overflow-y: auto;
       }
 
       > div:last-child {
         flex: 1;
         display: flex;
         flex-direction: column;
+        height: inherit;
       }
     }
   }
