@@ -118,7 +118,7 @@ function deleteTemplate(uuid) {
       },
     },
     {
-      content: '你确定要删除该小程序模版吗？',
+      content: '你确定要删除该小程序吗？',
     }
   );
 }

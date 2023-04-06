@@ -8,7 +8,7 @@
   <div class="dialog-content">
     <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" />
     <div class="content">
-      使用该模版，需要给原创作者
+      使用该小程序，需要给原创作者
       <img :src="user.avatar"> <span class="active">
         {{ user.nickname }}
       </span>打赏<span class="active">{{ price }}</span>积分，请确认扣除积分～
