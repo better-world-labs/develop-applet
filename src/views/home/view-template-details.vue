@@ -16,7 +16,7 @@
       </n-button>
       <user-integral></user-integral>
     </div>
-    <div class="template-details-content">
+    <div class="template-details-content"  ref="templateDetailRef">
       <div>
         <div class="template">
           <n-grid x-gap="12" :cols="2">
@@ -61,7 +61,7 @@
                   </div>
                   <div>分享</div>
                 </div>
-                <div class="icon">
+                <div class="icon" @click="addComment">
                   <div>
                     <icon-font-symbol name="icon-icon-pinglun" />
                   </div>
@@ -74,8 +74,10 @@
                       :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'"
                     />
                   </div>
-                  <div v-if="appInfo.likeTimes > 0">{{ appInfo.likeTimes }}</div>
-                  <div v-else>点赞</div>
+                  <div :class="{'active-text': isLike}">
+                      <div v-if="appInfo.likeTimes > 0">{{ appInfo.likeTimes }}</div>
+                      <div v-else>点赞</div>
+                  </div> 
                 </div>
               </n-gi>
               <n-gi>
@@ -116,7 +118,7 @@
           </div>
         </div>
 
-        <div class="public-results">
+        <div class="public-results" v-if="applicationStore.resultList.length > 0">
           <n-carousel :space-between="20" :loop="false" draggable>
             <n-carousel-item
               style="width: 40%"
@@ -144,7 +146,7 @@
         </div>
         <!-- 评论 -->
         <div style="margin-top: 16px">
-          <comment-box v-if="uuid" :uuid="uuid"></comment-box>
+          <comment-box  v-if="uuid" :uuid="uuid"></comment-box>
         </div>
       </div>
     </div>
@@ -175,6 +177,7 @@
   const uuid = ref();
   const appInfo = ref({});
   const openData = ref(true);
+  const templateDetailRef = ref()
 
   // 是否已经点赞
   const isLike = ref(false);
@@ -339,11 +342,19 @@
       isLike.value = !isLike.value;
       if (isLike.value) {
         message.success('已点赞~');
+        appInfo.value.likeTimes  += 1;
       } else {
         message.info('已取消点赞');
+        appInfo.value.likeTimes -= 1;
       }
     });
   }
+
+  // 添加评论
+function addComment() { 
+    templateDetailRef.value.scrollTop = window.screen.height/2;
+  }
+ 
 
   onMounted(() => {
     const router = useRouter();
@@ -559,9 +570,19 @@
             align-content: center;
             cursor: pointer;
 
+          >div:first-child{
+            width: 32px;
+            height: 32px;
+            border-radius: 32px;
+            background: #F7F7FB;
+            margin-right: 4px;
+            padding: 4px;
+            box-sizing: border-box;
+          }
+
             .iconfont-svg {
-              width: 18px;
-              height: 18px;
+              width: 24px;
+              height: 24px;
               display: flex;
               flex-direction: row;
               margin-right: 6px;
@@ -569,6 +590,10 @@
 
             &:hover {
               color: #202226;
+            }
+
+            .active-text{
+              color: #5652FF;
             }
           }
 
