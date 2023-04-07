@@ -124,7 +124,7 @@ export function addCommentsApp(uuid: string, data: { content: string }) {
   });
 }
 
-// 事件上报 
+// 事件上报
 export function addEvents(data: { content: string }) {
   return http.request({
     method: 'post',
@@ -133,3 +133,19 @@ export function addEvents(data: { content: string }) {
   });
 }
 
+// 获取每个结果当前用户是否顶踩
+export function getResultsIsLike(outputIds: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/outputs/likes?outputIds=${outputIds}`,
+  });
+}
+
+// 踩顶，取消
+export function resultLike(id: string, data: { like: number }) {
+  return http.request({
+    method: 'post',
+    url: `/api/outputs/${id}/like`,
+    data: data,
+  });
+}

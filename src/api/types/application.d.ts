@@ -58,4 +58,9 @@ declare namespace Application {
     createdAt: string;
     createdBy: User.UserInfoItf;
   }
+
+  export interface appResultStateItf {
+    outputId: number;
+    like: number;
+  }
 }
