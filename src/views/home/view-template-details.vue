@@ -320,7 +320,8 @@ function receiveMessage(data) {
     onmessage(msg) {
       // console.log("收到服务器发来的数据!", msg)
       if (msg.event == 'done' && JSON.parse(msg.data).code == 500000) {
-        message.warn('内容生成失败，积分不足！');
+        message.warning('内容生成失败，积分不足！');
+        showResult.value = false;
         return;
       }
       if (JSON.parse(msg.data).content != undefined) {
