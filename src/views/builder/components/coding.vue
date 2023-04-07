@@ -120,6 +120,12 @@
     if (cardList.some((a) => a.status != true)) {
       return message.warning('请检查模板配置，完整填写后再提交哟~');
     }
+    try {
+      const tags = props.appData.flow[0].prompt.filter((f) => f.type === 'tag');
+      if (tags.some((t) => !props.appData.form.find((f) => f.id == t.properties.character))) {
+        return message.warning('小程序编辑中使用了不存在的选项,请检查修改');
+      }
+    } catch (error) {}
     await putApp(props.appData.uuid, props.appData);
 
     if (isBack) {
