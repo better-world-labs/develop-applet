@@ -95,10 +95,10 @@
                 {{ printContent }} <span v-if="cacheContent.length != printContent.length"></span>
               </p>
               <div class="option">
-                <icon-font-symbol @click="resultOption(applicationStore.resultList[0], 1)"
-                  :name="applicationStore.resultStateList?.get(applicationStore.resultList[0]?.id) == 1 ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
-                <icon-font-symbol @click="resultOption(applicationStore.resultList[0], -1)"
-                  :name="applicationStore.resultStateList?.get(applicationStore.resultList[0]?.id) == -1 ? 'icon-icon-yicai' : 'icon-icon-cai'" />
+                <icon-font-symbol @click="resultOption(currentResult, 1)"
+                  :name="applicationStore.resultStateList?.get(currentResult.id) == 1 ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
+                <icon-font-symbol @click="resultOption(currentResult, -1)"
+                  :name="applicationStore.resultStateList?.get(currentResult.id) == -1 ? 'icon-icon-yicai' : 'icon-icon-cai'" />
               </div>
             </div>
           </div>
@@ -188,6 +188,7 @@ const showLoading = ref(false);
 const printContent = ref(''); // 结果内容
 const cacheContent = ref('');
 const timer = ref(0);
+const currentResult = ref({ hateTimes :0, likeTimes :0});
 
 // 结果列表操作 
 function resultOption(item = {}, val) {
@@ -214,6 +215,14 @@ function resultOption(item = {}, val) {
       item.likeTimes -= 1;
     }
     applicationStore.resultStateList?.set(item.id, status);
+    // 
+    for (let i = 0; i < applicationStore.resultList.length; i++){
+      if (applicationStore.resultList[i].id == item.id) {
+        applicationStore.resultList[i].hateTimes = item.hateTimes;
+        applicationStore.resultList[i].likeTimes = item.likeTimes;
+        break;
+      }
+    } 
   });
 }
 
@@ -280,6 +289,7 @@ function requestSave() {
 
         cacheContent.value = '';
         printContent.value = '';
+        currentResult.value = { hateTimes: 0, likeTimes: 0 };
         showResult.value = true;
         showLoading.value = true;
         const data = {
@@ -323,7 +333,12 @@ function receiveMessage(data) {
         message.warning('内容生成失败，积分不足！');
         showResult.value = false;
         return;
+      } else if (msg.event == 'done' && JSON.parse(msg.data).code == 400) {
+        message.warning('内容生成失败，运行模板的参数错误！');
+        showResult.value = false;
+        return;
       }
+      if(JSON.parse(msg.data).id) currentResult.value.id = JSON.parse(msg.data).id;
       if (JSON.parse(msg.data).content != undefined) {
         cacheContent.value += JSON.parse(msg.data).content;
       }
