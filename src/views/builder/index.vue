@@ -9,10 +9,10 @@
     <header>
       <div class="back" @click="$router.go(-1)"><IconFont name="icon-icon-fanhui" />返回</div>
 
-      <n-button @click="submit">
+      <div class="submit" @click="submit">
         <IconFont name="icon-icon-fabu"></IconFont>
         发布
-      </n-button>
+      </div>
     </header>
     <div class="body">
       <div class="coding scroll-y">
@@ -179,39 +179,26 @@
         }
       }
 
-      :deep(.n-button) {
+      .submit {
+        height: 40px;
+        line-height: 40px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 16px;
+        color: #5652ff;
+        width: 132px;
+        text-align: center;
         i {
-          margin-right: 8px;
+          font-size: 18px;
+          margin-right: 9px;
         }
-
-        --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);
-        --n-bezier-ease-out: cubic-bezier(0, 0, 0.2, 1);
-        --n-ripple-duration: 0.6s;
-        --n-opacity-disabled: 0.5;
-        --n-wave-opacity: 0.6;
-        font-weight: 500 !important;
-        --n-color: #fff !important;
-        --n-color-hover: #fff !important;
-        --n-color-pressed: #fff !important;
-        --n-color-focus: #fff !important;
-        --n-color-disabled: #fff !important;
-        --n-ripple-color: #fff !important;
-        --n-text-color: #5652ff !important;
-        --n-text-color-hover: #5652ff !important;
-        --n-text-color-pressed: #5652ff !important;
-        --n-text-color-focus: #5652ff !important;
-        --n-text-color-disabled: #fff !important;
-        --n-border: 1px solid #5652ff !important;
-        --n-border-hover: 1px solid #5652ff !important;
-        --n-border-pressed: 1px solid #5652ff !important;
-        --n-border-focus: 1px solid #5652ff !important;
-        --n-border-disabled: 1px solid #5652ff !important;
-        --n-height: 40px !important;
-        --n-font-size: 16px !important;
-        --n-padding: 0 36px !important;
-        --n-icon-size: 18px !important;
-        --n-icon-margin: 8px !important;
-        --n-border-radius: 8px !important;
+        border: 1px solid #5652ff;
+        background: #fff;
+        float: right;
+        cursor: pointer;
+        &:hover {
+          background: #eeedfe;
+        }
       }
     }
 
@@ -219,10 +206,28 @@
       flex: 1;
       display: flex;
       height: calc(100vh - 72px);
+      //小屏适应
+      @media screen and (max-width: 1636px) {
+        flex-direction: column;
+        overflow-y: auto;
+
+        .coding {
+          width: auto !important;
+          height: auto !important;
+          overflow-y: visible !important;
+        }
+        :deep(.preview-box) {
+          overflow-y: visible !important;
+        }
+        :deep(.bg) {
+          height: auto !important;
+        }
+      }
 
       .coding {
         padding: 48px 52px;
         box-sizing: border-box;
+        min-width: 712px;
         width: 712px;
         background: #f3f3f3;
         height: inherit;
@@ -233,6 +238,7 @@
         flex: 1;
         display: flex;
         flex-direction: column;
+        height: inherit;
       }
     }
   }

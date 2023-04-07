@@ -6,12 +6,12 @@
 
 <template>
   <div>
-    <div class="not-model" v-if="!props.appData.flow[0].type">
+    <div class="not-model" v-show="!props.appData.flow[0].type">
       <p @click="addModel">
         <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
       </p>
     </div>
-    <div class="has-model" v-else>
+    <div class="has-model" v-show="props.appData.flow[0].type">
       <div class="flow">
         <p>
           <span>输入提示词</span>
@@ -25,46 +25,13 @@
         <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
       </div>
       <div class="description">
-        <p class="expression">
-          <template v-for="(item, i) in props.appData.flow[0].prompt" :key="item.id">
-            <span
-              v-if="item.type == 'text'"
-              :class="{
-                hasVal:
-                  item.properties.value?.length || i + 1 !== props.appData.flow[0].prompt.length,
-              }"
-              class="tags-input"
-              :data-num="item.id"
-              @blur="($event) => handleBlurEvent($event, item.id)"
-              @input.stop="changeVal"
-              @click.stop="changeVal"
-              placeholder="输入提示词"
-              >{{ item.properties.value }}</span
-            >
-            <span v-else class="tag"
-              >{{ getTag(item.properties.character) }}
-              <icon-font-symbol
-                @click.stop="removeTag(i)"
-                class="tag-close remove-icon"
-                name="icon-icon-shanchubiaoqian"
-              />
-            </span>
-          </template>
-          <!-- <span class="tags-input" @keydown.enter.prevent placeholder="输入提示词" :style="{ display: 'inline' }"></span> -->
-        </p>
-        <div class="line"></div>
-        <div class="tags">
-          <div class="tag" v-for="item in props.appData.form" :key="item.id">
-            {{ item.label }}
-            <IconFont
-              @click="addTag(item)"
-              :size="18"
-              class="tag-close"
-              name="icon-icon-tianjiabiaoqian"
-            />
-          </div>
-          <!-- <div class="tag">你的姓名<a class="tag-close"></a></div> -->
-        </div>
+        <!-- <mention @input="handleComment"></mention> -->
+        <expression
+          ref="expressionRef"
+          @refreshPromptData="refreshPromptData"
+          :tagList="props.appData.form"
+          :prompt="props.appData.flow[0].prompt"
+        ></expression>
       </div>
     </div>
     <n-modal
@@ -100,12 +67,18 @@
 </template>
 <script setup>
   import { v4 as uuid } from 'uuid';
+  import expression from './expression.vue';
+  //   import mention from './mention.vue';
   import { getAIList } from '@/api/application';
   // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
   const props = defineProps(['appData']);
   const showModal = ref(false);
+  const expressionRef = ref('');
   // const category = [{ type: 'text', des: '语言类模型' }, { type: 'image', des: '图像类模型（AI作画）' }]
   const addModel = () => {
+    showModal.value = true;
+  };
+  const handleComment = () => {
     showModal.value = true;
   };
   const choose = (model) => {
@@ -286,6 +259,10 @@
       refreshPromptList();
     });
   };
+  const refreshPromptData = (data) => {
+    // console.log(data, 'refreshPrompt');
+    props.appData.flow[0].prompt = data;
+  };
 </script>
 <style lang="scss" scoped>
   .not-model {
@@ -307,9 +284,11 @@
   }
 
   .has-model {
+    margin-top: -12px;
     .flow {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       width: 100%;
       margin-bottom: 12px;
 
@@ -317,6 +296,8 @@
         flex: 1;
         display: flex;
         align-items: center;
+        height: 20px;
+        line-height: 20px;
 
         span {
           font-weight: 500;
@@ -330,6 +311,7 @@
         }
 
         i {
+          color: #5b5d62;
           margin: 0 11px;
         }
       }
@@ -342,121 +324,6 @@
       color: #5b5d62;
       background: #f3f3f7;
       border-radius: 21px;
-
-      .expression {
-        // display: flex;
-        min-height: 42px;
-        word-break: break-all;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        gap: 4px;
-        width: 100%;
-        box-sizing: border-box;
-        padding: 8px 16px;
-        font-size: 14px;
-        line-height: 24px;
-        margin: 0;
-        overflow: auto;
-        cursor: text;
-
-        span {
-          &.tag {
-            color: #5652ff;
-            border: 1px solid #5652ff;
-          }
-        }
-      }
-
-      .line {
-        background: #ffffff;
-        height: 2px;
-      }
-
-      .tag {
-        font-size: 12px;
-        color: #202226;
-        padding-left: 10px;
-        height: 24px;
-        line-height: 24px;
-        border: 1px solid #abacae;
-        box-sizing: border-box;
-        border-radius: 15px;
-        display: inline-flex;
-        width: fit-content;
-        align-items: center;
-        padding: 2px 4px 2px 8px;
-
-        .tag-close {
-          // width: 22px;
-          // height: 20px;
-          margin-left: 4px;
-          cursor: pointer;
-          // background: url("data:image/svg+xml,%3Csvg width='10' height='10' viewBox='0 0 10 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.578 5l2.93-3.493a.089.089 0 0 0-.068-.146h-.891a.182.182 0 0 0-.137.064l-2.417 2.88-2.416-2.88a.178.178 0 0 0-.137-.064h-.89a.089.089 0 0 0-.069.146L4.413 5l-2.93 3.493a.089.089 0 0 0 .068.146h.89a.182.182 0 0 0 .138-.064l2.416-2.88 2.417 2.88c.033.04.083.064.137.064h.89a.089.089 0 0 0 .069-.146l-2.93-3.493z' fill='%23000' fill-opacity='.45'/%3E%3C/svg%3E") center no-repeat;
-        }
-
-        .remove-icon {
-          width: 18px;
-          height: 18px;
-        }
-      }
-
-      .tags {
-        padding: 9px 16px 1px 16px;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-        width: 100%;
-        box-sizing: border-box;
-
-        .tag {
-          margin-bottom: 8px;
-          margin-right: 10px;
-        }
-      }
-
-      .tags-input {
-        flex: auto;
-        border: 0;
-        outline: 0;
-        padding: 0;
-        font-size: 14px;
-        line-height: 23px;
-        display: inline-block;
-        min-width: 20%;
-        background: transparent;
-        word-break: break-all;
-        -webkit-user-modify: read-write-plaintext-only;
-
-        &.hasVal {
-          display: inline;
-          min-width: 8px;
-        }
-      }
-
-      .tags-input:focus-within,
-      .tags-input:active {
-        &::before {
-          content: '';
-        }
-
-        // outline: auto #4F46E5;
-      }
-
-      .expression:focus-within,
-      .expression:active {
-        // outline: auto #4F46E5;
-      }
-
-      .tags-input:empty::before {
-        content: ' ';
-        color: #828282;
-      }
-
-      .tags-input:last-child:empty::before,
-      .tags-input:only-child:empty::before {
-        content: attr(placeholder);
-        color: #828282;
-      }
     }
 
     :deep(.diy-group) {

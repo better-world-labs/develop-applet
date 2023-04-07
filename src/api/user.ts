@@ -34,3 +34,10 @@ export function getIntegral() {
     url: '/api/points/total',
   });
 }
+// 请求积分明细
+export function getIntegralDetails() {
+  return http.request({
+    method: 'get',
+    url: '/api/points',
+  });
+}

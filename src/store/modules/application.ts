@@ -4,7 +4,14 @@
  * @Description:
  */
 import { defineStore } from 'pinia';
-import { getTabs, getAppList, getAppResultList, getAppInfo, getMineApp } from '@/api/application';
+import {
+  getTabs,
+  getAppList,
+  getAppResultList,
+  getAppInfo,
+  getMineApp,
+  getResultsIsLike,
+} from '@/api/application';
 import $router from '@/router/index';
 
 interface ApplicationState {
@@ -15,6 +22,7 @@ interface ApplicationState {
   resultList: Application.appResultItf[];
   appInfo: Application.appDetailItf;
   mineAppList: Application.appInfoItf[];
+  editorText: string;
 }
 
 export const useApplicationStore = defineStore('application', {
@@ -26,6 +34,8 @@ export const useApplicationStore = defineStore('application', {
     resultList: [],
     appInfo: {},
     mineAppList: [],
+    editorText: '',
+    resultStateList: new Map(),
   }),
   getters: {},
   actions: {
@@ -57,11 +67,27 @@ export const useApplicationStore = defineStore('application', {
     async getAppResult(uuid: string) {
       const { data } = await getAppResultList(uuid as string);
       this.resultList = data.list;
+      const ids = this.resultList.map((item: Application.appResultItf) => {
+        return item.id;
+      });
+
+      const resultList = await getResultsIsLike(ids.join(','));
+      resultList.data.list.forEach((element: Application.appResultStateItf) => {
+        this.resultStateList.set(element.outputId, element.like);
+      });
     },
     // 请求应用结果列表
     async getMineAppList() {
       const { data } = await getMineApp();
       this.mineAppList = data.list;
+    },
+    // 更新输入框内容
+    updateEditorText(info: string) {
+      this.editorText = info;
+    },
+    // 追加内容
+    addEditorText(info: string) {
+      this.editorText += info;
     },
   },
 });

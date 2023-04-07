@@ -48,7 +48,7 @@
               </n-form-item>
             </n-form>
             <diy-form v-show="i == 1" :app-data="props.appData"></diy-form>
-            <flow v-show="i == 2" :app-data="props.appData"></flow>
+            <flow v-if="i == 2" :app-data="props.appData"></flow>
             <publish v-show="i == 3" :app-data="props.appData" @submit="publishApp"> </publish>
           </div>
         </div>
@@ -58,6 +58,7 @@
 </template>
 <script setup>
   import { useMessage } from 'naive-ui';
+  import { ref, reactive } from 'vue';
   import Publish from './process/publish.vue';
   import DiyForm from './process/diy-form.vue';
   import Flow from './process/flow.vue';
@@ -114,6 +115,8 @@
     current.value = i;
   };
   const publishApp = async (isBack = true) => {
+    if (current.value === 2) current.value = 0;
+    // return console.log(props.appData);
     if (cardList.some((a) => a.status != true)) {
       return message.warning('请检查模板配置，完整填写后再提交哟~');
     }
