@@ -4,7 +4,14 @@
  * @Description:
  */
 import { defineStore } from 'pinia';
-import { getTabs, getAppList, getAppResultList, getAppInfo, getMineApp } from '@/api/application';
+import {
+  getTabs,
+  getAppList,
+  getAppResultList,
+  getAppInfo,
+  getMineApp,
+  getResultsIsLike,
+} from '@/api/application';
 import $router from '@/router/index';
 
 interface ApplicationState {
@@ -28,6 +35,7 @@ export const useApplicationStore = defineStore('application', {
     appInfo: {},
     mineAppList: [],
     editorText: '',
+    resultStateList: new Map(),
   }),
   getters: {},
   actions: {
@@ -59,6 +67,14 @@ export const useApplicationStore = defineStore('application', {
     async getAppResult(uuid: string) {
       const { data } = await getAppResultList(uuid as string);
       this.resultList = data.list;
+      const ids = this.resultList.map((item: Application.appResultItf) => {
+        return item.id;
+      });
+
+      const resultList = await getResultsIsLike(ids.join(','));
+      resultList.data.list.forEach((element: Application.appResultStateItf) => {
+        this.resultStateList.set(element.outputId, element.like);
+      });
     },
     // 请求应用结果列表
     async getMineAppList() {
