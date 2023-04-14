@@ -1,0 +1,76 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: __APP_NAME__
+  namespace: __NS__
+
+spec:
+  replicas: __POD_COUNT__
+  minReadySeconds: 10 #容器稳定运行10s才算成功启动
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 2
+  selector:
+    matchLabels:
+      app: __APP_NAME__
+  template:
+    metadata:
+      labels:
+        app: __APP_NAME__
+
+    spec:
+      imagePullSecrets:
+        - name: docker-reg-secret
+      containers:
+        - name: __APP_NAME__
+          image: __APP_IMAGE__
+          ports:
+            - containerPort: 80
+              name: web
+
+          #CPU内存限制
+          resources:
+            requests:
+              cpu: 200m
+              memory: 300Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: __APP_NAME__
+  namespace: __NS__
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+  selector:
+    app: __APP_NAME__
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: __APP_NAME__
+  namespace: __NS__
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: __HOST__
+      http:
+        paths:
+          - backend:
+              service:
+                name: __APP_NAME__
+                port:
+                  number: 80
+            path: /
+            pathType: ImplementationSpecific

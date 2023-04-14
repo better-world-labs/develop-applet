@@ -1,0 +1,126 @@
+
+# 定义nas目录
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata: 
+  name: back-server-disk
+  labels:
+    name: back-server-disk
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: static-sc
+  resources:
+    requests:
+      storage: 10Gi
+
+# 定义配置
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: back-server-conf
+data:
+  default.conf: |-
+    server {
+        listen 80;
+        root /opt/www;
+
+        location / {
+            add_header Cache-Control no-cache;
+            index  index.html index.htm;
+        }
+
+        error_page 404 /404.html;
+        location = /40x.html {
+        }
+
+        error_page 500 502 503 504 /50x.html;
+        location = /50x.html {
+        }
+    }
+
+# 定义Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-server
+
+spec:
+  replicas: 1
+  minReadySeconds: 10 #容器稳定运行10s才算成功启动
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 2
+  selector:
+    matchLabels:
+      app: back-server
+  template:
+    metadata:
+      labels:
+        app: back-server
+
+    spec:
+      imagePullSecrets:
+        - name: docker-reg-secret
+      containers:
+        - name: nginx
+          image: nginx:1.21.6-alpine
+          ports:
+            - containerPort: 80
+              name: web
+
+          #CPU内存限制
+          resources:
+            requests:
+              cpu: 200m
+              memory: 300Mi
+            limits:
+              cpu: 200m
+              memory: 300Mi
+
+          volumeMounts:
+            - name: conf
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+            # 共享nas目录
+            - name: share-dir
+              mountPath: /opt/www
+              subPath: backup
+
+      volumes:
+        - name: conf
+          configMap:
+            name: back-server-conf
+            defaultMode: 0600
+            items:
+              - key: default.conf
+                path: default.conf
+
+        - name: share-dir
+          persistentVolumeClaim:
+            claimName: back-server-disk
+
+# 定义service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: back-server
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+      protocol: TCP
+    - name: ssh
+      port: 22
+      targetPort: 22
+      protocol: TCP
+  selector:
+    app: back-server
+  type: ClusterIP

@@ -1,0 +1,84 @@
+@import './naive-cover.scss';
+html,
+body,
+pre,
+input,
+textarea,
+#app {
+  font-family: 'PingFang SC';
+  overflow: hidden;
+}
+
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #ffffff;
+  background: #1e1e1e;
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+   background: linear-gradient(180deg, #f3f3f6 0%, #edeffc 100%);
+}
+
+// 公共header
+.home-header {
+  height: 72px;
+  padding: 10px 32px 10px 44px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  background: white;
+  .n-button {
+    width: 164px;
+    height: 40px;
+    background: #5652ff;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 40px;
+    color: #ffffff;
+    margin-top: 6px;
+    --n-border: none !important;
+    --n-border-hover: none !important;
+    --n-border-focus: none !important;
+    .iconfont {
+      font-size: 20px;
+      margin-right: 8px;
+    }
+
+    &:hover {
+      background: #716efe;
+    }
+  }
+}
+
+// 全局滚动条样式
+::-webkit-scrollbar {
+  position: absolute;
+  right: -8px;
+  /*滚动条整体样式*/
+  width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 4px;
+  background: #d2d1dc;
+  border-radius: 4px;
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  border-radius: 4px;
+  background: none;
+}
+
+i.default {
+  font-size: 24px;
+  cursor: pointer;
+  color: #bec3c5;
+  &:hover {
+    color: #181d24;
+  }
+}

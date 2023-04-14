@@ -1,0 +1,9 @@
+// 静态资源配置管理
+$oss: 'https://xxx';
+//入口页面  
+$entryBg: '#{$oss}entry_bg.png'; 
+
+:export {
+  oss: $oss;
+  entryBg: $entryBg;
+}
