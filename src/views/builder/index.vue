@@ -8,10 +8,12 @@
   <div class="builder">
     <header>
       <div class="back" @click="$router.go(-1)"><IconFont name="icon-icon-fanhui" />返回</div>
-
-      <div class="submit" @click="submit">
-        <IconFont name="icon-icon-fabu"></IconFont>
-        发布
+      <div class="right-btn">
+        <div class="solution">如何创建小程序？</div>
+        <div class="submit" @click="submit">
+          <IconFont name="icon-icon-fabu"></IconFont>
+          发布
+        </div>
       </div>
     </header>
     <div class="body">
@@ -179,25 +181,34 @@
         }
       }
 
-      .submit {
-        height: 40px;
-        line-height: 40px;
-        border-radius: 8px;
-        font-weight: 500;
-        font-size: 16px;
-        color: #5652ff;
-        width: 132px;
-        text-align: center;
-        i {
-          font-size: 18px;
-          margin-right: 9px;
+      .right-btn {
+        display: flex;
+        align-items: center;
+        .solution {
+          color: #5652ff;
+          margin-right: 24px;
+          cursor: pointer;
         }
-        border: 1px solid #5652ff;
-        background: #fff;
-        float: right;
-        cursor: pointer;
-        &:hover {
-          background: #eeedfe;
+        .submit {
+          height: 40px;
+          line-height: 40px;
+          border-radius: 8px;
+          font-weight: 500;
+          font-size: 16px;
+          color: #5652ff;
+          width: 132px;
+          text-align: center;
+          i {
+            font-size: 18px;
+            margin-right: 9px;
+          }
+          border: 1px solid #5652ff;
+          background: #fff;
+          float: right;
+          cursor: pointer;
+          &:hover {
+            background: #eeedfe;
+          }
         }
       }
     }
