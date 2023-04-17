@@ -21,7 +21,7 @@ function onCancel() {
 }
 const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .n-dialog {
 	right: -550px;
 	bottom: -200px;
