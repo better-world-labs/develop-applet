@@ -9,7 +9,7 @@
       <n-popover trigger="hover" placement="left">
         <template #trigger>
           <div class="icon-wrap" @click="showFirstDialog">
-            <IconFont name="icon-icon-chuangjianwodexiaochengxu"/>
+            <IconFont name="icon-icon-bangzhu"/>
           </div>
         </template>
         <span>帮助和资源</span>
