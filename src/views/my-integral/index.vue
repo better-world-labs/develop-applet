@@ -112,6 +112,7 @@
           display: flex;
           flex-direction: row;
           margin-bottom: 2px;
+          padding-top: 8px;
 
           > div:first-child {
             overflow: hidden;
