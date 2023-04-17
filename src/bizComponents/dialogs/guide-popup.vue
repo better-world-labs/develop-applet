@@ -9,7 +9,7 @@
 			<div class="guide-title">{{ props.guideTitle }}</div>
 			<div class="guide-content">{{ props.guideContent }}</div>
 			<div class="guide-video">
-				<video :src="props.guideVideo" alt="" autoplay />
+				<video :src="props.guideVideo" alt="" autoplay loop></video>
 			</div>
     </div>
 </template>

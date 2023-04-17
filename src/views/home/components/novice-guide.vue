@@ -20,14 +20,20 @@
 <script setup>
 import staticConfig from '@/settings/staticConfig';
 
-// todo 这里应该还要去plugin那里加点东西
 import { useBizDialog } from '@/plugins';
 const dialog = useBizDialog();
 
 
+onMounted(() => {
+  autoTrigger()
+})
+
 // 用户第一次进入自动显示引导
 function autoTrigger() {
-  // localStorage存一下，
+  let useViewCount = localStorage.getItem('userViewCount')
+  if (useViewCount === 0) {
+    showFirstDialog()
+  }
 }
 
 function showFirstDialog() {
