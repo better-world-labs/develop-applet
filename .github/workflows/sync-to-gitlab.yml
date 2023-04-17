@@ -9,5 +9,5 @@ jobs:
         uses: adambirds/sync-github-to-gitlab-action@v1.1.0
         with:
           destination_repository: ssh://git@gitlab.openviewtech.com:10022/moyu-chat/develop-applet.git
-          destination_branch_name: ${GITHUB_BASE_REF }
+          destination_branch_name: "${GITHUB_REF}"
           destination_ssh_key: ${{ secrets.GITLAB_SYNC }}
