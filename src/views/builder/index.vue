@@ -9,7 +9,12 @@
     <header>
       <div class="back" @click="$router.go(-1)"><IconFont name="icon-icon-fanhui" />返回</div>
       <div class="right-btn">
-        <div class="solution">如何创建小程序？</div>
+        <n-popover trigger="click" :show-arrow="false" placement="bottom-start">
+          <template #trigger>
+            <div class="solution">如何创建小程序？</div>
+          </template>
+        <video style="width: 432px;" autoplay loop :src="staticConfig.editVideo1"></video>
+        </n-popover>
         <div class="submit" @click="submit">
           <IconFont name="icon-icon-fabu"></IconFont>
           发布
@@ -33,6 +38,9 @@
   import { getApp } from '@/api/application';
   import { useRouter, useRoute } from 'vue-router';
   import { useUserStore } from '@/store/modules/user';
+  import { useBizDialog } from '@/plugins';
+  import staticConfig from '@/settings/staticConfig'
+  const dialog = useBizDialog();
   const userStore = useUserStore();
   const route = useRoute();
   const router = useRouter();
@@ -115,6 +123,7 @@
       state.flow = appData.data.flow;
     }
     state.createdBy = { ...userStore.info, name: userStore.info.nickname };
+    // showEditGuide()
   });
 
   const submit = async (isBack = true) => {
@@ -126,6 +135,16 @@
       query: { type: 'save', uuid: state.uuid },
     });
   };
+  function showEditGuide() {
+    console.log(2)
+    dialog.open(
+      'regular-popup',
+      {
+        title: '如何创建小程序',
+        positiveText: '知道了'
+      }
+    )
+  }
 </script>
 <style lang="scss" scoped>
   .scroll-y::-webkit-scrollbar {

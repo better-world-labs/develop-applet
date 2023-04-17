@@ -30,10 +30,11 @@ onMounted(() => {
 
 // 用户第一次进入自动显示引导
 function autoTrigger() {
-  let useViewCount = localStorage.getItem('userViewCount')
+  let useViewCount = localStorage.getItem('userViewCount') || 0
   if (useViewCount === 0) {
     showFirstDialog()
   }
+  localStorage.setItem('userViewCount', useViewCount + 1)
 }
 
 function showFirstDialog() {
