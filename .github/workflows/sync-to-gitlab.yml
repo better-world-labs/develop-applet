@@ -16,7 +16,6 @@ jobs:
       - name: Push Mirror
         env:
           DESTINATION_REPO: 'ssh://git@gitlab.openviewtech.com:10022/moyu-chat/develop-applet.git'
-          BRANCH: ${GITHUB_REF_NAME}
         run: |
           git remote set-url --push origin "$DESTINATION_REPO"
-          git push origin "$BRANCH"
+          git push origin "${GITHUB_REF_NAME}"
