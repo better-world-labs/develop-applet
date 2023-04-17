@@ -4,7 +4,6 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
       - name: Configure Private Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.GITLAB_SYNC }}
@@ -17,5 +16,7 @@ jobs:
         env:
           DESTINATION_REPO: 'ssh://git@gitlab.openviewtech.com:10022/moyu-chat/develop-applet.git'
         run: |
+          git clone https://github.com/better-world-labs/develop-applet.git
+          cd develop-applet
           git remote set-url --push origin "$DESTINATION_REPO"
           git push origin "${GITHUB_REF_NAME}"
