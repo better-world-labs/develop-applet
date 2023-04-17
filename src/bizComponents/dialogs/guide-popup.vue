@@ -8,8 +8,8 @@
 			<IconFont @click="onCancel" name="icon-icon-guanbi-xiao" />
 			<div class="guide-title">{{ props.guideTitle }}</div>
 			<div class="guide-content">{{ props.guideContent }}</div>
-			<div class="guide-img">
-				<img :src="props.guideImg" alt="">
+			<div class="guide-video">
+				<video :src="props.guideVideo" alt="" autoplay />
 			</div>
     </div>
 </template>
@@ -19,7 +19,7 @@ const emit = defineEmits(['close']);
 function onCancel() {
   emit('close');
 }
-const props = defineProps(['guideTitle', 'guideContent', 'guideImg'])
+const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
 </script>
 <style lang="scss">
 .n-dialog {
@@ -36,7 +36,7 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideImg'])
     .n-button {
       min-width: 68px;
       height: 36px;
-      border-radius: 2px;
+      border-radius: 8px !important;
       font-weight: 500;
       font-size: 14px;
       line-height: 20px;
@@ -48,6 +48,11 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideImg'])
     .n-button.n-button--primary-type {
       background: #5652FF !important;
       color: #FFFFFF;
+    }
+    .n-button.n-button--default-type {
+      background-color: #FFFFFF;
+      border: 1px solid #5652FF;
+      color: #5652FF;
     }
   }
 }
@@ -80,8 +85,16 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideImg'])
 		font-size: 20px;
 		font-weight: 500;
 	}
-	.guide-img img {
-		width: 50%;
-	}
+  .guide-content {
+    margin-bottom: 16px;
+  }
+	.guide-video{
+    padding: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    video {
+      width: 100%;
+    }
+  }
 }
 </style>

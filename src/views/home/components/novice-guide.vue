@@ -8,8 +8,8 @@
     <div class="home-guide">
       <n-popover trigger="hover" placement="left">
         <template #trigger>
-          <div class="icon-wrap">
-            <IconFont @click="showDialog" name="icon-icon-chuangjianwodexiaochengxu"/>
+          <div class="icon-wrap" @click="showFirstDialog">
+            <IconFont name="icon-icon-chuangjianwodexiaochengxu"/>
           </div>
         </template>
         <span>帮助和资源</span>
@@ -18,24 +18,82 @@
 </template>
 
 <script setup>
+import staticConfig from '@/settings/staticConfig';
+
 // todo 这里应该还要去plugin那里加点东西
 import { useBizDialog } from '@/plugins';
 const dialog = useBizDialog();
 
-function showDialog() {
-    dialog.open(
+
+// 用户第一次进入自动显示引导
+function autoTrigger() {
+  // localStorage存一下，
+}
+
+function showFirstDialog() {
+  dialog.open(
+    'guide-popup',
+    {
+      title: '1/3',
+      negativeText: '稍后再看',
+      positiveText: '下一步',
+      onNegativeClick: () => {
+        // 点x和稍后再看都要触发提醒弹窗
+      },
+      handlePositiveClick: () => {
+        dialog.close('guide-popup')
+        showSecondDialog()
+      }
+    },
+    {
+      guideTitle: '创作同款小程序',
+      guideContent: '输入信息，立即生成你的专属结果。可以选择是否公开为社区构建，公开后的结果会显示在当前小程序下方',
+      guideVideo: staticConfig.homeVideo1
+    }
+  )
+}
+
+function showSecondDialog() {
+  dialog.open(
       'guide-popup',
       {
-        title: '1/3',
-        negativeText: '稍后再看',
-        positiveText: '下一步'
+        title: '2/3',
+        negativeText: '上一步',
+        positiveText: '下一步',
+        onNegativeClick: () => {
+          dialog.close('guide-popup')
+          showFirstDialog()
+        },
+        handlePositiveClick: () => {
+          dialog.close('guide-popup')
+          showThirdDialog()
+        }
       },
       {
         guideTitle: '创作同款小程序',
-        guideContent: '你看的大代价地掉的旧爱 大家讲掉价的a',
-        guideImg: 'https://moyu-chat.oss-cn-hangzhou.aliyuncs.com/default/avatar/%E6%9B%BE%E7%BB%8F.jpg'
+        guideContent: '您可以直接复制此款小程序的指令，也可以在此基础上进行修改，一键生成自己的小程序',
+        guideVideo: staticConfig.homeVideo2
       }
     )
+}
+
+function showThirdDialog() {
+  dialog.open(
+    'guide-popup',
+    {
+      title: '3/3',
+      positiveText: '开始创作',
+      handlePositiveClick: () => {
+        dialog.close('guide-popup')
+        // 还要通知按钮那边高亮
+      }
+    },
+    {
+      guideTitle: '创作同款小程序',
+      guideContent: '你创建的小程序都被收录在这里啦，点击查看，一键分享给好友吧',
+      guideVideo: staticConfig.homeVideo3
+    }
+  )
 }
 </script>
 
@@ -45,6 +103,7 @@ function showDialog() {
     right: 10px;
     bottom: 50px;
     .icon-wrap {
+      cursor: pointer; 
       width: 36px;
       height: 36px;
       border-radius: 50%;
