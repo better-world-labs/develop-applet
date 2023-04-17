@@ -123,7 +123,10 @@
       state.flow = appData.data.flow;
     }
     state.createdBy = { ...userStore.info, name: userStore.info.nickname };
-    // showEditGuide()
+    // 用户引导状态
+    userStore.getGuideState()
+    // 新用户显示引导
+    showEditGuide()
   });
 
   const submit = async (isBack = true) => {
@@ -136,14 +139,16 @@
     });
   };
   function showEditGuide() {
-    console.log(2)
-    dialog.open(
-      'regular-popup',
-      {
-        title: '如何创建小程序',
-        positiveText: '知道了'
-      }
-    )
+    // 没完成就显示
+    if (!userStore.completeGuide) {
+      // dialog.open(
+      //   'regular-popup',
+      //   {
+      //     title: '如何创建小程序',
+      //     positiveText: '知道了'
+      //   }
+      // )
+    }
   }
 </script>
 <style lang="scss" scoped>
