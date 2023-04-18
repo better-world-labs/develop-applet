@@ -22,11 +22,11 @@ function onCancel() {
 const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
 </script>
 <style lang="scss">
-.n-dialog {
+.guide-wrap.n-dialog {
 	right: -573px;
 	bottom: -140px;
 }
-.n-dialog.n-modal {
+.guide-wrap.n-dialog.n-modal {
   background: white !important;
 
   .n-dialog__action {
