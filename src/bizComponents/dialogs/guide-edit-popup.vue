@@ -6,7 +6,6 @@
 <template>
   <div class="guide-popup">
     <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" />
-    <div class="guide-title">{{ props.guideTitle }}</div>
     <div class="guide-video">
       <video :src="props.guideVideo" alt="" autoplay loop></video>
     </div>
@@ -18,7 +17,7 @@ const emit = defineEmits(['close']);
 function onCancel() {
   emit('close');
 }
-const props = defineProps(['guideTitle', 'guideVideo'])
+const props = defineProps(['guideVideo'])
 </script>
 <style lang="scss">
 .n-dialog.n-modal {
@@ -74,12 +73,6 @@ const props = defineProps(['guideTitle', 'guideVideo'])
   cursor: pointer;
 }
 .guide-popup {
-	.guide-title {
-		color: #5652FF;
-		margin-bottom: 16px;
-		font-size: 20px;
-		font-weight: 500;
-	}
 	.guide-video{
     padding: 4px;
     border: 1px solid rgba(0, 0, 0, 0.1);

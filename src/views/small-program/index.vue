@@ -158,7 +158,7 @@ onMounted(() => {
   .item {
     background: #ffffff;
     box-shadow: 0px 6px 16px rgba(211, 213, 235, 0.4);
-    border-radius: 24px;
+    border-radius: 16px;
     padding: 24px;
     font-weight: 500;
     font-size: 20px;

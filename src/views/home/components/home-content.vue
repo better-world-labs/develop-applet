@@ -83,7 +83,7 @@
     .template-item {
       background: #ffffff;
       box-shadow: 0px 6px 16px rgba(211, 213, 235, 0.4);
-      border-radius: 24px;
+      border-radius: 16px;
       margin-bottom: 24px;
       padding: 24px;
       margin-right: 20px;
