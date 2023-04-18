@@ -1,17 +1,16 @@
 <!--
  * @Author: 刘一笔
- * @Date: 2023-04-14 22:19:33
- * @Description: 用于新手引导
+ * @Date: 2023-04-18 15:02:32
+ * @Description: 编辑页的弹窗
 -->
 <template>
-    <div class="guide-popup">
-			<IconFont @click="onCancel" name="icon-icon-guanbi-xiao" />
-			<div class="guide-title">{{ props.guideTitle }}</div>
-			<div class="guide-content">{{ props.guideContent }}</div>
-			<div class="guide-video">
-				<video :src="props.guideVideo" alt="" autoplay loop></video>
-			</div>
+  <div class="guide-popup">
+    <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" />
+    <div class="guide-title">{{ props.guideTitle }}</div>
+    <div class="guide-video">
+      <video :src="props.guideVideo" alt="" autoplay loop></video>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -19,13 +18,9 @@ const emit = defineEmits(['close']);
 function onCancel() {
   emit('close');
 }
-const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
+const props = defineProps(['guideTitle', 'guideVideo'])
 </script>
 <style lang="scss">
-.n-dialog {
-	right: -573px;
-	bottom: -140px;
-}
 .n-dialog.n-modal {
   background: white !important;
 
@@ -85,9 +80,6 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
 		font-size: 20px;
 		font-weight: 500;
 	}
-  .guide-content {
-    margin-bottom: 16px;
-  }
 	.guide-video{
     padding: 4px;
     border: 1px solid rgba(0, 0, 0, 0.1);

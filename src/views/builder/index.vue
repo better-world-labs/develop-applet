@@ -141,13 +141,17 @@
   function showEditGuide() {
     // 没完成就显示
     if (!userStore.completeGuide) {
-      // dialog.open(
-      //   'regular-popup',
-      //   {
-      //     title: '如何创建小程序',
-      //     positiveText: '知道了'
-      //   }
-      // )
+      console.log(221)
+      dialog.open(
+        'guide-edit-popup',
+        {
+          title: '如何创建小程序',
+          positiveText: '知道了'
+        },
+        {
+          guideVideo: staticConfig.editVideo1
+        }
+      )
     }
   }
 </script>
