@@ -65,6 +65,7 @@ function showFirstDialog() {
     'guide-popup',
     {
       title: '1/3',
+      class: 'guide-wrap',
       negativeText: '稍后再看',
       positiveText: '下一步',
       onNegativeClick: () => {
@@ -89,6 +90,7 @@ function showSecondDialog() {
       'guide-popup',
       {
         title: '2/3',
+        class: 'guide-wrap',
         negativeText: '上一步',
         positiveText: '下一步',
         onNegativeClick: () => {
@@ -113,6 +115,7 @@ function showThirdDialog() {
     'guide-popup',
     {
       title: '3/3',
+      class: 'guide-wrap',
       positiveText: '开始创作',
       handlePositiveClick: () => {
         dialog.close('guide-popup')

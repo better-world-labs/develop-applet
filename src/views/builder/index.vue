@@ -141,7 +141,6 @@
   function showEditGuide() {
     // 没完成就显示
     if (!userStore.completeGuide) {
-      console.log(221)
       dialog.open(
         'guide-edit-popup',
         {
