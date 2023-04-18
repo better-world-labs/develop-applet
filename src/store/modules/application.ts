@@ -23,6 +23,7 @@ interface ApplicationState {
   appInfo: Application.appDetailItf;
   mineAppList: Application.appInfoItf[];
   editorText: string;
+  finishGuide: boolean
 }
 
 export const useApplicationStore = defineStore('application', {
@@ -35,6 +36,7 @@ export const useApplicationStore = defineStore('application', {
     appInfo: {},
     mineAppList: [],
     editorText: '',
+    finishGuide: false,
     resultStateList: new Map(),
   }),
   getters: {},
@@ -89,5 +91,8 @@ export const useApplicationStore = defineStore('application', {
     addEditorText(info: string) {
       this.editorText += info;
     },
+    changeGuideState(finish: boolean) {
+      this.finishGuide = finish
+    }
   },
 });

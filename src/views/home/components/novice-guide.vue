@@ -5,36 +5,59 @@
 -->
 
 <template>
-    <div class="home-guide">
-      <n-popover trigger="hover" placement="left">
-        <template #trigger>
-          <div class="icon-wrap" @click="showFirstDialog">
-            <IconFont name="icon-icon-bangzhu"/>
-          </div>
-        </template>
-        <span>帮助和资源</span>
-      </n-popover>
-    </div>
+  <div class="home-guide">
+    <n-popover trigger="hover" placement="left">
+      <template #trigger>
+        <div class="icon-wrap" @click="showFirstDialog">
+          <IconFont name="icon-icon-chuangjianwodexiaochengxu"/>
+        </div>
+      </template>
+      <span>帮助和资源</span>
+    </n-popover>
+    <!-- trigger隐藏的问题怎么解决 -->
+    <n-popconfirm :show-icon="false" ref="popConfirm" :show-arrow="false" 
+                  :content-style="sam">
+      <template #trigger>
+        <span></span>
+      </template>
+      <template #action>
+        <div @click="hidePopCOnfirm" class="guide-popconfirm">我知道了</div>
+      </template>
+      新手教程可以在这里找到哦～
+    </n-popconfirm>
+  </div>
 </template>
 
 <script setup>
 import staticConfig from '@/settings/staticConfig';
-
+import { useApplicationStore } from '@/store/modules/application';
 import { useBizDialog } from '@/plugins';
+import {NPopconfirm} from "naive-ui"
+import {ref, reactive} from 'vue'
 const dialog = useBizDialog();
+const popConfirm = ref()
+const applicationStore = useApplicationStore();
 
 
+// todo 但是这样改不了外层样式
+const sam = reactive({
+  borderRadius: 8 + 'px'
+})
 onMounted(() => {
   autoTrigger()
 })
 
 // 用户第一次进入自动显示引导
 function autoTrigger() {
-  let useViewCount = localStorage.getItem('userViewCount') || 0
+  let useViewCount = Number(localStorage.getItem('userViewCount')) || 0
   if (useViewCount === 0) {
     showFirstDialog()
   }
   localStorage.setItem('userViewCount', useViewCount + 1)
+}
+
+function hidePopCOnfirm() {
+  popConfirm.value.setShow(false)
 }
 
 function showFirstDialog() {
@@ -46,6 +69,7 @@ function showFirstDialog() {
       positiveText: '下一步',
       onNegativeClick: () => {
         // 点x和稍后再看都要触发提醒弹窗
+        popConfirm.value.setShow(true)
       },
       handlePositiveClick: () => {
         dialog.close('guide-popup')
@@ -92,7 +116,7 @@ function showThirdDialog() {
       positiveText: '开始创作',
       handlePositiveClick: () => {
         dialog.close('guide-popup')
-        // 还要通知按钮那边高亮
+        applicationStore.changeGuideState(true)
       }
     },
     {
@@ -104,6 +128,12 @@ function showThirdDialog() {
 }
 </script>
 
+<style lang="scss">
+.guide-popconfirm {
+  color: #5652FF;
+  cursor: pointer;
+}
+</style>
 <style lang="scss" scoped>
 .home-guide {
     position: fixed;
