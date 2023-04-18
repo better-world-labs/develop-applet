@@ -145,7 +145,10 @@
         'guide-edit-popup',
         {
           title: '如何创建小程序',
-          positiveText: '知道了'
+          positiveText: '知道了',
+          onAfterLeave: () =>{
+            userStore.setGuideState()
+          }
         },
         {
           guideVideo: staticConfig.editVideo1
