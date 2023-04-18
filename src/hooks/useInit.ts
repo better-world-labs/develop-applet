@@ -8,6 +8,7 @@ import { useUserStore } from '@/store/modules/user';
 import { getUserInfo } from '@/api/user';
 import $router from '@/router/index';
 import { getUrlParams } from "@/utils/index"
+import { sendLog } from '@/utils/sls-logger/sendLog';
 import {
   setStorageItem,
   getSessionItem,
@@ -24,6 +25,35 @@ export function useInit() {
   localToken.value = getStorageItem('token');
   // const localUser = getStorageItem('user');
   // user.value = localUser && JSON.parse(localUser);
+
+  const monitorApp = (): void => {
+    sendLog({
+      action_type: 'Enter_APP',
+    });
+    window.onerror = function (message, source, line, column, error) {
+      // message： 错误信息
+      // source：发生错误的资源
+      // line：发生错误的行号
+      // column：发生错误的列数
+      // error：Error错误对象
+      console.error('window.onerror----', message, source, line, column, error);
+      sendLog({
+        action_type: 'Monitor_Error',
+        data: { message, source, line, column, error },
+      });
+    };
+
+    window.addEventListener('unhandledrejection', function (event) {
+      console.error('window.unhandledrejection----', event);
+      sendLog({
+        action_type: 'Monitor_Error',
+        data: {
+          ...event,
+          type: 'unhandledrejection',
+        },
+      });
+    });
+  };
 
   const { pathname: path, href: fullPath } = window.location;
 
@@ -43,6 +73,7 @@ export function useInit() {
 
   // 初始化, (刷新|初次进入)
   const init = (flag = true) => {
+    monitorApp()
     if (user.value) userStore.setUser(user.value);
 
     if (localToken.value) {

@@ -7,6 +7,8 @@ import { App } from 'vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Layout from '@/layout/index.vue';
 import { useBizDialog } from '@/plugins';
+import beforeEach from './beforeEach';
+import afterEach from './afterEach';
 import { useApplicationStore } from '@/store/modules/application';
 
 const dialog = useBizDialog();
@@ -77,6 +79,7 @@ router.beforeEach((to, from, next) => {
         positiveText: '确认',
         negativeText: '取消',
         handlePositiveClick() {
+          beforeEach.logSend(to, router);
           next();
         },
         onNegativeClick: () => {
@@ -89,6 +92,7 @@ router.beforeEach((to, from, next) => {
       }
     );
   } else {
+    beforeEach.logSend(to, router);
     next(); // 继续执行路由
   }
 });
@@ -99,6 +103,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to) => {
   const applicationStore = useApplicationStore();
   applicationStore.setCurrentMenu(to.name as string);
+  afterEach.logSend(to);
 });
 
 export function useRouter(app: App) {
