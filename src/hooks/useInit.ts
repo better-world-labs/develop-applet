@@ -106,7 +106,7 @@ export function useInit() {
     // 环境判断
     (process.env.NODE_ENV === 'development' || location.host.startsWith('ai.moyu.dev.openviewtech.com')) && (toPath = redirectUrls[1]);
     location.host.startsWith('ai.moyu.test.openviewtech.com') && (toPath = redirectUrls[2]);
-    location.replace(toPath + '?redirect_uri=' + encodeURIComponent(location.href.toString()))
+    location.href = (toPath + '?redirect_uri=' + encodeURIComponent(location.href.toString()))
   }
 
   //退出 擦除和路由更新逻辑
