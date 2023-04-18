@@ -116,7 +116,7 @@ function showThirdDialog() {
       positiveText: '开始创作',
       handlePositiveClick: () => {
         dialog.close('guide-popup')
-        applicationStore.changeGuideState(true)
+        applicationStore.changeGuideState(1)
       }
     },
     {
