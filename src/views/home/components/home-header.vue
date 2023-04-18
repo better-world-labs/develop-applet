@@ -15,6 +15,7 @@
         <n-button type="info" @click="createTemplate">
             <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
             创建我的小程序
+            <div ref="animationRef"></div>
         </n-button>
         <user-integral></user-integral>
     </div>
@@ -24,7 +25,9 @@ import $router from '@/router/index';
 import { useApplicationStore } from "@/store/modules/application"
 import { useInit } from '@/hooks/useInit';
 import { useUserStore } from "@/store/modules/user"
+import { ref } from 'vue'
 
+const animationRef = ref()
 const applicationStore = useApplicationStore();
 
 const userStore = useUserStore();
@@ -39,9 +42,23 @@ const handleUpdateValue = (category) => {
     applicationStore.setCurrentTab(category);
 };
 
+let animationTime = ''
+watch(() => applicationStore.finishCount, (newVal, oldVal) => {
+  if (newVal !== oldVal) {
+    // 动画开始
+    animationRef.value.classList.add('guide-animation')
+    // 5s 后结束
+    animationTime = setTimeout(()=>{
+      animationRef.value.classList.remove('guide-animation')
+    },5500)
+  }
+})
 
 onMounted(() => {
     applicationStore.getTabs();
+})
+onUnmounted(() => {
+  clearTimeout(animationTime)
 })
 
 
@@ -68,6 +85,17 @@ onMounted(() => {
 
     .n-tabs-bar {
         background: #5652FF !important;
+    }
+}
+.home-header .guide-animation {
+    position: relative;
+    transform:rotate(-55deg);
+    background: rgba(255,255,255,.5);
+    box-shadow: 0 0 30px 20px rgba(255,255,255, 0.6);
+    animation:move 1.5s infinite ;
+    @keyframes move{
+        from{left:-150px;}
+        to{left:10px;}
     }
 }
 </style> 
