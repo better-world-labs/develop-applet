@@ -68,6 +68,9 @@ function showFirstDialog() {
       class: 'guide-wrap',
       negativeText: '稍后再看',
       positiveText: '下一步',
+      onAfterLeave: () => {
+        popConfirm.value.setShow(true)
+      },
       onNegativeClick: () => {
         // 点x和稍后再看都要触发提醒弹窗
         popConfirm.value.setShow(true)
@@ -93,6 +96,9 @@ function showSecondDialog() {
         class: 'guide-wrap',
         negativeText: '上一步',
         positiveText: '下一步',
+        onAfterLeave: () => {
+          popConfirm.value.setShow(true)
+        },
         onNegativeClick: () => {
           dialog.close('guide-popup')
           showFirstDialog()
@@ -116,6 +122,9 @@ function showThirdDialog() {
     {
       title: '3/3',
       class: 'guide-wrap',
+      onAfterLeave: () => {
+        popConfirm.value.setShow(true)
+      },
       positiveText: '开始创作',
       handlePositiveClick: () => {
         dialog.close('guide-popup')
