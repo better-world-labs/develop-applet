@@ -1,4 +1,9 @@
- import { useInit } from '@/hooks/useInit';
+/*
+ * @Author: Sandy
+ * @Date: 2023-04-18 14:25:55
+ * @Description: 
+ */
+import { useInit } from '@/hooks/useInit';
 
 export function checkStatus(status: number, msg: string): void {
   const $message = window['$message'];
@@ -11,7 +16,7 @@ export function checkStatus(status: number, msg: string): void {
     case 401:
       const { logout } = useInit();
       logout();
-      $message.error('用户没有权限（令牌、用户名、密码错误）!');
+      // $message.error('用户没有权限（令牌、用户名、密码错误）!');
       break;
     case 403:
       $message.error('用户得到授权，但是访问是被禁止的。!');

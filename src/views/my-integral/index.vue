@@ -53,6 +53,7 @@
     $router.push({ name: 'builder' });
   }
   onMounted(() => {
+    if (!userStore.token) goAuth();
     getIntegralDetails().then(({ data }) => {
       dataList.value = data.list;
     });
