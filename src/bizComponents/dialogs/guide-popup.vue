@@ -23,8 +23,9 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
 </script>
 <style lang="scss">
 .guide-wrap.n-dialog {
-	right: -573px;
-	bottom: -140px;
+  position: fixed;
+	right: 60px;
+	bottom: 40px;
 }
 .guide-wrap.n-dialog.n-modal {
   background: white !important;
