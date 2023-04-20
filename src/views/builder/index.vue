@@ -9,7 +9,9 @@
     <header>
       <div class="back" @click="$router.go(-1)"><IconFont name="icon-icon-fanhui" />返回</div>
       <div class="right-btn">
-        <n-popover trigger="click" :show-arrow="false" placement="bottom-start">
+        <n-popover trigger="click" :show-arrow="false" placement="bottom-end"
+                    style="border-radius: 12px; box-shadow: 2px 2px 19px -5px rgba(127, 124, 132, 0.3);
+                          padding: 16px 16px 10px 16px;">
           <template #trigger>
             <div class="solution" @click="solutionBtn">如何创建小程序？</div>
           </template>
@@ -239,9 +241,12 @@
         display: flex;
         align-items: center;
         .solution {
-          color: #5652ff;
+          color: #5B5D62;
           margin-right: 24px;
           cursor: pointer;
+          &:hover {
+            color: #5652ff;
+          }
         }
         .submit {
           height: 40px;
