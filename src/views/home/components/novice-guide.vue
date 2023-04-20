@@ -9,7 +9,7 @@
     <n-popover trigger="hover" placement="left">
       <template #trigger>
         <div class="icon-wrap" @click="showFirstDialog('manual')">
-          <IconFont name="icon-icon-chuangjianwodexiaochengxu"/>
+          <IconFont name="icon-icon-bangzhu"/>
         </div>
       </template>
       <span>帮助和资源</span>
@@ -218,7 +218,10 @@ function report(params) {
       text-align: center;
       background-color: #fff;
       .iconfont {
-        color: #5652FF;
+        color: #202226;
+        &:hover {
+          color: #5652FF;
+        }
       }
     }
 }
