@@ -15,7 +15,9 @@
           <template #trigger>
             <div class="solution" @click="solutionBtn">如何创建小程序？</div>
           </template>
-          <video style="width: 432px;" autoplay loop :src="staticConfig.editVideo1"></video>
+          <video style="width: 432px;border-radius: 8px;border: 1px solid rgba(0, 0, 0, 0.1);" 
+                  autoplay loop :src="staticConfig.editVideo1">
+          </video>
         </n-popover>
         <div class="submit" @click="submit">
           <IconFont name="icon-icon-fabu"></IconFont>
