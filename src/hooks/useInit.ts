@@ -69,6 +69,15 @@ export function useInit() {
     const res = await getUserInfo();
     if (!res.data) return;
     setUserInfo(res.data);
+
+    // 处理分享链接
+    const urlParams = getUrlParams();
+    const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
+    if (invitedBy)
+      sendLog({
+        action_type: 'Invited_Enter',
+        data: { ...urlParams },
+      });
   };
 
   // 初始化, (刷新|初次进入)
@@ -85,8 +94,16 @@ export function useInit() {
       $router.replace({ name: 'home' });
     }
 
-    // 处理Auth认证平台问题
+    // 处理分享链接
     const urlParams = getUrlParams();
+    const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
+    if (invitedBy)
+      sendLog({
+        action_type: 'Invited_Enter',
+        data: { ...urlParams },
+      });
+
+    // 处理Auth认证平台问题
     const code = urlParams['code'] && decodeURIComponent(urlParams['code']);
 
     if (code) {
@@ -117,6 +134,13 @@ export function useInit() {
     removeStorageItem('user');
     localToken.value = '';
     user.value = undefined;
+
+    // 特殊处理 分享链接进入 过期token 退出登录的处理
+    // 处理分享链接
+    const urlParams = getUrlParams();
+    const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
+    if (invitedBy) goAuth();
+
     await $router.replace({ name: 'home' });
   };
 
