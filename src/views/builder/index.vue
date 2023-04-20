@@ -140,7 +140,6 @@
     });
   };
   function solutionBtn() {
-    console.log(111)
     report({
       type: 'Click',
       block: 'callout_creat2',
