@@ -11,9 +11,9 @@
       <div class="right-btn">
         <n-popover trigger="click" :show-arrow="false" placement="bottom-start">
           <template #trigger>
-            <div class="solution">如何创建小程序？</div>
+            <div class="solution" @click="solutionBtn">如何创建小程序？</div>
           </template>
-        <video style="width: 432px;" autoplay loop :src="staticConfig.editVideo1"></video>
+          <video style="width: 432px;" autoplay loop :src="staticConfig.editVideo1"></video>
         </n-popover>
         <div class="submit" @click="submit">
           <IconFont name="icon-icon-fabu"></IconFont>
@@ -39,7 +39,8 @@
   import { useRouter, useRoute } from 'vue-router';
   import { useUserStore } from '@/store/modules/user';
   import { useBizDialog } from '@/plugins';
-  import staticConfig from '@/settings/staticConfig'
+  import staticConfig from '@/settings/staticConfig';
+  import { sendLog } from '@/utils/sls-logger/sendLog';
   const dialog = useBizDialog();
   const userStore = useUserStore();
   const route = useRoute();
@@ -138,9 +139,22 @@
       query: { type: 'save', uuid: state.uuid },
     });
   };
+  function solutionBtn() {
+    console.log(111)
+    report({
+      type: 'Click',
+      block: 'callout_creat2',
+      data: '0'
+    })
+  };
   function showEditGuide() {
     // 没完成就显示
     if (!userStore.completeGuide) {
+      report({
+        type: 'Show',
+        block: 'callout_creat1',
+        data: '0'
+      })
       dialog.open(
         'guide-edit-popup',
         {
@@ -155,6 +169,17 @@
         }
       )
     }
+  }
+
+  // 埋点
+  function report(params) {
+    sendLog({
+      action_type: params.type,
+      page: 'detail',
+      block: params.block,
+      node: params.node || '',
+      data: params.data || ''
+    })
   }
 </script>
 <style lang="scss" scoped>
