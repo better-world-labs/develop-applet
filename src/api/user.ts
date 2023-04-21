@@ -41,3 +41,19 @@ export function getIntegralDetails() {
     url: '/api/points',
   });
 }
+
+// 新手引导完成状态
+export function getGuideState() {
+  return http.request({
+    method: 'get',
+    url: `/api/users/me/guidance`,
+  });
+}
+
+// 完成新手引导
+export function accomplishGuide() {
+  return http.request({
+    method: 'post',
+    url: `/api/users/me/guidance/completion`,
+  });
+}

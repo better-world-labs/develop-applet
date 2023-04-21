@@ -5,11 +5,11 @@
  */
 import { App } from 'vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Layout from '@/layout/index.vue';
-import { useBizDialog } from '@/plugins';
-import { useApplicationStore } from '@/store/modules/application';
-
-const dialog = useBizDialog();
+import Layout from '@/layout/index.vue'; 
+import beforeEach from './beforeEach';
+import afterEach from './afterEach';
+import { useApplicationStore } from '@/store/modules/application'; 
+ 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -69,26 +69,24 @@ const router = createRouter({
  * 路由前置守卫
  */
 router.beforeEach((to, from, next) => {
-  if (from.name !== undefined && from.name == 'builder' && to.query.type !== 'save') {
-    dialog.open(
-      'regular-popup',
-      {
-        title: '提示信息',
-        positiveText: '确认',
-        negativeText: '取消',
-        handlePositiveClick() {
-          next();
-        },
-        onNegativeClick: () => {
-          const applicationStore = useApplicationStore();
-          applicationStore.setCurrentMenu(from.name as string);
-        },
-      },
-      {
-        content: '当前页面有内容未保存，是否确认退出？',
-      }
-    );
+  if (from.name !== undefined && from.name == 'builder' && to.query.type !== 'save') { 
+    $dialog.info({
+       showIcon:false,
+       title: '提示信息',
+       content: '当前页面有内容未保存，是否确认退出？',
+       positiveText: '确认',
+       negativeText: '取消',
+       onPositiveClick() {
+         beforeEach.logSend(to, router);
+         next();
+       },
+       onNegativeClick: () => {
+         const applicationStore = useApplicationStore();
+         applicationStore.setCurrentMenu(from.name as string);
+       },
+     }); 
   } else {
+    beforeEach.logSend(to, router);
     next(); // 继续执行路由
   }
 });
@@ -99,6 +97,7 @@ router.beforeEach((to, from, next) => {
 router.afterEach((to) => {
   const applicationStore = useApplicationStore();
   applicationStore.setCurrentMenu(to.name as string);
+  afterEach.logSend(to);
 });
 
 export function useRouter(app: App) {

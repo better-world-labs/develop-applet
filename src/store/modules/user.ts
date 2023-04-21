@@ -4,7 +4,7 @@
  * @Description:
  */
 import { defineStore } from 'pinia';
-import { getUserInfo } from '@/api/user';
+import { getUserInfo, getGuideState, accomplishGuide } from '@/api/user';
 
 const defaultUser = {
   id: 0,
@@ -20,6 +20,7 @@ export const useUserStore = defineStore('user', {
     // 成员分享链接
     inviteUrl: '' as string,
     total: 0,
+    completeGuide: false, // 是否完成编辑页新人指引
   }),
   getters: {
     userId(): number {
@@ -50,5 +51,15 @@ export const useUserStore = defineStore('user', {
     setUser(user: User.UserInfoItf = defaultUser) {
       this.info = user;
     },
+    async getGuideState() {
+      const res = await getGuideState()
+      this.completeGuide = res.data.completed
+    },
+    async setGuideState() {
+      const res = await accomplishGuide()
+      if (res.code === 0 ) {
+        this.completeGuide = true
+      }
+    }
   },
 });

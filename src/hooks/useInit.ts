@@ -8,6 +8,7 @@ import { useUserStore } from '@/store/modules/user';
 import { getUserInfo } from '@/api/user';
 import $router from '@/router/index';
 import { getUrlParams } from "@/utils/index"
+import { sendLog } from '@/utils/sls-logger/sendLog';
 import {
   setStorageItem,
   getSessionItem,
@@ -25,6 +26,35 @@ export function useInit() {
   // const localUser = getStorageItem('user');
   // user.value = localUser && JSON.parse(localUser);
 
+  const monitorApp = (): void => {
+    sendLog({
+      action_type: 'Enter_APP',
+    });
+    window.onerror = function (message, source, line, column, error) {
+      // message： 错误信息
+      // source：发生错误的资源
+      // line：发生错误的行号
+      // column：发生错误的列数
+      // error：Error错误对象
+      console.error('window.onerror----', message, source, line, column, error);
+      sendLog({
+        action_type: 'Monitor_Error',
+        data: { message, source, line, column, error },
+      });
+    };
+
+    window.addEventListener('unhandledrejection', function (event) {
+      console.error('window.unhandledrejection----', event);
+      sendLog({
+        action_type: 'Monitor_Error',
+        data: {
+          ...event,
+          type: 'unhandledrejection',
+        },
+      });
+    });
+  };
+
   const { pathname: path, href: fullPath } = window.location;
 
   // 统一的设置/修改用户信息, 缓存
@@ -39,10 +69,20 @@ export function useInit() {
     const res = await getUserInfo();
     if (!res.data) return;
     setUserInfo(res.data);
+
+    // 处理分享链接
+    const urlParams = getUrlParams();
+    const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
+    if (invitedBy)
+      sendLog({
+        action_type: 'Invited_Enter',
+        data: { ...urlParams },
+      });
   };
 
   // 初始化, (刷新|初次进入)
   const init = (flag = true) => {
+    monitorApp()
     if (user.value) userStore.setUser(user.value);
 
     if (localToken.value) {
@@ -54,8 +94,16 @@ export function useInit() {
       $router.replace({ name: 'home' });
     }
 
-    // 处理Auth认证平台问题
+    // 处理分享链接
     const urlParams = getUrlParams();
+    const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
+    if (invitedBy)
+      sendLog({
+        action_type: 'Invited_Enter',
+        data: { ...urlParams },
+      });
+
+    // 处理Auth认证平台问题
     const code = urlParams['code'] && decodeURIComponent(urlParams['code']);
 
     if (code) {
@@ -75,7 +123,7 @@ export function useInit() {
     // 环境判断
     (process.env.NODE_ENV === 'development' || location.host.startsWith('ai.moyu.dev.openviewtech.com')) && (toPath = redirectUrls[1]);
     location.host.startsWith('ai.moyu.test.openviewtech.com') && (toPath = redirectUrls[2]);
-    location.replace(toPath + '?redirect_uri=' + encodeURIComponent(location.href.toString()))
+    location.href = (toPath + '?redirect_uri=' + encodeURIComponent(location.href.toString()))
   }
 
   //退出 擦除和路由更新逻辑
@@ -86,6 +134,13 @@ export function useInit() {
     removeStorageItem('user');
     localToken.value = '';
     user.value = undefined;
+
+    // 特殊处理 分享链接进入 过期token 退出登录的处理
+    // 处理分享链接
+    const urlParams = getUrlParams();
+    const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
+    if (invitedBy) goAuth();
+
     await $router.replace({ name: 'home' });
   };
 

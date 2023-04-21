@@ -1,10 +1,111 @@
 /** 全局覆盖 naive ui 组件的样式 **/
-
-.n-dialog {
-  background: var(--bg-color-1);
+ // 内容弹出框
+.content-dialog.n-dialog { 
   border-radius: 16px;
   padding: 24px;
-  .n-dialog__title {
-    color: #181d24;
+  background: white !important; 
+  width: auto !important;
+  .n-modal{
+    width: auto !important;
   }
+  .n-dialog__content{
+    margin: 8px 0 20px 0 !important;
+  }
+  .n-dialog__title {
+    color: #5B5D62;  
+  }
+
+  .n-dialog__action{
+    margin-top: 0 !important;
+    .n-button{
+      width: 132px !important;
+      height: 36px !important;
+      line-height: 36px;
+      text-align: center; 
+      margin-right: 17px;
+      margin-left: 0 !important;
+      font-weight: 400;
+      font-size: 14px;
+      border-radius: 8px !important;
+      background: #FFFFFF !important;
+    }
+    .n-button:last-child{
+      margin-right: 0px;
+    }
+  }
+
+  .n-button.n-button--primary-type ,.n-button--info-type{
+    background: #5652FF !important;
+    color: #FFFFFF !important;
+  }
+  .n-button.n-button--default-type,.n-button--medium-type {
+    background: #FFFFFF !important;
+    border: 1px solid #5652FF !important;
+    color: #5652FF !important;
+  }
+} 
+
+// 提示弹出框 $dialog 或简单定义提示弹出框 prompt-dialog
+.prompt-dialog.n-dialog,.n-dialog.n-modal {
+    border-radius: 12px !important;
+  .n-dialog__title {
+    margin-bottom: 16px;
+    color: #181D24;
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .n-base-close.n-dialog__close{
+    background: none !important;  
+    .n-base-icon{
+      display: none;
+      opacity: 0;
+    }
+    &:before{  
+        display: none; 
+    } 
+     &:after{   
+        font-family: "iconfont";
+        content: "\e653";
+        font-size: 24px;
+        color:#BEBFC0; 
+       
+    }  
+     &:hover{
+       &:after{   
+         color: #5B5D62;
+            
+        }  
+      } 
+  } 
+  
+  .n-dialog__action{
+     margin-top: 48px !important;
+     
+     .n-button{
+      width: 68px;
+      height: 36px;
+      line-height: 36px;
+      text-align: center; 
+      margin-right: 12px;
+      margin-left: 0 !important;
+      font-weight: 400;
+      font-size: 14px;
+      border-radius: 8px !important; 
+     }
+     .n-button:last-child{
+       margin-right: 0px;
+     }
+   }
+
+    .n-button.n-button--primary-type ,.n-button--info-type{
+      background: #5652FF !important;
+      color: #FFFFFF !important;
+      font-weight: 500;
+    }
+    .n-button.n-button--default-type {
+      background: #E3E4E5;
+      border: none;
+      color: #202226;
+
+    }
 }
