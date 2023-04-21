@@ -23,8 +23,9 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
 </script>
 <style lang="scss">
 .guide-wrap.n-dialog {
-	right: -573px;
-	bottom: -140px;
+  position: fixed;
+	right: 60px;
+	bottom: 40px;
 }
 .guide-wrap.n-dialog.n-modal {
   background: white !important;
@@ -74,9 +75,12 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
 .iconfont {
   float: right;
   font-size: 24px;
-  color: #D9D9D9;
+  color: #BEBFC0;
   margin-top: -40px;
   cursor: pointer;
+  &:hover {
+    color: #5B5D62;
+  }
 }
 .guide-popup {
 	.guide-title {

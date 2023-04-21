@@ -8,8 +8,8 @@
   <div class="home-guide">
     <n-popover trigger="hover" placement="left">
       <template #trigger>
-        <div class="icon-wrap" @click="showFirstDialog">
-          <IconFont name="icon-icon-chuangjianwodexiaochengxu"/>
+        <div class="icon-wrap" @click="showFirstDialog('manual')">
+          <IconFont name="icon-icon-bangzhu"/>
         </div>
       </template>
       <span>帮助和资源</span>
@@ -21,7 +21,7 @@
         <span></span>
       </template>
       <template #action>
-        <div @click="hidePopCOnfirm" class="guide-popconfirm">我知道了</div>
+        <div @click="hidePopConfirm" class="guide-popconfirm">我知道了</div>
       </template>
       新手教程可以在这里找到哦～
     </n-popconfirm>
@@ -34,6 +34,8 @@ import { useApplicationStore } from '@/store/modules/application';
 import { useBizDialog } from '@/plugins';
 import {NPopconfirm} from "naive-ui"
 import {ref, reactive} from 'vue'
+import { sendLog } from '@/utils/sls-logger/sendLog';
+
 const dialog = useBizDialog();
 const popConfirm = ref()
 const applicationStore = useApplicationStore();
@@ -51,16 +53,24 @@ onMounted(() => {
 function autoTrigger() {
   let useViewCount = Number(localStorage.getItem('userViewCount')) || 0
   if (useViewCount === 0) {
-    showFirstDialog()
+    showFirstDialog('auto')
   }
   localStorage.setItem('userViewCount', useViewCount + 1)
 }
 
-function hidePopCOnfirm() {
+function hidePopConfirm() {
   popConfirm.value.setShow(false)
 }
 
-function showFirstDialog() {
+// 第一步
+function showFirstDialog(triggerType) {
+  // 埋点
+  report({
+    type: triggerType == 'auto' ? 'Show' : 'Click', // 自动触发 Show
+    block: 'help_center',
+    data: triggerType == 'auto' ? 0 : 1
+  })
+
   dialog.open(
     'guide-popup',
     {
@@ -69,6 +79,11 @@ function showFirstDialog() {
       negativeText: '稍后再看',
       positiveText: '下一步',
       onAfterLeave: () => {
+        report({
+          type: 'Click',
+          block: 'help_step1',
+          node: 'later'
+        })
         popConfirm.value.setShow(true)
       },
       onNegativeClick: () => {
@@ -76,6 +91,11 @@ function showFirstDialog() {
         popConfirm.value.setShow(true)
       },
       handlePositiveClick: () => {
+        report({
+          type: 'Click',
+          block: 'help_step1',
+          node: 'next'
+        })
         dialog.close('guide-popup')
         showSecondDialog()
       }
@@ -88,6 +108,7 @@ function showFirstDialog() {
   )
 }
 
+// 第二步
 function showSecondDialog() {
   dialog.open(
       'guide-popup',
@@ -97,13 +118,28 @@ function showSecondDialog() {
         negativeText: '上一步',
         positiveText: '下一步',
         onAfterLeave: () => {
+          report({
+            type: 'Click',
+            block: 'help_step2',
+            node: 'later'
+          })
           popConfirm.value.setShow(true)
         },
         onNegativeClick: () => {
+          report({
+            type: 'Click',
+            block: 'help_step2',
+            node: 'forward'
+          })
           dialog.close('guide-popup')
           showFirstDialog()
         },
         handlePositiveClick: () => {
+          report({
+            type: 'Click',
+            block: 'help_step2',
+            node: 'next'
+          })
           dialog.close('guide-popup')
           showThirdDialog()
         }
@@ -116,6 +152,7 @@ function showSecondDialog() {
     )
 }
 
+// 第三步
 function showThirdDialog() {
   dialog.open(
     'guide-popup',
@@ -123,10 +160,20 @@ function showThirdDialog() {
       title: '3/3',
       class: 'guide-wrap',
       onAfterLeave: () => {
+        report({
+          type: 'Click',
+          block: 'help_step3',
+          node: '-close'
+        })
         popConfirm.value.setShow(true)
       },
       positiveText: '开始创作',
       handlePositiveClick: () => {
+        report({
+          type: 'Click',
+          block: 'help_step3',
+          node: '-start'
+        })
         dialog.close('guide-popup')
         applicationStore.changeGuideState(1)
       }
@@ -137,6 +184,17 @@ function showThirdDialog() {
       guideVideo: staticConfig.homeVideo3
     }
   )
+}
+
+// 帮助和资源埋点
+function report(params) {
+  sendLog({
+    action_type: params.type,
+    page: 'home',
+    block: params.block,
+    node: params.node || '',
+    data: params.data || ''
+  })
 }
 </script>
 
@@ -160,7 +218,10 @@ function showThirdDialog() {
       text-align: center;
       background-color: #fff;
       .iconfont {
-        color: #5652FF;
+        color: #202226;
+        &:hover {
+          color: #5652FF;
+        }
       }
     }
 }

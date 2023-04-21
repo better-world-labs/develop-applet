@@ -15,7 +15,7 @@
         <n-button type="info" @click="createTemplate">
             <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
             创建我的小程序
-            <div ref="animationRef"></div>
+            <div ref="animationRef" class="guide-animation"></div>
         </n-button>
         <user-integral></user-integral>
     </div>
@@ -89,13 +89,14 @@ onUnmounted(() => {
 }
 .home-header .guide-animation {
     position: relative;
-    transform:rotate(-55deg);
+    transform:rotate(30deg);
+    height: 100px;
     background: rgba(255,255,255,.5);
-    box-shadow: 0 0 30px 20px rgba(255,255,255, 0.6);
+    box-shadow: 0 0 20px 20px rgba(255,255,255, 0.6);
     animation:move 1.5s infinite ;
     @keyframes move{
         from{left:-150px;}
-        to{left:10px;}
+        to{left:40px;}
     }
 }
 </style> 

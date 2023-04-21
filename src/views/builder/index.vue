@@ -9,11 +9,15 @@
     <header>
       <div class="back" @click="$router.go(-1)"><IconFont name="icon-icon-fanhui" />返回</div>
       <div class="right-btn">
-        <n-popover trigger="click" :show-arrow="false" placement="bottom-start">
+        <n-popover trigger="click" :show-arrow="false" placement="bottom-end"
+                    style="border-radius: 12px; box-shadow: 2px 2px 19px -5px rgba(127, 124, 132, 0.3);
+                          padding: 16px 16px 10px 16px;">
           <template #trigger>
-            <div class="solution">如何创建小程序？</div>
+            <div class="solution" @click="solutionBtn">如何创建小程序？</div>
           </template>
-        <video style="width: 432px;" autoplay loop :src="staticConfig.editVideo1"></video>
+          <video style="width: 432px;border-radius: 8px;border: 1px solid rgba(0, 0, 0, 0.1);" 
+                  autoplay loop :src="staticConfig.editVideo1">
+          </video>
         </n-popover>
         <div class="submit" @click="submit">
           <IconFont name="icon-icon-fabu"></IconFont>
@@ -39,7 +43,8 @@
   import { useRouter, useRoute } from 'vue-router';
   import { useUserStore } from '@/store/modules/user';
   import { useBizDialog } from '@/plugins';
-  import staticConfig from '@/settings/staticConfig'
+  import staticConfig from '@/settings/staticConfig';
+  import { sendLog } from '@/utils/sls-logger/sendLog';
   const dialog = useBizDialog();
   const userStore = useUserStore();
   const route = useRoute();
@@ -138,9 +143,21 @@
       query: { type: 'save', uuid: state.uuid },
     });
   };
+  function solutionBtn() {
+    report({
+      type: 'Click',
+      block: 'callout_creat2',
+      data: '0'
+    })
+  };
   function showEditGuide() {
     // 没完成就显示
     if (!userStore.completeGuide) {
+      report({
+        type: 'Show',
+        block: 'callout_creat1',
+        data: '0'
+      })
       dialog.open(
         'guide-edit-popup',
         {
@@ -155,6 +172,17 @@
         }
       )
     }
+  }
+
+  // 埋点
+  function report(params) {
+    sendLog({
+      action_type: params.type,
+      page: 'detail',
+      block: params.block,
+      node: params.node || '',
+      data: params.data || ''
+    })
   }
 </script>
 <style lang="scss" scoped>
@@ -215,9 +243,12 @@
         display: flex;
         align-items: center;
         .solution {
-          color: #5652ff;
+          color: #5B5D62;
           margin-right: 24px;
           cursor: pointer;
+          &:hover {
+            color: #5652ff;
+          }
         }
         .submit {
           height: 40px;

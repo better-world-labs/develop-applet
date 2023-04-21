@@ -65,8 +65,11 @@ const props = defineProps(['content'])
 .iconfont {
   float: right;
   font-size: 24px;
-  color: #D9D9D9;
+  color: #BEBFC0;
   margin-top: -40px;
   cursor: pointer;
+  &:hover {
+    color: #5B5D62;
+  }
 }
 </style>
