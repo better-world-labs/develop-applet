@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "35154072",
+      "name": "icon-社群和反馈",
+      "font_class": "icon-shequnhefankui",
+      "unicode": "e655",
+      "unicode_decimal": 58965
+    },
+    {
       "icon_id": "35086276",
       "name": "icon-帮助",
       "font_class": "icon-bangzhu",
