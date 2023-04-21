@@ -149,3 +149,12 @@ export function resultLike(id: string, data: { like: number }) {
     data: data,
   });
 }
+
+// 获取系统配置
+export function getSystemConfig(params: { key: string }): Promise<Result<AppSystem.SystemConfig>> {
+  return http.request({
+    method: 'get',
+    url: '/api/system-configs',
+    params,
+  });
+}

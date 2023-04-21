@@ -24,10 +24,7 @@
         </n-popover>
       </template>
       <div class="code-feed">
-        <img
-          src="https://moyu-chat.oss-cn-hangzhou.aliyuncs.com/o-auth/Snipaste_2023-04-21_14-07-14.png"
-          alt=""
-        />
+        <img :src="feedBackState.qrCode" alt="" />
         <p>添加AI小助手</p>
       </div>
     </n-popover>
@@ -59,18 +56,26 @@
   import { NPopconfirm } from 'naive-ui';
   import { ref, reactive } from 'vue';
   import { sendLog } from '@/utils/sls-logger/sendLog';
+  import { getSystemConfig } from '@/api/application';
 
   const dialog = useBizDialog();
   const popConfirm = ref();
   const popFeedBack = ref(false);
+  const feedBackState = reactive({
+    feedBackKey: 'MINI_APP_QRCODE',
+    qrCode: '',
+    // https://moyu-chat.oss-cn-hangzhou.aliyuncs.com/o-auth/Snipaste_2023-04-21_14-07-14.png
+  });
   const applicationStore = useApplicationStore();
 
   // todo 但是这样改不了外层样式
   const sam = reactive({
     borderRadius: 8 + 'px',
   });
-  onMounted(() => {
+  onMounted(async () => {
     autoTrigger();
+    const feedBackData = await getSystemConfig({ key: feedBackState.feedBackKey });
+    feedBackState.qrCode = feedBackData.data.value;
   });
 
   // 用户第一次进入自动显示引导
