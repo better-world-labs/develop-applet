@@ -237,7 +237,7 @@
   .home-guide {
     position: fixed;
     right: 10px;
-    bottom: 50px;
+    bottom: 40px;
     .msg {
       width: 20px;
       height: 20px;

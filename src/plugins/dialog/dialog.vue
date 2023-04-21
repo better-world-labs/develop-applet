@@ -1,17 +1,17 @@
 <!--
  * @Author: Lemon
  * @Date: 2022-09-30 14:34:16
- * @LastEditTime: 2022-09-30 16:45:39
+ * @LastEditTime: 2023-04-21 11:05:11
  * @Description: 
 -->
 <template>
   <n-config-provider :theme="darkTheme">
     <n-message-provider>
       <MessageContent />
-      <n-modal ref="moyuDialog" v-model:show="show" preset="dialog" class="moyu-dialog" :show-icon="false"
+      <n-modal ref="appDialog" v-model:show="show" preset="dialog" class="content-dialog"  :show-icon="false"
         @after-leave="onClose" :closable="false" v-bind="dialogProps" @positive-click="onPositive">
         <template #header>
-          <div class="moyu-dialog__header">
+          <div>
             <div class="title" :class="dialogProps?.titlePlacement ? `title--${dialogProps?.titlePlacement}` : ''">
               {{ dialogProps?.title }}
             </div>
@@ -43,7 +43,7 @@ function onClose() {
   close();
 }
 
-const moyuDialog = ref();
+const appDialog = ref();
 const dialogComp = ref();
 function onPositive() {
   const compRef = dialogComp.value;
@@ -58,6 +58,6 @@ function onPositive() {
 }
 
 function closeHandler() {
-  moyuDialog.value.doUpdateShow(false);
+  appDialog.value.doUpdateShow(false);
 }
 </script>

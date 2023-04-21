@@ -26,42 +26,13 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
   position: fixed;
 	right: 60px;
 	bottom: 40px;
-}
-.guide-wrap.n-dialog.n-modal {
-  background: white !important;
-
-  .n-dialog__action {
-    text-align: right;
-    margin-top: 48px;
-
-    .n-button {
-      min-width: 68px;
-      height: 36px;
-      border-radius: 8px !important;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 20px;
-      background: #E3E4E5;
-      margin-left: 12px;
-      color: #202226;
-    }
-
-    .n-button.n-button--primary-type {
-      background: #5652FF !important;
-      color: #FFFFFF;
-    }
-    .n-button.n-button--default-type {
-      background-color: #FFFFFF;
-      border: 1px solid #5652FF;
-      color: #5652FF;
-    }
-  }
-}
+  width: 424px;
+} 
 </style>
 
 <style lang="scss" scoped>
 .guide-popup {
-  width: 408px;
+  width: 376px; 
   margin-top: 16px;
   background: white;
 
@@ -82,7 +53,8 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
     color: #5B5D62;
   }
 }
-.guide-popup {
+.guide-popup {  
+  overflow: hidden;
 	.guide-title {
 		color: #5652FF;
 		margin-bottom: 16px;
@@ -92,12 +64,16 @@ const props = defineProps(['guideTitle', 'guideContent', 'guideVideo'])
   .guide-content {
     margin-bottom: 16px;
   }
-	.guide-video{
-    padding: 4px;
+	.guide-video{ 
+    padding: 0;
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    height: 235px;
+
     video {
-      width: 100%;
+      border-radius: 8px;
+      width: 374px;  
+      margin: 0;
     }
   }
 }
