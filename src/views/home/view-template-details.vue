@@ -316,22 +316,19 @@
   function requestSave() {
     // 积分不够消费，直接提示
     if (appInfo.value.price > userStore.total) {
-      dialog.open(
-        'regular-popup',
-        {
+       $dialog.info({
+          showIcon: false,
           title: '提示信息',
-          positiveText: '确认',
-        },
-        {
           content: '积分不足！',
-        }
-      );
+          positiveText: '确认',  
+      }); 
       return;
     }
 
     dialog.open(
       'run-template',
       {
+        class:"prompt-dialog",
         title: '提示信息',
         positiveText: '确认',
         negativeText: '取消',

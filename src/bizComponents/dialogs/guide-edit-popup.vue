@@ -20,41 +20,14 @@ function onCancel() {
 const props = defineProps(['guideVideo'])
 </script>
 <style lang="scss">
-.n-dialog.n-modal {
-  background: white !important;
-
-  .n-dialog__action {
-    text-align: right;
-    margin-top: 48px;
-
-    .n-button {
-      min-width: 68px;
-      height: 36px;
-      border-radius: 8px !important;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 20px;
-      background: #E3E4E5;
-      margin-left: 12px;
-      color: #202226;
-    }
-
-    .n-button.n-button--primary-type {
-      background: #5652FF !important;
-      color: #FFFFFF;
-    }
-    .n-button.n-button--default-type {
-      background-color: #FFFFFF;
-      border: 1px solid #5652FF;
-      color: #5652FF;
-    }
-  }
+.guide-edit-popup.n-modal { 
+  padding: 20px !important; 
 }
 </style>
 
 <style lang="scss" scoped>
 .guide-popup {
-  width: 408px;
+  width: 616px; 
   margin-top: 16px;
   background: white;
 
@@ -76,12 +49,17 @@ const props = defineProps(['guideVideo'])
   }
 }
 .guide-popup {
-	.guide-video{
-    padding: 4px;
+	.guide-video{ 
+    background: red($color: #000000);
+    padding: 0px;
     border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    video {
-      width: 100%;
+    border-radius: 8px; 
+    width: 614px;  
+    height: 386px;
+    
+    video { 
+      width: 100%;   
+      border-radius: 8px;
     }
   }
 }
