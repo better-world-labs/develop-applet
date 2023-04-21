@@ -82,7 +82,7 @@
               </n-gi>
               <n-gi>
                 <n-checkbox v-model:checked="openData">
-                  公开我的模板结果（用于社区构建）
+                  公开我的结果（用于社区构建）
                 </n-checkbox>
                 <n-button type="info" @click="handleValidateButtonClick" :disabled="showLoading">
                   <span>立即生成</span>
