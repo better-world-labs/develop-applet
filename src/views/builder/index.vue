@@ -161,6 +161,7 @@
       dialog.open(
         'guide-edit-popup',
         {
+          class:"guide-edit-popup",
           title: '如何创建小程序',
           positiveText: '知道了',
           onAfterLeave: () =>{

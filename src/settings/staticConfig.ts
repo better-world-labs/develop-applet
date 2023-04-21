@@ -17,8 +17,7 @@ const staticConfig: StaticVar = {
   homeVideo2: `${oss}home-bootstrap-video-02.mov`,
   homeVideo3: `${oss}home-bootstrap-video-03.mov`,
   //编辑页面引导
-  editVideo1: `${oss}edit-bootstrap-video-01.mov`,
-  editVideo2: `${oss}edit-bootstrap-video-02.mov`,
+  editVideo1: `${oss}edit-bootstrap-video-01.mov`, 
 };
 export default {
   ...staticConfig,

@@ -107,24 +107,22 @@
     }
   }
 
-  function deleteTemplate(uuid) {
-    dialog.open(
-      'regular-popup',
-      {
-        title: '提示信息',
-        positiveText: '确认',
-        negativeText: '取消',
-        handlePositiveClick() {
-          deleteApp(uuid).then(({ data }) => {
-            init();
-          });
-        },
-        onNegativeClick: () => {},
+function deleteTemplate(uuid) {
+    $dialog.info({
+      showIcon: false,
+      title: '提示信息',
+      content: '你确定要删除该小程序吗？',
+      positiveText: '确认',
+      negativeText: '取消',
+      onPositiveClick() {
+        deleteApp(uuid).then(({ data }) => {
+        init();
+      });
       },
-      {
-        content: '你确定要删除该小程序吗？',
-      }
-    );
+      onNegativeClick: () => {
+         
+      },
+    }); 
   }
 
   function init() {

@@ -208,7 +208,7 @@ function report(params) {
 .home-guide {
     position: fixed;
     right: 10px;
-    bottom: 50px;
+    bottom: 40px;
     .icon-wrap {
       cursor: pointer; 
       width: 36px;

@@ -61,7 +61,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     server: {
       host: true,
       port: VITE_PORT,
-      open: true,
+      open: false,
       hmr: true,
       proxy: {
         '/api': {
