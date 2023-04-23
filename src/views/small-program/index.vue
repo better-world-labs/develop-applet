@@ -173,10 +173,15 @@ function deleteTemplate(uuid) {
       .title {
         font-weight: 500;
         font-size: 28px;
-        line-height: 40px;
-
+        line-height: 40px; 
+        height: 80px;
         color: #181d24;
         margin-bottom: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
 
       .delete-icon {

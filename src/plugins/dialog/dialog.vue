@@ -1,7 +1,7 @@
 <!--
  * @Author: Lemon
  * @Date: 2022-09-30 14:34:16
- * @LastEditTime: 2023-04-21 11:05:11
+ * @LastEditTime: 2023-04-23 16:02:47
  * @Description: 
 -->
 <template>
@@ -9,13 +9,12 @@
     <n-message-provider>
       <MessageContent />
       <n-modal ref="appDialog" v-model:show="show" preset="dialog" class="content-dialog"  :show-icon="false"
-        @after-leave="onClose" :closable="false" v-bind="dialogProps" @positive-click="onPositive">
+        @after-leave="onClose" :closable="dialogProps?.closable || true" :mask-closable="dialogProps?.maskClosable || true" v-bind="dialogProps" @positive-click="onPositive">
         <template #header>
           <div>
             <div class="title" :class="dialogProps?.titlePlacement ? `title--${dialogProps?.titlePlacement}` : ''">
-              {{ dialogProps?.title }}
-            </div>
-            <IconFont class="close-btn" name="icon-icon-guanbi-da" @click="closeHandler" />
+              {{ dialogProps?.title }} 
+            </div> 
           </div>
         </template>
         <component v-bind="data" ref="dialogComp" @close="show = false" :is="__d_dialogName" />
