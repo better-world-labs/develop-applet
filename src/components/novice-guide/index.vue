@@ -40,7 +40,7 @@
         <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover" :disabled="popFeedBack2" >
           <template #trigger>
             <div class="icon-wrap" @click="showFirstDialog()">
-              <IconFont name="icon-icon-bangzhu" class="msg" />
+              <IconFont name="icon-icon-bangzhu" />
             </div>
           </template>
           <span>帮助和资源</span>
@@ -139,9 +139,11 @@
       width: 20px;
       height: 20px;
       display: inline-block;
-      // margin-top: 2px;
+      margin-top: 2px;
+   
     }
     .icon-wrap {
+     
       cursor: pointer;
       width: 36px;
       height: 36px;
@@ -155,6 +157,17 @@
         &:hover {
           color: #5652ff;
         }
+      }
+    }
+    .icon-wrap:first-child{
+      &:before {
+        position: absolute;
+        content:"";
+        left: 26px;
+        width: 8px !important;
+        height: 8px !important;
+        border-radius: 8px;
+        background: #DC504C;
       }
     }
   }
