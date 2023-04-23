@@ -9,7 +9,7 @@
     width: auto !important;
   }
   .n-dialog__content{
-    margin: 8px 0 20px 0 !important;
+    margin: 8px 0 20px 0;
   }
   .n-dialog__title {
     color: #5B5D62;  
@@ -79,7 +79,7 @@
   } 
   
   .n-dialog__action{
-     margin-top: 48px !important;
+     margin-top: 48px;
      
      .n-button{
       width: 68px;
@@ -87,10 +87,13 @@
       line-height: 36px;
       text-align: center; 
       margin-right: 12px;
-      margin-left: 0 !important;
+      margin-left: 0;
       font-weight: 400;
       font-size: 14px;
-      border-radius: 8px !important; 
+      border-radius: 8px; 
+      --n-border: none !important;
+      --n-border-hover: none !important;
+      --n-border-focus: none !important;
      }
      .n-button:last-child{
        margin-right: 0px;
