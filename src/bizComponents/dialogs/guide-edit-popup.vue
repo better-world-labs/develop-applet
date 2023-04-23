@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="guide-popup">
-    <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" />
+    <!-- <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" /> -->
     <div class="guide-video">
       <video :src="props.guideVideo" alt="" autoplay loop></video>
     </div>
@@ -14,9 +14,9 @@
 
 <script setup>
 const emit = defineEmits(['close']);
-function onCancel() {
-  emit('close');
-}
+// function onCancel() {
+//   emit('close');
+// }
 const props = defineProps(['guideVideo'])
 </script>
 <style lang="scss">

@@ -14,7 +14,7 @@
       class="popover-feed"
     >
       <template #trigger>
-        <n-popover trigger="hover" placement="left" class="popover" :disabled="popFeedBack">
+        <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover" :disabled="popFeedBack">
           <template #trigger>
             <div class="icon-wrap" style="margin-bottom: 16px">
               <IconFont name="icon-icon-shequnhefankui" class="msg" />
@@ -28,24 +28,31 @@
         <p>添加AI小助手</p>
       </div>
     </n-popover>
-    <n-popover trigger="hover" placement="left" class="popover">
+    <n-popover
+      trigger="click"
+      :show-arrow="false"
+      placement="left-end"  
+      class="popover-feed"
+      :show="showTips" 
+      @clickoutside="hideTipsBox"
+    >
       <template #trigger>
-        <div class="icon-wrap" @click="showFirstDialog('manual')">
-          <IconFont name="icon-icon-bangzhu" />
+        <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover" :disabled="popFeedBack2" >
+          <template #trigger>
+            <div class="icon-wrap" @click="showFirstDialog()">
+              <IconFont name="icon-icon-bangzhu" class="msg" />
+            </div>
+          </template>
+          <span>帮助和资源</span>
+        </n-popover>
+      </template>
+      <div class="tips-feed"> 
+        <p> 新手教程可以在这里找到哦～</p>
+        <div @click="hideTipsBox">
+            知道了 
         </div>
-      </template>
-      <span>帮助和资源</span>
-    </n-popover>
-    <!-- trigger隐藏的问题怎么解决 -->
-    <n-popconfirm :show-icon="false" ref="popConfirm" :show-arrow="false" :content-style="sam">
-      <template #trigger>
-        <span></span>
-      </template>
-      <template #action>
-        <div @click="hidePopConfirm" class="guide-popconfirm">我知道了</div>
-      </template>
-      新手教程可以在这里找到哦～
-    </n-popconfirm>
+      </div>
+    </n-popover> 
   </div>
 </template>
 
@@ -61,6 +68,7 @@
   const dialog = useBizDialog();
   const popConfirm = ref();
   const popFeedBack = ref(false);
+  const showTips = ref(false);
   const feedBackState = reactive({
     feedBackKey: 'MINI_APP_QRCODE',
     qrCode: '',
@@ -91,30 +99,29 @@
     popFeedBack.value = show;
   };
 
-  function hidePopConfirm() {
-    popConfirm.value.setShow(false);
-  }
+  // hover 隐藏提示框，显示tooltips 
+  const updateHover = (show) => { 
+    if(show) showTips.value = false;
+  };
+  const hideTipsBox = (show) => {
+    showTips.value = false;
+  } 
 
-function showFirstDialog() {
-    
+  function showFirstDialog() { 
+     showTips.value = false;
      dialog.open(
       'guide-popup',
       { 
         class: 'guide-wrap', 
+        maskClosable:false,
+       },
+      {
+        complete: () => {
+          showTips.value = true;
+        }
       }
-    );
-  } 
-
-  // 帮助和资源埋点
-  function report(params) {
-    sendLog({
-      action_type: params.type,
-      page: 'home',
-      block: params.block,
-      node: params.node || '',
-      data: params.data || '',
-    });
-  }
+     ); 
+  }  
 </script>
 
 <style lang="scss">
@@ -132,7 +139,7 @@ function showFirstDialog() {
       width: 20px;
       height: 20px;
       display: inline-block;
-      margin-top: 2px;
+      // margin-top: 2px;
     }
     .icon-wrap {
       cursor: pointer;
@@ -172,6 +179,20 @@ function showFirstDialog() {
         line-height: 18px;
         color: #202226;
         text-align: center;
+      }
+    }
+    .tips-feed{
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;  
+      color: #5B5D62;
+      margin-right: 8px; 
+      div{
+        text-align: right;
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 20px; 
+        color: #5652FF;
       }
     }
   }

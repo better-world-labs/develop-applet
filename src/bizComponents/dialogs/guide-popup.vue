@@ -4,8 +4,7 @@
  * @Description: 用于新手引导
 -->
 <template>
-    <div class="guide-popup"> 
-			<!-- <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" /> -->
+    <div class="guide-popup">  
       <div v-for="(item, index) in steps"> 
         <template v-if="index == step">
           <div class="guide-label">{{ step + 1 }}/3</div>
@@ -29,9 +28,18 @@
 <script setup>
 import staticConfig from '@/settings/staticConfig';
 import { sendLog } from '@/utils/sls-logger/sendLog';
+const props = defineProps(['complete'])
 const emit = defineEmits(['close']);
-function onCancel() {
-  emit('close');
+function onCancel(state) {
+  emit('close'); 
+  props.complete();
+  if (!state) {
+    report({
+      type: 'Click',
+      block: `help_step${step.value + 1}`,
+      node: 'later',
+    })
+  } 
 }
 // 帮助和资源埋点
 function report(params) {
@@ -51,14 +59,7 @@ const steps = ref([
 选择喜欢的小程序，输入对话内容，点击立即生成。`,
     guideVideo: staticConfig.homeVideo1,
     positiveText: "下一步",
-    negativeText: "稍后再看",
-    onAfterLeave: () => {
-      report({
-        type: 'Click',
-        block: 'help_step1',
-        node: 'later',
-      })
-    },
+    negativeText: "稍后再看", 
     handlePositiveClick: () => {
       report({
         type: 'Click',
@@ -67,12 +68,7 @@ const steps = ref([
       });
       step.value = 1;
     },
-    onNegativeClick: () => {
-      report({
-        type: 'Click',
-        block: 'help_step1',
-        node: 'forward',
-      }); 
+    onNegativeClick: () => { 
       onCancel(); // 关闭
     }
   },
@@ -81,21 +77,14 @@ const steps = ref([
     guideContent: '没有自己想问的？简单三步，一键生成，赚积分来来来来~',
     guideVideo: staticConfig.homeVideo2,
     positiveText: "下一步",
-    negativeText: "上一步",
-    onAfterLeave: () => {
-      report({
-        type: 'Click',
-        block: 'help_step2',
-        node: 'later',
-      })
-    },
+    negativeText: "上一步", 
     handlePositiveClick: () => {
       report({
         type: 'Click',
         block: 'help_step2',
         node: 'next',
       });
-       step.value = 2;
+      step.value = 2;
     },
     onNegativeClick: () => {
       report({
@@ -110,21 +99,14 @@ const steps = ref([
     guideTitle: '我的小程序',
     guideContent: '创建和收藏的小程序都被收录在这里啦，查看、编辑、一键分享好友赚积分！',
     guideVideo: staticConfig.homeVideo3,
-    positiveText: "开始创作",
-    onAfterLeave: () => {
-      report({
-        type: 'Click',
-        block: 'help_step2',
-        node: 'later',
-      }) 
-    },
+    positiveText: "开始创作", 
     handlePositiveClick: () => {
       report({
         type: 'Click',
         block: 'help_step3',
-        node: 'next',
+        node: '-start',
       });
-      onCancel(); // 关闭
+      onCancel(true); // 关闭
     }
   }
 ]); 
