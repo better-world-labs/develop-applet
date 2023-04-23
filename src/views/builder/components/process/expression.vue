@@ -40,7 +40,7 @@
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
             mentionDenotationChars: ['|||||'],
             positioningStrategy: 'fixed',
-            spaceAfterInsert: false,
+            spaceAfterInsert: true,
             renderItem: (data) => {
               if (data.disabled) {
                 return `<div style="height:10px;line-height:10px;font-size:10px;background-color:#ccc;margin:0 -20px;padding:4px">${data.value}</div>`;
