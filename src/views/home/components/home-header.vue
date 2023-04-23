@@ -15,7 +15,7 @@
         <n-button type="info" @click="createTemplate">
             <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
             创建我的小程序
-            <div ref="animationRef" class="guide-animation"></div>
+            <div ref="animationRef"></div>
         </n-button>
         <user-integral></user-integral>
     </div>
