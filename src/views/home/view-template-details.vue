@@ -421,8 +421,13 @@
   }
 
   // 返回上一页
-  function backPrePage() {
-    $router.go(-1);
+  function backPrePage() { 
+    // 在非当前页，后退一步
+    if (window.location.href.indexOf('/view-template-details') == -1) {
+       $router.go(-1);
+    } else {
+       $router.push({ name: 'home'}); // 跳转到首页
+    } 
   }
 
   // 创建同款app
@@ -448,9 +453,9 @@
     templateDetailRef.value.scrollTop = window.screen.height / 2;
   }
 
-  onMounted(() => {
+  onMounted(() => { 
     const router = useRouter();
-    uuid.value = router.currentRoute.value.query.uuid;
+    uuid.value = router.currentRoute.value.query.uuid; 
     addEvents({
       type: 'app-viewed',
       args: [uuid.value],
