@@ -12,7 +12,7 @@
                 </n-tab-pane>
             </n-tabs>
         </div>
-        <n-button type="info" @click="createTemplate">
+        <n-button type="info" @click="createTemplate" style="overflow: hidden;">
             <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
             创建我的小程序
             <div ref="animationRef"></div>
@@ -92,8 +92,8 @@ onUnmounted(() => {
     transform:rotate(30deg);
     height: 100px;
     background: rgba(255,255,255,.5);
-    box-shadow: 0 0 20px 20px rgba(255,255,255, 0.6);
-    animation:move 1.5s infinite ;
+    box-shadow: 0 0 16px 16px rgba(255,255,255, 0.6);
+    animation: move 1.4s infinite ;
     @keyframes move{
         from{left:-150px;}
         to{left:40px;}
