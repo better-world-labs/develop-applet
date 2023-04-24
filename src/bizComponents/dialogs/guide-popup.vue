@@ -11,7 +11,8 @@
           <div class="guide-title" >{{ item.guideTitle }}</div>
           <div class="guide-content">{{ item.guideContent }}</div>
           <div class="guide-video">
-            <video :src="item.guideVideo" alt="" autoplay loop></video>
+            <n-spin v-show="!item.canplay" size="small"/>
+            <video v-show="item.canplay" :src="item.guideVideo" alt="" autoplay loop @canplay="canplay(item)"></video>
           </div>
           <div class="option-action">
             <n-button v-if=item.negativeText @click="item.onNegativeClick"> 
@@ -29,7 +30,7 @@
 import staticConfig from '@/settings/staticConfig';
 import { sendLog } from '@/utils/sls-logger/sendLog';
 const props = defineProps(['complete'])
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close']); 
 function onCancel(state) {
   emit('close'); 
   props.complete();
@@ -40,7 +41,12 @@ function onCancel(state) {
       node: 'later',
     })
   } 
+} 
+// 开始播放
+function canplay(item) { 
+  item.canplay = true;
 }
+
 // 帮助和资源埋点
 function report(params) {
   sendLog({
@@ -54,9 +60,10 @@ function report(params) {
 const step = ref(0);
 const steps = ref([
   {
+    canplay:false,
     guideTitle: '一键生成专属结果',
     guideContent: `使用AI，回答你的各种问题。
-选择喜欢的小程序，输入对话内容，点击立即生成。`,
+选择喜欢的小程序，输入对话内容，点击立即生成。`, 
     guideVideo: staticConfig.homeVideo1,
     positiveText: "下一步",
     negativeText: "稍后再看", 
@@ -73,6 +80,7 @@ const steps = ref([
     }
   },
   {
+    canplay: false,
     guideTitle: '0代码创作小程序·得积分',
     guideContent: '没有自己想问的？简单三步，一键生成，赚积分来来来来~',
     guideVideo: staticConfig.homeVideo2,
@@ -96,6 +104,7 @@ const steps = ref([
     }
   },
   {
+    canplay: false,
     guideTitle: '我的小程序',
     guideContent: '创建和收藏的小程序都被收录在这里啦，查看、编辑、一键分享好友赚积分！',
     guideVideo: staticConfig.homeVideo3,
@@ -200,6 +209,9 @@ const steps = ref([
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     height: 328px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
    
     video {
       border-radius: 8px;

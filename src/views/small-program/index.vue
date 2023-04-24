@@ -21,7 +21,7 @@
       <n-grid :x-gap="12" v-else cols="1 s:1 m:2 l:3 xl:3 2xl:4" responsive="screen">
         <n-grid-item v-for="item in applicationStore.mineAppList" :key="item.id">
           <div class="item" @click="detailApp(item)">
-            <div class="delete-icon" @click="deleteTemplate(item.uuid)">
+            <div class="delete-icon" @click="deleteTemplate($event,item.uuid)">
               <IconFont name="icon-icon-shanchu" />
             </div>
             <div class="title">
@@ -107,7 +107,9 @@
     }
   }
 
-function deleteTemplate(uuid) {
+function deleteTemplate(e, uuid) {
+  e.stopPropagation();
+
     $dialog.info({
       showIcon: false,
       title: '提示信息',
