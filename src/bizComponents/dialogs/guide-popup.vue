@@ -27,8 +27,10 @@
     </div>
 </template>
 <script setup>
+import { useApplicationStore } from '@/store/modules/application';
 import staticConfig from '@/settings/staticConfig';
 import { sendLog } from '@/utils/sls-logger/sendLog';
+const applicationStore = useApplicationStore();
 const props = defineProps(['complete'])
 const emit = defineEmits(['close']); 
 function onCancel(state) {
@@ -115,6 +117,7 @@ const steps = ref([
         block: 'help_step3',
         node: '-start',
       });
+      applicationStore.changeGuideState(1); 
       onCancel(true); // 关闭
     }
   }
