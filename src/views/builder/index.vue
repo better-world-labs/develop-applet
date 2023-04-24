@@ -138,10 +138,12 @@
     await refCoding.value.publishApp(isBack);
   };
   const back = () => {
-    router.push({
-      name: 'view-template-details',
-      query: { type: 'save', uuid: state.uuid },
-    });
+    router.replace(
+      {
+          name: 'view-template-details',
+          query: { type: 'save', uuid: state.uuid },
+      }
+    )
   };
   function solutionBtn() {
     report({
