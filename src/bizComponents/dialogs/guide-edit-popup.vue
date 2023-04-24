@@ -4,24 +4,29 @@
  * @Description: 编辑页的弹窗
 -->
 <template>
-  <div class="guide-popup">
-    <!-- <IconFont @click="onCancel" name="icon-icon-guanbi-xiao" /> -->
+  <div class="guide-popup"> 
     <div class="guide-video">
-      <video :src="props.guideVideo" alt="" autoplay loop></video>
+      <n-spin v-show="!canplayVideo" size="small"/>
+      <video v-show="canplayVideo" :src="props.guideVideo" alt="" autoplay loop @canplay="canplay()"></video>
     </div>
   </div>
 </template>
 
 <script setup>
-const emit = defineEmits(['close']);
-// function onCancel() {
-//   emit('close');
-// }
-const props = defineProps(['guideVideo'])
+const emit = defineEmits(['close']); 
+const props = defineProps(['guideVideo']);
+const canplayVideo = ref(false);
+function canplay() {
+  canplayVideo.value = true;
+}
 </script>
 <style lang="scss">
 .guide-edit-popup.n-modal { 
   padding: 20px !important; 
+    .n-dialog__title {
+     color: #5652FF;
+    }
+ 
 }
 </style>
 
@@ -56,6 +61,9 @@ const props = defineProps(['guideVideo'])
     border-radius: 8px; 
     width: 614px;  
     height: 386px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     
     video { 
       width: 100%;   

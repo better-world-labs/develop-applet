@@ -154,9 +154,10 @@
       .iconfont {
         font-size: 20px;
         color: #202226;
-        &:hover {
-          color: #5652ff;
-        }
+       
+      }
+      &:hover .iconfont {
+        color: #5652ff;
       }
     }
     .icon-wrap:first-child{
