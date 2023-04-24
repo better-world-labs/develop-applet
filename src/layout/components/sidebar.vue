@@ -27,9 +27,7 @@
   import type { MenuOption } from 'naive-ui';
   import { h } from 'vue';
   import IconFontSymbol from '@/components/icon-font/icon-font-symbol.vue';
-  import { useApplicationStore } from '@/store/modules/application';
-  import { useInit } from '@/hooks/useInit';
-  import { useUserStore } from '@/store/modules/user';
+  import { useApplicationStore } from '@/store/modules/application'; 
   const applicationStore = useApplicationStore();
 
   function renderIcon(name: string, str: string, activeIcon: string) {
@@ -83,8 +81,7 @@
     },
     {
       label: () => redirectLink('my-integral', '我的积分'),
-      key: 'my-integral',
-      // disabled: true,
+      key: 'my-integral', 
       icon: renderIcon('my-integral', 'icon-icon-wodejifen-moren', 'icon-icon-wodejifen-xuanzhong'),
     },
   ];
