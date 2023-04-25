@@ -12,7 +12,7 @@
                 </n-tab-pane>
             </n-tabs>
         </div>
-        <n-button type="info" @click="createTemplate" style="overflow: hidden;">
+        <n-button class="highlight-btn" size="large" @click="createTemplate" style="overflow: hidden;">
             <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
             创建我的小程序
             <div ref="animationRef"></div>
