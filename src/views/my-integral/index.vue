@@ -7,7 +7,7 @@
   <div>
     <div class="home-header">
       <div class="back-btn"></div>
-      <n-button type="info" @click="createTemplate">
+      <n-button class="highlight-btn" size="large" @click="createTemplate">
         <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
         创建我的小程序
       </n-button>

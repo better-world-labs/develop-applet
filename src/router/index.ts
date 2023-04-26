@@ -71,20 +71,21 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if (from.name !== undefined && from.name == 'builder' && to.query.type !== 'save') { 
     $dialog.info({
-       showIcon:false,
-       title: '提示信息',
-       content: '当前页面有内容未保存，是否确认退出？',
-       positiveText: '确认',
-       negativeText: '取消',
-       onPositiveClick() {
-         beforeEach.logSend(to, router);
-         next();
-       },
-       onNegativeClick: () => {
-         const applicationStore = useApplicationStore();
-         applicationStore.setCurrentMenu(from.name as string);
-       },
-     }); 
+      class: 'prompt-dialog',
+      showIcon: false,
+      title: '提示信息',
+      content: '当前页面有内容未保存，是否确认退出？',
+      positiveText: '确认',
+      negativeText: '取消',
+      onPositiveClick() {
+        beforeEach.logSend(to, router);
+        next();
+      },
+      onNegativeClick: () => {
+        const applicationStore = useApplicationStore();
+        applicationStore.setCurrentMenu(from.name as string);
+      },
+    }); 
   } else {
     beforeEach.logSend(to, router);
     next(); // 继续执行路由
