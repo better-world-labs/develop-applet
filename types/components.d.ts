@@ -35,11 +35,14 @@ declare module '@vue/runtime-core' {
     NMessageProvider: typeof import('naive-ui')['NMessageProvider']
     NModal: typeof import('naive-ui')['NModal']
     NNotificationProvider: typeof import('naive-ui')['NNotificationProvider']
-    NoviceGuide: typeof import('./../src/components/novice-guide/index.vue')['default']
+    NoticeBox: typeof import('./../src/bizComponents/notice-box/index.vue')['default']
+    NoviceGuide: typeof import('./../src/bizComponents/novice-guide/index.vue')['default']
     NPopover: typeof import('naive-ui')['NPopover']
+    NPopselect: typeof import('naive-ui')['NPopselect']
     NProgress: typeof import('naive-ui')['NProgress']
     NRadio: typeof import('naive-ui')['NRadio']
     NRadioGroup: typeof import('naive-ui')['NRadioGroup']
+    NSelect: typeof import('naive-ui')['NSelect']
     NSpin: typeof import('naive-ui')['NSpin']
     NTabPane: typeof import('naive-ui')['NTabPane']
     NTabs: typeof import('naive-ui')['NTabs']
@@ -51,6 +54,6 @@ declare module '@vue/runtime-core' {
     RunTemplate: typeof import('./../src/bizComponents/dialogs/run-template.vue')['default']
     ShowAnimation: typeof import('./../src/components/show-animation/index.vue')['default']
     UploadImage: typeof import('./../src/bizComponents/dialogs/upload-image.vue')['default']
-    UserIntegral: typeof import('./../src/components/user-integral/user-integral.vue')['default']
+    UserIntegral: typeof import('./../src/bizComponents/user-integral/user-integral.vue')['default']
   }
 }

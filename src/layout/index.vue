@@ -14,22 +14,22 @@
 </template>
 
 <script lang="ts" setup>
-  import Sidebar from './components/sidebar.vue';
-  import NoviceGuide from '@/components/novice-guide/index.vue';
+import Sidebar from './components/sidebar.vue';
+import NoviceGuide from '@/bizComponents/novice-guide/index.vue';
 </script>
 
 <style scoped lang="scss">
-  .layout {
-    display: flex;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    bottom: 0;
-  }
+.layout {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
 
-  .layout-content {
-    background: var(--app-bg-color);
-    flex: 1;
-    transition: var(--theme-transition);
-  }
+.layout-content {
+  background: var(--app-bg-color);
+  flex: 1;
+  transition: var(--theme-transition);
+}
 </style>
