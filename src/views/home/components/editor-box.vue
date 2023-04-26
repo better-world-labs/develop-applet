@@ -23,7 +23,7 @@
                         <EditorEmoticon @updateInfo="updateInfo" @hide-popo="hideEmoji" />
                     </div>
                 </n-popover>
-                <n-button type="info" @click="send"> 评论 </n-button>
+                <n-button class="highlight-btn" @click="send"> 评论 </n-button>
             </div>
         </div>
 
@@ -74,128 +74,114 @@ const updateInfo = (emoji) => {
 
 </script> 
 
-<style lang="scss" scoped> .feed-editor {
-     background: white;
-     border-radius: 4px;
-     display: flex;
-     flex-direction: row;
-     align-items: top;
+<style lang="scss" scoped>
+.feed-editor {
+    background: white;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: row;
+    align-items: top;
 
-     img {
-         width: 32px;
-         height: 32px;
-         border-radius: 32px;
-         margin-right: 16px;
-         margin-top: 8px;
-     }
- }
+    img {
+        width: 32px;
+        height: 32px;
+        border-radius: 32px;
+        margin-right: 16px;
+        margin-top: 8px;
+    }
+}
 
- .editor-text {
-     flex: 1 auto;
-     display: flex;
-     align-items: top;
-     cursor: text;
-     background: #F3F3F7;
-     border-radius: 4px;
-     box-sizing: border-box;
-     padding: 8px 12px;
+.editor-text {
+    flex: 1 auto;
+    display: flex;
+    align-items: top;
+    cursor: text;
+    background: #F3F3F7;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 8px 12px;
 
-     .textarea {
-         background: none;
-         border: 0 none;
-         outline: none;
-         height: inherit;
-         max-height: 96px;
-         min-height: 25px;
-         overflow-x: hidden;
-         overflow-y: auto;
-         font-size: 16px;
-         line-height: 26px;
-         color: #202226;
-         padding: 0px;
-         box-sizing: border-box;
-         white-space: pre-wrap;
-         word-break: break-word;
-         word-wrap: break-word;
-         -webkit-user-select: text;
-         user-select: text;
-         cursor: text;
-     }
+    .textarea {
+        background: none;
+        border: 0 none;
+        outline: none;
+        height: inherit;
+        max-height: 96px;
+        min-height: 25px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        font-size: 16px;
+        line-height: 26px;
+        color: #202226;
+        padding: 0px;
+        box-sizing: border-box;
+        white-space: pre-wrap;
+        word-break: break-word;
+        word-wrap: break-word;
+        -webkit-user-select: text;
+        user-select: text;
+        cursor: text;
+    }
 
-     .textarea:empty::before {
-         color: #ABACAE;
-         content: attr(placeholder);
-         line-height: 26px;
-         font-size: 14px;
-     }
+    .textarea:empty::before {
+        color: #ABACAE;
+        content: attr(placeholder);
+        line-height: 26px;
+        font-size: 14px;
+    }
 
-     .textarea::-webkit-scrollbar {
-         /*滚动条整体样式*/
-         width: 4px;
-         height: 1px;
-     }
+    .textarea::-webkit-scrollbar {
+        /*滚动条整体样式*/
+        width: 4px;
+        height: 1px;
+    }
 
-     .textarea::-webkit-scrollbar-thumb {
-         /*滚动条里面小方块*/
-         border-radius: 4px;
-         color: #ABACAE;
-         border-radius: 4px;
-         width: 8px;
-     }
+    .textarea::-webkit-scrollbar-thumb {
+        /*滚动条里面小方块*/
+        border-radius: 4px;
+        color: #ABACAE;
+        border-radius: 4px;
+        width: 8px;
+    }
 
-     .textarea::-webkit-scrollbar-track {
-         /*滚动条里面轨道*/
-         border-radius: 4px;
-         background: none;
-     }
- }
+    .textarea::-webkit-scrollbar-track {
+        /*滚动条里面轨道*/
+        border-radius: 4px;
+        background: none;
+    }
+}
 
- .n-button {
-     width: 56px;
-     height: 26px;
-     background: #5652FF;
-     border-radius: 4px;
-     text-align: center;
-     padding: 0;
-     margin: 0;
-     margin-left: 16px;
-     color: #fff !important;
-     border: none !important;
 
-     --n-border: none !important;
-     --n-border-hover: none !important;
-     --n-color-hover: none !important;
+.right-box {
+    display: flex;
+    flex-direction: row;
+    align-items: top;
 
-     &:hover {
-         background: #716EFE;
-         --n-border: none !important;
-         --n-border-hover: none !important;
-         --n-color-hover: none !important;
-         color: #fff !important;
-     }
- }
+    .highlight-btn {
+        width: 56px !important;
+        height: 26px;
+        line-height: 26px;
+        padding: 0;
+        margin: 0;
+        margin-left: 16px;
+    }
 
- .right-box {
-     display: flex;
-     flex-direction: row;
-     align-items: top;
+    .icon-right {
+        font-size: 20px;
+        cursor: pointer;
+        height: 24px;
 
-     .icon-right {
-         font-size: 20px;
-         cursor: pointer;
-         height: 24px;
+        .iconfont-svg {
+            width: 20px;
+            height: 20px;
+            color: #8a8b8d;
 
-         .iconfont-svg {
-             width: 20px;
-             height: 20px;
-             color: #8a8b8d;
-
-             &.active,
-             &:hover {
-                 color: #BEC3C5;
-                 cursor: pointer;
-             }
-         }
-     }
- }
+            &.active,
+            &:hover {
+                color: #BEC3C5;
+                cursor: pointer;
+            }
+        }
+    }
+}
 </style>

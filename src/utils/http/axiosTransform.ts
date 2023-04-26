@@ -137,6 +137,7 @@ export const transform: AxiosTransform = {
       }
       if (err && err.includes('Network Error')) {
         $dialog.info({
+          class: 'prompt-dialog',
           title: '网络异常',
           content: '请检查您的网络连接是否正常',
           positiveText: '确定',

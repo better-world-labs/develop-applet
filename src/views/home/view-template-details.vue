@@ -10,7 +10,7 @@
         <IconFont name="icon-icon-fanhui" />
         返回
       </div>
-      <n-button type="info" @click="createApp">
+      <n-button class="highlight-btn" size="large" @click="createApp">
         <IconFont name="icon-icon-yijiantongkuan" />
         一键同款小程序
       </n-button>
@@ -84,7 +84,7 @@
                 <n-checkbox v-model:checked="openData">
                   公开我的结果（用于社区构建）
                 </n-checkbox>
-                <n-button type="info" @click="handleValidateButtonClick" :disabled="showLoading">
+                <n-button class="gradient-btn" @click="handleValidateButtonClick" :disabled="showLoading">
                   <span>立即生成</span>
                   <em> {{ appInfo.price }}积分</em>
                 </n-button>
@@ -316,7 +316,8 @@
   function requestSave() {
     // 积分不够消费，直接提示
     if (appInfo.value.price > userStore.total) {
-       $dialog.info({
+      $dialog.info({
+          class: "prompt-dialog",
           showIcon: false,
           title: '提示信息',
           content: '积分不足！',
@@ -560,9 +561,9 @@
       }
     }
 
-    .n-button .n-button__content {
-      display: block;
-    }
+    // .n-button .n-button__content {
+    //   display: block;
+    // }
   }
 </style>
 <style scoped lang="scss">
@@ -697,45 +698,45 @@
             }
           }
 
-          .n-button {
-            background: linear-gradient(101.85deg, #957bfb 0%, #5652ff 98.88%);
-            border: none;
-            border-radius: 8px;
-            height: 54px;
-            box-sizing: border-box;
-            font-weight: 500 !important;
-            font-size: 16px;
-            line-height: 16px !important;
-            color: #ffffff;
-            float: right;
-            --n-border: none !important;
-            --n-border-hover: none !important;
-            --n-border-focus: none !important;
+          // .n-button {
+          //   background: linear-gradient(101.85deg, #957bfb 0%, #5652ff 98.88%);
+          //   border: none;
+          //   border-radius: 8px;
+          //   height: 54px;
+          //   box-sizing: border-box;
+          //   font-weight: 500 !important;
+          //   font-size: 16px;
+          //   line-height: 16px !important;
+          //   color: #ffffff;
+          //   float: right;
+          //   --n-border: none !important;
+          //   --n-border-hover: none !important;
+          //   --n-border-focus: none !important;
 
-            &:hover {
-              background: linear-gradient(109.65deg, #a994ff 30.38%, #657eff 98.29%);
-            }
+          //   &:hover {
+          //     background: linear-gradient(109.65deg, #a994ff 30.38%, #657eff 98.29%);
+          //   }
 
-            span {
-              display: flex !important;
-              flex-direction: column;
-              font-weight: 500;
-              font-size: 16px;
-              line-height: 16px;
-              color: #ffffff;
-            }
+          //   span {
+          //     display: flex !important;
+          //     flex-direction: column;
+          //     font-weight: 500;
+          //     font-size: 16px;
+          //     line-height: 16px;
+          //     color: #ffffff;
+          //   }
 
-            em {
-              display: flex !important;
-              flex-direction: column;
-              font-weight: 400;
-              font-size: 12px;
-              line-height: 12px;
-              margin-top: 6px;
-              color: #ffffff;
-              font-style: normal;
-            }
-          }
+          //   em {
+          //     display: flex !important;
+          //     flex-direction: column;
+          //     font-weight: 400;
+          //     font-size: 12px;
+          //     line-height: 12px;
+          //     margin-top: 6px;
+          //     color: #ffffff;
+          //     font-style: normal;
+          //   }
+          // }
         }
       }
 
