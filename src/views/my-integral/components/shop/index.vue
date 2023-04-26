@@ -17,7 +17,9 @@
   <n-modal v-model:show="showModal">
     <div class="shop-box">
       <div class="title">请选择适合你的方案</div>
-      <div class="close"></div>
+      <div class="close">
+        <IconFont name="icon-icon-guanbi-xiao" />
+      </div>
       <div class="list">
         <div class="item">
           <div class="tag">新人特惠</div>
@@ -62,12 +64,32 @@
     overflow: hidden;
     box-sizing: border-box; // needed to fix an issue with the modal not centering itself on the page. 描述：https://codege
     padding: 32px; // 56px;
+    position: relative;
     .title {
       font-weight: 500;
       font-size: 24px;
       line-height: 34px;
       text-align: center;
       color: #181d24;
+    }
+    .close {
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      top: 22px;
+      right: 16px;
+      opacity: 0.7;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      i {
+        line-height: 24px;
+        font-size: 24px;
+        color: #5b5d62;
+      }
+      &:hover {
+        opacity: 1;
+      }
     }
     .list {
       margin: 27px auto 40px;
@@ -76,7 +98,7 @@
       .item {
         width: 189px;
         height: 153px;
-        background: #f3f3f7;
+        background-color: #f3f3f7;
         border-radius: 8px;
         position: relative;
         padding: 32px 0;
