@@ -4,7 +4,6 @@
  * @Description: 请选择适合你的方案
 -->
 <template>
-  <n-button @click="showModal = true"> 来吧 </n-button>
   <!-- <n-modal v-model:show="showModal" preset="dialog" title="Dialog" :showIcon="false">
     <template #header>
       <div>请选择适合你的方案</div>
@@ -14,44 +13,61 @@
       <div>操作</div>
     </template>
   </n-modal> -->
-  <n-modal v-model:show="showModal">
+  <n-modal v-model:show="isShop">
     <div class="shop-box">
       <div class="title">请选择适合你的方案</div>
-      <div class="close">
+      <div class="close" @click="activateShop(false)">
         <IconFont name="icon-icon-guanbi-xiao" />
       </div>
       <div class="list">
+        <div
+          class="item"
+          v-for="(item, i) in state.goods"
+          :key="item.id"
+          :class="{ active: state.current === i }"
+          @click="state.current = i"
+        >
+          <div class="tag" v-if="item.tag == 'new-deal'">新人特惠</div>
+          <p>{{ item.points }}积分</p>
+          <p><span>¥</span>{{ item.price }}</p>
+        </div>
+        <!-- <div class="item active">
+          <p>50积分</p>
+          <p><span>¥</span>9.9</p>
+        </div>
         <div class="item">
-          <div class="tag">新人特惠</div>
           <p>50积分</p>
           <p><span>¥</span>9.9</p>
-        </div>
-        <div class="item active">
-          <p>50积分</p>
-          <p><span>¥</span>9.9</p>
-        </div>
-        <div class="item">
-          <p>50积分</p>
-          <p><span>¥</span>9.9</p>
-        </div>
+        </div> -->
       </div>
       <div class="actions">
-        <div class="btn-sub">立即充值</div>
+        <div class="btn-sub" @click="buy">立即充值</div>
       </div>
     </div>
   </n-modal>
 </template>
 
-<script lang="ts">
+<script setup>
+  import { useMessage } from 'naive-ui';
+  import { getGoods } from '@/api/application';
   import { defineComponent, ref } from 'vue';
-
-  export default defineComponent({
-    setup() {
-      return {
-        showModal: ref(false),
-      };
-    },
+  import { useNative } from '../native';
+  const emit = defineEmits(['selective']);
+  const message = useMessage();
+  const { isShop, activateShop } = useNative();
+  const state = reactive({
+    goods: [],
+    current: -1,
   });
+  onMounted(async () => {
+    const goodsData = await getGoods();
+    console.log(goodsData);
+    state.goods = goodsData.data.list;
+  });
+  const buy = () => {
+    if (state.current < 0) return message.warning('请选择适合的采购方案');
+    emit('selective', state.goods[state.current]);
+  };
 </script>
 
 <style lang="scss" scoped>

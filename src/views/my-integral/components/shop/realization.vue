@@ -4,7 +4,6 @@
  * @Description: 确认提现
 -->
 <template>
-  <n-button @click="showModal = true"> 来吧 </n-button>
   <!-- <n-modal v-model:show="showModal" preset="dialog" title="Dialog" :showIcon="false">
     <template #header>
       <div>请选择适合你的方案</div>
@@ -14,16 +13,16 @@
       <div>操作</div>
     </template>
   </n-modal> -->
-  <n-modal v-model:show="showModal">
+  <n-modal v-model:show="isRealization">
     <div class="shop-box">
       <div class="title">确认提现</div>
-      <div class="close" @click="showModal = false">
+      <div class="close" @click="activateRealization(false)">
         <IconFont name="icon-icon-guanbi-xiao" />
       </div>
       <div class="list">
         <p>累计<span>1000积分</span>即可提现，添加企业微信发起提现</p>
         <div class="code-box">
-          <img :src="customerCode" alt="" srcset="" />
+          <img :src="state.qrCode" alt="" srcset="" />
         </div>
       </div>
     </div>
@@ -32,9 +31,19 @@
 
 <script lang="ts" setup>
   import { defineComponent, ref } from 'vue';
+  import { getSystemConfig } from '@/api/application';
+  import { useNative } from '../native';
   const customerCode =
     'https://moyu-chat.oss-cn-hangzhou.aliyuncs.com/static-web/images/main-logo2.png';
-  const showModal = ref(false);
+  const { isRealization, activateRealization } = useNative();
+  const state = reactive({
+    codeKey: 'MINI_APP_WITHDRAW_QRCODE',
+    qrCode: '',
+  });
+  onMounted(async () => {
+    const feedBackData = await getSystemConfig({ key: state.codeKey });
+    state.qrCode = String(feedBackData.data.value);
+  });
 </script>
 
 <style lang="scss" scoped>
@@ -89,7 +98,7 @@
         }
       }
       .code-box {
-        border-radius: 7px;
+        // border-radius: 7px;
         overflow: hidden;
         width: 178px;
         height: 178px;
