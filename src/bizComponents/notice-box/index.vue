@@ -23,7 +23,7 @@
                     </div>
                 </n-popselect>
             </div>
-            <div class="list" v-if="messageList.length">
+            <div class="list" v-if="messageList.length" @scroll="handleMessageScroll">
                 <div class="item" v-for="item in messageList" :class="{ 'is-read': item.read }" @click="setMsgRead(item)">
                     <img :src="types[item.type]" alt="">
                     <div>
@@ -60,11 +60,14 @@ import notifyInvited from "./images/invited.png";
 import notifyPointsRecharge from "./images/points-recharge.png";
 import notifyDuplicateApp from "./images/duplicate-app.png";
 import notifyAppBeUsed from "./images/app-be-used.png";
+import { debounce } from 'lodash-es';
+
 const showPopover = ref(false);
 const option = ref(0);
-const nextCursor = ref();
+const nextCursor = ref("");
 const unreadMessageCount = ref(0);
 const messageList = ref([]);
+const scrollHeight = ref(0);
 const options = [
     {
         label: "查看全部",
@@ -115,6 +118,15 @@ const timeCalculation = (t) => {
     }
 }
 
+const handleMessageScroll = debounce((e) => {
+    const scroll = e.target;
+    scrollHeight.value = scroll.scrollHeight;
+    if (
+        scrollHeight.value - scroll.scrollTop == scroll.clientHeight
+    ) {
+        getList();
+    }
+}, 300);
 
 const updatePopover = (show) => {
     showPopover.value = show;
@@ -125,6 +137,7 @@ const updatePopover = (show) => {
 };
 
 const selectOption = () => {
+    messageList.value = [];
     nextCursor.value = "";
     getList();
 }
@@ -140,7 +153,10 @@ async function getList() {
     if (option.value == 1) params.isRead = false; // 未读
 
     const { data } = await getNoticeList(params);
-    messageList.value = data.list;
+    data.list.forEach(element => {
+        messageList.value.push(element);
+    });
+    nextCursor.value = data.nextCursor;
 }
 async function setMsgRead(item) {
     if (item.read == true) return;
