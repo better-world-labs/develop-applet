@@ -4,6 +4,12 @@
  * @Description: 应用相关数据结构
  */
 declare namespace Application {
+  export interface goodsItf {
+    id: number;
+    price: number;
+    points: number;
+    tag: string;
+  }
   export interface tabInfoItf {
     label: string;
     category: number;
