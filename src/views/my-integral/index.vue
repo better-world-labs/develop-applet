@@ -13,6 +13,13 @@
       </n-button>
       <user-integral></user-integral>
     </div>
+    <div class="integral-wrap">
+      <n-tabs>
+        <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name" animated type="line">
+          <component :is="item.compo"></component>
+        </n-tab-pane>
+      </n-tabs>
+    </div>
     <div class="my-integral-content">
       <div>
         <div class="title">我的积分</div>
@@ -41,11 +48,27 @@
   import { getIntegralDetails, getIntegral } from '@/api/user';
   import { useUserStore } from '@/store/modules/user';
   import $router from '@/router/index';
+  import balance from './components/balance.vue'
+  import detail from './components/detail.vue'
   import dayjs from 'dayjs';
   const userStore = useUserStore();
   const { goAuth } = useInit();
   const total = ref(0);
   const dataList = ref([]);
+  const tabList = ref([
+    {
+      name: '积分余额',
+      compo: balance,
+    },
+    {
+      name: '积分明细',
+      compo: detail,
+    },
+    {
+      name: '充值及提现记录',
+      compo: detail,
+    },
+  ]); // tab列表
 
   // 创建模版
   function createTemplate() {
@@ -54,9 +77,11 @@
   }
   onMounted(() => {
     if (!userStore.token) goAuth();
+    // 明细
     getIntegralDetails().then(({ data }) => {
       dataList.value = data.list;
     });
+    // 积分总额
     getIntegral().then(({ data }) => {
       total.value = data.total;
     });
@@ -69,6 +94,9 @@
     }
   }
 
+  .integral-wrap {
+    margin: 48px 52px;
+  }
   .my-integral-content {
     padding: 42px 52px;
     background: #f3f3f7;
