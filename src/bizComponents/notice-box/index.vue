@@ -10,7 +10,7 @@
                 <div v-if="unreadMessageCount > 0" class="unread-notice">{{ unreadMessageCount > 99 ? 99 :
                     unreadMessageCount
                 }}</div>
-                <IconFont name="icon-icon-chuangjianwodexiaochengxu" size="24" />
+                <IconFont name="icon-icon-tongzhi" size="24" />
             </div>
         </template>
         <div class="notice-box">
@@ -19,7 +19,7 @@
                 <n-popselect v-model:value="option" :options="options" trigger="click" @change="selectOption">
                     <div class="select-option">
                         {{ options[option]?.label }}
-                        <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
+                        <IconFont name="icon-icon-xialajiantou" />
                     </div>
                 </n-popselect>
             </div>
@@ -268,6 +268,10 @@ onMounted(() => {
             color: #5B5D62;
             cursor: pointer;
             padding-left: 4px;
+
+            .iconfont {
+                font-size: 10px;
+            }
         }
     }
 

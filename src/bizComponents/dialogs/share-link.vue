@@ -10,7 +10,7 @@
                 <input type="text" :disabled="true" :value="url">
                 <n-popover placement="top" trigger="hover">
                     <template #trigger>
-                        <IconFont name="icon-icon-shequnhefankui" @click="onCopy" />
+                        <IconFont name="icon-icon-fuzhi" @click="onCopy()" />
                     </template>
                     <div class="large-text">
                         复制
@@ -28,6 +28,9 @@
 import $router from '@/router/index';
 import useClipboard from 'vue-clipboard3';
 import { useUserStore } from '@/store/modules/user';
+import { useMessage } from 'naive-ui';
+
+const message = useMessage();
 const { toClipboard } = useClipboard();
 const emit = defineEmits(['close']);
 const userStore = useUserStore();
@@ -38,8 +41,7 @@ function onCancel() {
 }
 
 async function onCopy() {
-    e.stopPropagation();
-    url.value = `${com}?invitedBy=${userStore.userId}`;
+    url.value = `${url.value}?invitedBy=${userStore.userId}`;
     try {
         await toClipboard(url.value);
         message.success('已复制，快去分享给朋友吧~');

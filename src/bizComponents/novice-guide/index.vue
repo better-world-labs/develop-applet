@@ -7,7 +7,7 @@
 <template>
   <div class="home-guide">
     <div class="icon-wrap" style="margin-bottom: 16px" @click="shareLink">
-      <IconFont name="icon-icon-bangzhu" />
+      <IconFont name="icon-icon-yemianfenxiang" />
     </div>
     <n-popover trigger="click" :show-arrow="false" placement="left-end" @update:show="updatePopover" class="popover-feed">
       <template #trigger>
