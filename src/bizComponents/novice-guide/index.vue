@@ -6,6 +6,9 @@
 
 <template>
   <div class="home-guide">
+    <div class="icon-wrap" style="margin-bottom: 16px" @click="shareLink">
+      <IconFont name="icon-icon-bangzhu" />
+    </div>
     <n-popover trigger="click" :show-arrow="false" placement="left-end" @update:show="updatePopover" class="popover-feed">
       <template #trigger>
         <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover" :disabled="popFeedBack">
@@ -48,7 +51,6 @@
 import { useBizDialog } from '@/plugins';
 import { ref, reactive } from 'vue';
 import { getSystemConfig } from '@/api/application';
-
 const dialog = useBizDialog();
 const popFeedBack = ref(false);
 const showTips = ref(false);
@@ -75,6 +77,16 @@ function autoTrigger() {
     showFirstDialog('auto');
   }
   localStorage.setItem('userViewCount', useViewCount + 1);
+}
+// 分享链接
+const shareLink = () => {
+  dialog.open(
+    'share-link',
+    {
+      class: "center-dialog",
+      title: '分享',
+    }
+  )
 }
 
 const updatePopover = (show) => {
@@ -147,7 +159,7 @@ function showFirstDialog() {
     }
   }
 
-  .icon-wrap:first-child {
+  .icon-wrap:nth-last-child(2) {
     &:before {
       position: absolute;
       content: "";
