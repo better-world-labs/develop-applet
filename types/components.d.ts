@@ -8,7 +8,8 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BuyWx: typeof import('./../src/bizComponents/dialogs/buy-wx.vue')['default']
-    copy: typeof import('./../src/bizComponents/dialogs/registered copy.vue')['default']
+    copy: typeof import('./../src/bizComponents/dialogs/score-add-copy copy.vue')['default']
+    CreateApplet: typeof import('./../src/bizComponents/dialogs/create-applet.vue')['default']
     DefaultComposition: typeof import('./../src/components/default-composition/default-composition.vue')['default']
     DialogContent: typeof import('./../src/components/dialog-content/index.vue')['default']
     GuideEditPopup: typeof import('./../src/bizComponents/dialogs/guide-edit-popup.vue')['default']
@@ -16,6 +17,8 @@ declare module '@vue/runtime-core' {
     IconFont: typeof import('./../src/components/icon-font/icon-font.vue')['default']
     IconFontSymbol: typeof import('./../src/components/icon-font/icon-font-symbol.vue')['default']
     Insufficient: typeof import('./../src/bizComponents/dialogs/insufficient.vue')['default']
+    InvitedFriendAddScore: typeof import('./../src/bizComponents/dialogs/invited-friend-add-score.vue')['default']
+    InviteFriendsCredits: typeof import('./../src/bizComponents/dialogs/invite-friends-credits.vue')['default']
     MessageContent: typeof import('./../src/components/message-content/index.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
     NCarousel: typeof import('naive-ui')['NCarousel']
@@ -52,8 +55,12 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RunTemplate: typeof import('./../src/bizComponents/dialogs/run-template.vue')['default']
+    ScoreAddCopy: typeof import('./../src/bizComponents/dialogs/score-add-copy.vue')['default']
+    ShareInput: typeof import('./../src/bizComponents/dialogs/components/share-input.vue')['default']
     ShareLink: typeof import('./../src/bizComponents/dialogs/share-link.vue')['default']
     UploadImage: typeof import('./../src/bizComponents/dialogs/upload-image.vue')['default']
+    UseAooletThreeTimes: typeof import('./../src/bizComponents/dialogs/use-aoolet-three-times.vue')['default']
+    UseAppletThreeTimes: typeof import('./../src/bizComponents/dialogs/use-applet-three-times.vue')['default']
     UserIntegral: typeof import('./../src/bizComponents/user-integral/user-integral.vue')['default']
   }
 }

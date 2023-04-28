@@ -102,6 +102,23 @@
     }
   }
 }
+// 标题居中弹出框
+.center-dialog {
+  background: linear-gradient(
+    180deg,
+    rgba(211, 210, 252, 1) 0%,
+    rgba(255, 255, 255, 1) 40.04%
+  ) !important;
+  background-color: white;
+
+  .n-dialog__title {
+    > div {
+      width: 100%;
+      text-align: center !important;
+      padding-left: 20px;
+    }
+  }
+}
 
 .n-spin {
   color: #e3e4e5;
