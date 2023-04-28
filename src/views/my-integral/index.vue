@@ -1,13 +1,13 @@
 <!--
- * @Author: Lemon
- * @Date: 2023-03-22 15:13:40
- * @Description: 我的积分
+ * @Author: Sandy
+ * @Date: 2023-04-26 14:51:48
+ * @Description: 
 -->
 <template>
   <div>
     <div class="home-header">
       <div class="back-btn"></div>
-      <n-button type="info" @click="createTemplate">
+      <n-button class="highlight-btn" size="large" @click="createTemplate">
         <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
         创建我的小程序
       </n-button>
@@ -24,7 +24,10 @@
       <div>
         <div class="title">我的积分</div>
         <div class="title2">
-          积分余额 <span class="active-text" style="padding-left: 4px">{{ total }}分</span>
+          积分余额
+          <n-button @click="activateShop()">立即充值</n-button>
+          <n-button @click="activateRealization()">立即提现</n-button>
+          <span class="active-text" style="padding-left: 4px">{{ total }}分</span>
         </div>
         <div class="title2" style="padding-top: 16px">积分明细：</div>
         <div class="item" v-for="item in dataList" :key="item.userId">
@@ -41,6 +44,8 @@
         </div>
       </div>
     </div>
+    <shop @selective="selective"></shop>
+    <realization></realization>
   </div>
 </template>
 <script setup>
@@ -51,6 +56,27 @@
   import balance from './components/balance.vue'
   import detail from './components/detail.vue'
   import dayjs from 'dayjs';
+  import { useNative } from './components/native.ts';
+  import shop from './components/shop/index.vue';
+  import realization from './components/shop/realization.vue';
+  import { useBizDialog } from '@/plugins';
+  import { putOrder } from '@/api/application';
+  const dialog = useBizDialog();
+  const { isShop, isRealization, activateShop, activateRealization } = useNative();
+  //选购
+  const selective = async (data) => {
+    activateShop(false);
+    const orderData = await putOrder(data.id);
+    dialog.open(
+      'buy-wx',
+      {
+        class: 'buy-wx-dialog',
+        title: '',
+      },
+      orderData.data
+    );
+  };
+
   const userStore = useUserStore();
   const { goAuth } = useInit();
   const total = ref(0);

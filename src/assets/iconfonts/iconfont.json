@@ -6,6 +6,62 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "35301010",
+      "name": "icon-下拉箭头",
+      "font_class": "icon-xialajiantou",
+      "unicode": "e656",
+      "unicode_decimal": 58966
+    },
+    {
+      "icon_id": "35301011",
+      "name": "icon-已收藏",
+      "font_class": "icon-yishoucang",
+      "unicode": "e657",
+      "unicode_decimal": 58967
+    },
+    {
+      "icon_id": "35301012",
+      "name": "icon-微信支付",
+      "font_class": "icon-weixinzhifu",
+      "unicode": "e658",
+      "unicode_decimal": 58968
+    },
+    {
+      "icon_id": "35301013",
+      "name": "icon-复制",
+      "font_class": "icon-fuzhi",
+      "unicode": "e659",
+      "unicode_decimal": 58969
+    },
+    {
+      "icon_id": "35301014",
+      "name": "icon-标记已读",
+      "font_class": "icon-biaojiyidu",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "35301015",
+      "name": "icon-通知",
+      "font_class": "icon-tongzhi",
+      "unicode": "e65b",
+      "unicode_decimal": 58971
+    },
+    {
+      "icon_id": "35301016",
+      "name": "icon-收藏",
+      "font_class": "icon-shoucang",
+      "unicode": "e65c",
+      "unicode_decimal": 58972
+    },
+    {
+      "icon_id": "35301017",
+      "name": "icon-页面分享",
+      "font_class": "icon-yemianfenxiang",
+      "unicode": "e65d",
+      "unicode_decimal": 58973
+    },
+    {
       "icon_id": "35154072",
       "name": "icon-社群和反馈",
       "font_class": "icon-shequnhefankui",

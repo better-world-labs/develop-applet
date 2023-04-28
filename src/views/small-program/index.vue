@@ -7,7 +7,7 @@
   <div>
     <div class="home-header">
       <div style="flex: 1"></div>
-      <n-button type="info" @click="createTemplate">
+      <n-button class="highlight-btn" size="large" @click="createTemplate">
         <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
         创建我的小程序
       </n-button>
@@ -45,8 +45,8 @@
               </div>
             </div>
             <div style="text-align: right">
-              <n-button @click="editApp($event, item)">编辑</n-button>
-              <n-button @click="shareTemplate($event, item)">分享</n-button>
+              <n-button class="border-bg-btn" size="large" @click="editApp($event, item)">编辑</n-button>
+              <n-button class="border-bg-btn" size="large" style="margin-left: 16px;" @click="shareTemplate($event, item)">分享</n-button>
             </div>
           </div>
         </n-grid-item>
@@ -110,7 +110,8 @@
 function deleteTemplate(e, uuid) {
   e.stopPropagation();
 
-    $dialog.info({
+  $dialog.info({
+      class: "prompt-dialog",
       showIcon: false,
       title: '提示信息',
       content: '你确定要删除该小程序吗？',
@@ -145,19 +146,7 @@ function deleteTemplate(e, uuid) {
     width: calc(100% - 312px);
     box-sizing: border-box;
     overflow-x: hidden;
-    overflow-y: scroll;
-    // background-image: url(../../assets/default-bg.png);
-    // background-repeat: no-repeat;
-    // background-position: 50% 50%;
-    // background-size: 112px 112px;
-
-    // &::after{
-    //   content: "暂无小程序哦~";
-    //   color: #ABACAE;
-    //   margin-left: calc(50% - 90px);
-    //   top: calc(50% + 66px);
-    //   position: absolute;
-    //   }
+    overflow-y: scroll; 
 
     .item {
       background: #ffffff;
@@ -248,27 +237,7 @@ function deleteTemplate(e, uuid) {
         .number {
           color: #5b5d62;
         }
-      }
-
-      .n-button {
-        width: 105px;
-        height: 40px;
-        background: #eeedfe;
-        border: 1px solid #5652ff;
-        border-radius: 8px;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 16px;
-        color: #5652ff;
-        margin-left: 16px;
-        --n-border: none !important;
-        --n-border-hover: none !important;
-        --n-border-focus: none !important;
-
-        &:hover {
-          background: #d6d3ff;
-        }
-      }
+      } 
     }
   }
 </style>
