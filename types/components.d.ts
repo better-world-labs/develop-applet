@@ -52,6 +52,7 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RunTemplate: typeof import('./../src/bizComponents/dialogs/run-template.vue')['default']
+    ShareLink: typeof import('./../src/bizComponents/dialogs/share-link.vue')['default']
     UploadImage: typeof import('./../src/bizComponents/dialogs/upload-image.vue')['default']
     UserIntegral: typeof import('./../src/bizComponents/user-integral/user-integral.vue')['default']
   }

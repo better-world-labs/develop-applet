@@ -4,30 +4,32 @@
  * @Description: 通知组件
 -->
 <template>
-    <n-popover class="notice" trigger="click" :show-arrow="false">
+    <n-popover class="notice" trigger="click" :show-arrow="false" :show="showPopover" @update:show="updatePopover">
         <template #trigger>
             <div class="notice-icon">
-                <div v-if="unreadMessage > 0" class="unread-notice">{{ unreadMessage }}</div>
-                <IconFont name="icon-icon-chuangjianwodexiaochengxu" size="24" />
+                <div v-if="unreadMessageCount > 0" class="unread-notice">{{ unreadMessageCount > 99 ? 99 :
+                    unreadMessageCount
+                }}</div>
+                <IconFont name="icon-icon-tongzhi" size="24" />
             </div>
         </template>
         <div class="notice-box">
             <div class="title">
                 <div>通知</div>
-                <n-popselect v-model:value="option" :options="options" trigger="click">
+                <n-popselect v-model:value="option" :options="options" trigger="click" @change="selectOption">
                     <div class="select-option">
                         {{ options[option]?.label }}
-                        <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
+                        <IconFont name="icon-icon-xialajiantou" />
                     </div>
                 </n-popselect>
             </div>
-            <div class="list" v-if="messageList.length">
-                <div class="item" v-for="item in messageList" :class="{ 'is-read': item.isRead }">
+            <div class="list" v-if="messageList.length" @scroll="handleMessageScroll">
+                <div class="item" v-for="item in messageList" :class="{ 'is-read': item.read }" @click="setMsgRead(item)">
                     <img :src="types[item.type]" alt="">
                     <div>
                         <div class="line1">
                             <div class="label">{{ item.title }}</div>
-                            <div class="time">{{ item.createdAt }}</div>
+                            <div class="time">{{ timeCalculation(item.createdAt) }}</div>
                         </div>
                         <div class="content">{{ item.content }}</div>
                     </div>
@@ -37,14 +39,14 @@
                 <div>
                     <img src="./images/bg.png" alt="">
                 </div>
-                <div>
+                <div v-if="option == 0">
                     近六个月未收到消息
                 </div>
-                <!-- <div>
+                <div v-else>
                     暂无未读消息
-                </div> -->
+                </div>
             </div>
-            <div class="tag-message" v-show="unreadMessage">
+            <div class="tag-message" v-show="unreadMessageCount" @click="setAllMsgRead">
                 <img src="./images/check.png" alt="">
                 标记为全部已读
             </div>
@@ -52,13 +54,20 @@
     </n-popover>
 </template>
 <script setup>
+import { getNoticeList, getUnreadCount, setMessageRead, setAllMessageRead } from "@/api/notice"
 import notifyReward from "./images/airdrop.png";
 import notifyInvited from "./images/invited.png";
 import notifyPointsRecharge from "./images/points-recharge.png";
 import notifyDuplicateApp from "./images/duplicate-app.png";
 import notifyAppBeUsed from "./images/app-be-used.png";
+import { debounce } from 'lodash-es';
+
+const showPopover = ref(false);
 const option = ref(0);
-const unreadMessage = ref(6);
+const nextCursor = ref("");
+const unreadMessageCount = ref(0);
+const messageList = ref([]);
+const scrollHeight = ref(0);
 const options = [
     {
         label: "查看全部",
@@ -76,25 +85,92 @@ const types = {
     "notify-app-be-used": notifyAppBeUsed
 };
 
-const messageList = ref([
-    {
-        "id": 21,
-        "type": "notify-reward",
-        "title": "空投奖励",
-        "content": "嗨新伙伴，欢迎加入我们！送你 30 积分，和我们开始创造吧！",
-        "isRead": false,
-        "createdAt": "2023-03-22T07:08:02.851Z"
-    },
-    {
-        "id": 22,
-        "type": "notify-invited",
-        "title": "空投奖励",
-        "content": "嗨新伙伴，欢迎加入我们！送你 30 积分，和我们开始创造吧！",
-        "isRead": true,
-        "createdAt": "2023-03-22T07:08:02.851Z"
-    },
-])
+// 时间计算
+const timeCalculation = (t) => {
+    let now = new Date();
+    let msgDate = new Date(t);
+    now.setHours(0);
+    now.setMinutes(0);
+    now.setMilliseconds(0);
+    // 今天消息 
+    if (now.toDateString() == msgDate.toDateString()) {
+        let hour = msgDate.getHours();
+        let minutes = msgDate.getMinutes();
+        if (hour < 10) hour = `0${hour}`;
+        if (minutes < 10) minutes = `0${minutes}`;
+        return `${hour}:${minutes}`;
+    } else if (now.getTime() - msgDate.getTime() < 60 * 60 * 24 * 1000) {  // 昨天 
+        let hour = msgDate.getHours();
+        let minutes = msgDate.getMinutes();
+        if (hour < 10) hour = `0${hour}`;
+        if (minutes < 10) minutes = `0${minutes}`;
+        return `昨天 ${hour}:${minutes}`;
+    } else { // 两天之前 
+        let month = msgDate.getMonth() + 1;
+        let day = msgDate.getDay();
+        if (month < 10) month = `0${month}`;
+        if (day < 10) day = `0${day}`;
+        if (now.getFullYear() != msgDate.getFullYear()) {
+            return `${msgDate.getFullYear()}-${month}-${day}`
+        } else {
+            return `${month}-${day}`;
+        }
+    }
+}
 
+const handleMessageScroll = debounce((e) => {
+    const scroll = e.target;
+    scrollHeight.value = scroll.scrollHeight;
+    if (
+        scrollHeight.value - scroll.scrollTop == scroll.clientHeight
+    ) {
+        getList();
+    }
+}, 300);
+
+const updatePopover = (show) => {
+    showPopover.value = show;
+    if (showPopover.value) {
+        nextCursor.value = "";
+        getList();
+    }
+};
+
+const selectOption = () => {
+    messageList.value = [];
+    nextCursor.value = "";
+    getList();
+}
+
+async function getUnread() {
+    const { data } = await getUnreadCount();
+    unreadMessageCount.value = data.count;
+}
+async function getList() {
+    const params = {
+        cursor: nextCursor.value || ""
+    };
+    if (option.value == 1) params.isRead = false; // 未读
+
+    const { data } = await getNoticeList(params);
+    data.list.forEach(element => {
+        messageList.value.push(element);
+    });
+    nextCursor.value = data.nextCursor;
+}
+async function setMsgRead(item) {
+    if (item.read == true) return;
+    await setMessageRead(item.id);
+    item.read = true;
+}
+async function setAllMsgRead() {
+    await setAllMessageRead();
+    unreadMessageCount.value = 0;
+}
+
+onMounted(() => {
+    getUnread();
+})
 </script>
 <style lang="scss">
 .notice.n-popover {
@@ -192,6 +268,10 @@ const messageList = ref([
             color: #5B5D62;
             cursor: pointer;
             padding-left: 4px;
+
+            .iconfont {
+                font-size: 10px;
+            }
         }
     }
 

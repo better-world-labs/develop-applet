@@ -179,3 +179,18 @@ export function putOrder(goodsId: string) {
     url: `/api/points-goods/${goodsId}/points-orders`,
   });
 }
+// 收藏/取消收藏
+export function setCollect(uuid: string, collected: Boolean) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${uuid}/collect`,
+    data: { collected },
+  });
+}
+export function getCollectStatus(uuids: string[]) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/is-collected`,
+    data: { uuids: uuids },
+  });
+}
