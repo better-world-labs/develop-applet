@@ -21,7 +21,8 @@
         </n-popover>
         <div class="submit" @click="submit">
           <IconFont name="icon-icon-fabu"></IconFont>
-          发布
+          <span>发布</span>
+          <span class="integral-num">（20积分）</span>
         </div>
       </div>
     </header>
@@ -260,7 +261,7 @@
           font-weight: 500;
           font-size: 16px;
           color: #5652ff;
-          width: 132px;
+          width: 152px;
           text-align: center;
           i {
             font-size: 18px;
@@ -272,6 +273,9 @@
           cursor: pointer;
           &:hover {
             background: #eeedfe;
+          }
+          .integral-num{
+            font-size: 12px;
           }
         }
       }
