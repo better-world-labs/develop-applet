@@ -21,8 +21,8 @@
 
 <script setup>
 import { getIntegral } from '@/api/user';
-import shop from './components/shop/index.vue';
-import realization from './components/shop/realization.vue';
+import shop from './shop/index.vue';
+import realization from './shop/realization.vue';
 
 import { useUserStore } from '@/store/modules/user';
 const { isShop, isRealization, activateShop, activateRealization } = useNative();
