@@ -11,7 +11,7 @@
         <n-button>立即提现</n-button>
     </div>
   </div>
-  <div>积分获取攻略</div>
+  <div class="integral-get">积分获取攻略</div>
   <div>
     文案文案
   </div>
@@ -45,6 +45,12 @@
   }
   .btn-wrap {
     margin-top: 24px;
+  }
+
+  .integral-get {
+    margin-top: 40px;
+    color: #181d24;
+    font-size: 16px;
   }
  }
 </style>
