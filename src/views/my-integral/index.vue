@@ -14,8 +14,8 @@
       <user-integral></user-integral>
     </div>
     <div class="integral-wrap">
-      <n-tabs>
-        <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name" animated type="line">
+      <n-tabs type="line">
+        <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name" >
           <component :is="item.compo"></component>
         </n-tab-pane>
       </n-tabs>
