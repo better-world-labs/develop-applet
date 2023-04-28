@@ -73,7 +73,7 @@ export function useInit() {
     // 处理分享链接
     const urlParams = getUrlParams();
     const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
-    if (invitedBy)
+    if (invitedBy || urlParams['source'])
       sendLog({
         action_type: 'Invited_Enter',
         data: { ...urlParams },
@@ -91,13 +91,14 @@ export function useInit() {
     } else if (path === '/view-template-details') {
       goAuth()
     } else if (path !== '/home') {
-      $router.replace({ name: 'home' });
+      const urlParams = getUrlParams();
+      $router.replace({ name: 'home', query: urlParams });
     }
 
     // 处理分享链接
     const urlParams = getUrlParams();
     const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
-    if (invitedBy)
+    if (invitedBy || urlParams['source'])
       sendLog({
         action_type: 'Invited_Enter',
         data: { ...urlParams },
@@ -141,7 +142,7 @@ export function useInit() {
     const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
     if (invitedBy) goAuth();
 
-    await $router.replace({ name: 'home' });
+    await $router.replace({ name: 'home', query: urlParams });
   };
 
   // 登录 设置数据缓存 和 路由更新
