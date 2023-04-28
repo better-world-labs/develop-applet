@@ -23,7 +23,7 @@
 import { getIntegral } from '@/api/user';
 import shop from './shop/index.vue';
 import realization from './shop/realization.vue';
-
+import { useNative } from './native.ts';
 import { useUserStore } from '@/store/modules/user';
 const { isShop, isRealization, activateShop, activateRealization } = useNative();
 
