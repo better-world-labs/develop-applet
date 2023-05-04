@@ -7,6 +7,7 @@
   <div>
     <div class="home-header">
       <div class="back-btn"></div>
+      <notice-box></notice-box>
       <n-button class="highlight-btn" size="large" @click="createTemplate">
         <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
         创建我的小程序
@@ -49,158 +50,159 @@
   </div>
 </template>
 <script setup>
-  import { useInit } from '@/hooks/useInit';
-  import { getIntegralDetails, getIntegral } from '@/api/user';
-  import { useUserStore } from '@/store/modules/user';
-  import $router from '@/router/index';
-  import balance from './components/balance.vue'
-  import detail from './components/detail.vue'
-  import dayjs from 'dayjs';
-  import { useNative } from './components/native.ts';
-  import shop from './components/shop/index.vue';
-  import realization from './components/shop/realization.vue';
-  import { useBizDialog } from '@/plugins';
-  import { putOrder } from '@/api/application';
-  const dialog = useBizDialog();
-  const { isShop, isRealization, activateShop, activateRealization } = useNative();
-  //选购
-  const selective = async (data) => {
-    activateShop(false);
-    const orderData = await putOrder(data.id);
-    dialog.open(
-      'buy-wx',
-      {
-        class: 'buy-wx-dialog',
-        title: '',
-      },
-      orderData.data
-    );
-  };
+import { useInit } from '@/hooks/useInit';
+import { getIntegralDetails, getIntegral } from '@/api/user';
+import { useUserStore } from '@/store/modules/user';
+import $router from '@/router/index';
+import balance from './components/balance.vue'
+import detail from './components/detail.vue'
+import dayjs from 'dayjs';
+import { useNative } from './components/native.ts';
+import shop from './components/shop/index.vue';
+import realization from './components/shop/realization.vue';
+import { useBizDialog } from '@/plugins';
+import { putOrder } from '@/api/application';
+const dialog = useBizDialog();
+const { isShop, isRealization, activateShop, activateRealization } = useNative();
+//选购
+const selective = async (data) => {
+  activateShop(false);
+  const orderData = await putOrder(data.id);
+  dialog.open(
+    'buy-wx',
+    {
+      class: 'buy-wx-dialog',
+      title: '',
+    },
+    orderData.data
+  );
+};
 
-  const userStore = useUserStore();
-  const { goAuth } = useInit();
-  const total = ref(0);
-  const dataList = ref([]);
-  const tabList = ref([
-    {
-      name: '积分余额',
-      compo: balance,
-    },
-    {
-      name: '积分明细',
-      compo: detail,
-    },
-    {
-      name: '充值及提现记录',
-      compo: detail,
-    },
-  ]); // tab列表
+const userStore = useUserStore();
+const { goAuth } = useInit();
+const total = ref(0);
+const dataList = ref([]);
+const tabList = ref([
+  {
+    name: '积分余额',
+    compo: balance,
+  },
+  {
+    name: '积分明细',
+    compo: detail,
+  },
+  {
+    name: '充值及提现记录',
+    compo: detail,
+  },
+]); // tab列表
 
-  // 创建模版
-  function createTemplate() {
-    if (!userStore.token) goAuth();
-    $router.push({ name: 'builder' });
-  }
-  onMounted(() => {
-    if (!userStore.token) goAuth();
-    // 明细
-    getIntegralDetails().then(({ data }) => {
-      dataList.value = data.list;
-    });
-    // 积分总额
-    getIntegral().then(({ data }) => {
-      total.value = data.total;
-    });
+// 创建模版
+function createTemplate() {
+  if (!userStore.token) goAuth();
+  $router.push({ name: 'builder' });
+}
+onMounted(() => {
+  if (!userStore.token) goAuth();
+  // 明细
+  getIntegralDetails().then(({ data }) => {
+    dataList.value = data.list;
   });
+  // 积分总额
+  getIntegral().then(({ data }) => {
+    total.value = data.total;
+  });
+});
 </script>
 <style scoped lang="scss">
-  .home-header {
-    .back-btn {
-      flex: 1;
+.home-header {
+  .back-btn {
+    flex: 1;
+  }
+}
+
+.integral-wrap {
+  margin: 48px 52px;
+}
+
+.my-integral-content {
+  padding: 42px 52px;
+  background: #f3f3f7;
+  position: absolute;
+  height: calc(100% - 72px);
+  width: calc(100% - 312px);
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  color: #202226;
+
+  >div:first-child {
+    max-width: 660px;
+
+    .title {
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 28px;
+      color: #181d24;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(171, 172, 174, 0.2);
     }
-  }
 
-  .integral-wrap {
-    margin: 48px 52px;
-  }
-  .my-integral-content {
-    padding: 42px 52px;
-    background: #f3f3f7;
-    position: absolute;
-    height: calc(100% - 72px);
-    width: calc(100% - 312px);
-    box-sizing: border-box;
-    overflow-x: hidden;
-    overflow-y: scroll;
+    .title2 {
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 22px;
+      color: #202226;
+      margin: 16px 0;
+    }
 
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    color: #202226;
+    .item {
+      border-bottom: 1px solid rgba(171, 172, 174, 0.2);
+      padding-bottom: 8px;
+      color: #202226;
 
-    > div:first-child {
-      max-width: 660px;
+      .item-one-line {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 2px;
+        padding-top: 8px;
 
-      .title {
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 28px;
-        color: #181d24;
-        padding-bottom: 16px;
-        border-bottom: 1px solid rgba(171, 172, 174, 0.2);
-      }
+        >div:first-child {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+        }
 
-      .title2 {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 22px;
-        color: #202226;
-        margin: 16px 0;
-      }
+        >div:last-child {
+          margin-left: auto;
+          padding-left: 30px;
+          white-space: nowrap;
+          color: #5b5d62;
+        }
 
-      .item {
-        border-bottom: 1px solid rgba(171, 172, 174, 0.2);
-        padding-bottom: 8px;
-        color: #202226;
-
-        .item-one-line {
-          display: flex;
-          flex-direction: row;
-          margin-bottom: 2px;
-          padding-top: 8px;
-
-          > div:first-child {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-          }
-
-          > div:last-child {
-            margin-left: auto;
-            padding-left: 30px;
-            white-space: nowrap;
-            color: #5b5d62;
-          }
-
-          > div.active-text:last-child {
-            color: rgba(86, 82, 255, 1);
-          }
+        >div.active-text:last-child {
+          color: rgba(86, 82, 255, 1);
         }
       }
+    }
 
-      .active-text {
-        color: rgba(86, 82, 255, 1);
-      }
+    .active-text {
+      color: rgba(86, 82, 255, 1);
+    }
 
-      .small {
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 17px;
+    .small {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 17px;
 
-        color: #abacae;
-      }
+      color: #abacae;
     }
   }
+}
 </style>

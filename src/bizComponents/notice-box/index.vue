@@ -4,7 +4,8 @@
  * @Description: 通知组件
 -->
 <template>
-    <n-popover class="notice" trigger="click" :show-arrow="false" :show="showPopover" @update:show="updatePopover">
+    <n-popover v-if="isLogin" class="notice" trigger="click" :show-arrow="false" :show="showPopover"
+        @update:show="updatePopover">
         <template #trigger>
             <div class="notice-icon">
                 <div v-if="unreadMessageCount > 0" class="unread-notice">{{ unreadMessageCount > 99 ? 99 :
@@ -54,123 +55,39 @@
     </n-popover>
 </template>
 <script setup>
-import { getNoticeList, getUnreadCount, setMessageRead, setAllMessageRead } from "@/api/notice"
-import notifyReward from "./images/airdrop.png";
-import notifyInvited from "./images/invited.png";
-import notifyPointsRecharge from "./images/points-recharge.png";
-import notifyDuplicateApp from "./images/duplicate-app.png";
-import notifyAppBeUsed from "./images/app-be-used.png";
-import { debounce } from 'lodash-es';
+import { useUserStore } from '@/store/modules/user';
+import { useNotice } from "./notice";
+const userStore = useUserStore();
 
-const showPopover = ref(false);
-const option = ref(0);
-const nextCursor = ref("");
-const unreadMessageCount = ref(0);
-const messageList = ref([]);
-const scrollHeight = ref(0);
-const options = [
-    {
-        label: "查看全部",
-        value: 0
-    }, {
-        label: "未读消息",
-        value: 1
-    }];
-
-const types = {
-    "notify-reward": notifyReward,
-    "notify-invited": notifyInvited,
-    "notify-points-recharge": notifyPointsRecharge,
-    "notify-duplicate-app": notifyDuplicateApp,
-    "notify-app-be-used": notifyAppBeUsed
-};
-
-// 时间计算
-const timeCalculation = (t) => {
-    let now = new Date();
-    let msgDate = new Date(t);
-    now.setHours(0);
-    now.setMinutes(0);
-    now.setMilliseconds(0);
-    // 今天消息 
-    if (now.toDateString() == msgDate.toDateString()) {
-        let hour = msgDate.getHours();
-        let minutes = msgDate.getMinutes();
-        if (hour < 10) hour = `0${hour}`;
-        if (minutes < 10) minutes = `0${minutes}`;
-        return `${hour}:${minutes}`;
-    } else if (now.getTime() - msgDate.getTime() < 60 * 60 * 24 * 1000) {  // 昨天 
-        let hour = msgDate.getHours();
-        let minutes = msgDate.getMinutes();
-        if (hour < 10) hour = `0${hour}`;
-        if (minutes < 10) minutes = `0${minutes}`;
-        return `昨天 ${hour}:${minutes}`;
-    } else { // 两天之前 
-        let month = msgDate.getMonth() + 1;
-        let day = msgDate.getDay();
-        if (month < 10) month = `0${month}`;
-        if (day < 10) day = `0${day}`;
-        if (now.getFullYear() != msgDate.getFullYear()) {
-            return `${msgDate.getFullYear()}-${month}-${day}`
-        } else {
-            return `${month}-${day}`;
-        }
-    }
-}
-
-const handleMessageScroll = debounce((e) => {
-    const scroll = e.target;
-    scrollHeight.value = scroll.scrollHeight;
-    if (
-        scrollHeight.value - scroll.scrollTop == scroll.clientHeight
-    ) {
-        getList();
-    }
-}, 300);
-
-const updatePopover = (show) => {
-    showPopover.value = show;
-    if (showPopover.value) {
-        nextCursor.value = "";
-        getList();
-    }
-};
-
-const selectOption = () => {
-    messageList.value = [];
-    nextCursor.value = "";
-    getList();
-}
-
-async function getUnread() {
-    const { data } = await getUnreadCount();
-    unreadMessageCount.value = data.count;
-}
-async function getList() {
-    const params = {
-        cursor: nextCursor.value || ""
-    };
-    if (option.value == 1) params.isRead = false; // 未读
-
-    const { data } = await getNoticeList(params);
-    data.list.forEach(element => {
-        messageList.value.push(element);
-    });
-    nextCursor.value = data.nextCursor;
-}
-async function setMsgRead(item) {
-    if (item.read == true) return;
-    await setMessageRead(item.id);
-    item.read = true;
-}
-async function setAllMsgRead() {
-    await setAllMessageRead();
-    unreadMessageCount.value = 0;
-}
-
+const {
+    showPopover,
+    option,
+    nextCursor,
+    unreadMessageCount,
+    messageList,
+    scrollHeight,
+    options,
+    types,
+    timeCalculation,
+    handleMessageScroll,
+    updatePopover,
+    selectOption,
+    getList,
+    getUnread,
+    getNoticeList,
+    setMsgRead,
+    setAllMsgRead
+} = useNotice();
+const isLogin = ref(false)
 onMounted(() => {
-    getUnread();
-})
+    // 登录后才有通知
+    if (userStore.token) {
+        isLogin.value = true;
+        // 初始化
+        getUnread();
+    }
+
+});
 </script>
 <style lang="scss">
 .notice.n-popover {

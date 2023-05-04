@@ -9,7 +9,8 @@ declare namespace Notice {
     type: string;
     title: string;
     content: string;
-    isRead: boolean;
+    read: boolean;
     createdAt: string;
+    nextCursor?: string;
   }
 }

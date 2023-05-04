@@ -1,7 +1,7 @@
 /*
  * @Author: Sandy
  * @Date: 2023-03-22 14:01:29
- * @Description: 
+ * @Description:
  */
 
 import { isObject } from './is/index';
@@ -41,6 +41,7 @@ export function guid(len = 32, firstM = true, radix = 0): string {
   }
   return uuid.join('');
 }
+export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
 
 // 获取时间戳
 export function timestamp() {

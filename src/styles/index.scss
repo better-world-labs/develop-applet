@@ -159,11 +159,11 @@ i.default {
   text-align: center;
 
   .content {
-    > div:first-child {
+    .title1 {
       margin-bottom: 8px;
     }
 
-    > div:nth-child(2) {
+    .title2 {
       margin-bottom: 32px;
     }
 

@@ -6,10 +6,10 @@
 <template>
     <div class="share-content">
         <div class="content">
-            <div>
+            <div class="title1">
                 {{ props.title1 }}
             </div>
-            <div>
+            <div class="title2">
                 {{ props.title2 }} <span class="active-text"> {{ props.integral }} </span> 积分😊
             </div>
             <share-input v-if="!props.isNotCopy"></share-input>
