@@ -56,7 +56,6 @@
   import useClipboard from 'vue-clipboard3';
   import $router from '@/router/index';
   import dayjs from 'dayjs';
-  
 
   const message = useMessage();
   const dialog = useBizDialog();
@@ -64,7 +63,6 @@
   const userStore = useUserStore();
   const { toClipboard } = useClipboard();
   const { goAuth } = useInit();
-
 
   // 查看应用详情
   function detailApp(item) {
