@@ -10,6 +10,10 @@ const defaultUser = {
   id: 0,
   avatar: '',
   nickname: '',
+  lastLoginAt: '',
+  loginAt: '',
+  invitedBy: 0,
+  points: 0,
 };
 
 export const useUserStore = defineStore('user', {
@@ -57,7 +61,7 @@ export const useUserStore = defineStore('user', {
     },
     async setGuideState() {
       const res = await accomplishGuide()
-      if (res.code === 0 ) {
+      if (res.code === 0) {
         this.completeGuide = true
       }
     }

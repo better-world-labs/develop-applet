@@ -10,9 +10,9 @@
     <div class="title">恭喜🎉</div>
     <div class="content">
       <p>新朋友，欢迎你！</p>
-      <p v-if="user.nickname">你被好友{{ user.nickname }}成功邀请，</p>
+      <p v-if="user.invitedBy">你被好友{{ state.userList[0]?.nickname }}成功邀请，</p>
       <p>
-        送你<span>{{ price }}</span
+        送你<span>{{ user.points }}</span
         >积分大礼包 😊
       </p>
     </div>
@@ -21,11 +21,23 @@
 
 <script setup>
   import SVGA from 'svgaplayerweb';
+  import { getUserByIds } from '@/api/user';
 
+  const emit = defineEmits(['close']);
+  const props = defineProps({
+    user: Object,
+  });
+  const state = reactive({
+    userList: [],
+  });
   const svga_url =
     'https://moyu-chat.oss-cn-hangzhou.aliyuncs.com/develop-applet/registered-dialog.svga';
 
-  onMounted(() => {
+  onMounted(async () => {
+    if (props.user.invitedBy) {
+      const userListData = await getUserByIds({ ids: [props.user.invitedBy] });
+      state.userList = userListData.data.list;
+    }
     nextTick(() => {
       const player = new SVGA.Player('#registeredDialog');
       let parser = new SVGA.Parser('#registeredDialog');
@@ -34,12 +46,6 @@
         player.startAnimation();
       });
     });
-  });
-
-  const emit = defineEmits(['close']);
-  const props = defineProps({
-    user: Object,
-    price: Number,
   });
 
   function onCancel() {
