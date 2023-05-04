@@ -15,38 +15,12 @@
       <user-integral></user-integral>
     </div>
     <div class="integral-wrap">
-      <n-tabs>
-        <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name" animated type="line">
+      <n-tabs type="line">
+        <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name">
           <component :is="item.compo"></component>
         </n-tab-pane>
       </n-tabs>
     </div>
-    <div class="my-integral-content">
-      <div>
-        <div class="title">我的积分</div>
-        <div class="title2">
-          积分余额
-          <n-button @click="activateShop()">立即充值</n-button>
-          <n-button @click="activateRealization()">立即提现</n-button>
-          <span class="active-text" style="padding-left: 4px">{{ total }}分</span>
-        </div>
-        <div class="title2" style="padding-top: 16px">积分明细：</div>
-        <div class="item" v-for="item in dataList" :key="item.userId">
-          <div class="item-one-line">
-            <div>
-              {{ item.description }}
-            </div>
-            <div v-if="item.points > 0" class="active-text">{{ item.points }}积分</div>
-            <div v-else>{{ item.points }}积分</div>
-          </div>
-          <div class="small">
-            {{ dayjs(item.createdAt).format('YYYY/MM/DD HH:mm:ss') }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <shop @selective="selective"></shop>
-    <realization></realization>
   </div>
 </template>
 <script setup>
