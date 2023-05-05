@@ -12,40 +12,6 @@
     <n-grid :x-gap="12" cols="1 860:2 1200:3 1666:4 2000:4">
       <n-grid-item v-for="item in applicationStore.appList" :key="item.id">
         <card :item="item" @click="useTemplate(item)"></card>
-        <!-- <div class="template-item" @click="useTemplate(item)">
-          <div class="desc-text">
-            {{ item.name }}
-          </div>
-          <div class="result-text">
-            <div v-if="item.results[0]">
-              <span>精彩结果1:</span>
-              {{ item.results[0]?.content }}
-            </div>
-            <div v-if="item.results[1]"><span>精彩结果2:</span> {{ item.results[1]?.content }}</div>
-          </div>
-          <div class="footer-options">
-            <div class="left">
-              <img :src="item.createdBy.avatar || '../../assets/default-user.jpg'" />
-              <div>
-                {{ item.createdBy.nickname }}
-              </div>
-            </div>
-            <div class="right">
-              <div class="text-box" style="margin-right: 24px">
-                <icon-font-symbol name="icon-icon-pinglun" />
-                <div>
-                  {{ item.commentTimes }}
-                </div>
-              </div>
-              <div class="text-box">
-                <IconFontSymbol name="icon-icon-dianzan" />
-                <div>
-                  {{ item.likeTimes }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div> -->
       </n-grid-item>
     </n-grid>
   </div>
@@ -55,7 +21,6 @@
   import { useInit } from '@/hooks/useInit';
   import { useUserStore } from '@/store/modules/user';
   import { useApplicationStore } from '@/store/modules/application';
-  import card from '@/bizComponents/card'
   const applicationStore = useApplicationStore();
   const userStore = useUserStore();
   const { goAuth } = useInit();
