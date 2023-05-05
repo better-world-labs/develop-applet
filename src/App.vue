@@ -73,7 +73,6 @@ const registerOn = () => {
 // 请求是否有初始化弹出框展示
 const initDialog = () => {
   getAllRetainMessage().then(({ data }) => {
-    console.log(111, data.list[0])
     if (!data.list[0]) return;
     dialog.open(
       'invited-friend-add-score',
