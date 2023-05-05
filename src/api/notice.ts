@@ -4,21 +4,13 @@
  * @Description: 通知
  */
 import { http } from '@/utils/http';
-import { ResultList } from '@/utils/http/types';
-import { RequestOptions } from '@/utils/http/types';
 
-export function getNoticeList(
-  data: { isRead?: boolean | undefined; cursor?: string | undefined },
-  requestOptions?: RequestOptions
-): Promise<ResultList<Notice.Message>> {
-  return http.request(
-    {
-      method: 'get',
-      url: `/api/notify-messages`,
-      params: data,
-    },
-    requestOptions
-  );
+export function getNoticeList(data: { isRead?: boolean | undefined; cursor?: string | undefined }) {
+  return http.request({
+    method: 'get',
+    url: `/api/notify-messages`,
+    params: data,
+  });
 }
 // 读取未读消息数量
 export function getUnreadCount() {

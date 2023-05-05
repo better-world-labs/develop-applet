@@ -19,15 +19,21 @@ import { useWebSocket } from "@/hooks/useWebSocket";
 import { useSocket } from '@/store/modules/webSocket';
 import { useBizDialog } from '@/plugins';
 import { SocketTriggerTypeEnum } from '@/enums/socketEnum';
+import { useNotice } from "@/bizComponents/notice-box/notice";
 
+const {
+  getUnread
+} = useNotice();
 const dialog = useBizDialog();
 const userStore = useUserStore();
 const { connect } = useWebSocket();
 const { $on } = useSocket();
 
-
-
 const registerOn = () => {
+  // 未读消息数有变化
+  $on(SocketTriggerTypeEnum.NOTIFY_MESSAGE_CHANGE, () => {
+    getUnread();
+  });
   // 创建第一个小程序后触发
   $on(SocketTriggerTypeEnum.SHARE_HINT_CREATE_APP, (res) => {
     dialog.open(
@@ -61,27 +67,34 @@ const registerOn = () => {
   });
   // 邀请好友成功
   $on(SocketTriggerTypeEnum.RETAIN_MESSAGE_CHANGE, () => {
-
-    getAllRetainMessage().then(({ data }) => {
-      dialog.open(
-        'invited-friend-add-score',
-        {
-          class: "center-dialog",
-          title: '恭喜🎉',
-        },
-        {
-          data: data.list[0]
-        }
-      )
-    })
+    initDialog();
   });
+}
+// 请求是否有初始化弹出框展示
+const initDialog = () => {
+  getAllRetainMessage().then(({ data }) => {
+    console.log(111, data.list[0])
+    if (!data.list[0]) return;
+    dialog.open(
+      'invited-friend-add-score',
+      {
+        class: "center-dialog",
+        title: '恭喜🎉',
+      },
+      {
+        data: data.list[0]
+      }
+    )
+  })
 }
 
 // 监听登录
 watch(() => userStore.token, (newVal, oldVal) => {
   if (newVal) {
     connect(userStore.token);
-    registerOn(); //注册事件
+    registerOn(); // 注册事件
+    initDialog(); // 初始化弹出框
+    getUnread();// 初始化通知的消息 
   }
 }, {
   immediate: true
@@ -114,4 +127,3 @@ body {
   }
 }
 </style>
- 
