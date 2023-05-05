@@ -41,3 +41,10 @@ export function setAllMessageRead() {
     url: `/api/notify-messages/read-all`,
   });
 }
+// 读取保留消息，不在通知列表中展示
+export function getAllRetainMessage() {
+  return http.request({
+    method: 'get',
+    url: `/api/retain-messages`,
+  });
+}
