@@ -27,6 +27,14 @@ export function getUserInfo() {
     url: '/api/users/me/info',
   });
 }
+// 批量读取用户信息
+export function getUserByIds(data: { ids: number[] }) {
+  return http.request({
+    method: 'post',
+    url: '/api/users/list',
+    data
+  });
+}
 // 请求积分
 export function getIntegral() {
   return http.request({

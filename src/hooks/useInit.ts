@@ -8,6 +8,7 @@ import { useUserStore } from '@/store/modules/user';
 import { getUserInfo } from '@/api/user';
 import $router from '@/router/index';
 import { getUrlParams } from "@/utils/index"
+import { useBizDialog } from '@/plugins';
 import { sendLog } from '@/utils/sls-logger/sendLog';
 import {
   setStorageItem,
@@ -17,6 +18,7 @@ import {
   setSessionItem,
 } from '@/utils';
 
+const firstTagKey = 'firstLogin';
 const localToken = ref<string>('');
 const user = ref<User.UserInfoItf | undefined>(undefined);
 
@@ -78,6 +80,22 @@ export function useInit() {
         action_type: 'Invited_Enter',
         data: { ...urlParams },
       });
+
+    // 处理初次登录【受邀/自然流量】    
+    if (!res.data.lastLoginAt && !getStorageItem(firstTagKey)) {
+      const dialog = useBizDialog();
+      setStorageItem(firstTagKey, true)
+      dialog.open(
+        'registered',
+        {
+          class: 'registered-dialog',
+          title: '',
+        },
+        {
+          user: res.data,
+        }
+      );
+    }
   };
 
   // 初始化, (刷新|初次进入)
