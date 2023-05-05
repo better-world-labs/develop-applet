@@ -4,7 +4,7 @@
  * @Description: 通知组件
 -->
 <template>
-    <n-popover v-if="isLogin" class="notice" trigger="click" :show-arrow="false" :show="showPopover"
+    <n-popover v-if="userStore.token" class="notice" trigger="click" :show-arrow="false" :show="showPopover"
         @update:show="updatePopover">
         <template #trigger>
             <div class="notice-icon">
@@ -78,16 +78,7 @@ const {
     setMsgRead,
     setAllMsgRead
 } = useNotice();
-const isLogin = ref(false)
-onMounted(() => {
-    // 登录后才有通知
-    if (userStore.token) {
-        isLogin.value = true;
-        // 初始化
-        getUnread();
-    }
 
-});
 </script>
 <style lang="scss">
 .notice.n-popover {

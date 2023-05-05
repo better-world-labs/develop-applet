@@ -19,7 +19,9 @@ export const useSocket = defineStore('webSocket', {
     },
     $on(eventName: string, fn: Function) {
       if (this.events.get(eventName)) {
-        this.events.set(eventName, this.events.get(eventName).push(fn));
+        let newList = this.events.get(eventName);
+        newList.push(fn);
+        this.events.set(eventName, newList);
       } else {
         this.events.set(eventName, [fn]);
       }
