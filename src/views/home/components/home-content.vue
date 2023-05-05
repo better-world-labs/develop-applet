@@ -11,7 +11,8 @@
     ></default-composition>
     <n-grid :x-gap="12" cols="1 860:2 1200:3 1666:4 2000:4">
       <n-grid-item v-for="item in applicationStore.appList" :key="item.id">
-        <div class="template-item" @click="useTemplate(item)">
+        <card :item="item" @click="useTemplate(item)"></card>
+        <!-- <div class="template-item" @click="useTemplate(item)">
           <div class="desc-text">
             {{ item.name }}
           </div>
@@ -44,7 +45,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </n-grid-item>
     </n-grid>
   </div>
@@ -54,6 +55,7 @@
   import { useInit } from '@/hooks/useInit';
   import { useUserStore } from '@/store/modules/user';
   import { useApplicationStore } from '@/store/modules/application';
+  import card from '@/bizComponents/card'
   const applicationStore = useApplicationStore();
   const userStore = useUserStore();
   const { goAuth } = useInit();

@@ -9,6 +9,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BuyWx: typeof import('./../src/bizComponents/dialogs/buy-wx.vue')['default']
     copy: typeof import('./../src/bizComponents/dialogs/registered copy.vue')['default']
+    Card: typeof import('./../src/bizComponents/card/index.vue')['default']
     DefaultComposition: typeof import('./../src/components/default-composition/default-composition.vue')['default']
     DialogContent: typeof import('./../src/components/dialog-content/index.vue')['default']
     GuideEditPopup: typeof import('./../src/bizComponents/dialogs/guide-edit-popup.vue')['default']
