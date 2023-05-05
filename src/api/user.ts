@@ -49,6 +49,13 @@ export function getIntegralDetails() {
     url: '/api/points',
   });
 }
+// 请求积分充值明细
+export function getIntegralOrders() {
+  return http.request({
+    method: 'get',
+    url: '/api/points-orders ',
+  });
+}
 
 // 新手引导完成状态
 export function getGuideState() {

@@ -6,13 +6,14 @@
 <template>
   <div class="integral-detail-box">
     <div class="integral-detail">
-      <div class="item" v-for="item in dataList" :key="item.userId">
+      <div class="item" v-for="item in dataList" :key="item.orderId">
         <div class="item-one-line">
           <div>
-            {{ item.description }}
+            {{ item.goods.description }}
           </div>
-          <div v-if="item.points > 0" class="active-text">{{ item.points }}积分</div>
-          <div v-else>{{ item.points }}积分</div>
+          <div class="active-text">{{ item.goods.price }}元</div>
+          <!-- <div v-if="item.points > 0" class="active-text">{{ item.goods.points }}积分</div>
+          <div v-else>{{ item.goods.points }}积分</div> -->
         </div>
         <div class="small">
           {{ dayjs(item.createdAt).format('YYYY/MM/DD HH:mm:ss') }}
@@ -24,7 +25,7 @@
 
 <script setup>
   import { useUserStore } from '@/store/modules/user';
-  import { getIntegralDetails } from '@/api/user';
+  import { getIntegralOrders } from '@/api/user';
   const userStore = useUserStore();
   import dayjs from 'dayjs';
   const dataList = ref([]);
@@ -32,7 +33,7 @@
   onMounted(() => {
     if (!userStore.token) goAuth();
     // 明细
-    getIntegralDetails().then(({ data }) => {
+    getIntegralOrders().then(({ data }) => {
       dataList.value = data.list;
     });
   });
