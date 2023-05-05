@@ -4,19 +4,7 @@
  * @Description:
  */
 /**
- * @description: socket emit 事件类型
- */
-export enum SocketEmitEnum {}
-// ENTER_ROOM = 'enter', // 进入
-
-/**
- * @description: socket on 事件类型
- */
-export enum SocketOnEnum {}
-// RECEIVE_MESSAGE = 'r', // 接收消息
-
-/**
- * @description: Trigger(触发器) type
+ * @description: 消息类型 type
  */
 export enum SocketTriggerTypeEnum {
   SHARE_HINT_CREATE_APP = 'share-hint-create-app',

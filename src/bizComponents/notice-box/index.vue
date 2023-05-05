@@ -17,7 +17,7 @@
         <div class="notice-box">
             <div class="title">
                 <div>通知</div>
-                <n-popselect v-model:value="option" :options="options" trigger="click" @change="selectOption">
+                <n-popselect v-model:value="option" :options="options" trigger="click" @change="initOption">
                     <div class="select-option">
                         {{ options[option]?.label }}
                         <IconFont name="icon-icon-xialajiantou" />
@@ -71,7 +71,7 @@ const {
     timeCalculation,
     handleMessageScroll,
     updatePopover,
-    selectOption,
+    initOption,
     getList,
     getUnread,
     getNoticeList,

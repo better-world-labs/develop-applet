@@ -28,7 +28,7 @@
     <n-popover trigger="click" :show-arrow="false" placement="left-end" class="popover-feed" :show="showTips"
       @clickoutside="hideTipsBox">
       <template #trigger>
-        <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover" :disabled="popFeedBack2">
+        <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover">
           <template #trigger>
             <div class="icon-wrap" @click="showFirstDialog()">
               <IconFont name="icon-icon-bangzhu" />
@@ -87,37 +87,6 @@ const shareLink = () => {
       title: '分享',
     }
   )
-  // dialog.open(
-  //   'score-add-copy',
-  //   {
-  //     class: "center-dialog",
-  //     title: '恭喜🎉',
-  //   },
-  //   {
-  //     title1: "你已经创建1个小程序，获得12积分😊",
-  //     title2: "立刻邀请好友来使用，单次可得 ",
-  //     integral: "5"
-  //   }
-  // );
-  // dialog.open(
-  //   'score-add-copy',
-  //   {
-  //     class: "center-dialog",
-  //     title: '恭喜🎉',
-  //   },
-  //   {
-  //     title1: "你已经使用3个小程序，消耗15积分😭",
-  //     title2: "立刻邀请好友加入社区，最高可得",
-  //     integral: "100"
-  //   }
-  // )
-  // dialog.open(
-  //   'invited-friend-add-score',
-  //   {
-  //     class: "center-dialog",
-  //     title: '恭喜🎉',
-  //   }
-  // )
 }
 
 const updatePopover = (show) => {

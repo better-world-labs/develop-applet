@@ -41,8 +41,6 @@ export function guid(len = 32, firstM = true, radix = 0): string {
   }
   return uuid.join('');
 }
-export const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
-
 // 获取时间戳
 export function timestamp() {
   return new Date().getTime();

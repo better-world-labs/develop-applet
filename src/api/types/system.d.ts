@@ -1,7 +1,7 @@
 /*
  * @Author: Sandy
  * @Date: 2023-04-21 15:10:38
- * @Description: 
+ * @Description:
  */
 /*
  * @Author: Sandy
@@ -27,5 +27,10 @@ declare namespace AppSystem {
 
   interface TimeQuantumList {
     timeQuantum: TimeQuantum[];
+  }
+
+  interface TriggerResponse {
+    type: string;
+    payload?: { unread?: number };
   }
 }

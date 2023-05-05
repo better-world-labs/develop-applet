@@ -7,17 +7,22 @@
     <div class="share-content">
         <div class="content">
             <div>
-                哇塞！你已成功邀请好友xxxx
+                哇塞！你已成功邀请好友 {{ nameList.join("、") }}
             </div>
             <div>
-                恭喜获得 <span class="active-text"></span> 积分
+                恭喜获得 <span class="active-text">{{ props.payload.points }}</span> 积分
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-const props = defineProps(['title1', 'title2', "integral"])
+const props = defineProps(['data'])
+const nameList = ref([]);
+for (let index = 0; index < 3; index++) {
+    nameList.value.push(props.payload.friends[index].nickname);
+}
+
 // const emit = defineEmits(['close']);
 
 // function onCancel() {

@@ -5,6 +5,8 @@ import notifyPointsRecharge from './images/points-recharge.png';
 import notifyDuplicateApp from './images/duplicate-app.png';
 import notifyAppBeUsed from './images/app-be-used.png';
 import { debounce } from 'lodash-es';
+import { SocketTriggerTypeEnum } from '@/enums/socketEnum';
+import { useSocket } from '@/store/modules/webSocket';
 
 export function useNotice() {
   const showPopover = ref(false);
@@ -72,6 +74,9 @@ export function useNotice() {
     scrollHeight.value = scroll.scrollHeight;
     if (scrollHeight.value - scroll.scrollTop == scroll.clientHeight) {
       getList();
+    } else if (scroll.scrollTop == 0) {
+      // 滚动条到顶部刷新第一页数据
+      initOption();
     }
   }, 300);
 
@@ -82,8 +87,8 @@ export function useNotice() {
       getList();
     }
   };
-
-  const selectOption = () => {
+  // 初始化第一页数据
+  const initOption = () => {
     messageList.value = [];
     nextCursor.value = '';
     getList();
@@ -116,6 +121,12 @@ export function useNotice() {
     unreadMessageCount.value = 0;
   }
 
+  const { $on } = useSocket();
+  $on(SocketTriggerTypeEnum.NOTIFY_MESSAGE_CHANGE, (res: AppSystem.TriggerResponse) => {
+    unreadMessageCount.value = res?.unread;
+    // 通知显示的情况下刷新消息列表
+  });
+
   return {
     showPopover,
     option,
@@ -128,7 +139,7 @@ export function useNotice() {
     timeCalculation,
     handleMessageScroll,
     updatePopover,
-    selectOption,
+    initOption,
     getList,
     getUnread,
     getNoticeList,

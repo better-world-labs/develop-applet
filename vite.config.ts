@@ -1,7 +1,7 @@
 /*
  * @Author: Sandy
  * @Date: 2023-03-22 14:01:29
- * @Description: 
+ * @Description:
  */
 import type { UserConfig, ConfigEnv } from 'vite';
 import { loadEnv } from 'vite';
@@ -67,6 +67,16 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '/api': {
           target: 'https://ai.moyu.dev.openviewtech.com/',
           changeOrigin: true,
+        },
+        '/push': {
+          ws: true,
+          changeOrigin: true,
+          secure: true,
+          target: 'wss://ai.moyu.dev.openviewtech.com',
+          headers: {
+            Origin: 'wss://ai.moyu.dev.openviewtech.com',
+            referer: 'wss://ai.moyu.dev.openviewtech.com',
+          },
         },
       },
     },
