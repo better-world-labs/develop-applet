@@ -71,7 +71,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
         '/push': {
           ws: true,
           changeOrigin: true,
-          secure: true,
           target: 'wss://ai.moyu.dev.openviewtech.com',
           headers: {
             Origin: 'wss://ai.moyu.dev.openviewtech.com',
