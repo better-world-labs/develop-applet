@@ -4,7 +4,7 @@
  * @Description:
  */
 import { defineStore } from 'pinia';
-import { getUserInfo, getGuideState, accomplishGuide } from '@/api/user';
+import { getUserInfo, getGuideState, accomplishGuide, getSignInState, makeRegistration } from '@/api/user';
 
 const defaultUser = {
   id: 0,
@@ -21,6 +21,7 @@ export const useUserStore = defineStore('user', {
     inviteUrl: '' as string,
     total: 0,
     completeGuide: false, // 是否完成编辑页新人指引
+    registrationState: false, // 是否签到
   }),
   getters: {
     userId(): number {
@@ -60,6 +61,14 @@ export const useUserStore = defineStore('user', {
       if (res.code === 0 ) {
         this.completeGuide = true
       }
+    },
+    async getRegistrationState() {
+      const res = await getSignInState()
+      this.registrationState = res.data.signIn
+    },
+    async makeRegistration() {
+      const res = await makeRegistration()
+      this.registrationState = res.code === 0 ? true : false
     }
   },
 });

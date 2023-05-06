@@ -57,3 +57,19 @@ export function accomplishGuide() {
     url: `/api/users/me/guidance/completion`,
   });
 }
+
+// 用户签到状态
+export function getSignInState() {
+  return http.request({
+    method: 'get',
+    url: `/api/sign-in`,
+  });
+}
+
+// 用户发起签到
+export function makeRegistration() {
+  return http.request({
+    method: 'post',
+    url: `/api/sign-in`,
+  });
+}
