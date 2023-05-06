@@ -629,6 +629,7 @@ onUnmounted(() => {
           display: -webkit-box;
           -webkit-line-clamp: 9;
           -webkit-box-orient: vertical;
+          white-space: pre-wrap;
         }
 
         .form-box {
