@@ -11,7 +11,9 @@ export function useWebSocket() {
   // 连接
   const connect = (csrf: string) => {
     socket.value = new LightWebsocketClientImpl(
-      `ws://local.moyu.dev.openviewtech.com:5173/push/endpoint?csrf=${csrf}`
+      `${window.location.href.indexOf('https') == 0 ? 'wss' : 'ws'}:${
+        location.host
+      }/push/endpoint?csrf=${csrf}`
     );
 
     socket.value.onDisconnect(onDisconnect);
