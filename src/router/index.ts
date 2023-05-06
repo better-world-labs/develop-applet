@@ -5,11 +5,10 @@
  */
 import { App } from 'vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import Layout from '@/layout/index.vue'; 
+import Layout from '@/layout/index.vue';
 import beforeEach from './beforeEach';
 import afterEach from './afterEach';
-import { useApplicationStore } from '@/store/modules/application'; 
- 
+import { useApplicationStore } from '@/store/modules/application';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -69,7 +68,11 @@ const router = createRouter({
  * 路由前置守卫
  */
 router.beforeEach((to, from, next) => {
-  if (from.name !== undefined && from.name == 'builder' && to.query.type !== 'save') { 
+  if (to.name == from.name) {
+    router.go(-1);
+    return;
+  }
+  if (from.name !== undefined && from.name == 'builder' && to.query.type !== 'save') {
     $dialog.info({
       class: 'prompt-dialog',
       showIcon: false,
@@ -85,7 +88,7 @@ router.beforeEach((to, from, next) => {
         const applicationStore = useApplicationStore();
         applicationStore.setCurrentMenu(from.name as string);
       },
-    }); 
+    });
   } else {
     beforeEach.logSend(to, router);
     next(); // 继续执行路由
