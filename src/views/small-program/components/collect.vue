@@ -5,7 +5,7 @@
 -->
 <template>
   <default-composition v-if="applicationStore.collectAppList.length <= 0" content="暂无小程序哦~"></default-composition>
-  <n-grid :x-gap="12" cols="1 860:2 1200:3 1666:4 2000:4">
+  <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
     <n-grid-item v-for="item in applicationStore.collectAppList" :key="item.id">
       <card :item="item" @click="toDetail(item)"></card>
     </n-grid-item>
@@ -16,7 +16,7 @@
 import { useApplicationStore } from '@/store/modules/application';
 import { useUserStore } from '@/store/modules/user';
 import { useInit } from '@/hooks/useInit';
-// import MpCard from '@/bizComponents/card'
+import $router from '@/router/index';
 
 const applicationStore = useApplicationStore();
 const userStore = useUserStore();

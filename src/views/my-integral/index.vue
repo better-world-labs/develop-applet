@@ -77,20 +77,5 @@ onMounted(() => {
 .integral-wrap {
   width: 660px;
   margin: 48px 52px;
-
-  .n-tabs-tab .n-tabs-tab__label {
-    color: #5B5D62;
-    font-weight: 400;
-    font-size: 16px;
-  }
-
-  .n-tabs-tab.n-tabs-tab--active .n-tabs-tab__label {
-    color: #202226 !important;
-    font-weight: 600;
-  }
-
-  .n-tabs-bar {
-    background: #5652FF !important;
-  }
 }
 </style>
