@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-    <div>
+    <div id="share-input">
         <input type="text" :disabled="true" :value="url">
         <n-popover placement="top" trigger="hover">
             <template #trigger>
@@ -26,10 +26,10 @@ const { toClipboard } = useClipboard();
 const userStore = useUserStore();
 const url = ref("");
 
-async function onCopy() {
-    url.value = `${url.value}?invitedBy=${userStore.userId}`;
+async function onCopy(e) {
+    const str = `${url.value}?invitedBy=${userStore.userId}`;
     try {
-        await toClipboard(url.value);
+        await toClipboard(str, document.getElementById('share-input'));
         message.success('已复制，快去分享给朋友吧~');
     } catch (e) {
         console.error(e);

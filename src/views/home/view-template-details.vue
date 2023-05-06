@@ -182,7 +182,6 @@ import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
 import { readStateApp, giveLikeApp, addEvents, resultLike, getCollectStatus, setCollect } from '@/api/application';
 
-import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui';
 
 const dialog = useBizDialog();
