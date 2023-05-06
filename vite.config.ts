@@ -68,15 +68,6 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
           target: 'https://ai.moyu.dev.openviewtech.com/',
           changeOrigin: true,
         },
-        '/push': {
-          ws: true,
-          changeOrigin: true,
-          target: 'wss://ai.moyu.dev.openviewtech.com',
-          headers: {
-            Origin: 'wss://ai.moyu.dev.openviewtech.com',
-            referer: 'wss://ai.moyu.dev.openviewtech.com',
-          },
-        },
       },
     },
     optimizeDeps: {

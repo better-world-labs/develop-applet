@@ -10,7 +10,11 @@ import { useSocket } from '@/store/modules/webSocket';
 export function useWebSocket() {
   // 连接
   const connect = (csrf: string) => {
-    socket.value = new LightWebsocketClientImpl(`ws://${location.host}/push/endpoint?csrf=${csrf}`);
+    socket.value = new LightWebsocketClientImpl(
+      `${window.location.href.indexOf('https') == 0 ? 'wss' : 'ws'}:${
+        location.host
+      }/push/endpoint?csrf=${csrf}`
+    );
 
     socket.value.onDisconnect(onDisconnect);
     socket.value.onConnect(onConnect);
