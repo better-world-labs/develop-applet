@@ -40,6 +40,9 @@
       {
         class: 'buy-wx-dialog',
         title: '',
+        onAfterLeave: () => {
+          getTotal();
+        },
       },
       orderData.data
     );
@@ -47,10 +50,13 @@
   onMounted(() => {
     if (!userStore.token) goAuth();
     // 积分总额
-    getIntegral().then(({ data }) => {
-      total.value = data.total;
-    });
+    getTotal();
   });
+  const getTotal = async () => {
+    // 积分总额
+    const totalData = await getIntegral();
+    total.value = totalData.data.total;
+  };
 </script>
 
 <style lang="scss">
