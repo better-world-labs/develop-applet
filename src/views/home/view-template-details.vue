@@ -102,12 +102,12 @@
               </p>
               <div class="option">
                 <icon-font-symbol @click="resultOption(currentResult, 1)" :name="applicationStore.resultStateList?.get(currentResult.id) == 1
-                  ? 'icon-icon-yidianzan'
-                  : 'icon-icon-dianzan'
+                    ? 'icon-icon-yidianzan'
+                    : 'icon-icon-dianzan'
                   " />
                 <icon-font-symbol @click="resultOption(currentResult, -1)" :name="applicationStore.resultStateList?.get(currentResult.id) == -1
-                  ? 'icon-icon-yicai'
-                  : 'icon-icon-cai'
+                    ? 'icon-icon-yicai'
+                    : 'icon-icon-cai'
                   " />
               </div>
             </div>
@@ -135,8 +135,8 @@
                 <div class="option">
                   <div>
                     <icon-font-symbol @click="resultOption(result, 1)" :name="applicationStore.resultStateList?.get(result.id) == 1
-                      ? 'icon-icon-yidianzan'
-                      : 'icon-icon-dianzan'
+                        ? 'icon-icon-yidianzan'
+                        : 'icon-icon-dianzan'
                       " />
                     <div :class="{
                       'active-text': applicationStore.resultStateList?.get(result.id) == 1,
@@ -146,8 +146,8 @@
                   </div>
                   <div>
                     <icon-font-symbol @click="resultOption(result, -1)" :name="applicationStore.resultStateList?.get(result.id) == -1
-                      ? 'icon-icon-yicai'
-                      : 'icon-icon-cai'
+                        ? 'icon-icon-yicai'
+                        : 'icon-icon-cai'
                       " />
                     <div :class="{
                       'active-text': applicationStore.resultStateList?.get(result.id) == -1,
@@ -301,17 +301,22 @@ function handleValidateButtonClick(e) {
   });
 }
 
+const toastPoint = () => {
+  dialog.close();
+  nextTick(() => {
+    setTimeout(() => {
+      dialog.open('insufficient', {
+        class: 'insufficient-dialog',
+        title: '积分不够啦',
+      });
+    }, 300);
+  });
+};
+
 function requestSave() {
   // 积分不够消费，直接提示
   if (appInfo.value.price > userStore.total) {
-    $dialog.info({
-      class: 'prompt-dialog',
-      showIcon: false,
-      title: '提示信息',
-      content: '积分不足！',
-      positiveText: '确认',
-    });
-    return;
+    return toastPoint();
   }
 
   dialog.open(
@@ -368,13 +373,10 @@ function receiveMessage(data) {
       }
     },
     onmessage(msg) {
-      // console.log("收到服务器发来的数据!", msg)
+      console.log('收到服务器发来的数据!', msg);
       if (msg.event == 'done' && JSON.parse(msg.data).code == 500000) {
         // message.warning('内容生成失败，积分不足！'); // TODO 积分不足弹窗
-        dialog.open('insufficient', {
-          class: 'insufficient-dialog',
-          title: '积分不够啦',
-        });
+        toastPoint();
         showResult.value = false;
         return;
       } else if (msg.event == 'done' && JSON.parse(msg.data).code == 400) {
