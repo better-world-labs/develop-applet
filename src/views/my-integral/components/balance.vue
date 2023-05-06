@@ -27,18 +27,19 @@
 </template>
 
 <script setup>
-import { getIntegral } from '@/api/user';
-import shop from './shop/index.vue';
-import realization from './shop/realization.vue';
-import { useNative } from './native.ts';
-import { putOrder } from '@/api/application';
-import { useUserStore } from '@/store/modules/user';
-import { useBizDialog } from '@/plugins';
-const dialog = useBizDialog();
-const { isShop, isRealization, activateShop, activateRealization } = useNative();
+  import { getIntegral } from '@/api/user';
+  import shop from './shop/index.vue';
+  import realization from './shop/realization.vue';
+  import { useRoute } from 'vue-router';
+  import { useNative } from './native.ts';
+  import { putOrder } from '@/api/application';
+  import { useUserStore } from '@/store/modules/user';
+  import { useBizDialog } from '@/plugins';
+  const dialog = useBizDialog();
+  const { isShop, isRealization, activateShop, activateRealization } = useNative();
 
-const total = ref(0);
-const userStore = useUserStore();
+  const total = ref(0);
+  const userStore = useUserStore();
 
   //选购
   const selective = async (data) => {
@@ -60,6 +61,9 @@ const userStore = useUserStore();
     if (!userStore.token) goAuth();
     // 积分总额
     getTotal();
+    const route = useRoute();
+    const isBuy = route.query.type == 'buy';
+    if (isBuy) activateShop();
   });
   const getTotal = async () => {
     // 积分总额
@@ -77,17 +81,18 @@ const userStore = useUserStore();
   background-repeat: no-repeat,no-repeat, no-repeat;
   background-position: top left, bottom right, center;
 
-  .total {
-    font-weight: 500;
-    font-size: 32px;
-    color: #5652ff;
-  }
+    .total {
+      font-weight: 500;
+      font-size: 32px;
+      color: #5652ff;
+    }
 
-  .btn-wrap {
-    margin-top: 24px;
+    .btn-wrap {
+      margin-top: 24px;
 
-    .withdraw-btn {
-      margin-left: 24px;
+      .withdraw-btn {
+        margin-left: 24px;
+      }
     }
   }
 

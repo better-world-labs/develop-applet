@@ -79,9 +79,7 @@
                 </div>
               </n-gi>
               <n-gi>
-                <n-checkbox v-model:checked="openData">
-                  公开我的结果（用于社区构建）
-                </n-checkbox>
+                <n-checkbox v-model:checked="openData"> 公开我的结果（用于社区构建） </n-checkbox>
                 <n-button class="gradient-btn" @click="handleValidateButtonClick" :disabled="showLoading">
                   <span>立即生成</span>
                   <em> {{ appInfo.price }}积分</em>
@@ -104,12 +102,12 @@
               </p>
               <div class="option">
                 <icon-font-symbol @click="resultOption(currentResult, 1)" :name="applicationStore.resultStateList?.get(currentResult.id) == 1
-                  ? 'icon-icon-yidianzan'
-                  : 'icon-icon-dianzan'
+                    ? 'icon-icon-yidianzan'
+                    : 'icon-icon-dianzan'
                   " />
                 <icon-font-symbol @click="resultOption(currentResult, -1)" :name="applicationStore.resultStateList?.get(currentResult.id) == -1
-                  ? 'icon-icon-yicai'
-                  : 'icon-icon-cai'
+                    ? 'icon-icon-yicai'
+                    : 'icon-icon-cai'
                   " />
               </div>
             </div>
@@ -137,8 +135,8 @@
                 <div class="option">
                   <div>
                     <icon-font-symbol @click="resultOption(result, 1)" :name="applicationStore.resultStateList?.get(result.id) == 1
-                      ? 'icon-icon-yidianzan'
-                      : 'icon-icon-dianzan'
+                        ? 'icon-icon-yidianzan'
+                        : 'icon-icon-dianzan'
                       " />
                     <div :class="{
                       'active-text': applicationStore.resultStateList?.get(result.id) == 1,
@@ -148,8 +146,8 @@
                   </div>
                   <div>
                     <icon-font-symbol @click="resultOption(result, -1)" :name="applicationStore.resultStateList?.get(result.id) == -1
-                      ? 'icon-icon-yicai'
-                      : 'icon-icon-cai'
+                        ? 'icon-icon-yicai'
+                        : 'icon-icon-cai'
                       " />
                     <div :class="{
                       'active-text': applicationStore.resultStateList?.get(result.id) == -1,
@@ -180,14 +178,19 @@ import { getAppInfo } from '@/api/application';
 import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
-import { readStateApp, giveLikeApp, addEvents, resultLike, getCollectStatus, setCollect } from '@/api/application';
+import {
+  readStateApp,
+  giveLikeApp,
+  addEvents,
+  resultLike,
+  getCollectStatus,
+  setCollect,
+} from '@/api/application';
 
-import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui';
 
 const dialog = useBizDialog();
 
-const { toClipboard } = useClipboard();
 const message = useMessage();
 
 const userStore = useUserStore();
@@ -201,7 +204,7 @@ const templateDetailRef = ref();
 const isLike = ref(false);
 
 const formRef = ref(null);
-const collected = ref(false);// 收藏状态
+const collected = ref(false); // 收藏状态
 const model = ref({});
 const rules = {};
 
@@ -249,7 +252,7 @@ function resultOption(item = {}, val) {
     }
   });
 }
-// 设置收藏  
+// 设置收藏
 async function collectTemplate() {
   await setCollect(uuid.value, !collected.value);
   collected.value = !collected.value;
@@ -284,7 +287,7 @@ function init() {
       },
     ];
   });
-  getCollect();// 请求收藏状态
+  getCollect(); // 请求收藏状态
 }
 
 function handleValidateButtonClick(e) {
@@ -298,23 +301,28 @@ function handleValidateButtonClick(e) {
   });
 }
 
+const toastPoint = () => {
+  dialog.close();
+  nextTick(() => {
+    setTimeout(() => {
+      dialog.open('insufficient', {
+        class: 'insufficient-dialog',
+        title: '积分不够啦',
+      });
+    }, 300);
+  });
+};
+
 function requestSave() {
   // 积分不够消费，直接提示
   if (appInfo.value.price > userStore.total) {
-    $dialog.info({
-      class: "prompt-dialog",
-      showIcon: false,
-      title: '提示信息',
-      content: '积分不足！',
-      positiveText: '确认',
-    });
-    return;
+    return toastPoint();
   }
 
   dialog.open(
     'run-template',
     {
-      class: "prompt-dialog",
+      class: 'prompt-dialog',
       title: '提示信息',
       positiveText: '确认',
       negativeText: '取消',
@@ -365,9 +373,10 @@ function receiveMessage(data) {
       }
     },
     onmessage(msg) {
-      // console.log("收到服务器发来的数据!", msg)
+      console.log('收到服务器发来的数据!', msg);
       if (msg.event == 'done' && JSON.parse(msg.data).code == 500000) {
-        message.warning('内容生成失败，积分不足！');
+        // message.warning('内容生成失败，积分不足！'); // TODO 积分不足弹窗
+        toastPoint();
         showResult.value = false;
         return;
       } else if (msg.event == 'done' && JSON.parse(msg.data).code == 400) {
@@ -393,13 +402,10 @@ function receiveMessage(data) {
 
 // 分享模版
 async function shareTemplate() {
-  dialog.open(
-    'share-link',
-    {
-      class: "center-dialog",
-      title: '分享',
-    }
-  )
+  dialog.open('share-link', {
+    class: 'center-dialog',
+    title: '分享',
+  });
 }
 
 // 请求结果列表
@@ -409,12 +415,7 @@ function getAppResultList() {
 
 // 返回上一页
 function backPrePage() {
-  // 在非当前页，后退一步
-  if (window.location.href.indexOf('/view-template-details') == -1) {
-    $router.go(-1);
-  } else {
-    $router.push({ name: 'home' }); // 跳转到首页
-  }
+  $router.go(-1);
 }
 
 // 创建同款app
@@ -662,7 +663,7 @@ onUnmounted(() => {
             width: 32px;
             height: 32px;
             border-radius: 32px;
-            background: #EBEBFF;
+            background: #ebebff;
             margin-right: 4px;
             padding: 4px;
             box-sizing: border-box;

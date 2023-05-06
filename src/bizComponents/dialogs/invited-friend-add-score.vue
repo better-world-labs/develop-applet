@@ -19,15 +19,10 @@
 <script setup>
 const props = defineProps(['data'])
 const nameList = ref([]);
-for (let index = 0; index < 3; index++) {
+const len = props.data.payload.friends.length > 3 ? 3 : props.data.payload.friends.length;
+for (let index = 0; index < len; index++) {
     nameList.value.push(props.data.payload.friends[index].nickname);
 }
-
-// const emit = defineEmits(['close']);
-
-// function onCancel() {
-//     emit('close');
-// }
 
 </script>   
 <style lang="scss" scoped></style>
