@@ -4,159 +4,93 @@
  * @Description: 
 -->
 <template>
-  <div>
-    <div class="home-header">
-      <div class="back-btn"></div>
-      <n-button class="highlight-btn" size="large" @click="createTemplate">
-        <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
-        创建我的小程序
-      </n-button>
-      <user-integral></user-integral>
-    </div>
-    <div class="integral-wrap">
-      <n-tabs type="line">
-        <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name">
-          <component :is="item.compo"></component>
-        </n-tab-pane>
-      </n-tabs>
-    </div>
+  <div class="home-header">
+    <div class="back-btn"></div>
+    <n-button class="highlight-btn" size="large" @click="createTemplate">
+      <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
+      创建我的小程序
+    </n-button>
+    <user-integral></user-integral>
+  </div>
+  <div class="integral-wrap">
+    <n-tabs type="line" bar-width="300">
+      <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name">
+        <component :is="item.compo"></component>
+      </n-tab-pane>
+    </n-tabs>
   </div>
 </template>
 <script setup>
-  import { useInit } from '@/hooks/useInit';
-  import { getIntegralDetails, getIntegral } from '@/api/user';
-  import { useUserStore } from '@/store/modules/user';
-  import $router from '@/router/index';
-  import balance from './components/balance.vue';
-  import detail from './components/detail.vue';
-  import dayjs from 'dayjs';
-  import { useBizDialog } from '@/plugins';
-  const dialog = useBizDialog();
+import { useInit } from '@/hooks/useInit';
+import { getIntegralDetails, getIntegral } from '@/api/user';
+import { useUserStore } from '@/store/modules/user';
+import $router from '@/router/index';
+import balance from './components/balance.vue';
+import detail from './components/detail.vue';
+import dayjs from 'dayjs';
+import { useBizDialog } from '@/plugins';
+const dialog = useBizDialog();
 
-  const userStore = useUserStore();
-  const { goAuth } = useInit();
-  const total = ref(0);
-  const dataList = ref([]);
-  const tabList = ref([
-    {
-      name: '积分余额',
-      compo: balance,
-    },
-    {
-      name: '积分明细',
-      compo: detail,
-    },
-    {
-      name: '充值及提现记录',
-      compo: detail,
-    },
-  ]); // tab列表
+const userStore = useUserStore();
+const { goAuth } = useInit();
+const total = ref(0);
+const dataList = ref([]);
+const tabList = ref([
+  {
+    name: '积分余额',
+    compo: balance,
+  },
+  {
+    name: '积分明细',
+    compo: detail,
+  },
+  {
+    name: '充值及提现记录',
+    compo: detail,
+  },
+]); // tab列表
 
-  // 创建模版
-  function createTemplate() {
-    if (!userStore.token) goAuth();
-    $router.push({ name: 'builder' });
-  }
-  onMounted(() => {
-    if (!userStore.token) goAuth();
-    // 明细
-    getIntegralDetails().then(({ data }) => {
-      dataList.value = data.list;
-    });
-    // 积分总额
-    getIntegral().then(({ data }) => {
-      total.value = data.total;
-    });
+// 创建模版
+function createTemplate() {
+  if (!userStore.token) goAuth();
+  $router.push({ name: 'builder' });
+}
+onMounted(() => {
+  if (!userStore.token) goAuth();
+  // 明细
+  getIntegralDetails().then(({ data }) => {
+    dataList.value = data.list;
   });
+  // 积分总额
+  getIntegral().then(({ data }) => {
+    total.value = data.total;
+  });
+});
 </script>
-<style scoped lang="scss">
-  .home-header {
-    .back-btn {
-      flex: 1;
-    }
+<style lang="scss">
+.home-header {
+  .back-btn {
+    flex: 1;
   }
+}
 
-  .integral-wrap {
-    margin: 48px 52px;
-  }
-  .my-integral-content {
-    padding: 42px 52px;
-    background: #f3f3f7;
-    position: absolute;
-    height: calc(100% - 72px);
-    width: calc(100% - 312px);
-    box-sizing: border-box;
-    overflow-x: hidden;
-    overflow-y: scroll;
+.integral-wrap {
+  width: 660px;
+  margin: 48px 52px;
 
+  .n-tabs-tab .n-tabs-tab__label {
+    color: #5B5D62;
     font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    color: #202226;
-
-    > div:first-child {
-      max-width: 660px;
-
-      .title {
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 28px;
-        color: #181d24;
-        padding-bottom: 16px;
-        border-bottom: 1px solid rgba(171, 172, 174, 0.2);
-      }
-
-      .title2 {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 22px;
-        color: #202226;
-        margin: 16px 0;
-      }
-
-      .item {
-        border-bottom: 1px solid rgba(171, 172, 174, 0.2);
-        padding-bottom: 8px;
-        color: #202226;
-
-        .item-one-line {
-          display: flex;
-          flex-direction: row;
-          margin-bottom: 2px;
-          padding-top: 8px;
-
-          > div:first-child {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-          }
-
-          > div:last-child {
-            margin-left: auto;
-            padding-left: 30px;
-            white-space: nowrap;
-            color: #5b5d62;
-          }
-
-          > div.active-text:last-child {
-            color: rgba(86, 82, 255, 1);
-          }
-        }
-      }
-
-      .active-text {
-        color: rgba(86, 82, 255, 1);
-      }
-
-      .small {
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 17px;
-
-        color: #abacae;
-      }
-    }
+    font-size: 16px;
   }
+
+  .n-tabs-tab.n-tabs-tab--active .n-tabs-tab__label {
+    color: #202226 !important;
+    font-weight: 600;
+  }
+
+  .n-tabs-bar {
+    background: #5652FF !important;
+  }
+}
 </style>
