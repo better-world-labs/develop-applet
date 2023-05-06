@@ -187,7 +187,6 @@ import { useMessage } from 'naive-ui';
 
 const dialog = useBizDialog();
 
-const { toClipboard } = useClipboard();
 const message = useMessage();
 
 const userStore = useUserStore();
