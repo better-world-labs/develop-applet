@@ -28,7 +28,7 @@
     <n-popover trigger="click" :show-arrow="false" placement="left-end" class="popover-feed" :show="showTips"
       @clickoutside="hideTipsBox">
       <template #trigger>
-        <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover" :disabled="popFeedBack2">
+        <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover">
           <template #trigger>
             <div class="icon-wrap" @click="showFirstDialog()">
               <IconFont name="icon-icon-bangzhu" />

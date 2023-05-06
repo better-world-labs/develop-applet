@@ -10,6 +10,7 @@
         <IconFont name="icon-icon-fanhui" />
         返回
       </div>
+      <notice-box></notice-box>
       <n-button class="highlight-btn" size="large" @click="createApp">
         <IconFont name="icon-icon-yijiantongkuan" />
         一键同款小程序
@@ -103,12 +104,12 @@
               </p>
               <div class="option">
                 <icon-font-symbol @click="resultOption(currentResult, 1)" :name="applicationStore.resultStateList?.get(currentResult.id) == 1
-                    ? 'icon-icon-yidianzan'
-                    : 'icon-icon-dianzan'
+                  ? 'icon-icon-yidianzan'
+                  : 'icon-icon-dianzan'
                   " />
                 <icon-font-symbol @click="resultOption(currentResult, -1)" :name="applicationStore.resultStateList?.get(currentResult.id) == -1
-                    ? 'icon-icon-yicai'
-                    : 'icon-icon-cai'
+                  ? 'icon-icon-yicai'
+                  : 'icon-icon-cai'
                   " />
               </div>
             </div>
@@ -140,8 +141,8 @@
                       : 'icon-icon-dianzan'
                       " />
                     <div :class="{
-                        'active-text': applicationStore.resultStateList?.get(result.id) == 1,
-                      }">
+                      'active-text': applicationStore.resultStateList?.get(result.id) == 1,
+                    }">
                       {{ result.likeTimes }}
                     </div>
                   </div>
@@ -151,8 +152,8 @@
                       : 'icon-icon-cai'
                       " />
                     <div :class="{
-                        'active-text': applicationStore.resultStateList?.get(result.id) == -1,
-                      }">
+                      'active-text': applicationStore.resultStateList?.get(result.id) == -1,
+                    }">
                       {{ result.hateTimes }}
                     </div>
                   </div>
@@ -261,7 +262,7 @@ async function collectTemplate() {
 // 获取 应用收藏转台
 function getCollect() {
   const { data } = getCollectStatus([uuid.value]);
-  collected.value = data.uuids[0];
+  collected.value = data?.uuids[0];
 }
 
 // 打印内容
@@ -628,6 +629,7 @@ onUnmounted(() => {
           display: -webkit-box;
           -webkit-line-clamp: 9;
           -webkit-box-orient: vertical;
+          white-space: pre-wrap;
         }
 
         .form-box {

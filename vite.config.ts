@@ -1,7 +1,7 @@
 /*
  * @Author: Sandy
  * @Date: 2023-03-22 14:01:29
- * @Description: 
+ * @Description:
  */
 import type { UserConfig, ConfigEnv } from 'vite';
 import { loadEnv } from 'vite';

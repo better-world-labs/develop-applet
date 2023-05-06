@@ -7,6 +7,7 @@
   <div>
     <div class="home-header">
       <div style="flex: 1"></div>
+      <notice-box></notice-box>
       <n-button class="highlight-btn" size="large" @click="createTemplate">
         <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
         创建我的小程序
