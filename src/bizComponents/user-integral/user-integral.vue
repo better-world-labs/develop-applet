@@ -5,14 +5,24 @@
 -->
 <template>
   <div class="user-integral" v-if="userStore.info.avatar && userStore.info.nickname">
-    <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
-    <div>
-      <div>{{ userStore.info.nickname }}</div>
-      <div>
-        <span class="active-text">{{ userStore.total }}</span
-        >积分
+    <n-popover trigger="click" raw :show-arrow="false" :content-style="{padding: 0}">
+      <template #trigger>
+        <div class="trigger-wrap">
+          <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
+          <div>
+            <div>{{ userStore.info.nickname }}</div>
+            <div>
+              <span class="active-text">{{ userStore.total }}</span
+              >积分
+            </div>
+          </div>
+        </div>
+      </template>
+      <div class="registration">
+        <div>每日签到</div>
+        <div @click="signIn" class="register-btn">签到</div>
       </div>
-    </div>
+    </n-popover>
   </div>
   <div class="login" @click="login" v-else>登录</div>
 </template>
@@ -25,6 +35,16 @@
   const login = () => {
     if (!userStore.token) goAuth();
   };
+
+  function signIn() {
+    userStore.makeRegistration()
+  }
+  onMounted(() => {
+    if (userStore.token) {
+      // 有登录态之后再查询签到状态
+      userStore.getRegistrationState()
+    }
+  })
 </script>
 <style lang="scss" scoped>
   .login {
@@ -54,21 +74,42 @@
 
     display: flex;
     flex-direction: row;
+    
+    .trigger-wrap {
+      display: flex;
+      cursor: pointer;
 
-    img {
-      width: 36px !important;
-      height: 36px !important;
-      border-radius: 36px;
-      margin-right: 8px;
-    }
+      img {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 36px;
+        margin-right: 8px;
+      }
 
-    div:last-child {
-      color: rgba(91, 93, 98, 1);
-      margin-top: 4px;
+      div:last-child {
+        color: rgba(91, 93, 98, 1);
+        margin-top: 4px;
 
-      .active-text {
-        color: rgba(86, 82, 255, 1);
+        .active-text {
+          color: rgba(86, 82, 255, 1);
+        }
       }
     }
   }
+</style>
+<style lang="scss">
+.registration {
+  display: flex;
+  align-items: center;
+  padding: 20px 16px;
+  border-radius: 4px;
+  box-shadow: 0px 4px 12px rgba(176, 177, 179, 0.3);
+  .register-btn {
+    cursor: pointer;
+    padding: 10px 24px;
+    border-radius: 8px;
+    background: #EEEDFE;
+    border: 1px solid #5652FF;;
+  }
+}
 </style>

@@ -7,8 +7,8 @@
   <div class="integral-balance">
     <div class="total">{{ total }}</div>
     <div class="btn-wrap">
-      <n-button type="info" @click="activateShop">立即充值</n-button>
-      <n-button @click="activateRealization">立即提现</n-button>
+      <n-button class="highlight-btn" type="info" @click="activateShop">立即充值</n-button>
+      <n-button class="border-btn withdraw-btn" @click="activateRealization">立即提现</n-button>
     </div>
   </div>
   <div class="integral-get">积分获取攻略</div>
@@ -20,8 +20,8 @@
 <script setup>
   import { getIntegral } from '@/api/user';
   import shop from './shop/index.vue';
-  import { useRoute } from 'vue-router';
   import realization from './shop/realization.vue';
+  import { useRoute } from 'vue-router';
   import { useNative } from './native.ts';
   import { putOrder } from '@/api/application';
   import { useUserStore } from '@/store/modules/user';
@@ -77,12 +77,17 @@
 
     .btn-wrap {
       margin-top: 24px;
-    }
 
-    .integral-get {
-      margin-top: 40px;
-      color: #181d24;
-      font-size: 16px;
+      .withdraw-btn {
+        margin-left: 24px;
+      }
     }
+  }
+
+  .integral-get {
+    margin-top: 40px;
+    color: #181d24;
+    font-size: 16px;
+    margin-top: 40px;
   }
 </style>

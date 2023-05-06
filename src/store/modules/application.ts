@@ -10,6 +10,7 @@ import {
   getAppResultList,
   getAppInfo,
   getMineApp,
+  getCollectApp,
   getResultsIsLike,
 } from '@/api/application';
 import $router from '@/router/index';
@@ -22,6 +23,7 @@ interface ApplicationState {
   resultList: Application.appResultItf[];
   appInfo: Application.appDetailItf;
   mineAppList: Application.appInfoItf[];
+  collectAppList: Application.appInfoItf[];
   editorText: string;
   finishCount: number
 }
@@ -35,6 +37,7 @@ export const useApplicationStore = defineStore('application', {
     resultList: [],
     appInfo: {},
     mineAppList: [],
+    collectAppList: [],
     editorText: '',
     finishCount: 0,
     resultStateList: new Map(),
@@ -82,6 +85,10 @@ export const useApplicationStore = defineStore('application', {
     async getMineAppList() {
       const { data } = await getMineApp();
       this.mineAppList = data.list;
+    },
+    async getCollectAppList() {
+      const {data} = await getCollectApp()
+      this.collectAppList = data.list
     },
     // 更新输入框内容
     updateEditorText(info: string) {

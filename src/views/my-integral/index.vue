@@ -72,112 +72,32 @@
     },
   ]); // tab列表
 
-  // 创建模版
-  function createTemplate() {
-    if (!userStore.token) goAuth();
-    $router.push({ name: 'builder' });
-  }
-  onMounted(() => {
-    if (!userStore.token) goAuth();
-    // 明细
-    getIntegralDetails().then(({ data }) => {
-      dataList.value = data.list;
-    });
-    // 积分总额
-    getIntegral().then(({ data }) => {
-      total.value = data.total;
-    });
+// 创建模版
+function createTemplate() {
+  if (!userStore.token) goAuth();
+  $router.push({ name: 'builder' });
+}
+onMounted(() => {
+  if (!userStore.token) goAuth();
+  // 明细
+  getIntegralDetails().then(({ data }) => {
+    dataList.value = data.list;
   });
+  // 积分总额
+  getIntegral().then(({ data }) => {
+    total.value = data.total;
+  });
+});
 </script>
-<style scoped lang="scss">
-  .home-header {
-    .back-btn {
-      flex: 1;
-    }
+<style lang="scss">
+.home-header {
+  .back-btn {
+    flex: 1;
   }
+}
 
-  .integral-wrap {
-    margin: 48px 52px;
-  }
-
-  .my-integral-content {
-    padding: 42px 52px;
-    background: #f3f3f7;
-    position: absolute;
-    height: calc(100% - 72px);
-    width: calc(100% - 312px);
-    box-sizing: border-box;
-    overflow-x: hidden;
-    overflow-y: scroll;
-
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    color: #202226;
-
-    > div:first-child {
-      max-width: 660px;
-
-      .title {
-        font-weight: 500;
-        font-size: 20px;
-        line-height: 28px;
-        color: #181d24;
-        padding-bottom: 16px;
-        border-bottom: 1px solid rgba(171, 172, 174, 0.2);
-      }
-
-      .title2 {
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 22px;
-        color: #202226;
-        margin: 16px 0;
-      }
-
-      .item {
-        border-bottom: 1px solid rgba(171, 172, 174, 0.2);
-        padding-bottom: 8px;
-        color: #202226;
-
-        .item-one-line {
-          display: flex;
-          flex-direction: row;
-          margin-bottom: 2px;
-          padding-top: 8px;
-
-          > div:first-child {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-          }
-
-          > div:last-child {
-            margin-left: auto;
-            padding-left: 30px;
-            white-space: nowrap;
-            color: #5b5d62;
-          }
-
-          > div.active-text:last-child {
-            color: rgba(86, 82, 255, 1);
-          }
-        }
-      }
-
-      .active-text {
-        color: rgba(86, 82, 255, 1);
-      }
-
-      .small {
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 17px;
-
-        color: #abacae;
-      }
-    }
-  }
+.integral-wrap {
+  width: 660px;
+  margin: 48px 52px;
+}
 </style>

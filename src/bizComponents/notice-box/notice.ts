@@ -84,8 +84,7 @@ export function useNotice() {
   const updatePopover = (show: boolean) => {
     showPopover.value = show;
     if (showPopover.value) {
-      nextCursor.value = '';
-      getList();
+      initOption();
     }
   };
   // 初始化第一页数据
