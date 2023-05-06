@@ -55,8 +55,6 @@
 
   const userStore = useUserStore();
   const { goAuth } = useInit();
-  const total = ref(0);
-  const dataList = ref([]);
   const tabList = ref([
     {
       name: '积分余额',
@@ -72,22 +70,14 @@
     },
   ]); // tab列表
 
-// 创建模版
-function createTemplate() {
-  if (!userStore.token) goAuth();
-  $router.push({ name: 'builder' });
-}
-onMounted(() => {
-  if (!userStore.token) goAuth();
-  // 明细
-  getIntegralDetails().then(({ data }) => {
-    dataList.value = data.list;
+  // 创建模版
+  function createTemplate() {
+    if (!userStore.token) goAuth();
+    $router.push({ name: 'builder' });
+  }
+  onMounted(() => {
+    if (!userStore.token) goAuth();
   });
-  // 积分总额
-  getIntegral().then(({ data }) => {
-    total.value = data.total;
-  });
-});
 </script>
 <style lang="scss">
 .home-header {

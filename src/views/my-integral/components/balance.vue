@@ -12,7 +12,16 @@
     </div>
   </div>
   <div class="integral-get">积分获取攻略</div>
-  <div>文案文案</div>
+  <div class="strategy">
+    <div class="title">方式1：空投奖励</div>
+    <div class="content">🎉欢迎来到社区！首次加入时，我们会赠送你 30 积分哦，尽情使用并创作属于你自己的小程序吧！🎁</div>
+    <div class="title">方式2：签到奖励</div>
+    <div class="content">🌟我们期待你每天来社区体验和创作小程序！在个人中心，你可以签到获取积分，记得每天来哦！💫</div>
+    <div class="title">方式3：小程序创作</div>
+    <div class="content">🚀社区鼓励你的创意和分享！当你创建的小程序被他人使用或同款使用时，你都会获得分成奖励！💰</div>
+    <div class="title">方式4：积分充值</div>
+    <div class="content">💡为了让社区更稳定地运转，我们提供了积分充值方式。用较低的价格，你就可以获得大量积分！这些资金将用于维护 API 接口的稳定和可持续性，为大家提供更优质的服务！🌈</div>
+  </div>
   <shop @selective="selective"></shop>
   <realization></realization>
 </template>
@@ -64,6 +73,9 @@ const userStore = useUserStore();
   background-color: #fff;
   border-radius: 8px;
   padding: 24px;
+  background: url('../../../assets/bg.png'), url('../../../assets/star.png'), #fff;
+  background-repeat: no-repeat,no-repeat, no-repeat;
+  background-position: top left, bottom right, center;
 
   .total {
     font-weight: 500;
@@ -86,5 +98,16 @@ const userStore = useUserStore();
   color: #181d24;
   font-size: 16px;
   margin-top: 40px;
+}
+.strategy {
+  border-radius: 12px;
+  padding: 20px;
+  background: linear-gradient(180deg, rgba(211, 210, 252, 0.7) 0%, rgba(255, 255, 255, 1) 45.04%);
+  .title {
+    color: #202226;
+  }
+  .content {
+    color: #5B5D62;
+  }
 }
 </style>
