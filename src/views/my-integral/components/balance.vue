@@ -31,26 +31,32 @@ const { isShop, isRealization, activateShop, activateRealization } = useNative()
 const total = ref(0);
 const userStore = useUserStore();
 
-//选购
-const selective = async (data) => {
-  activateShop(false);
-  const orderData = await putOrder(data.id);
-  dialog.open(
-    'buy-wx',
-    {
-      class: 'buy-wx-dialog',
-      title: '',
-    },
-    orderData.data
-  );
-};
-onMounted(() => {
-  if (!userStore.token) goAuth();
-  // 积分总额
-  getIntegral().then(({ data }) => {
-    total.value = data.total;
+  //选购
+  const selective = async (data) => {
+    activateShop(false);
+    const orderData = await putOrder(data.id);
+    dialog.open(
+      'buy-wx',
+      {
+        class: 'buy-wx-dialog',
+        title: '',
+        onAfterLeave: () => {
+          getTotal();
+        },
+      },
+      orderData.data
+    );
+  };
+  onMounted(() => {
+    if (!userStore.token) goAuth();
+    // 积分总额
+    getTotal();
   });
-});
+  const getTotal = async () => {
+    // 积分总额
+    const totalData = await getIntegral();
+    total.value = totalData.data.total;
+  };
 </script>
 
 <style lang="scss">

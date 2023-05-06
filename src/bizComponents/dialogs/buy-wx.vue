@@ -19,7 +19,7 @@
           color-light="white"
           background-color="white"
           background-dimming="white"
-          :logo-src="codeLogo"
+          :logo-src="customerCode"
           :logo-scale="0.2"
           :logo-margin="5"
           logo-background-color="white"
@@ -35,6 +35,15 @@
   import vueQr from 'vue-qr/src/packages/vue-qr.vue';
   import { getOrderStateById } from '@/api/application';
   import { useMessage } from 'naive-ui';
+
+  const emit = defineEmits(['close']);
+  const props = defineProps({
+    goods: Object,
+    price: Number,
+    codeUrl: String,
+    orderId: String,
+  });
+
   const customerCode =
     'https://moyu-chat.oss-cn-hangzhou.aliyuncs.com/static-web/images/main-logo2.png';
 
@@ -67,17 +76,11 @@
     clearInterval(timer);
   });
 
-  const emit = defineEmits(['close']);
-  const props = defineProps({
-    goods: Object,
-    price: Number,
-    codeUrl: String,
-    orderId: String,
-  });
-
   function onCancel() {
     emit('close');
   }
+
+  const loadingQr = () => {};
 </script>
 
 <style lang="scss">
