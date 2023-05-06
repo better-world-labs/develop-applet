@@ -8,14 +8,17 @@
   <div class="dialog-content">
     <div class="content">积分余额不足，你可以邀请好友或直接充值获得积分哟~</div>
     <div class="actions">
-      <div class="btn-add">邀请好友<span>+100积分</span></div>
-      <div class="btn-sub">0.99元得50积分</div>
+      <div class="btn-add" @click="shareTemplate">邀请好友<span>+100积分</span></div>
+      <div class="btn-sub" @click="buy()">0.99元得50积分</div>
     </div>
   </div>
 </template>
 
 <script setup>
+  import $router from '@/router/index';
+  import { useBizDialog } from '@/plugins';
   const emit = defineEmits(['close']);
+  const dialog = useBizDialog();
   const props = defineProps({
     user: Object,
     price: Number,
@@ -24,6 +27,17 @@
   function onCancel() {
     emit('close');
   }
+  // 分享模版
+  async function shareTemplate() {
+    dialog.open('share-link', {
+      class: 'center-dialog',
+      title: '分享',
+    });
+  }
+  const buy = () => {
+    $router.push({ name: 'my-integral', query: { type: 'buy' } });
+    onCancel();
+  };
 </script>
 
 <style lang="scss">

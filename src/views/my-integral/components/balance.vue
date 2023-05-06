@@ -20,6 +20,7 @@
 <script setup>
   import { getIntegral } from '@/api/user';
   import shop from './shop/index.vue';
+  import { useRoute } from 'vue-router';
   import realization from './shop/realization.vue';
   import { useNative } from './native.ts';
   import { putOrder } from '@/api/application';
@@ -51,6 +52,9 @@
     if (!userStore.token) goAuth();
     // 积分总额
     getTotal();
+    const route = useRoute();
+    const isBuy = route.query.type == 'buy';
+    if (isBuy) activateShop();
   });
   const getTotal = async () => {
     // 积分总额
