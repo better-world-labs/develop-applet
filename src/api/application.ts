@@ -84,6 +84,14 @@ export function getMineApp() {
   });
 }
 
+// 读取我收藏的小程序
+export function getCollectApp() {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/collected`,
+  });
+}
+
 // 删除小程序
 export function deleteApp(uuid: string) {
   return http.request({
