@@ -10,7 +10,7 @@
         v-if="applicationStore.mineAppList.length <= 0"
         content="暂无小程序哦~"
       ></default-composition>
-      <n-grid :x-gap="12" v-else cols="1 s:1 m:2 l:3 xl:3 2xl:4" responsive="screen">
+      <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
         <n-grid-item v-for="item in applicationStore.mineAppList" :key="item.id">
           <div class="item" @click="detailApp(item)">
             <div class="delete-icon" @click="deleteTemplate($event,item.uuid)">
@@ -121,13 +121,6 @@
 
 <style lang="scss" scoped>
 .small-program {
-  background: linear-gradient(180deg, #f3f3f6 0%, #edeffc 100%);
-  position: absolute;
-  height: calc(100% - 72px);
-  width: calc(100% - 312px);
-  box-sizing: border-box;
-  overflow-x: hidden;
-  overflow-y: scroll; 
 
   .item {
     background: #ffffff;
