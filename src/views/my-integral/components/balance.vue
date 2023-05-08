@@ -8,7 +8,9 @@
     <div class="total">{{ total }}</div>
     <div class="btn-wrap">
       <n-button class="highlight-btn" type="info" @click="activateShop">立即充值</n-button>
-      <n-button class="border-btn withdraw-btn" @click="activateRealization">立即提现</n-button>
+      <n-button class="border-btn withdraw-btn" @click="activateRealization"
+        >立即提现<span class="tips" v-if="withdrawAmount > 0">可提2元</span></n-button
+      >
     </div>
   </div>
   <div class="integral-get">积分获取攻略</div>
@@ -48,6 +50,7 @@
   const { isShop, isRealization, activateShop, activateRealization } = useNative();
 
   const total = ref(0);
+  const withdrawAmount = ref(0);
   const userStore = useUserStore();
 
   //选购
@@ -78,6 +81,7 @@
     // 积分总额
     const totalData = await getIntegral();
     total.value = totalData.data.total;
+    withdrawAmount.value = totalData.data.withdrawAmount;
     userStore.setTotal(totalData.data.total);
   };
 </script>
@@ -102,6 +106,25 @@
 
       .withdraw-btn {
         margin-left: 24px;
+        position: relative;
+        span.tips {
+          position: absolute;
+          top: -16px;
+          right: -46px;
+          font-weight: 500;
+          font-size: 13px;
+          line-height: 26px;
+          color: #887242;
+          text-align: center;
+          padding: 0 10px;
+          height: 26px;
+          border-top-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          border-top-right-radius: 8px;
+          border: 1px solid #fff4e4;
+          // border-image: linear-gradient(45deg, #fff4e4 100%, #fff2d0 100%); /* Added */
+          background: linear-gradient(177.63deg, #f9e5b9 1.99%, #efd08b 120.2%);
+        }
       }
     }
   }
