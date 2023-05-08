@@ -5,7 +5,8 @@
 -->
 <template>
   <div class="integral-detail">
-    <div class="item" v-for="item in dataList" :key="item.userId">
+    <default-composition v-if="dataList.length === 0" content="暂无积分记录"></default-composition>
+    <div class="item" v-else v-for="item in dataList" :key="item.userId">
       <div class="item-one-line">
         <div>
           {{ item.description }}
@@ -42,6 +43,8 @@ onMounted(() => {
   background-color: #FFF;
   border-radius: 8px;
   padding: 24px;
+  height: 73vh;
+  overflow-y: scroll;
 
   .item {
     border-bottom: 1px solid rgba(171, 172, 174, 0.2);

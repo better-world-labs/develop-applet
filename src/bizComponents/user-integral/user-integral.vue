@@ -5,22 +5,24 @@
 -->
 <template>
   <div class="user-integral" v-if="userStore.info.avatar && userStore.info.nickname">
-    <n-popover trigger="click" raw :show-arrow="false" :content-style="{padding: 0}">
+    <n-popover trigger="click" raw placement="bottom-end" :show-arrow="false">
       <template #trigger>
         <div class="trigger-wrap">
           <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
           <div>
             <div>{{ userStore.info.nickname }}</div>
             <div>
-              <span class="active-text">{{ userStore.total }}</span
-              >积分
+              <span class="active-text">{{ userStore.total }}</span>积分
             </div>
           </div>
         </div>
       </template>
       <div class="registration">
-        <div>每日签到</div>
-        <div @click="signIn" class="register-btn">签到</div>
+        <div class="left">
+          <img src="@/assets/signin.png" alt="">
+          <span>每日签到</span>
+        </div>
+        <div @click="signIn" class="register-btn" :class="signInCase.class">{{signInCase.word }}</div>
       </div>
     </n-popover>
   </div>
@@ -29,8 +31,20 @@
 <script setup>
   import { useUserStore } from '@/store/modules/user';
   import { useInit } from '@/hooks/useInit';
+  import {computed} from 'vue'
+  import { useMessage } from 'naive-ui';
+
+  const message = useMessage();
   const userStore = useUserStore();
   const { goAuth } = useInit();
+
+  const signInCase = computed(() => {
+    const state = userStore.registrationState
+    return {
+      word: state ? '已签到' : '签到',
+      class: state ? 'signed' : 'not-sign'
+    }
+  })
 
   const login = () => {
     if (!userStore.token) goAuth();
@@ -38,6 +52,12 @@
 
   function signIn() {
     userStore.makeRegistration()
+    // 不知道这样写会不会有问题
+    if (useUserStore.registrationState) {
+      message.success('签到成功，积分已入账，快去使用吧~')
+    } else {
+      message.error('签到失败，请重新尝试')
+    }
   }
   onMounted(() => {
     if (userStore.token) {
@@ -103,13 +123,42 @@
   align-items: center;
   padding: 20px 16px;
   border-radius: 4px;
+  background-color: #FFFFFF;
   box-shadow: 0px 4px 12px rgba(176, 177, 179, 0.3);
+  .left {
+    display: flex;
+    align-items: center;
+    img {
+      width: 26px;
+      height: 26px;
+    }
+    span {
+      padding-left: 10px;
+    }
+  }
   .register-btn {
     cursor: pointer;
-    padding: 10px 24px;
+    margin-left: 42px;
+    padding: 2px 12px;
     border-radius: 8px;
     background: #EEEDFE;
-    border: 1px solid #5652FF;;
+    border: 1px solid #5652FF;
+    &:hover {
+      background-color:  #D6D3FF;
+    }
+    &.signed {
+      opacity: 0.5;
+    }
+    &.not-sign {
+      background-color: #EEEDFE;;
+    }
   }
+}
+.v-binder-follower-content {
+  left: 12px !important;
+}
+.n-popover-shared {
+  border-radius: 4px !important;
+  margin-top: 24px !important;
 }
 </style>

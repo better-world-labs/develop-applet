@@ -10,7 +10,6 @@
     </div>
 </template>
 <script setup>
-// todo 这里应该还要调整文案
 const props = defineProps(['content']);
 const top = ref();
 onMounted(() => {
