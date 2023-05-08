@@ -33,7 +33,7 @@
       API 接口的稳定和可持续性，为大家提供更优质的服务！🌈
     </div>
   </div>
-  <shop @selective="selective"></shop>
+  <shop v-if="isShop" @selective="selective"></shop>
   <realization></realization>
 </template>
 
