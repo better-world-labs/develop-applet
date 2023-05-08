@@ -188,4 +188,5 @@
     margin-top: 8px;
     color: #5B5D62;
   }
+}
 </style>
