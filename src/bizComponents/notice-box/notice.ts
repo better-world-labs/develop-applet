@@ -130,6 +130,9 @@ export function useNotice() {
   async function setAllMsgRead() {
     await setAllMessageRead();
     unreadMessageCount.value = 0;
+    messageList.value.forEach((item) => {
+      item.read = true;
+    });
   }
 
   return {
