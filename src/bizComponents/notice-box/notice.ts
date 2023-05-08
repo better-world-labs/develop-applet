@@ -4,6 +4,7 @@ import notifyInvited from './images/invited.png';
 import notifyPointsRecharge from './images/points-recharge.png';
 import notifyDuplicateApp from './images/duplicate-app.png';
 import notifyAppBeUsed from './images/app-be-used.png';
+import createAppPointsLimited from './images/create-upper-limit.png';
 import { debounce } from 'lodash-es';
 
 interface ParamsItf {
@@ -33,6 +34,7 @@ const types = {
   'notify-points-recharge': notifyPointsRecharge,
   'notify-duplicate-app': notifyDuplicateApp,
   'notify-app-be-used': notifyAppBeUsed,
+  'create-app-points-limited': createAppPointsLimited,
 };
 // 时间计算
 const timeCalculation = (t: string) => {
