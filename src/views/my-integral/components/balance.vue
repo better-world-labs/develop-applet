@@ -7,10 +7,10 @@
   <div class="integral-balance">
     <div class="total">{{ total }}</div>
     <div class="btn-wrap">
-      <n-button class="highlight-btn" type="info" @click="activateShop">立即充值</n-button>
-      <n-button class="border-btn withdraw-btn" @click="activateRealization"
-        >立即提现<span class="tips" v-if="withdrawAmount > 0">可提2元</span></n-button
-      >
+      <div class="highlight-btn" @click="activateShop">立即充值</div>
+      <div class="withdraw-btn" @click="activateRealization">
+        立即提现<span class="tips" v-if="withdrawAmount > 0">可提2元</span>
+      </div>
     </div>
   </div>
   <div class="integral-get">积分获取攻略</div>
@@ -76,6 +76,10 @@
     const route = useRoute();
     const isBuy = route.query.type == 'buy';
     if (isBuy) activateShop();
+    dialog.open('insufficient', {
+      class: 'insufficient-dialog',
+      title: '积分不够啦',
+    });
   });
   const getTotal = async () => {
     // 积分总额
@@ -103,10 +107,26 @@
 
     .btn-wrap {
       margin-top: 24px;
+      display: flex;
 
       .withdraw-btn {
-        margin-left: 24px;
+        box-sizing: border-box;
+        background: #eeedfe;
+        border: 1px solid #5652ff;
+        border-radius: 8px;
+        width: 112px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-weight: 500;
+        font-size: 14px;
+        color: #5652ff;
+        cursor: pointer;
         position: relative;
+        margin-left: 24px;
+        &:hover {
+          background: #d6d3ff;
+        }
         span.tips {
           position: absolute;
           top: -16px;
@@ -124,6 +144,21 @@
           border: 1px solid #fff4e4;
           // border-image: linear-gradient(45deg, #fff4e4 100%, #fff2d0 100%); /* Added */
           background: linear-gradient(177.63deg, #f9e5b9 1.99%, #efd08b 120.2%);
+        }
+      }
+      .highlight-btn {
+        background: #5652ff;
+        border-radius: 8px;
+        width: 112px;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-weight: 500;
+        font-size: 14px;
+        color: #ffffff;
+        cursor: pointer;
+        &:hover {
+          background: #716efe;
         }
       }
     }
