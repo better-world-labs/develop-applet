@@ -28,12 +28,22 @@ const dialog = useBizDialog();
 const userStore = useUserStore();
 const { connect } = useWebSocket();
 const { $on } = useSocket();
-const include = ref([]);
 
+const updateIntegral = () => {
+  getIntegral().then(({ data }) => {
+    userStore.setTotal(data.total);
+  })
+}
 
 const registerOn = () => {
+  // 积分变化通知
+  $on(SocketTriggerTypeEnum.USE_POINTS_CHANGED, () => {
+    //请求刷新积分总数
+    updateIntegral();
+  });
+
   // 未读消息数有变化
-  $on(SocketTriggerTypeEnum.NOTIFY_MESSAGE_CHANGE, () => {
+  $on(SocketTriggerTypeEnum.NOTIFY_MESSAGE_CHANGED, () => {
     getUnread();
   });
 
@@ -69,7 +79,7 @@ const registerOn = () => {
     )
   });
   // 邀请好友成功
-  $on(SocketTriggerTypeEnum.RETAIN_MESSAGE_CHANGE, () => {
+  $on(SocketTriggerTypeEnum.RETAIN_MESSAGE_CHANGED, () => {
     initDialog();
   });
 }
@@ -115,9 +125,7 @@ onErrorCaptured((err) => {
 });
 
 onMounted(() => {
-  getIntegral().then(({ data }) => {
-    userStore.setTotal(data.total);
-  })
+  updateIntegral();
 })
 </script>
 

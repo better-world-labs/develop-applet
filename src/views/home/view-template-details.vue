@@ -373,7 +373,7 @@ function receiveMessage(data) {
       }
     },
     onmessage(msg) {
-      console.log('收到服务器发来的数据!', msg);
+      // console.log('收到服务器发来的数据!', msg);
       if (msg.event == 'done' && JSON.parse(msg.data).code == 500000) {
         // message.warning('内容生成失败，积分不足！'); // TODO 积分不足弹窗
         toastPoint();
