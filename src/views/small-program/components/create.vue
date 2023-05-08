@@ -6,7 +6,7 @@
 <template>
     <div class="create-program">
       <!-- 我创建的 -->
-      <blank-compo v-if="applicationStore.collectAppList.length >= 0">
+      <blank-compo v-if="applicationStore.collectAppList.length === 0">
         <div>还未创建小程序哦，</div>
         <div>所创建小程序被使用单次可得5积分哦！</div>
         <div class="link-wrap">更多玩法等你来解锁～<a class="link" href="/my-integral">点击了解>></a></div>

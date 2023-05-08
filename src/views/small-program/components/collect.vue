@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="collect-program">
-    <blank-compo v-if="applicationStore.collectAppList.length >= 0">
+    <blank-compo v-if="applicationStore.collectAppList.length === 0">
       <div>还未收藏哦，快去广场体验小程序吧！</div>
       <div>更多玩法等你来解锁～ <a href="/my-integral" class="link"> 点击了解>> </a></div>
     </blank-compo>
