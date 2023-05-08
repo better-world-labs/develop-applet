@@ -36,10 +36,7 @@ const registerOn = () => {
   $on(SocketTriggerTypeEnum.NOTIFY_MESSAGE_CHANGE, () => {
     getUnread();
   });
-  // 创建积分上限
-  $on(SocketTriggerTypeEnum.CREATE_APP_POINTS_LIMITED, () => {
 
-  });
   // 创建第一个小程序后触发
   $on(SocketTriggerTypeEnum.SHARE_HINT_CREATE_APP, (res) => {
     dialog.open(

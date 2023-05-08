@@ -11,5 +11,4 @@ export enum SocketTriggerTypeEnum {
   SHARE_HINT_USE_APP = 'share-hint-use-app',
   NOTIFY_MESSAGE_CHANGE = 'notify-message-change',
   RETAIN_MESSAGE_CHANGE = 'retain-message-change',
-  CREATE_APP_POINTS_LIMITED = 'create-app-points-limited',
 }
