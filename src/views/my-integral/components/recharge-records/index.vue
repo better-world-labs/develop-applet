@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="integral-detail-box">
-    <div class="integral-detail">
+    <div class="integral-detail-inner">
       <div class="no-data" v-if="!state.loading && state.dataList.length == 0">
         <img src="@/assets/no-data.png" alt="" />
         <p>暂无充值记录</p>
@@ -44,6 +44,7 @@
     getIntegralOrders()
       .then(({ data }) => {
         state.dataList = data.list;
+        // state.dataList = [];
       })
       .finally(() => {
         state.loading = false;
@@ -62,7 +63,7 @@
     overflow-x: hidden;
     overflow-y: scroll;
     border-radius: 8px;
-    .integral-detail {
+    .integral-detail-inner {
       border-radius: 8px;
       padding: 12px 20px;
 
