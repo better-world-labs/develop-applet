@@ -51,9 +51,11 @@
   };
 
   function signIn() {
+    // 签到过后面的就不要执行了
+    if (userStore.registrationState) return
     userStore.makeRegistration()
     // 不知道这样写会不会有问题
-    if (useUserStore.registrationState) {
+    if (userStore.registrationState) {
       message.success('签到成功，积分已入账，快去使用吧~')
     } else {
       message.error('签到失败，请重新尝试')
@@ -137,20 +139,20 @@
     }
   }
   .register-btn {
-    cursor: pointer;
     margin-left: 42px;
     padding: 2px 12px;
     border-radius: 8px;
     background: #EEEDFE;
     border: 1px solid #5652FF;
-    &:hover {
-      background-color:  #D6D3FF;
-    }
     &.signed {
       opacity: 0.5;
     }
     &.not-sign {
-      background-color: #EEEDFE;;
+      cursor: pointer;
+      background-color: #EEEDFE;
+      &:hover {
+        background-color:  #D6D3FF;
+    }
     }
   }
 }
