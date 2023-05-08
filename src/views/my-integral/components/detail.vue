@@ -5,7 +5,10 @@
 -->
 <template>
   <div class="integral-detail">
-    <blank-compo v-if="dataList.length === 0" content="暂无积分记录"></blank-compo>
+    <div class="no-data" v-if="dataList.length === 0">
+      <img src="@/assets/no-data.png" alt="" />
+      <p>暂无积分记录</p>
+    </div>
     <div class="item" v-else v-for="item in dataList" :key="item.userId">
       <div class="item-one-line">
         <div>
@@ -43,9 +46,31 @@ onMounted(() => {
   background-color: #FFF;
   border-radius: 8px;
   padding: 24px;
-  height: 73vh;
+  position: absolute;
+  height: calc(100% - 72px - 96px - 48px);
+  width: calc(100% - 312px - 104px);
+  max-width: 660px;
+  overflow-x: hidden;
   overflow-y: scroll;
-
+  box-sizing: border-box;
+  
+  .no-data {
+    display: flex;
+    flex-direction: column;
+    img {
+      width: 82px;
+      height: 82px;
+      margin: 68px auto 12px;
+    }
+    p {
+      text-align: center;
+      font-size: 14px;
+      line-height: 20px;
+      color: #abacae;
+      margin: 0;
+      padding: 0;
+    }
+  }
   .item {
     border-bottom: 1px solid rgba(171, 172, 174, 0.2);
     padding-bottom: 8px;
