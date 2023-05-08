@@ -27,49 +27,49 @@
 </template>
 
 <script setup>
-  import { getIntegral } from '@/api/user';
-  import shop from './shop/index.vue';
-  import realization from './shop/realization.vue';
-  import { useRoute } from 'vue-router';
-  import { useNative } from './native.ts';
-  import { putOrder } from '@/api/application';
-  import { useUserStore } from '@/store/modules/user';
-  import { useBizDialog } from '@/plugins';
-  const dialog = useBizDialog();
-  const { isShop, isRealization, activateShop, activateRealization } = useNative();
+import { getIntegral } from '@/api/user';
+import shop from './shop/index.vue';
+import realization from './shop/realization.vue';
+import { useRoute } from 'vue-router';
+import { useNative } from './native.ts';
+import { putOrder } from '@/api/application';
+import { useUserStore } from '@/store/modules/user';
+import { useBizDialog } from '@/plugins';
+const dialog = useBizDialog();
+const { isShop, isRealization, activateShop, activateRealization } = useNative();
 
-  const total = ref(0);
-  const userStore = useUserStore();
+const total = ref(0);
+const userStore = useUserStore();
 
-  //选购
-  const selective = async (data) => {
-    activateShop(false);
-    const orderData = await putOrder(data.id);
-    dialog.open(
-      'buy-wx',
-      {
-        class: 'buy-wx-dialog',
-        title: '',
-        onAfterLeave: () => {
-          getTotal();
-        },
+//选购
+const selective = async (data) => {
+  activateShop(false);
+  const orderData = await putOrder(data.id);
+  dialog.open(
+    'buy-wx',
+    {
+      class: 'buy-wx-dialog',
+      title: '',
+      onAfterLeave: () => {
+        getTotal();
       },
-      orderData.data
-    );
-  };
-  onMounted(() => {
-    if (!userStore.token) goAuth();
-    // 积分总额
-    getTotal();
-    const route = useRoute();
-    const isBuy = route.query.type == 'buy';
-    if (isBuy) activateShop();
-  });
-  const getTotal = async () => {
-    // 积分总额
-    const totalData = await getIntegral();
-    total.value = totalData.data.total;
-  };
+    },
+    orderData.data
+  );
+};
+onMounted(() => {
+  if (!userStore.token) goAuth();
+  // 积分总额
+  getTotal();
+  const route = useRoute();
+  const isBuy = route.query.type == 'buy';
+  if (isBuy) activateShop();
+});
+const getTotal = async () => {
+  // 积分总额
+  const totalData = await getIntegral();
+  total.value = totalData.data.total;
+};
 </script>
 
 <style lang="scss">
@@ -78,25 +78,24 @@
   border-radius: 8px;
   padding: 24px;
   background: url('../../../assets/bg.png'), url('../../../assets/star.png'), #fff;
-  background-repeat: no-repeat,no-repeat, no-repeat;
+  background-repeat: no-repeat, no-repeat, no-repeat;
   background-position: top left, bottom right, center;
 
-    .total {
-      font-weight: 500;
-      font-size: 32px;
-      color: #5652ff;
-    }
-
-    .btn-wrap {
-      margin-top: 24px;
-
-      .withdraw-btn {
-        margin-left: 24px;
-      }
-    }
+  .total {
+    font-weight: 500;
+    font-size: 32px;
+    color: #5652ff;
   }
 
+  .btn-wrap {
+    margin-top: 24px;
+
+    .withdraw-btn {
+      margin-left: 24px;
+    }
+  }
 }
+
 
 .integral-get {
   margin-top: 40px;
@@ -104,15 +103,17 @@
   font-size: 16px;
   margin-top: 40px;
 }
+
 .strategy {
   border-radius: 12px;
   padding: 20px;
   background: linear-gradient(180deg, rgba(211, 210, 252, 0.7) 0%, rgba(255, 255, 255, 1) 45.04%);
+
   .title {
     color: #202226;
   }
+
   .content {
     color: #5B5D62;
   }
-}
-</style>
+}</style>
