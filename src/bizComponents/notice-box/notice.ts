@@ -91,9 +91,8 @@ export function useNotice() {
   };
   // 初始化第一页数据
   const initOption = () => {
-    messageList.value = [];
     nextCursor.value = '';
-    getList();
+    getList(true);
   };
   // 获取未读消息数量
   async function getUnread() {
@@ -101,19 +100,19 @@ export function useNotice() {
     unreadMessageCount.value = data.count;
   }
   // 请求消息列表
-  async function getList() {
+  async function getList(onePageLoading: boolean = false) {
     const params: ParamsItf = {};
     // 分页标识
     if (nextCursor.value) {
       params.cursor = nextCursor.value;
-    } else if (!nextCursor.value && messageList.value.length) {
-      // 最后一页不再加载
+    } else if (!nextCursor.value && !onePageLoading) {
+      // 最后一页不再加载 ｜ 非首页加载
       return;
     }
     if (option.value == 1) params.isRead = false; // 未读
 
     const { data } = await getNoticeList(params);
-
+    if (!params.cursor) messageList.value = []; // 首页加载清空
     data.list.forEach((element: Notice.Message) => {
       messageList.value.push(element);
     });
