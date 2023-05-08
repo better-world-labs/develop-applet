@@ -9,7 +9,7 @@
     <div class="btn-wrap">
       <div class="highlight-btn" @click="activateShop">立即充值</div>
       <div class="withdraw-btn" @click="activateRealization">
-        立即提现<span class="tips" v-if="withdrawAmount > 0">可提2元</span>
+        立即提现<span class="tips" v-if="withdrawAmount > 0">可提{{ withdrawAmount }}元</span>
       </div>
     </div>
   </div>
@@ -119,7 +119,6 @@
         color: #5652ff;
         cursor: pointer;
         position: relative;
-        overflow: hidden;
         margin-left: 24px;
         &:hover {
           background: #d6d3ff;
@@ -127,7 +126,8 @@
         span.tips {
           position: absolute;
           top: -16px;
-          right: -46px;
+          left: calc(100% - 22px);
+          word-break: keep-all;
           font-weight: 500;
           font-size: 13px;
           line-height: 26px;
