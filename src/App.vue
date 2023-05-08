@@ -28,11 +28,17 @@ const dialog = useBizDialog();
 const userStore = useUserStore();
 const { connect } = useWebSocket();
 const { $on } = useSocket();
+const include = ref([]);
+
 
 const registerOn = () => {
   // 未读消息数有变化
   $on(SocketTriggerTypeEnum.NOTIFY_MESSAGE_CHANGE, () => {
     getUnread();
+  });
+  // 创建积分上限
+  $on(SocketTriggerTypeEnum.CREATE_APP_POINTS_LIMITED, () => {
+
   });
   // 创建第一个小程序后触发
   $on(SocketTriggerTypeEnum.SHARE_HINT_CREATE_APP, (res) => {

@@ -4,10 +4,11 @@ import notifyInvited from './images/invited.png';
 import notifyPointsRecharge from './images/points-recharge.png';
 import notifyDuplicateApp from './images/duplicate-app.png';
 import notifyAppBeUsed from './images/app-be-used.png';
+import createAppPointsLimited from './images/create-upper-limit.png';
 import { debounce } from 'lodash-es';
 
 interface ParamsItf {
-  cursor: string;
+  cursor?: string;
   isRead?: boolean;
 }
 const showPopover = ref(false);
@@ -33,6 +34,7 @@ const types = {
   'notify-points-recharge': notifyPointsRecharge,
   'notify-duplicate-app': notifyDuplicateApp,
   'notify-app-be-used': notifyAppBeUsed,
+  'create-app-points-limited': createAppPointsLimited,
 };
 // 时间计算
 const timeCalculation = (t: string) => {
@@ -100,9 +102,14 @@ export function useNotice() {
   }
   // 请求消息列表
   async function getList() {
-    const params: ParamsItf = {
-      cursor: nextCursor.value || '',
-    };
+    const params: ParamsItf = {};
+    // 分页标识
+    if (nextCursor.value) {
+      params.cursor = nextCursor.value;
+    } else if (!nextCursor.value && messageList.value.length) {
+      // 最后一页不再加载
+      return;
+    }
     if (option.value == 1) params.isRead = false; // 未读
 
     const { data } = await getNoticeList(params);
