@@ -24,7 +24,8 @@
                     </div>
                 </n-popselect>
             </div>
-            <div class="list" v-if="messageList.length" @scroll="handleMessageScroll">
+            <div class="list" v-if="messageList.length" @scroll="handleMessageScroll"
+                :style="{ 'padding-bottom': unreadMessageCount > 9 ? '44px' : '8px' }">
                 <div class="item" v-for="item in messageList" :class="{ 'is-read': item.read }" @click="setMsgRead(item)">
                     <img :src="types[item.type]" alt="">
                     <div>
@@ -202,7 +203,7 @@ const {
         height: 390px;
         overflow-y: auto;
         overflow-x: hidden;
-        padding-bottom: 16px;
+        padding-bottom: 44px;
         box-sizing: border-box;
 
         .item {

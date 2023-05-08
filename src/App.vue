@@ -29,11 +29,24 @@ const userStore = useUserStore();
 const { connect } = useWebSocket();
 const { $on } = useSocket();
 
+const updateIntegral = () => {
+  getIntegral().then(({ data }) => {
+    userStore.setTotal(data.total);
+  })
+}
+
 const registerOn = () => {
+  // 积分变化通知
+  $on(SocketTriggerTypeEnum.USE_POINTS_CHANGED, () => {
+    //请求刷新积分总数
+    updateIntegral();
+  });
+
   // 未读消息数有变化
-  $on(SocketTriggerTypeEnum.NOTIFY_MESSAGE_CHANGE, () => {
+  $on(SocketTriggerTypeEnum.NOTIFY_MESSAGE_CHANGED, () => {
     getUnread();
   });
+
   // 创建第一个小程序后触发
   $on(SocketTriggerTypeEnum.SHARE_HINT_CREATE_APP, (res) => {
     dialog.open(
@@ -66,7 +79,7 @@ const registerOn = () => {
     )
   });
   // 邀请好友成功
-  $on(SocketTriggerTypeEnum.RETAIN_MESSAGE_CHANGE, () => {
+  $on(SocketTriggerTypeEnum.RETAIN_MESSAGE_CHANGED, () => {
     initDialog();
   });
 }
@@ -112,9 +125,7 @@ onErrorCaptured((err) => {
 });
 
 onMounted(() => {
-  getIntegral().then(({ data }) => {
-    userStore.setTotal(data.total);
-  })
+  updateIntegral();
 })
 </script>
 

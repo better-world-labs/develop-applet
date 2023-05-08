@@ -33,7 +33,7 @@ export const useApplicationStore = defineStore('application', {
   state: (): ApplicationState => ({
     currentMenu: $router.currentRoute.value.name as string,
     tabs: [],
-    currentTab: 0,
+    currentTab: null,
     appList: [],
     resultList: [],
     appInfo: {},
@@ -53,7 +53,7 @@ export const useApplicationStore = defineStore('application', {
     async getTabs() {
       const { data } = await getTabs('MINI_APP_HOME_TABS');
       this.tabs = data.tabs;
-      this.setCurrentTab(this.tabs[0].category);
+      if (!this.currentTab) this.setCurrentTab(this.tabs[0].category);
     },
     // 请求应用列表
     async getAppList() {
@@ -92,8 +92,8 @@ export const useApplicationStore = defineStore('application', {
       this.mineAppList = data.list;
     },
     async getCollectAppList() {
-      const {data} = await getCollectApp()
-      this.collectAppList = data.list
+      const { data } = await getCollectApp();
+      this.collectAppList = data.list;
     },
     // 更新输入框内容
     updateEditorText(info: string) {
@@ -104,7 +104,7 @@ export const useApplicationStore = defineStore('application', {
       this.editorText += info;
     },
     changeGuideState(finish: number) {
-      this.finishCount = this.finishCount + finish
-    }
+      this.finishCount = this.finishCount + finish;
+    },
   },
 });

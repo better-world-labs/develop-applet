@@ -75,6 +75,7 @@
     justify-content: center;
     margin-top: 40px;
     .btn-add {
+      box-sizing: border-box;
       background: #eeedfe;
       border: 1px solid #5652ff;
       border-radius: 8px;

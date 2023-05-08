@@ -41,7 +41,9 @@
         </div> -->
       </div>
       <div class="actions">
-        <div class="btn-sub" @click="buy">立即充值</div>
+        <div class="btn-sub" :class="{ disable: state.current < 0 }" @click="buy">
+          <i></i>立即充值
+        </div>
       </div>
     </div>
   </n-modal>
@@ -65,7 +67,8 @@
     state.goods = goodsData.data.list;
   });
   const buy = () => {
-    if (state.current < 0) return message.warning('请选择适合的采购方案');
+    if (state.current < 0) return false;
+    // if (state.current < 0) return message.warning('请选择适合的采购方案');
     emit('selective', state.goods[state.current]);
   };
 </script>
@@ -185,8 +188,23 @@
         font-size: 16px;
         color: #ffffff;
         cursor: pointer;
+        position: relative;
+        i {
+          width: 24px;
+          height: 24px;
+          margin-right: 8px;
+          display: inline-block;
+          background-size: 100% 100%;
+          background-image: url(@/assets/wx-pay.png);
+          position: relative;
+          top: 6px;
+        }
         &:hover {
           background: #716efe;
+        }
+        &.disable {
+          opacity: 0.5;
+          cursor: default;
         }
       }
     }

@@ -10,7 +10,7 @@
   </div>
 </template>
 <script setup>
-  import HomeHeader from './components/home-header.vue';
-  import HomeContent from './components/home-content.vue';
+import HomeHeader from './components/home-header.vue';
+import HomeContent from './components/home-content.vue';
 </script>
 <style lang="scss" scoped></style>
