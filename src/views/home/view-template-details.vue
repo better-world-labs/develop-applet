@@ -102,12 +102,12 @@
               </p>
               <div class="option">
                 <icon-font-symbol @click="resultOption(currentResult, 1)" :name="applicationStore.resultStateList?.get(currentResult.id) == 1
-                    ? 'icon-icon-yidianzan'
-                    : 'icon-icon-dianzan'
+                  ? 'icon-icon-yidianzan'
+                  : 'icon-icon-dianzan'
                   " />
                 <icon-font-symbol @click="resultOption(currentResult, -1)" :name="applicationStore.resultStateList?.get(currentResult.id) == -1
-                    ? 'icon-icon-yicai'
-                    : 'icon-icon-cai'
+                  ? 'icon-icon-yicai'
+                  : 'icon-icon-cai'
                   " />
               </div>
             </div>
@@ -135,8 +135,8 @@
                 <div class="option">
                   <div>
                     <icon-font-symbol @click="resultOption(result, 1)" :name="applicationStore.resultStateList?.get(result.id) == 1
-                        ? 'icon-icon-yidianzan'
-                        : 'icon-icon-dianzan'
+                      ? 'icon-icon-yidianzan'
+                      : 'icon-icon-dianzan'
                       " />
                     <div :class="{
                       'active-text': applicationStore.resultStateList?.get(result.id) == 1,
@@ -146,8 +146,8 @@
                   </div>
                   <div>
                     <icon-font-symbol @click="resultOption(result, -1)" :name="applicationStore.resultStateList?.get(result.id) == -1
-                        ? 'icon-icon-yicai'
-                        : 'icon-icon-cai'
+                      ? 'icon-icon-yicai'
+                      : 'icon-icon-cai'
                       " />
                     <div :class="{
                       'active-text': applicationStore.resultStateList?.get(result.id) == -1,
@@ -262,10 +262,10 @@ async function collectTemplate() {
     message.warning('已从“收藏”中移除');
   }
 }
-// 获取 应用收藏转台
-function getCollect() {
-  const { data } = getCollectStatus([uuid.value]);
-  collected.value = data?.uuids[0];
+// 获取 应用收藏状态
+async function getCollect() {
+  const { data } = await getCollectStatus([uuid.value]);
+  collected.value = data[uuid.value];
 }
 
 // 打印内容

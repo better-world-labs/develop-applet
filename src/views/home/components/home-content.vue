@@ -25,11 +25,7 @@ const { goAuth } = useInit();
 function useTemplate(item) {
   if (!userStore.token) goAuth();
   $router.push({ name: 'view-template-details', query: { uuid: item.uuid } });
-}
-
-onMounted(() => {
-  console.log(99999999)
-})
+} 
 </script>
 <style lang="scss" scoped>
 .home-content {
