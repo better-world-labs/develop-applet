@@ -71,8 +71,14 @@ export const useUserStore = defineStore('user', {
       this.registrationState = res.data.signIn
     },
     async makeRegistration() {
+      const $message = window['$message'];
       const res = await makeRegistration()
       this.registrationState = res.code === 0 ? true : false
+      if (this.registrationState) {
+        $message.success('签到成功，积分已入账，快去使用吧~')
+      } else {
+        $message.error('签到失败，请重新尝试')
+      }
     }
   },
 });
