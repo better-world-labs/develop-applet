@@ -81,21 +81,19 @@
   background-repeat: no-repeat,no-repeat, no-repeat;
   background-position: top left, bottom right, center;
 
-    .total {
-      font-weight: 500;
-      font-size: 32px;
-      color: #5652ff;
-    }
-
-    .btn-wrap {
-      margin-top: 24px;
-
-      .withdraw-btn {
-        margin-left: 24px;
-      }
-    }
+  .total {
+    font-weight: 500;
+    font-size: 32px;
+    color: #5652ff;
   }
 
+  .btn-wrap {
+    margin-top: 24px;
+
+    .withdraw-btn {
+      margin-left: 24px;
+    }
+  }
 }
 
 .integral-get {
