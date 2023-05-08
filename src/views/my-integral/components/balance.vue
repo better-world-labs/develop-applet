@@ -76,10 +76,6 @@
     const route = useRoute();
     const isBuy = route.query.type == 'buy';
     if (isBuy) activateShop();
-    dialog.open('insufficient', {
-      class: 'insufficient-dialog',
-      title: '积分不够啦',
-    });
   });
   const getTotal = async () => {
     // 积分总额
@@ -123,6 +119,7 @@
         color: #5652ff;
         cursor: pointer;
         position: relative;
+        overflow: hidden;
         margin-left: 24px;
         &:hover {
           background: #d6d3ff;
