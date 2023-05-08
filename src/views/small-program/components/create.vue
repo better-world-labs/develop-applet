@@ -4,12 +4,9 @@
  * @Description: 我创建的小程序
 -->
 <template>
-    <div class="small-program">
+    <div class="create-program">
       <!-- 我创建的 -->
-      <default-composition
-        v-if="applicationStore.mineAppList.length <= 0"
-        content="暂无小程序哦~"
-      ></default-composition>
+      <blank-compo v-if="applicationStore.mineAppList.length <= 0" content="暂无小程序哦~"></blank-compo>
       <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
         <n-grid-item v-for="item in applicationStore.mineAppList" :key="item.id">
           <div class="item" @click="detailApp(item)">
@@ -120,8 +117,12 @@
 </script>
 
 <style lang="scss" scoped>
-.small-program {
-
+.create-program {
+  position: absolute;
+  height: calc(100% - 72px);
+  width: calc(100% - 312px);
+  overflow-x: hidden;
+  overflow-y: scroll;
   .item {
     background: #ffffff;
     box-shadow: 0px 6px 16px rgba(211, 213, 235, 0.4);

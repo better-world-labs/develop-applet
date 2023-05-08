@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="integral-detail">
-    <default-composition v-if="dataList.length === 0" content="暂无积分记录"></default-composition>
+    <blank-compo v-if="dataList.length === 0" content="暂无积分记录"></blank-compo>
     <div class="item" v-else v-for="item in dataList" :key="item.userId">
       <div class="item-one-line">
         <div>

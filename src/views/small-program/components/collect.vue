@@ -4,12 +4,14 @@
  * @Description: 我收藏的
 -->
 <template>
-  <default-composition v-if="applicationStore.collectAppList.length <= 0" content="暂无小程序哦~"></default-composition>
-  <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
-    <n-grid-item v-for="item in applicationStore.collectAppList" :key="item.id">
-      <card :item="item" @click="toDetail(item)"></card>
-    </n-grid-item>
-  </n-grid>
+  <div class="collect-program">
+    <blank-compo v-if="applicationStore.collectAppList.length <= 0" content="暂无小程序哦~"></blank-compo>
+    <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
+      <n-grid-item v-for="item in applicationStore.collectAppList" :key="item.id">
+        <card :item="item" @click="toDetail(item)"></card>
+      </n-grid-item>
+    </n-grid>
+  </div>
 </template>
 
 <script setup>
@@ -39,4 +41,11 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+// .collect-program {
+//   position: absolute;
+//   height: calc(100% - 72px);
+//   overflow-x: hidden;
+//   overflow-y: scroll;
+// }
+</style>
