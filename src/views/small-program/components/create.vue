@@ -4,7 +4,7 @@
  * @Description: 我创建的小程序
 -->
 <template>
-    <div class="create-program">
+    <div class="create-program"> 
       <!-- 我创建的 -->
       <blank-compo v-if="applicationStore.mineAppList.length === 0">
         <div>还未创建小程序哦，</div>
@@ -116,21 +116,14 @@
   }
 
   onMounted(() => {
-    if (!userStore.token) goAuth();
+    if (!userStore.token) goAuth(); 
     init();
   });
 </script>
 
 <style lang="scss" scoped>
-.create-program {
-  position: absolute;
-  height: calc(100% - 72px);
-  width: calc(100% - 400px);
-  overflow-x: hidden;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none; /* Chrome Safari */
-  }
+.create-program {  
+
   .item {
     background: #ffffff;
     box-shadow: 0px 6px 16px rgba(211, 213, 235, 0.4);

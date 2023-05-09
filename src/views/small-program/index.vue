@@ -20,7 +20,7 @@
               :default-value="applicationStore.mineAppCurrentTab">
         <n-tab-pane v-for="item in tabList" :name="item.order" :tab="item.name"
                     :key="item.name">
-          <component :is="item.compo"></component>
+          <component class="list-box" :is="item.compo"></component>
         </n-tab-pane>
       </n-tabs>
     </div>
@@ -64,6 +64,15 @@
 <style lang="scss" scoped>
   .my-smallmp {
     padding: 42px 52px;
-  }
-
+    .list-box{ 
+      width: calc(100% - 365px);
+      position: absolute;
+      height: calc(100% - 158px); 
+      padding-right: 28px;  
+      padding-bottom: 30px;  
+      box-sizing: border-box;
+      overflow-x: hidden;
+      overflow-y: scroll; 
+    }
+  } 
 </style>

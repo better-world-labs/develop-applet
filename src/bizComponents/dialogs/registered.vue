@@ -74,6 +74,9 @@
       margin-right: 16px;
       z-index: 9;
     }
+    .n-dialog__content {
+      position: static !important;
+    }
     .n-dialog__content.n-dialog__content--last {
       margin-top: 0;
     }
