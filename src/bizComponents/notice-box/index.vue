@@ -152,6 +152,7 @@ const {
 .notice-box {
     width: 344px;
     height: 437px;
+    border-radius: 4px;
     background: #FFFFFF;
 
     .title {
