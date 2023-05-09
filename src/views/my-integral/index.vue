@@ -23,7 +23,7 @@
     </div>
   </div>
 </template>
-<script setup>
+<script setup> 
   import { useInit } from '@/hooks/useInit';
   import { getIntegralDetails, getIntegral } from '@/api/user';
   import { useUserStore } from '@/store/modules/user';
@@ -87,7 +87,7 @@
 }
 
 .integral-wrap {
-  width: 660px;
+  width: 680px;
   margin: 48px 52px;
 } 
 </style>
