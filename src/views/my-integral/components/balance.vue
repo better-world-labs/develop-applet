@@ -40,6 +40,7 @@
 </template>
 
 <script setup>
+  import { useInit } from '@/hooks/useInit';
   import { getIntegral } from '@/api/user';
   import shop from './shop/index.vue';
   import realization from './shop/realization.vue';
@@ -54,7 +55,7 @@
   const total = ref(0);
   const withdrawAmount = ref(0);
   const userStore = useUserStore();
-
+  const { goAuth } = useInit();
   //选购
   const selective = async (data) => {
     activateShop(false);
@@ -176,7 +177,7 @@
 .strategy {
   position: absolute;
   max-height: calc(100% - 450px);
-  max-width: 660px;
+  max-width: 680px;
   overflow-x: hidden;
   overflow-y: scroll;
   border-radius: 12px;

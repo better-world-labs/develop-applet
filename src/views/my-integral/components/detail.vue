@@ -49,7 +49,7 @@ onMounted(() => {
   position: absolute;
   height: calc(100% - 72px - 96px - 48px);
   width: calc(100% - 312px - 104px);
-  max-width: 660px;
+  max-width: 680px;
   overflow-x: hidden;
   overflow-y: scroll;
   box-sizing: border-box;
