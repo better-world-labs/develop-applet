@@ -57,7 +57,7 @@
     position: absolute;
     height: calc(100% - 72px - 96px - 48px);
     width: calc(100% - 312px - 104px);
-    max-width: 660px;
+    max-width: 680px;
     background-color: #fff;
     box-sizing: border-box;
     overflow-x: hidden;
