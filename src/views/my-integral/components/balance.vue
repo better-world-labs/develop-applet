@@ -4,37 +4,39 @@
  * @Description: 积分余额
 -->
 <template>
-  <div class="integral-balance">
-    <div class="total">{{ total }}</div>
-    <div class="btn-wrap">
-      <div class="highlight-btn" @click="activateShop">立即充值</div>
-      <div class="withdraw-btn" @click="activateRealization">
-        立即提现<span class="tips" v-if="withdrawAmount > 0">可提{{ withdrawAmount }}元</span>
+  <div>
+    <div class="integral-balance">
+      <div class="total">{{ total }}</div>
+      <div class="btn-wrap">
+        <div class="highlight-btn" @click="activateShop">立即充值</div>
+        <div class="withdraw-btn" @click="activateRealization">
+          立即提现<span class="tips" v-if="withdrawAmount > 0">可提{{ withdrawAmount }}元</span>
+        </div>
       </div>
     </div>
+    <div class="integral-get">积分获取攻略</div>
+    <div class="strategy">
+      <div class="title">方式1：空投奖励</div>
+      <div class="content">
+        🎉欢迎来到社区！首次加入时，我们会赠送你 30 积分哦，尽情使用并创作属于你自己的小程序吧！🎁
+      </div>
+      <div class="title">方式2：签到奖励</div>
+      <div class="content">
+        🌟我们期待你每天来社区体验和创作小程序！在个人中心，你可以签到获取积分，记得每天来哦！💫
+      </div>
+      <div class="title">方式3：小程序创作</div>
+      <div class="content">
+        🚀社区鼓励你的创意和分享！当你创建的小程序被他人使用或同款使用时，你都会获得分成奖励！💰
+      </div>
+      <div class="title">方式4：积分充值</div>
+      <div class="content">
+        💡为了让社区更稳定地运转，我们提供了积分充值方式。用较低的价格，你就可以获得大量积分！这些资金将用于维护
+        API 接口的稳定和可持续性，为大家提供更优质的服务！🌈
+      </div> 
+    </div>
+    <shop v-if="isShop" @selective="selective"></shop>
+    <realization></realization>
   </div>
-  <div class="integral-get">积分获取攻略</div>
-  <div class="strategy">
-    <div class="title">方式1：空投奖励</div>
-    <div class="content">
-      🎉欢迎来到社区！首次加入时，我们会赠送你 30 积分哦，尽情使用并创作属于你自己的小程序吧！🎁
-    </div>
-    <div class="title">方式2：签到奖励</div>
-    <div class="content">
-      🌟我们期待你每天来社区体验和创作小程序！在个人中心，你可以签到获取积分，记得每天来哦！💫
-    </div>
-    <div class="title">方式3：小程序创作</div>
-    <div class="content">
-      🚀社区鼓励你的创意和分享！当你创建的小程序被他人使用或同款使用时，你都会获得分成奖励！💰
-    </div>
-    <div class="title">方式4：积分充值</div>
-    <div class="content">
-      💡为了让社区更稳定地运转，我们提供了积分充值方式。用较低的价格，你就可以获得大量积分！这些资金将用于维护
-      API 接口的稳定和可持续性，为大家提供更优质的服务！🌈
-    </div>
-  </div>
-  <shop v-if="isShop" @selective="selective"></shop>
-  <realization></realization>
 </template>
 
 <script setup>
@@ -168,11 +170,18 @@
   font-size: 16px;
   margin-top: 40px;
   margin-bottom: 16px;
+  font-weight: 500;
 }
 
 .strategy {
+  position: absolute;
+  max-height: calc(100% - 450px);
+  max-width: 660px;
+  overflow-x: hidden;
+  overflow-y: scroll;
   border-radius: 12px;
-  padding: 20px;
+  padding: 20px; 
+  box-sizing: border-box;
   background: linear-gradient(180deg, rgba(211, 210, 252, 0.7) 0%, rgba(255, 255, 255, 1) 45.04%);
 
   .title {

@@ -257,10 +257,12 @@ async function collectTemplate() {
   await setCollect(uuid.value, !collected.value);
   collected.value = !collected.value;
   if (collected.value) {
+    appInfo.value.collectTimes += 1;
     message.success('已添加到“收藏”');
   } else {
+    appInfo.value.collectTimes -= 1;
     message.warning('已从“收藏”中移除');
-  }
+  } 
 }
 // 获取 应用收藏状态
 async function getCollect() {
