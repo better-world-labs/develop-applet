@@ -125,16 +125,21 @@
     display: flex;
     align-items: center;
     img {
-      width: 26px;
-      height: 26px;
+      width: 36px;
+      height: 36px;
     }
     span {
-      padding-left: 10px;
+      padding-left: 6px;
+      font-size: 16px;
     }
   }
   .register-btn {
-    margin-left: 42px;
-    padding: 2px 12px;
+    margin-left: 42px; 
+    width: 78px;
+    height: 34px;
+    line-height: 36px;
+    padding: 0; 
+    text-align: center;
     border-radius: 8px;
     background: #EEEDFE;
     border: 1px solid #5652FF;

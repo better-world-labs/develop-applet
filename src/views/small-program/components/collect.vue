@@ -42,16 +42,4 @@ onMounted(() => {
   init();
 });
 </script>
-
-<style lang="scss" scoped>
-.collect-program {
-  position: absolute;
-  height: calc(100% - 72px);
-  width: calc(100% - 400px);
-  overflow-x: hidden;
-  overflow-y: scroll;
-  &::-webkit-scrollbar {
-    display: none; /* Chrome Safari */
-  }
-}
-</style>
+ 
