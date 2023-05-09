@@ -82,9 +82,9 @@ export function useInit() {
       });
 
     // 处理初次登录【受邀/自然流量】    
-    if (!res.data.lastLoginAt && !getStorageItem(firstTagKey)) {
+    if (!res.data.lastLoginAt && (getStorageItem(firstTagKey) != res.data?.id)) {
       const dialog = useBizDialog();
-      setStorageItem(firstTagKey, true)
+      setStorageItem(firstTagKey, res.data?.id)
       dialog.open(
         'registered',
         {
