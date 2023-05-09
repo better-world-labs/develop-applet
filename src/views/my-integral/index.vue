@@ -89,5 +89,5 @@
 .integral-wrap {
   width: 660px;
   margin: 48px 52px;
-}
+} 
 </style>

@@ -41,7 +41,7 @@ onMounted(() => {
 </script>
 
 
-<style lang="scss">
+<style lang="scss" scoped>
 .integral-detail {
   background-color: #FFF;
   border-radius: 8px;
