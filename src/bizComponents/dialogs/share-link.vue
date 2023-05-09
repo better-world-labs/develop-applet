@@ -15,6 +15,7 @@
 </template>
 
 <script setup>
+import { sendLog } from '@/utils/sls-logger/sendLog';
 import shareInput from "./components/share-input.vue"
 import $router from '@/router/index';
 
@@ -25,6 +26,13 @@ function onCancel() {
 }
 
 function getMore() {
+    sendLog({
+        action_type: 'Click',
+        page: 'home',
+        block: 'help_share',
+        node: 'more',
+        data: ''
+    })
     onCancel();
     $router.push({ name: 'my-integral' });
 }

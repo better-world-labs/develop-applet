@@ -81,6 +81,13 @@ const registerOn = () => {
   // 邀请好友成功
   $on(SocketTriggerTypeEnum.RETAIN_MESSAGE_CHANGED, () => {
     initDialog();
+    sendLog({
+      action_type: 'Click',
+      page: 'home',
+      block: 'help_share',
+      node: 'share_newer',
+      data: ''
+    })
   });
 }
 // 请求是否有初始化弹出框展示

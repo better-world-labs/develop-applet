@@ -8,7 +8,7 @@
         <input type="text" :disabled="true" :value="url">
         <n-popover placement="top" trigger="hover">
             <template #trigger>
-                <IconFont name="icon-icon-fuzhi" @click="onCopy()" />
+                <IconFont style="padding-left: 16px;" name="icon-icon-fuzhi" @click="onCopy()" />
             </template>
             <div class="large-text">
                 复制
@@ -17,6 +17,7 @@
     </div>
 </template>
 <script setup>
+import { sendLog } from '@/utils/sls-logger/sendLog';
 import useClipboard from 'vue-clipboard3';
 import { useUserStore } from '@/store/modules/user';
 import { useMessage } from 'naive-ui';
@@ -28,13 +29,20 @@ const url = ref("");
 
 async function onCopy(e) {
     const str = `${url.value}?invitedBy=${userStore.userId}`;
-    try {
+    try { 
+        sendLog({
+            action_type: 'Click',
+            page: 'home',
+            block: 'help_share',
+            node: 'copy',
+            data: ''
+        })
         await toClipboard(str, document.getElementById('share-input'));
         message.success('已复制，快去分享给朋友吧~');
     } catch (e) {
         console.error(e);
     }
-}
+} 
 
 onMounted(() => {
     url.value = window.location.href.substr(0, window.location.href.lastIndexOf('/'));
@@ -51,8 +59,7 @@ input {
     background: #F3F3F3;
     border-radius: 4px;
     border: none;
-    margin-bottom: 16px;
-    margin-right: 16px;
+    margin-bottom: 16px; 
     cursor: text;
 }
 

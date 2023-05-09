@@ -6,14 +6,25 @@
 
 <template>
   <div class="home-guide">
-    <div class="icon-wrap" style="margin-bottom: 16px" @click="shareLink">
-      <IconFont name="icon-icon-yemianfenxiang" />
-    </div>
+    <n-popover trigger="hover" placement="left" class="popover" >
+        <template #trigger>
+            <div class="icon-wrap" style="margin-bottom: 16px" @click="shareLink">
+            <IconFont name="icon-icon-yemianfenxiang" />
+          </div>    
+        </template>
+        <div class="large-text">
+            分享
+        </div>
+    </n-popover> 
     <n-popover trigger="click" :show-arrow="false" placement="left-end" @update:show="updatePopover" class="popover-feed">
       <template #trigger>
         <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover" :disabled="popFeedBack">
           <template #trigger>
-            <div class="icon-wrap" style="margin-bottom: 16px">
+            <div class="icon-wrap" style="margin-bottom: 16px" @click="report({
+              type: 'Click',
+              node: 'help_group',
+              block: 'help_group'
+            })">
               <IconFont name="icon-icon-shequnhefankui" class="msg" />
             </div>
           </template>
@@ -48,6 +59,7 @@
 </template>
 
 <script setup>
+import { sendLog } from '@/utils/sls-logger/sendLog';
 import { useBizDialog } from '@/plugins';
 import { ref, reactive } from 'vue';
 import { getSystemConfig } from '@/api/application';
@@ -78,8 +90,25 @@ function autoTrigger() {
   }
   localStorage.setItem('userViewCount', useViewCount + 1);
 }
+
+// 埋点
+function report(params) {
+  sendLog({
+    action_type: params.type,
+    page: 'home',
+    block: params.block,
+    node: params.node || '',
+    data: params.data || ''
+  })
+}
+
 // 分享链接
 const shareLink = () => {
+  report({
+    type: 'Click',
+    node: 'share',
+    block: 'help_share' 
+  })
   dialog.open(
     'share-link',
     {
