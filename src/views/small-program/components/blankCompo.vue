@@ -33,6 +33,9 @@
   :slotted(.link) {
       color: #5652FF;
       text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
   }
 
 }</style>
