@@ -4,12 +4,13 @@
  * @Description: 我创建的小程序
 -->
 <template>
-    <div class="small-program">
+    <div class="create-program">
       <!-- 我创建的 -->
-      <default-composition
-        v-if="applicationStore.mineAppList.length <= 0"
-        content="暂无小程序哦~"
-      ></default-composition>
+      <blank-compo v-if="applicationStore.collectAppList.length === 0">
+        <div>还未创建小程序哦，</div>
+        <div>所创建小程序被使用单次可得5积分哦！</div>
+        <div class="link-wrap">更多玩法等你来解锁～<a class="link" href="/my-integral">点击了解>></a></div>
+      </blank-compo>
       <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
         <n-grid-item v-for="item in applicationStore.mineAppList" :key="item.id">
           <div class="item" @click="detailApp(item)">
@@ -53,6 +54,7 @@
   import { deleteApp } from '@/api/application';
   import { useMessage } from 'naive-ui';
   import { useBizDialog } from '@/plugins';
+  import blankCompo from './blankCompo.vue';
   import useClipboard from 'vue-clipboard3';
   import $router from '@/router/index';
   import dayjs from 'dayjs';
@@ -120,8 +122,15 @@
 </script>
 
 <style lang="scss" scoped>
-.small-program {
-
+.create-program {
+  position: absolute;
+  height: calc(100% - 72px);
+  width: calc(100% - 400px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
   .item {
     background: #ffffff;
     box-shadow: 0px 6px 16px rgba(211, 213, 235, 0.4);

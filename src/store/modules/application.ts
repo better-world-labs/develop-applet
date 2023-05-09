@@ -25,7 +25,8 @@ interface ApplicationState {
   mineAppList: Application.appInfoItf[];
   collectAppList: Application.appInfoItf[];
   editorText: string;
-  finishCount: number;
+  finishCount: number,
+  mineAppCurrentTab: number,
 }
 
 export const useApplicationStore = defineStore('application', {
@@ -41,6 +42,7 @@ export const useApplicationStore = defineStore('application', {
     editorText: '',
     finishCount: 0,
     resultStateList: new Map(),
+    mineAppCurrentTab: 1, // 我的小程序，当前选中的tab
   }),
   getters: {},
   actions: {
@@ -62,6 +64,9 @@ export const useApplicationStore = defineStore('application', {
     setCurrentTab(category: number) {
       this.currentTab = category;
       this.getAppList();
+    },
+    setMineAppCurrentTab(tab: number) {
+      this.mineAppCurrentTab = tab
     },
     // 请求应用信息
     async getApp(uuid: string) {

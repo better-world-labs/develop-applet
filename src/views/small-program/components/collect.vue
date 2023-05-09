@@ -4,18 +4,24 @@
  * @Description: 我收藏的
 -->
 <template>
-  <default-composition v-if="applicationStore.collectAppList.length <= 0" content="暂无小程序哦~"></default-composition>
-  <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
-    <n-grid-item v-for="item in applicationStore.collectAppList" :key="item.id">
-      <card :item="item" @click="toDetail(item)"></card>
-    </n-grid-item>
-  </n-grid>
+  <div class="collect-program">
+    <blank-compo v-if="applicationStore.collectAppList.length === 0">
+      <div>还未收藏哦，快去广场体验小程序吧！</div>
+      <div>更多玩法等你来解锁～ <a href="/my-integral" class="link"> 点击了解>> </a></div>
+    </blank-compo>
+    <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
+      <n-grid-item v-for="item in applicationStore.collectAppList" :key="item.id">
+        <card :item="item" @click="toDetail(item)"></card>
+      </n-grid-item>
+    </n-grid>
+  </div>
 </template>
 
 <script setup>
 import { useApplicationStore } from '@/store/modules/application';
 import { useUserStore } from '@/store/modules/user';
 import { useInit } from '@/hooks/useInit';
+import blankCompo from './blankCompo.vue'
 import $router from '@/router/index';
 
 const applicationStore = useApplicationStore();
@@ -23,8 +29,6 @@ const userStore = useUserStore();
 
 // 去小程序详情
 function toDetail(item) {
-  // 注意，在详情页点返回，需返回到我的收藏
-
   if (!userStore.token) goAuth();
   $router.push({ name: 'view-template-details', query: { uuid: item.uuid } });
 }
@@ -39,4 +43,15 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.collect-program {
+  position: absolute;
+  height: calc(100% - 72px);
+  width: calc(100% - 400px);
+  overflow-x: hidden;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome Safari */
+  }
+}
+</style>

@@ -54,12 +54,6 @@
     // 签到过后面的就不要执行了
     if (userStore.registrationState) return
     userStore.makeRegistration()
-    // 不知道这样写会不会有问题
-    if (userStore.registrationState) {
-      message.success('签到成功，积分已入账，快去使用吧~')
-    } else {
-      message.error('签到失败，请重新尝试')
-    }
   }
   onMounted(() => {
     if (userStore.token) {
