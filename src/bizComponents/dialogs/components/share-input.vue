@@ -28,7 +28,7 @@ const userStore = useUserStore();
 const url = ref("");
 
 async function onCopy(e) {
-    const str = `${url.value}?invitedBy=${userStore.userId}`;
+    const str = url.value.indexOf('?') == -1 ? `${url.value}?invitedBy=${userStore.userId}`: `${url.value}&invitedBy=${userStore.userId}`;
     try { 
         sendLog({
             action_type: 'Click',
@@ -44,8 +44,8 @@ async function onCopy(e) {
     }
 } 
 
-onMounted(() => {
-    url.value = window.location.href.substr(0, window.location.href.lastIndexOf('/'));
+onMounted(() => { 
+    url.value =  window.location.href;
 })
 </script>  
 <style lang="scss" scoped>
