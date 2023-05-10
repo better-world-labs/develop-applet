@@ -7,7 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    BlankCompo: typeof import('./../src/components/blank-compo/blank-compo.vue')['default']
     BuyWx: typeof import('./../src/bizComponents/dialogs/buy-wx.vue')['default']
     Card: typeof import('./../src/bizComponents/card/index.vue')['default']
     DefaultComposition: typeof import('./../src/components/default-composition/default-composition.vue')['default']
