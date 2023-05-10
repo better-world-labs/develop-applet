@@ -61,14 +61,14 @@
                 <div class="icon" @click="shareTemplate">
                   <div>
                     <icon-font-symbol class="hide" name="icon-icon-fenxiang" />
-                    <icon-font class="show" name="icon-icon-fenxiang" />
+                    <icon-font class="show" name="icon-icon-fenxiang-hover" />
                   </div>
                   <div>分享</div>
                 </div>
                 <div class="icon" @click="addComment">
                   <div>
                     <icon-font-symbol class="hide" name="icon-icon-pinglun" />
-                    <icon-font class="show" name="icon-icon-pinglun" />
+                    <icon-font class="show" name="icon-icon-pinglun-hover" />
                   </div>
                   <div v-if="appInfo.commentTimes > 0">{{ appInfo.commentTimes }}</div>
                   <div v-else>评论</div>
@@ -191,7 +191,7 @@ import {
   resultLike,
   getCollectStatus,
   setCollect,
-} from '@/api/application';
+} from '@/api/application'; 
 
 import { useMessage } from 'naive-ui';
 
@@ -361,21 +361,23 @@ function requestSave() {
 }
 
 // 生成结果
-function receiveMessage(data) {
-  if (!('EventSource' in window)) return;
-
+function receiveMessage(data) { 
+  if (!('EventSource' in window)) return; 
   const eventSourceUrl = `/api/apps/${uuid.value}/run`;
-  new fetchEventSource(eventSourceUrl, {
+  const eventData = new fetchEventSource(eventSourceUrl, {
     method: 'POST',
     headers: {
       Accept: 'text/event-stream',
       'Content-type': 'application/json; charset=utf-8',
       'X-CSRF-TOKEN': `${userStore.token}`,
-    },
+    }, 
+    openWhenHidden:true,
     body: JSON.stringify(data),
     async onopen(response) {
       if (response.status == 200) {
         console.log('连接成功!');
+        printContent.value =""; // 结果内容
+        cacheContent.value = "";
         showLoading.value = false;
         printout();
       }
@@ -680,9 +682,13 @@ onUnmounted(() => {
             display: none;
             font-size: 24px;
             line-height: 24px;
-          }
-          .iconfont.icon-icon-shoucang,.iconfont.icon-icon-fenxiang,.iconfont.icon-icon-pinglun,.iconfont.icon-icon-dianzan{
+          } 
+          .iconfont.icon-icon-shoucang,.iconfont.icon-icon-fenxiang-hover,.iconfont.icon-icon-pinglun-hover,.iconfont.icon-icon-dianzan{
             color: #525af6;
+          }
+
+          .iconfont.icon-icon-fenxiang-hover{
+            margin-left: 1px;
           }
 
           .iconfont-svg {
