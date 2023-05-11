@@ -25,10 +25,16 @@
       <div class="diy-body">
         <div class="index">选项{{ index + 1 }}</div>
         <div class="diy-group">
-          <n-input v-model:value="value.label" :placeholder="`选项${index + 1}-名称`" type="text" />
+          <n-input
+            v-model:value="value.label"
+            :placeholder="`${index == 0 ? '出发地' : '选项' + (index + 1)}`"
+            type="text"
+          />
           <n-input
             v-model:value="value.properties.placeholder"
-            :placeholder="`选项${index + 1}-说明（非必填）`"
+            :placeholder="`${
+              index == 0 ? '请输入出发地' : '选项' + (index + 1) + '-说明（非必填）'
+            }`"
             type="text"
           />
         </div>

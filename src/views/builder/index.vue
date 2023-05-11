@@ -66,14 +66,14 @@
   const refCoding = ref('');
   const state = reactive({
     uuid: uuid(),
-    name: '未命名模板',
+    name: '',
     category: undefined,
     description: '',
     duplicateFrom: '',
     form: [
       {
         id: '321',
-        label: '选项名1',
+        label: '',
         type: 'text',
         properties: {
           placeholder: '',

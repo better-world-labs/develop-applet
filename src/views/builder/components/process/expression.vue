@@ -34,7 +34,8 @@
     mounted() {
       const self = this;
       quill2 = new Quill('#editor2', {
-        placeholder: '输入提示词',
+        placeholder:
+          '由{出发地}出发，目的地是{目的地}，总行程天数为{天数}天，预算为{预算}元，在保证游玩体验良好的前提下，综合考虑交通、住宿等因素，尽可能详细地为我安排每半日的行程。',
         modules: {
           mention: {
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,

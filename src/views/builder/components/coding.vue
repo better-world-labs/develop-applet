@@ -34,11 +34,16 @@
               require-mark-placement="right-hanging"
             >
               <n-form-item path="age" label="小程序标题">
-                <n-input v-model:value="props.appData.name" @keydown.enter.prevent />
+                <n-input
+                  v-model:value="props.appData.name"
+                  placeholder="旅行攻略"
+                  @keydown.enter.prevent
+                />
               </n-form-item>
               <n-form-item path="age" label="小程序描述">
                 <n-input
                   v-model:value="props.appData.description"
+                  placeholder="输入出发地、目的地、天数和预算，给你生成一个诚意和细节都满满的行程安排"
                   type="textarea"
                   :autosize="{
                     minRows: 3,
@@ -63,7 +68,7 @@
   import DiyForm from './process/diy-form.vue';
   import Flow from './process/flow.vue';
   import { putApp } from '@/api/application';
-  import { useBizDialog } from '@/plugins'; 
+  import { useBizDialog } from '@/plugins';
   const props = defineProps(['appData']);
   const emit = defineEmits(['back']);
   const message = useMessage();
@@ -128,7 +133,7 @@
         return message.warning('小程序编辑中使用了不存在的选项,请检查修改');
       }
     } catch (error) {}
-     
+
     try {
       await putApp(props.appData.uuid, props.appData);
       if (isBack) {
@@ -139,7 +144,7 @@
       dialog.open('insufficient', {
         class: 'insufficient-dialog',
         title: '积分不够啦',
-      });    
+      });
     }
   };
   defineExpose({ publishApp });
