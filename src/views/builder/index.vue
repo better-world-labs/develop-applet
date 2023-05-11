@@ -83,7 +83,7 @@
     flow: [
       {
         id: uuid(),
-        type: '',
+        type: '', // 模型类别
         outputVisible: true,
         prompt: [
           {

@@ -189,9 +189,22 @@
       displayMention() {
         this.$nextTick(() => {
           const dom = document.querySelector('#editor2 .ql-editor p');
-
-          console.log(dom.style, 'displayMention', dom.style.counterReset, this.prompt);
+          // console.warn(dom.style, 'displayMention', dom.style.counterReset, this.prompt);
           const { prompt } = this;
+          try {
+            // 解决只有一个换行的问题, 不展示placeholderd
+            if (
+              prompt.length == 1 &&
+              prompt[0].type === 'text' &&
+              prompt[0].properties.value === '\n'
+            )
+              return false;
+            // 解决每次展开 多个换行问题
+            const lastItem = prompt[prompt.length - 1];
+            if (lastItem.type === 'text' && lastItem.properties.value.endsWith('\n\n')) {
+              lastItem.properties.value = lastItem.properties.value.slice(0, -1);
+            }
+          } catch (error) {}
           const html = prompt.reduce((p, c) => {
             const s =
               c.type === 'tag'
