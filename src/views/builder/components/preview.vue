@@ -200,6 +200,12 @@
           --n-border-hover: 1px solid #5652ff !important;
           --n-border-focus: 1px solid #5652ff !important;
           --n-loading-color: #5652ff !important;
+          .n-input__border {
+            border: 0 none !important;
+          }
+          .n-input__state-border {
+            box-shadow: none;
+          }
         }
       }
     }
