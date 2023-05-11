@@ -325,7 +325,8 @@
         padding: 48px 52px;
         box-sizing: border-box;
         min-width: 712px;
-        width: 712px;
+        max-width: 1600px;
+        flex: 1;
         background: #f3f3f3;
         height: inherit;
         overflow-y: auto;
