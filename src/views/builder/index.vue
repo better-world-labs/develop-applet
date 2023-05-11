@@ -300,9 +300,10 @@
       flex: 1;
       display: flex;
       height: calc(100vh - 72px);
+      min-width: 600px;
 
       //小屏适应
-      @media screen and (max-width: 1636px) {
+      @media screen and (max-width: 1499px) {
         flex-direction: column;
         overflow-y: auto;
 
@@ -324,7 +325,7 @@
       .coding {
         padding: 48px 52px;
         box-sizing: border-box;
-        min-width: 712px;
+        // min-width: 712px;
         max-width: 1600px;
         flex: 1;
         background: #f3f3f3;
