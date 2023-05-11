@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <p>模版分类</p>
+    <p>分类</p>
     <div class="tags">
       <n-radio-group v-model:value="props.appData.category">
         <n-radio :value="tag.id" v-for="tag in categoryList" :key="tag.id">

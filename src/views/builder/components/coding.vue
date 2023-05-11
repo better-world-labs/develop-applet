@@ -35,6 +35,10 @@
             >
               <n-form-item path="age" label="小程序标题">
                 <n-input
+                  type="textarea"
+                  :autosize="{
+                    minRows: 1,
+                  }"
                   v-model:value="props.appData.name"
                   placeholder="旅行攻略"
                   @keydown.enter.prevent
@@ -47,7 +51,6 @@
                   type="textarea"
                   :autosize="{
                     minRows: 3,
-                    maxRows: 5,
                   }"
                 />
               </n-form-item>

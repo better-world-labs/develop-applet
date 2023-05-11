@@ -21,6 +21,10 @@
         <n-form ref="formRef" :model="props.appData.form">
           <n-form-item :label="item.label" v-for="(item, i) in props.appData.form" :key="item.id">
             <n-input
+              type="textarea"
+              :autosize="{
+                minRows: 1,
+              }"
               v-model:value="state.form[i]"
               :placeholder="item.properties.placeholder"
               @keydown.enter.prevent
@@ -183,15 +187,15 @@
         }
 
         .n-input {
-          height: 78px !important;
-          line-height: 78px !important;
+          min-height: 78px !important;
+          line-height: 31px !important;
           background: #ffffff;
           box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
           border-radius: 12px !important;
           margin-bottom: 8px !important;
           font-size: 22px !important;
           color: #202226 !important;
-          padding: 0 24px !important;
+          padding: 16px 24px !important;
           --n-caret-color: #5652ff !important;
           --n-border-hover: 1px solid #5652ff !important;
           --n-border-focus: 1px solid #5652ff !important;
