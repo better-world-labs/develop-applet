@@ -26,13 +26,18 @@
       </n-radio-group>
     </div>
     <div class="submit" @click="$emit('submit')">
-      <IconFont name="icon-icon-fabu"></IconFont>发布
+      <IconFont name="icon-icon-fabu"></IconFont>发布<span v-if="isCopy" class="integral-num"
+        >（20积分）</span
+      >
     </div>
   </div>
 </template>
 <script setup>
-  const props = defineProps(['appData']);
+  import { useRoute } from 'vue-router';
   import { getCategories } from '@/api/application';
+  const props = defineProps(['appData']);
+  const route = useRoute();
+  const isCopy = route.query.type == 'new';
   const categoryList = ref([]);
   onMounted(async () => {
     const tabsData = await getCategories();
@@ -64,7 +69,7 @@
       font-weight: 500;
       font-size: 16px;
       color: #fff;
-      width: 132px;
+      width: 152px;
       text-align: center;
       i {
         font-size: 18px;
@@ -77,6 +82,9 @@
       cursor: pointer;
       &:hover {
         background: linear-gradient(109.65deg, #a994ff 30.38%, #657eff 98.29%);
+      }
+      .integral-num {
+        font-size: 12px;
       }
     }
 

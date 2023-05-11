@@ -4,52 +4,46 @@
  * @Description: 
 -->
 <template>
-  <div class="result-box">
-    <div class="title">结果：</div>
-    <div class="result-content">
-      <div class="loading" v-if="state.showLoading">
-        结果生成中，AI正在奋笔疾书中.......
-        <n-progress
-          type="line"
-          :percentage="60"
-          color="#5652FF"
-          rail-color="#DCDBFF"
-          :show-indicator="false"
-          processing
-        />
-      </div>
-      <div v-else>
-        <p>{{ state.printContent }} <span v-if="state.cacheContent.length != state.printContent.length"></span></p>
-      </div>
+    <div class="result-box">
+        <div class="title">结果：</div>
+        <div class="result-content">
+            <div class="loading" v-if="state.showLoading">
+                结果生成中，AI正在奋笔疾书中.......
+                <n-progress type="line" :percentage="60" color="#5652FF" rail-color="#DCDBFF" :show-indicator="false"
+                    processing />
+            </div>
+            <div v-else>
+                <p>{{ state.printContent }} <span v-if="state.cacheContent.length != state.printContent.length"></span></p>
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script setup>
-import { ref } from "vue";  
+import { ref } from "vue";
 import { useRouter } from 'vue-router';
 import { useUserStore } from "@/store/modules/user";
-import { fetchEventSource } from '@microsoft/fetch-event-source';  
-const props = defineProps(['form','uuid'])
+import { fetchEventSource } from '@microsoft/fetch-event-source';
+const props = defineProps(['form', 'uuid'])
 const state = reactive({
-    showLoading:false,
-    printContent:'',
-    cacheContent:''
+    showLoading: false,
+    printContent: '',
+    cacheContent: ''
 })
 const userStore = useUserStore()
 // 打印内容
 function printout() {
     const timer = ref(0);
     timer.value = setInterval(() => {
-        if ( state.cacheContent.length >  state.printContent.length) {
-             state.printContent =  state.cacheContent.slice(0,  state.printContent.length + 1); 
+        if (state.cacheContent.length > state.printContent.length) {
+            state.printContent = state.cacheContent.slice(0, state.printContent.length + 1);
         } else {
             clearInterval(timer.value);
         }
     }, 80)
 }
 
-const requestSave =() =>{
+const requestSave = () => {
     let values = [...props.form];
 
     state.cacheContent = "";
@@ -60,15 +54,15 @@ const requestSave =() =>{
         "open": true
     };
 
-    receiveMessage(data)  
+    receiveMessage(data)
 }
 
 // 生成结果 
 function receiveMessage(data) {
-    if (!('EventSource' in window)) return;  
+    if (!('EventSource' in window)) return;
 
     const eventSourceUrl = `/api/apps/${props.uuid}/run`;
-    new fetchEventSource(eventSourceUrl, {  
+    new fetchEventSource(eventSourceUrl, {
         method: "POST",
         headers: {
             "Accept": "text/event-stream",
@@ -78,90 +72,92 @@ function receiveMessage(data) {
         body: JSON.stringify(data),
         async onopen(response) {
             if (response.status == 200) {
-                state.showLoading = false; 
+                state.showLoading = false;
                 printout();
-            } 
+            }
         },
-        onmessage(msg) { 
-            if(msg.event == 'done') return;
-            console.log("收到服务器发来的数据!",msg, JSON.parse(msg.data)) 
+        onmessage(msg) {
+            if (msg.event == 'done') return;
+            // console.log("收到服务器发来的数据!",msg, JSON.parse(msg.data)) 
             const text = JSON.parse(msg.data).content
             text && text.length && (state.cacheContent += text);
         },
-        onclose() { 
-               console.log("连接关闭!")
+        onclose() {
+            console.log("连接关闭!")
         },
         onerror(err) {
-             console.log("连接失败!",err)
+            console.log("连接失败!", err)
         }
 
-    }); 
+    });
 }
 
-defineExpose({requestSave})
+defineExpose({ requestSave })
 
 </script>
 
 <style scoped lang="scss">
 .result-box {
-            padding: 24px 24px 48px 24px;
+    padding: 24px 24px 48px 24px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #202226;
+    background: #FFFFFF;
+    border-radius: 16px;
+    margin-top: 16px;
+
+    .title {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 20px;
+        color: #181D24;
+        margin-bottom: 20px;
+
+    }
+
+    .result-content {
+        padding: 16px;
+        background: linear-gradient(132.93deg, #F1F7FF 5.27%, #FAF8FF 59.89%, #EEEDFE 98.91%);
+        border-radius: 16px;
+        min-height: 128px;
+
+        .loading {
+            padding: 40px 64px;
             font-weight: 400;
-            font-size: 16px;
-            line-height: 24px;
-            color: #202226;
-            background: #FFFFFF;
-            border-radius: 16px;
-            margin-top: 16px;
+            font-size: 14px;
+            line-height: 16px;
+            color: #5B5D62;
 
-            .title {
-                font-weight: 500;
-                font-size: 20px;
-                line-height: 20px;
-                color: #181D24;
-                margin-bottom: 20px;
-
-            }
-
-            .result-content {
-                padding: 16px;
-                background: linear-gradient(132.93deg, #F1F7FF 5.27%, #FAF8FF 59.89%, #EEEDFE 98.91%);
-                border-radius: 16px;
-                min-height: 128px;
-
-                .loading {
-                    padding: 40px 64px;
-                    font-weight: 400;
-                    font-size: 14px;
-                    line-height: 16px;
-                    color: #5B5D62;
-
-                    .n-progress {
-                        margin-top: 8px;
-                    }
-                }
-                p{
-                    min-height: 80px;
-                    span{
-                        display: inline-block;
-                        width: 16px;
-                        height: 4px;
-                        background: #5F58FF;
-                    } 
-                }
-
-            }
-
-            .option {
-                height: 20px;
-                margin-top: 12px;
-                text-align: right;
-
-                .iconfont {
-                    font-size: 24px;
-                    margin-right: 8px;
-                    cursor: pointer;
-                }
-
+            .n-progress {
+                margin-top: 8px;
             }
         }
+
+        p {
+            min-height: 80px;
+
+            span {
+                display: inline-block;
+                width: 16px;
+                height: 4px;
+                background: #5F58FF;
+            }
+        }
+
+    }
+
+    .option {
+        height: 20px;
+        margin-top: 12px;
+        text-align: right;
+
+        .iconfont {
+            font-size: 24px;
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+    }
+}
 </style>

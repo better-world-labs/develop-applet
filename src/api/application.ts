@@ -84,6 +84,14 @@ export function getMineApp() {
   });
 }
 
+// 读取我收藏的小程序
+export function getCollectApp() {
+  return http.request({
+    method: 'get',
+    url: `/api/apps/collected`,
+  });
+}
+
 // 删除小程序
 export function deleteApp(uuid: string) {
   return http.request({
@@ -156,5 +164,41 @@ export function getSystemConfig(params: { key: string }): Promise<Result<AppSyst
     method: 'get',
     url: '/api/system-configs',
     params,
+  });
+}
+// 获取商品列表
+export function getGoods(): Promise<ResultList<Application.goodsItf>> {
+  return http.request({
+    method: 'get',
+    url: '/api/points-goods',
+  });
+}
+//读取充值订单信息
+export function getOrderStateById(orderId: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/points-orders/${orderId}/state`,
+  });
+}
+// 积分充值下单
+export function putOrder(goodsId: string) {
+  return http.request({
+    method: 'post',
+    url: `/api/points-goods/${goodsId}/points-orders`,
+  });
+}
+// 收藏/取消收藏
+export function setCollect(uuid: string, collected: Boolean) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${uuid}/collect`,
+    data: { collected },
+  });
+}
+export function getCollectStatus(uuids: string[]) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/is-collected`,
+    data: { uuids: uuids },
   });
 }

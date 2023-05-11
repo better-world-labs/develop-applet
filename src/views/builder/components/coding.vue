@@ -63,9 +63,11 @@
   import DiyForm from './process/diy-form.vue';
   import Flow from './process/flow.vue';
   import { putApp } from '@/api/application';
+  import { useBizDialog } from '@/plugins'; 
   const props = defineProps(['appData']);
   const emit = defineEmits(['back']);
   const message = useMessage();
+  const dialog = useBizDialog();
   const cardList = reactive([
     {
       label: '小程序详情',
@@ -126,11 +128,18 @@
         return message.warning('小程序编辑中使用了不存在的选项,请检查修改');
       }
     } catch (error) {}
-    await putApp(props.appData.uuid, props.appData);
-
-    if (isBack) {
-      message.success('发布成功');
-      emit('back');
+     
+    try {
+      await putApp(props.appData.uuid, props.appData);
+      if (isBack) {
+        message.success('发布成功');
+        emit('back');
+      }
+    } catch (error) {
+      dialog.open('insufficient', {
+        class: 'insufficient-dialog',
+        title: '积分不够啦',
+      });    
     }
   };
   defineExpose({ publishApp });

@@ -27,6 +27,14 @@ export function getUserInfo() {
     url: '/api/users/me/info',
   });
 }
+// 批量读取用户信息
+export function getUserByIds(data: { ids: number[] }) {
+  return http.request({
+    method: 'post',
+    url: '/api/users/list',
+    data
+  });
+}
 // 请求积分
 export function getIntegral() {
   return http.request({
@@ -39,6 +47,13 @@ export function getIntegralDetails() {
   return http.request({
     method: 'get',
     url: '/api/points',
+  });
+}
+// 请求积分充值明细
+export function getIntegralOrders() {
+  return http.request({
+    method: 'get',
+    url: '/api/points-orders ',
   });
 }
 
@@ -55,5 +70,21 @@ export function accomplishGuide() {
   return http.request({
     method: 'post',
     url: `/api/users/me/guidance/completion`,
+  });
+}
+
+// 用户签到状态
+export function getSignInState() {
+  return http.request({
+    method: 'get',
+    url: `/api/sign-in`,
+  });
+}
+
+// 用户发起签到
+export function makeRegistration() {
+  return http.request({
+    method: 'post',
+    url: `/api/sign-in`,
   });
 }

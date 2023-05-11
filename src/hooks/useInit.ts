@@ -8,6 +8,7 @@ import { useUserStore } from '@/store/modules/user';
 import { getUserInfo } from '@/api/user';
 import $router from '@/router/index';
 import { getUrlParams } from "@/utils/index"
+import { useBizDialog } from '@/plugins';
 import { sendLog } from '@/utils/sls-logger/sendLog';
 import {
   setStorageItem,
@@ -17,6 +18,7 @@ import {
   setSessionItem,
 } from '@/utils';
 
+const firstTagKey = 'firstLogin';
 const localToken = ref<string>('');
 const user = ref<User.UserInfoItf | undefined>(undefined);
 
@@ -73,11 +75,27 @@ export function useInit() {
     // 处理分享链接
     const urlParams = getUrlParams();
     const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
-    if (invitedBy)
+    if (invitedBy || urlParams['source'])
       sendLog({
         action_type: 'Invited_Enter',
         data: { ...urlParams },
       });
+
+    // 处理初次登录【受邀/自然流量】    
+    if (!res.data.lastLoginAt && (getStorageItem(firstTagKey) != res.data?.id)) {
+      const dialog = useBizDialog();
+      setStorageItem(firstTagKey, res.data?.id)
+      dialog.open(
+        'registered',
+        {
+          class: 'registered-dialog',
+          title: '',
+        },
+        {
+          user: res.data,
+        }
+      );
+    }
   };
 
   // 初始化, (刷新|初次进入)
@@ -91,13 +109,14 @@ export function useInit() {
     } else if (path === '/view-template-details') {
       goAuth()
     } else if (path !== '/home') {
-      $router.replace({ name: 'home' });
+      const urlParams = getUrlParams();
+      $router.replace({ name: 'home', query: urlParams });
     }
 
     // 处理分享链接
     const urlParams = getUrlParams();
     const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
-    if (invitedBy)
+    if (invitedBy || urlParams['source'])
       sendLog({
         action_type: 'Invited_Enter',
         data: { ...urlParams },
@@ -141,7 +160,7 @@ export function useInit() {
     const invitedBy = Number(urlParams['invitedBy']); // 发起分享的邀请人id
     if (invitedBy) goAuth();
 
-    await $router.replace({ name: 'home' });
+    await $router.replace({ name: 'home', query: urlParams });
   };
 
   // 登录 设置数据缓存 和 路由更新

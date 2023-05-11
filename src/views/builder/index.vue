@@ -9,19 +9,31 @@
     <header>
       <div class="back" @click="$router.go(-1)"><IconFont name="icon-icon-fanhui" />返回</div>
       <div class="right-btn">
-        <n-popover trigger="click" :show-arrow="false" placement="bottom-end"
-                    style="border-radius: 12px; box-shadow: 2px 2px 19px -5px rgba(127, 124, 132, 0.3);
-                          padding: 16px 16px 10px 16px;">
+        <notice-box></notice-box>
+        <n-popover
+          trigger="click"
+          :show-arrow="false"
+          placement="bottom-end"
+          style="
+            border-radius: 12px;
+            box-shadow: 2px 2px 19px -5px rgba(127, 124, 132, 0.3);
+            padding: 16px 16px 10px 16px;
+          "
+        >
           <template #trigger>
             <div class="solution" @click="solutionBtn">如何创建小程序？</div>
           </template>
-          <video style="width: 432px;border-radius: 8px;border: 1px solid rgba(0, 0, 0, 0.1);" 
-                  autoplay loop :src="staticConfig.editVideo1">
-          </video>
+          <video
+            style="width: 432px; border-radius: 8px; border: 1px solid rgba(0, 0, 0, 0.1)"
+            autoplay
+            loop
+            :src="staticConfig.editVideo1"
+          ></video>
         </n-popover>
         <div class="submit" @click="submit">
           <IconFont name="icon-icon-fabu"></IconFont>
-          发布
+          <span>发布</span>
+          <span v-if="isCopy" class="integral-num">（20积分）</span>
         </div>
       </div>
     </header>
@@ -129,51 +141,49 @@
     }
     state.createdBy = { ...userStore.info, name: userStore.info.nickname };
     // 用户引导状态
-    userStore.getGuideState()
+    userStore.getGuideState();
     // 新用户显示引导
-    showEditGuide()
+    showEditGuide();
   });
 
   const submit = async (isBack = true) => {
     await refCoding.value.publishApp(isBack);
   };
   const back = () => {
-    router.replace(
-      {
-          name: 'view-template-details',
-          query: { type: 'save', uuid: state.uuid },
-      }
-    )
+    router.replace({
+      name: 'view-template-details',
+      query: { type: 'save', uuid: state.uuid },
+    });
   };
   function solutionBtn() {
     report({
       type: 'Click',
       block: 'callout_creat2',
-      data: '0'
-    })
-  };
+      data: '0',
+    });
+  }
   function showEditGuide() {
     // 没完成就显示
     if (!userStore.completeGuide) {
       report({
         type: 'Show',
         block: 'callout_creat1',
-        data: '0'
-      })
+        data: '0',
+      });
       dialog.open(
         'guide-edit-popup',
         {
-          class:"guide-edit-popup",
+          class: 'guide-edit-popup',
           title: '如何创建小程序',
           positiveText: '知道了',
-          onAfterLeave: () =>{
-            userStore.setGuideState()
-          }
+          onAfterLeave: () => {
+            userStore.setGuideState();
+          },
         },
         {
-          guideVideo: staticConfig.editVideo1
+          guideVideo: staticConfig.editVideo1,
         }
-      )
+      );
     }
   }
 
@@ -184,8 +194,8 @@
       page: 'detail',
       block: params.block,
       node: params.node || '',
-      data: params.data || ''
-    })
+      data: params.data || '',
+    });
   }
 </script>
 <style lang="scss" scoped>
@@ -245,14 +255,17 @@
       .right-btn {
         display: flex;
         align-items: center;
+
         .solution {
-          color: #5B5D62;
+          color: #5b5d62;
           margin-right: 24px;
           cursor: pointer;
+
           &:hover {
             color: #5652ff;
           }
         }
+
         .submit {
           height: 40px;
           line-height: 40px;
@@ -260,18 +273,24 @@
           font-weight: 500;
           font-size: 16px;
           color: #5652ff;
-          width: 132px;
+          width: 152px;
           text-align: center;
+
           i {
             font-size: 18px;
             margin-right: 9px;
           }
+
           border: 1px solid #5652ff;
           background: #fff;
           float: right;
           cursor: pointer;
+
           &:hover {
             background: #eeedfe;
+          }
+          .integral-num {
+            font-size: 12px;
           }
         }
       }
@@ -281,6 +300,7 @@
       flex: 1;
       display: flex;
       height: calc(100vh - 72px);
+
       //小屏适应
       @media screen and (max-width: 1636px) {
         flex-direction: column;
@@ -291,9 +311,11 @@
           height: auto !important;
           overflow-y: visible !important;
         }
+
         :deep(.preview-box) {
           overflow-y: visible !important;
         }
+
         :deep(.bg) {
           height: auto !important;
         }

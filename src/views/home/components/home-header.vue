@@ -6,13 +6,15 @@
 <template>
     <div class="home-header">
         <div class="tabs">
-            <n-tabs animated v-if="applicationStore.tabs.length" @update:value="handleUpdateValue">
+            <n-tabs animated v-if="applicationStore.tabs.length" @update:value="handleUpdateValue"
+                :default-value="applicationStore.currentTab">
                 <n-tab-pane v-for="tab in applicationStore.tabs" :key="tab.category" :name="`${tab.category}`"
                     :tab="`${tab.label}`">
                 </n-tab-pane>
             </n-tabs>
         </div>
-        <n-button type="info" @click="createTemplate" style="overflow: hidden;">
+        <notice-box></notice-box>
+        <n-button class="highlight-btn" size="large" @click="createTemplate" style="overflow: hidden;">
             <IconFont name="icon-icon-chuangjianwodexiaochengxu" />
             创建我的小程序
             <div ref="animationRef"></div>
@@ -44,21 +46,21 @@ const handleUpdateValue = (category) => {
 
 let animationTime = ''
 watch(() => applicationStore.finishCount, (newVal, oldVal) => {
-  if (newVal !== oldVal) {
-    // 动画开始
-    animationRef.value.classList.add('guide-animation')
-    // 5s 后结束
-    animationTime = setTimeout(()=>{
-      animationRef.value.classList.remove('guide-animation')
-    },5500)
-  }
+    if (newVal !== oldVal) {
+        // 动画开始
+        animationRef.value.classList.add('guide-animation')
+        // 5s 后结束
+        animationTime = setTimeout(() => {
+            animationRef.value.classList.remove('guide-animation')
+        }, 5500)
+    }
 })
 
 onMounted(() => {
     applicationStore.getTabs();
 })
 onUnmounted(() => {
-  clearTimeout(animationTime)
+    clearTimeout(animationTime)
 })
 
 
@@ -87,16 +89,23 @@ onUnmounted(() => {
         background: #5652FF !important;
     }
 }
+
 .home-header .guide-animation {
     position: relative;
-    transform:rotate(30deg);
+    transform: rotate(30deg);
     height: 100px;
-    background: rgba(255,255,255,.5);
-    box-shadow: 0 0 16px 16px rgba(255,255,255, 0.6);
-    animation: move 1.4s infinite ;
-    @keyframes move{
-        from{left:-150px;}
-        to{left:40px;}
+    background: rgba(255, 255, 255, .5);
+    box-shadow: 0 0 16px 16px rgba(255, 255, 255, 0.6);
+    animation: move 1.4s infinite;
+
+    @keyframes move {
+        from {
+            left: -150px;
+        }
+
+        to {
+            left: 40px;
+        }
     }
 }
 </style> 

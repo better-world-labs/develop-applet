@@ -5,7 +5,7 @@
 -->
  
 <template>
-  <div class="dialog-content"> 
+  <div class="dialog-content">
     <div class="content">
       使用该小程序，需要给原创作者
       <img :src="user.avatar"> <span class="active">
@@ -25,36 +25,7 @@ const props = defineProps({
 function onCancel() {
   emit('close');
 } 
-</script>
-
-<style lang="scss">
-.n-dialog.n-modal {
-  background: white !important;
-
-  .n-dialog__action {
-    text-align: right;
-    margin-top: 48px;
-
-    .n-button {
-      min-width: 68px;
-      height: 36px;
-      border-radius: 2px;
-      font-weight: 500;
-      font-size: 14px;
-      line-height: 20px;
-      background: #E3E4E5;
-      margin-left: 12px;
-      color: #202226;
-
-    }
-
-    .n-button.n-button--primary-type {
-      background: #5652FF !important;
-      color: #FFFFFF;
-    }
-  }
-}
-</style>
+</script> 
 
 <style lang="scss" scoped>
 .dialog-content {
@@ -91,6 +62,7 @@ function onCancel() {
   color: #BEBFC0;
   margin-top: -40px;
   cursor: pointer;
+
   &:hover {
     color: #5B5D62;
   }

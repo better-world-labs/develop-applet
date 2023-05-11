@@ -10,7 +10,8 @@
         <IconFont name="icon-icon-fanhui" />
         返回
       </div>
-      <n-button type="info" @click="createApp">
+      <notice-box></notice-box>
+      <n-button class="highlight-btn" size="large" @click="createApp">
         <IconFont name="icon-icon-yijiantongkuan" />
         一键同款小程序
       </n-button>
@@ -47,22 +48,35 @@
           <div class="footer">
             <n-grid x-gap="12" :cols="2">
               <n-gi>
+                <div class="icon" @click="collectTemplate">
+                  <div>
+                    <icon-font-symbol :class="{'hide': !collected }" :name="collected ? 'icon-icon-yishoucang' : 'icon-icon-shoucang'" />
+                    <icon-font :class="{ 'show': !collected }" name="icon-icon-shoucang" />
+                  </div>
+                  <div :class="{ 'active-text': collected }">
+                    <div  v-if="appInfo.collectTimes > 0">{{ appInfo.collectTimes }}</div>
+                    <div v-else>收藏</div>
+                  </div> 
+                </div>
                 <div class="icon" @click="shareTemplate">
                   <div>
-                    <icon-font-symbol name="icon-icon-fenxiang" />
+                    <icon-font-symbol class="hide" name="icon-icon-fenxiang" />
+                    <icon-font class="show" name="icon-icon-fenxiang-hover" />
                   </div>
                   <div>分享</div>
                 </div>
                 <div class="icon" @click="addComment">
                   <div>
-                    <icon-font-symbol name="icon-icon-pinglun" />
+                    <icon-font-symbol class="hide" name="icon-icon-pinglun" />
+                    <icon-font class="show" name="icon-icon-pinglun-hover" />
                   </div>
                   <div v-if="appInfo.commentTimes > 0">{{ appInfo.commentTimes }}</div>
                   <div v-else>评论</div>
                 </div>
                 <div class="icon" @click="giveALike">
                   <div>
-                    <icon-font-symbol :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
+                    <icon-font-symbol :class="{ 'hide': !isLike }" :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
+                    <icon-font :class="{ 'show': !isLike }" name="icon-icon-dianzan" />
                   </div>
                   <div :class="{ 'active-text': isLike }">
                     <div v-if="appInfo.likeTimes > 0">{{ appInfo.likeTimes }}</div>
@@ -71,10 +85,8 @@
                 </div>
               </n-gi>
               <n-gi>
-                <n-checkbox v-model:checked="openData">
-                  公开我的结果（用于社区构建）
-                </n-checkbox>
-                <n-button type="info" @click="handleValidateButtonClick" :disabled="showLoading">
+                <n-checkbox v-model:checked="openData"> 公开我的结果（用于社区构建） </n-checkbox>
+                <n-button class="gradient-btn" @click="handleValidateButtonClick" :disabled="showLoading">
                   <span>立即生成</span>
                   <em> {{ appInfo.price }}积分</em>
                 </n-button>
@@ -172,14 +184,19 @@ import { getAppInfo } from '@/api/application';
 import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
-import { readStateApp, giveLikeApp, addEvents, resultLike } from '@/api/application';
+import {
+  readStateApp,
+  giveLikeApp,
+  addEvents,
+  resultLike,
+  getCollectStatus,
+  setCollect,
+} from '@/api/application'; 
 
-import useClipboard from 'vue-clipboard3';
 import { useMessage } from 'naive-ui';
 
 const dialog = useBizDialog();
 
-const { toClipboard } = useClipboard();
 const message = useMessage();
 
 const userStore = useUserStore();
@@ -193,6 +210,7 @@ const templateDetailRef = ref();
 const isLike = ref(false);
 
 const formRef = ref(null);
+const collected = ref(false); // 收藏状态
 const model = ref({});
 const rules = {};
 
@@ -240,6 +258,23 @@ function resultOption(item = {}, val) {
     }
   });
 }
+// 设置收藏
+async function collectTemplate() {
+  await setCollect(uuid.value, !collected.value);
+  collected.value = !collected.value;
+  if (collected.value) {
+    appInfo.value.collectTimes += 1;
+    message.success('已添加到“收藏”');
+  } else {
+    appInfo.value.collectTimes -= 1;
+    message.warning('已从“收藏”中移除');
+  } 
+}
+// 获取 应用收藏状态
+async function getCollect() {
+  const { data } = await getCollectStatus([uuid.value]);
+  collected.value = data[uuid.value];
+}
 
 // 打印内容
 function printout() {
@@ -260,6 +295,7 @@ function init() {
       },
     ];
   });
+  getCollect(); // 请求收藏状态
 }
 
 function handleValidateButtonClick(e) {
@@ -273,22 +309,28 @@ function handleValidateButtonClick(e) {
   });
 }
 
+const toastPoint = () => {
+  dialog.close();
+  nextTick(() => {
+    setTimeout(() => {
+      dialog.open('insufficient', {
+        class: 'insufficient-dialog',
+        title: '积分不够啦',
+      });
+    }, 300);
+  });
+};
+
 function requestSave() {
   // 积分不够消费，直接提示
   if (appInfo.value.price > userStore.total) {
-    $dialog.info({
-      showIcon: false,
-      title: '提示信息',
-      content: '积分不足！',
-      positiveText: '确认',
-    });
-    return;
+    return toastPoint();
   }
 
   dialog.open(
     'run-template',
     {
-      class: "prompt-dialog",
+      class: 'prompt-dialog',
       title: '提示信息',
       positiveText: '确认',
       negativeText: '取消',
@@ -319,29 +361,32 @@ function requestSave() {
 }
 
 // 生成结果
-function receiveMessage(data) {
-  if (!('EventSource' in window)) return;
-
+function receiveMessage(data) { 
+  if (!('EventSource' in window)) return; 
   const eventSourceUrl = `/api/apps/${uuid.value}/run`;
-  new fetchEventSource(eventSourceUrl, {
+  const eventData = new fetchEventSource(eventSourceUrl, {
     method: 'POST',
     headers: {
       Accept: 'text/event-stream',
       'Content-type': 'application/json; charset=utf-8',
       'X-CSRF-TOKEN': `${userStore.token}`,
-    },
+    }, 
+    openWhenHidden:true,
     body: JSON.stringify(data),
     async onopen(response) {
       if (response.status == 200) {
         console.log('连接成功!');
+        printContent.value =""; // 结果内容
+        cacheContent.value = "";
         showLoading.value = false;
         printout();
       }
     },
     onmessage(msg) {
-      // console.log("收到服务器发来的数据!", msg)
+      // console.log('收到服务器发来的数据!', msg);
       if (msg.event == 'done' && JSON.parse(msg.data).code == 500000) {
-        message.warning('内容生成失败，积分不足！');
+        // message.warning('内容生成失败，积分不足！'); // TODO 积分不足弹窗
+        toastPoint();
         showResult.value = false;
         return;
       } else if (msg.event == 'done' && JSON.parse(msg.data).code == 400) {
@@ -367,12 +412,10 @@ function receiveMessage(data) {
 
 // 分享模版
 async function shareTemplate() {
-  try {
-    await toClipboard(window.location.href + `&invitedBy=${userStore.userId}`);
-    message.success('已复制，快去分享给朋友吧~');
-  } catch (e) {
-    console.error(e);
-  }
+  dialog.open('share-link', {
+    class: 'center-dialog',
+    title: '分享',
+  });
 }
 
 // 请求结果列表
@@ -382,12 +425,7 @@ function getAppResultList() {
 
 // 返回上一页
 function backPrePage() {
-  // 在非当前页，后退一步
-  if (window.location.href.indexOf('/view-template-details') == -1) {
-    $router.go(-1);
-  } else {
-    $router.push({ name: 'home' }); // 跳转到首页
-  }
+  $router.go(-1);
 }
 
 // 创建同款app
@@ -520,9 +558,9 @@ onUnmounted(() => {
     }
   }
 
-  .n-button .n-button__content {
-    display: block;
-  }
+  // .n-button .n-button__content {
+  //   display: block;
+  // }
 }
 </style>
 <style scoped lang="scss">
@@ -617,8 +655,7 @@ onUnmounted(() => {
 
       .footer {
         font-weight: 400;
-        font-size: 14px;
-        line-height: 54px;
+        font-size: 14px; 
         color: #5b5d62;
         margin-top: 20px;
 
@@ -635,10 +672,23 @@ onUnmounted(() => {
             width: 32px;
             height: 32px;
             border-radius: 32px;
-            background: #f7f7fb;
+            background: #ebebff;
             margin-right: 4px;
             padding: 4px;
             box-sizing: border-box;
+            text-align: center;
+          }
+          .iconfont {
+            display: none;
+            font-size: 24px;
+            line-height: 24px;
+          } 
+          .iconfont.icon-icon-shoucang,.iconfont.icon-icon-fenxiang-hover,.iconfont.icon-icon-pinglun-hover,.iconfont.icon-icon-dianzan{
+            color: #525af6;
+          }
+
+          .iconfont.icon-icon-fenxiang-hover{
+            margin-left: 1px;
           }
 
           .iconfont-svg {
@@ -651,6 +701,13 @@ onUnmounted(() => {
 
           &:hover {
             color: #202226;
+            // .iconfont-svg.icon-icon-dianzan,.iconfont-svg.icon-icon-pinglun,.iconfont-svg.icon-icon-fenxiang,.iconfont-svg.icon-icon-shoucang{
+            .iconfont-svg.hide{
+              display: none;  
+            }
+            .iconfont.show{
+              display: block;
+            }
           }
 
           .active-text {
@@ -658,45 +715,45 @@ onUnmounted(() => {
           }
         }
 
-        .n-button {
-          background: linear-gradient(101.85deg, #957bfb 0%, #5652ff 98.88%);
-          border: none;
-          border-radius: 8px;
-          height: 54px;
-          box-sizing: border-box;
-          font-weight: 500 !important;
-          font-size: 16px;
-          line-height: 16px !important;
-          color: #ffffff;
-          float: right;
-          --n-border: none !important;
-          --n-border-hover: none !important;
-          --n-border-focus: none !important;
+        // .n-button {
+        //   background: linear-gradient(101.85deg, #957bfb 0%, #5652ff 98.88%);
+        //   border: none;
+        //   border-radius: 8px;
+        //   height: 54px;
+        //   box-sizing: border-box;
+        //   font-weight: 500 !important;
+        //   font-size: 16px;
+        //   line-height: 16px !important;
+        //   color: #ffffff;
+        //   float: right;
+        //   --n-border: none !important;
+        //   --n-border-hover: none !important;
+        //   --n-border-focus: none !important;
 
-          &:hover {
-            background: linear-gradient(109.65deg, #a994ff 30.38%, #657eff 98.29%);
-          }
+        //   &:hover {
+        //     background: linear-gradient(109.65deg, #a994ff 30.38%, #657eff 98.29%);
+        //   }
 
-          span {
-            display: flex !important;
-            flex-direction: column;
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 16px;
-            color: #ffffff;
-          }
+        //   span {
+        //     display: flex !important;
+        //     flex-direction: column;
+        //     font-weight: 500;
+        //     font-size: 16px;
+        //     line-height: 16px;
+        //     color: #ffffff;
+        //   }
 
-          em {
-            display: flex !important;
-            flex-direction: column;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 12px;
-            margin-top: 6px;
-            color: #ffffff;
-            font-style: normal;
-          }
-        }
+        //   em {
+        //     display: flex !important;
+        //     flex-direction: column;
+        //     font-weight: 400;
+        //     font-size: 12px;
+        //     line-height: 12px;
+        //     margin-top: 6px;
+        //     color: #ffffff;
+        //     font-style: normal;
+        //   }
+        // }
       }
     }
 
