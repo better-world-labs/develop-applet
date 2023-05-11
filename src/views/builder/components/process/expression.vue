@@ -272,12 +272,12 @@
 
   .mention {
     // margin-right: 2px;
-    margin: 0 1px;
+    margin: 0 1px 0 4px;
 
     background-color: transparent;
     color: #202226;
     height: 24px;
-    cursor: pointer;
+    cursor: default;
     // padding-left: 10px;
     > span {
       user-select: none;
