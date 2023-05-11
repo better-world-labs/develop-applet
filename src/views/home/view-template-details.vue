@@ -17,7 +17,7 @@
       </n-button>
       <user-integral></user-integral>
     </div>
-    <div class="template-details-content" ref="templateDetailRef">
+    <div class="template-details-content" ref="templateDetailRef"> 
       <div>
         <div class="template">
           <n-grid x-gap="12" :cols="2">
@@ -103,8 +103,8 @@
                 processing />
             </div>
             <div v-else>
-              <p style="white-space: pre-line">
-                {{ printContent }} <span v-if="cacheContent.length != printContent.length"></span>
+              <p  style="white-space: pre-line">
+               <div id="printContent" :class="{'print-stop': !receiveMessaging && cacheContent.length == printContent.length }"></div> 
               </p>
               <div class="option">
                 <icon-font-symbol @click="resultOption(currentResult, 1)" :name="applicationStore.resultStateList?.get(currentResult.id) == 1
@@ -184,6 +184,8 @@ import { getAppInfo } from '@/api/application';
 import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
+import { marked } from 'marked';
+
 import {
   readStateApp,
   giveLikeApp,
@@ -215,7 +217,8 @@ const model = ref({});
 const rules = {};
 
 const showResult = ref(false);
-const showLoading = ref(false);
+const showLoading = ref(false); 
+const receiveMessaging = ref(false); 
 const printContent = ref(''); // 结果内容
 const cacheContent = ref('');
 const timer = ref(0);
@@ -274,14 +277,16 @@ async function collectTemplate() {
 async function getCollect() {
   const { data } = await getCollectStatus([uuid.value]);
   collected.value = data[uuid.value];
-}
+} 
 
 // 打印内容
-function printout() {
+function printout() { 
+  const cursorSpan = `｜` 
   timer.value = setInterval(() => {
     if (cacheContent.value.length > printContent.value.length) {
-      printContent.value = cacheContent.value.slice(0, printContent.value.length + 2);
-    }
+      printContent.value = cacheContent.value.slice(0, printContent.value.length + 2);   
+       document.getElementById('printContent').innerHTML = marked.parse(printContent.value);
+    } 
   }, 80);
 }
 
@@ -379,6 +384,7 @@ function receiveMessage(data) {
         printContent.value =""; // 结果内容
         cacheContent.value = "";
         showLoading.value = false;
+        receiveMessaging.value = true; // 正在接收消息
         printout();
       }
     },
@@ -401,6 +407,8 @@ function receiveMessage(data) {
     },
     onclose() {
       console.log('连接关闭!');
+      receiveMessaging.value = false; // 停止接收消息
+      // document.getElementById('printContent').innerHTML = marked.parse(`${printContent.value}`);
       // 刷新结果列表
       getAppResultList();
     },
@@ -451,7 +459,8 @@ function addComment() {
   templateDetailRef.value.scrollTop = window.screen.height / 2;
 }
 
-onMounted(() => {
+onMounted(() => { 
+
   const router = useRouter();
   uuid.value = router.currentRoute.value.query.uuid;
   addEvents({
@@ -564,6 +573,35 @@ onUnmounted(() => {
 }
 </style>
 <style scoped lang="scss">
+// 光标动画
+@keyframes blink {
+  0%, 100% {
+  opacity: 0;
+  }
+  50% {
+  opacity: 1;
+  }
+}
+ 
+// 设置光标
+#printContent>:not(ol):not(ul):not(pre):last-child:after,
+#printContent>ol:last-child li:last-child:after,
+#printContent>pre:last-child code:after,
+#printContent>ul:last-child li:last-child:after {
+    -webkit-animation: blink 1s steps(1,start) infinite;
+    animation: blink 1s steps(1,start) infinite; 
+    content: "▋";
+    margin-left: .25rem;
+    vertical-align: baseline;
+    color: #5652ff; 
+} 
+// 隐藏光标
+#printContent.print-stop>:not(ol):not(ul):not(pre):last-child:after,
+#printContent.print-stop>ol:last-child li:last-child:after,
+#printContent.print-stop>pre:last-child code:after,
+#printContent.print-stop>ul:last-child li:last-child:after {
+     display: none;
+} 
 .home-header {
   .back-btn {
     flex: 1;
@@ -792,16 +830,9 @@ onUnmounted(() => {
             margin-top: 8px;
           }
         }
-
+        
         p {
-          min-height: 80px;
-
-          span {
-            display: inline-block;
-            width: 16px;
-            height: 4px;
-            background: #5f58ff;
-          }
+          min-height: 80px; 
         }
       }
 
