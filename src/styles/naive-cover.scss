@@ -131,13 +131,19 @@
 .n-spin {
   color: #e3e4e5;
 }
+
+
 // 按钮基础修改
 .n-button {
-  border-radius: 8px;
-  --n-border: none !important;
+  border-radius: 8px; 
   --n-border-hover: none !important;
   --n-border-focus: none !important;
 }
+
+.n-button-group .n-button {
+  border-radius: 34px; 
+}
+
 .n-button--large-type {
   height: 40px !important;
   line-height: 40px;
