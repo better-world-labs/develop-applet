@@ -119,7 +119,7 @@
     // "createdAt": "2023-03-22T07:08:02.851Z",
     // "updatedAt": "2023-03-22T07:08:02.851Z",
     status: 1, // 状态 (0.未发布 1.已发布)
-    formItemsStatus: 'normal',
+    formItemsStatus: 'normal', //blur  normal 全局表单校验状态
   });
 
   onMounted(async () => {

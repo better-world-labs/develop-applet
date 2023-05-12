@@ -134,6 +134,8 @@
     current.value = i;
   };
   const publishApp = async (isBack = true) => {
+    props.appData.formItemsStatus = 'blur';
+    appNameStatus.value = 'blur';
     if (current.value === 2) current.value = 0;
     // return console.log(props.appData);
     if (cardList.some((a) => a.status != true)) {
