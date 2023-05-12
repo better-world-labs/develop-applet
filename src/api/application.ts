@@ -107,12 +107,38 @@ export function readStateApp(uuid: string) {
     url: `/api/apps/${uuid}/like`,
   });
 }
+// 批量读取我对应用的点赞状态
+export function readMyLikeAppState(ids: string[]) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/like`,
+    params: { appIds: ids },
+  });
+}
 // 点赞小程序
 export function giveLikeApp(uuid: string, data: { like: boolean }) {
   return http.request({
     method: 'post',
     url: `/api/apps/${uuid}/like`,
     data: data,
+  });
+}
+
+// 批量读取我对应用的热点状态
+export function readMyHotAppState(ids: string[]) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/get-recommends`,
+    params: { appIds: ids },
+  });
+}
+
+// 点赞热度/推荐 小程序
+export function giveHotApp(uuid: string, state: boolean) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${uuid}/recommend`,
+    data: { recommend: state },
   });
 }
 

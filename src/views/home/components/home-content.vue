@@ -8,7 +8,7 @@
     <default-composition v-if="applicationStore.appList.length <= 0" content="暂无小程序哦~"></default-composition>
     <n-grid :x-gap="12" cols="1 860:2 1200:3 1666:4 2000:4">
       <n-grid-item v-for="item in applicationStore.appList" :key="item.id">
-        <card :item="item" @click="useTemplate(item)"></card>
+        <card :item="item" @useTemplate="useTemplate"></card>
       </n-grid-item>
     </n-grid>
   </div>
@@ -41,110 +41,6 @@ function useTemplate(item) {
   :deep(.n-grid) {
     @media screen and (max-width: 896px) {
       min-width: 480px;
-    }
-  }
-
-  .template-item {
-    background: #ffffff;
-    box-shadow: 0px 6px 16px rgba(211, 213, 235, 0.4);
-    border-radius: 16px;
-    margin-bottom: 24px;
-    padding: 24px;
-    margin-right: 20px;
-    cursor: pointer;
-
-    .desc-text {
-      font-weight: 500;
-      font-size: 28px;
-      line-height: 40px;
-      color: #181d24;
-      height: 80px;
-      margin-bottom: 16px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-    }
-
-    .result-text {
-      height: 170px;
-      background-color: #f3f3f7;
-      border-radius: 10px;
-      padding: 20px 12px;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 18px;
-      color: rgba(91, 93, 98, 1);
-      background-image: url(../../../assets/bg.png);
-      background-repeat: no-repeat;
-      white-space: pre-line;
-
-      >div {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 4;
-        -webkit-box-orient: vertical;
-      }
-
-      >div:first-child {
-        margin-bottom: 24px;
-      }
-
-      span {
-        color: rgba(145, 142, 255, 1);
-      }
-    }
-
-    .footer-options {
-      margin-top: 16px;
-      display: flex;
-      flex-direction: row;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 32px;
-      color: #5b5d62;
-
-      .left {
-        display: flex;
-        flex-direction: row;
-
-        img {
-          width: 32px;
-          height: 32px;
-          border-radius: 32px;
-          margin-right: 8px;
-        }
-      }
-
-      .right {
-        margin-left: auto;
-        font-size: 16px;
-        color: #5b5d62;
-        display: flex;
-        flex-direction: row;
-        padding-top: 5px;
-
-        .text-box {
-          display: flex;
-          flex-direction: row;
-
-          .iconfont-svg {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            flex-direction: row;
-            margin-right: 6px;
-          }
-
-          div {
-            display: flex;
-            flex-direction: row;
-            line-height: 25px;
-          }
-        }
-      }
     }
   }
 }

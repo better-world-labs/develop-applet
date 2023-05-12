@@ -50,13 +50,14 @@
               <n-gi>
                 <div class="icon" @click="collectTemplate">
                   <div>
-                    <icon-font-symbol :class="{'hide': !collected }" :name="collected ? 'icon-icon-yishoucang' : 'icon-icon-shoucang'" />
+                    <icon-font-symbol :class="{ 'hide': !collected }"
+                      :name="collected ? 'icon-icon-yishoucang' : 'icon-icon-shoucang'" />
                     <icon-font :class="{ 'show': !collected }" name="icon-icon-shoucang" />
                   </div>
                   <div :class="{ 'active-text': collected }">
-                    <div  v-if="appInfo.collectTimes > 0">{{ appInfo.collectTimes }}</div>
+                    <div v-if="appInfo.collectTimes > 0">{{ appInfo.collectTimes }}</div>
                     <div v-else>收藏</div>
-                  </div> 
+                  </div>
                 </div>
                 <div class="icon" @click="shareTemplate">
                   <div>
@@ -75,7 +76,8 @@
                 </div>
                 <div class="icon" @click="giveALike">
                   <div>
-                    <icon-font-symbol :class="{ 'hide': !isLike }" :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
+                    <icon-font-symbol :class="{ 'hide': !isLike }"
+                      :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
                     <icon-font :class="{ 'show': !isLike }" name="icon-icon-dianzan" />
                   </div>
                   <div :class="{ 'active-text': isLike }">
@@ -191,7 +193,7 @@ import {
   resultLike,
   getCollectStatus,
   setCollect,
-} from '@/api/application'; 
+} from '@/api/application';
 
 import { useMessage } from 'naive-ui';
 
@@ -268,7 +270,7 @@ async function collectTemplate() {
   } else {
     appInfo.value.collectTimes -= 1;
     message.warning('已从“收藏”中移除');
-  } 
+  }
 }
 // 获取 应用收藏状态
 async function getCollect() {
@@ -361,8 +363,8 @@ function requestSave() {
 }
 
 // 生成结果
-function receiveMessage(data) { 
-  if (!('EventSource' in window)) return; 
+function receiveMessage(data) {
+  if (!('EventSource' in window)) return;
   const eventSourceUrl = `/api/apps/${uuid.value}/run`;
   const eventData = new fetchEventSource(eventSourceUrl, {
     method: 'POST',
@@ -370,13 +372,13 @@ function receiveMessage(data) {
       Accept: 'text/event-stream',
       'Content-type': 'application/json; charset=utf-8',
       'X-CSRF-TOKEN': `${userStore.token}`,
-    }, 
-    openWhenHidden:true,
+    },
+    openWhenHidden: true,
     body: JSON.stringify(data),
     async onopen(response) {
       if (response.status == 200) {
         console.log('连接成功!');
-        printContent.value =""; // 结果内容
+        printContent.value = ""; // 结果内容
         cacheContent.value = "";
         showLoading.value = false;
         printout();
@@ -655,7 +657,7 @@ onUnmounted(() => {
 
       .footer {
         font-weight: 400;
-        font-size: 14px; 
+        font-size: 14px;
         color: #5b5d62;
         margin-top: 20px;
 
@@ -678,16 +680,21 @@ onUnmounted(() => {
             box-sizing: border-box;
             text-align: center;
           }
+
           .iconfont {
             display: none;
             font-size: 24px;
             line-height: 24px;
-          } 
-          .iconfont.icon-icon-shoucang,.iconfont.icon-icon-fenxiang-hover,.iconfont.icon-icon-pinglun-hover,.iconfont.icon-icon-dianzan{
+          }
+
+          .iconfont.icon-icon-shoucang,
+          .iconfont.icon-icon-fenxiang-hover,
+          .iconfont.icon-icon-pinglun-hover,
+          .iconfont.icon-icon-dianzan {
             color: #525af6;
           }
 
-          .iconfont.icon-icon-fenxiang-hover{
+          .iconfont.icon-icon-fenxiang-hover {
             margin-left: 1px;
           }
 
@@ -701,11 +708,13 @@ onUnmounted(() => {
 
           &:hover {
             color: #202226;
+
             // .iconfont-svg.icon-icon-dianzan,.iconfont-svg.icon-icon-pinglun,.iconfont-svg.icon-icon-fenxiang,.iconfont-svg.icon-icon-shoucang{
-            .iconfont-svg.hide{
-              display: none;  
+            .iconfont-svg.hide {
+              display: none;
             }
-            .iconfont.show{
+
+            .iconfont.show {
               display: block;
             }
           }
@@ -923,5 +932,4 @@ onUnmounted(() => {
       }
     }
   }
-}
-</style>
+}</style>

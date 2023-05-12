@@ -139,15 +139,15 @@
 
     .title {
       font-weight: 500;
-      font-size: 28px;
-      line-height: 40px; 
-      height: 80px;
+      font-size: 24px;
+      line-height: 34px; 
+      height: 34px;
       color: #181d24;
       margin-bottom: 10px;
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
     }
 
