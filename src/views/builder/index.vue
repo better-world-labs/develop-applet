@@ -74,6 +74,7 @@
       {
         id: '321',
         label: '',
+        status: 'normal', //blur
         type: 'text',
         properties: {
           placeholder: '',

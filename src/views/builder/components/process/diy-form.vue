@@ -8,12 +8,18 @@
   <n-dynamic-input v-model:value="props.appData.form" :on-create="onCreate" :min="1">
     <template #create-button-default> 随便搞点啥 </template>
     <template #default="{ value, index }">
-      <div class="diy-body">
+      <div class="diy-body" :class="{ require: value.label == '' && value.status == 'blur' }">
         <div class="index">选项{{ index + 1 }}</div>
         <div class="diy-group">
           <n-input
+            :status="value.label == '' && value.status == 'blur' ? 'error' : ''"
             v-model:value="value.label"
-            :placeholder="`${index == 0 ? '出发地' : '选项' + (index + 1)}`"
+            @blur="value.status = 'blur'"
+            :placeholder="
+              value.label == '' && value.status == 'blur'
+                ? '请填写标题'
+                : `${index == 0 ? '出发地' : '选项' + (index + 1)}`
+            "
             type="text"
           />
           <n-input
@@ -41,6 +47,7 @@
     return {
       id: uuid(),
       label: '',
+      status: 'normal', //blur
       type: 'text',
       properties: {
         placeholder: '',
@@ -69,6 +76,24 @@
     justify-content: space-between;
     width: 100%;
     margin-bottom: 12px;
+
+    &.require {
+      .index {
+        &::after {
+          content: '*';
+          color: #dc504c;
+          font-weight: 400;
+          font-size: 16px;
+        }
+      }
+      :deep(.n-input) {
+        &:first-child {
+          .n-input__placeholder {
+            color: #dc504c;
+          }
+        }
+      }
+    }
 
     .index {
       font-weight: 500;
@@ -100,6 +125,12 @@
         --n-border-focus: 1px solid transparent !important;
         --n-loading-color: transparent !important;
         --n-box-shadow-focus: 0 0 0 2px transparent !important;
+        .n-input__border {
+          border: 0 none !important;
+        }
+        .n-input__state-border {
+          box-shadow: none;
+        }
       }
     }
   }
