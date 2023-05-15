@@ -4,9 +4,14 @@
  * @Description: 表达式处理
 -->
 <template>
-  <div class="expression-box">
+  <div
+    class="expression-box"
+    :class="{
+      firstBlur: notInput && firstBlur,
+    }"
+  >
     <div class="expression">
-      <div id="editor2" @input="someEvent"></div>
+      <div id="editorRef" @input="someEvent" @blur="someBlur"></div>
     </div>
     <div class="line"></div>
     <div class="tags">
@@ -26,16 +31,21 @@
 <script>
   import { v4 as uuid } from 'uuid';
   var quill2 = null;
+  var def_placeholder =
+    '由{出发地}出发，目的地是{目的地}，总行程天数为{天数}天，预算为{预算}元，在保证游玩体验良好的前提下，综合考虑交通、住宿等因素，尽可能详细地为我安排每半日的行程。';
+  var require_placeholder = '请填写内容';
   export default {
     data() {
-      return {};
+      return {
+        firstBlur: false,
+        editorDom: null,
+      };
     },
-    props: ['tagList', 'prompt'],
+    props: ['tagList', 'prompt', 'formItemsStatus'],
     mounted() {
       const self = this;
-      quill2 = new Quill('#editor2', {
-        placeholder:
-          '由{出发地}出发，目的地是{目的地}，总行程天数为{天数}天，预算为{预算}元，在保证游玩体验良好的前提下，综合考虑交通、住宿等因素，尽可能详细地为我安排每半日的行程。',
+      quill2 = new Quill('#editorRef', {
+        placeholder: def_placeholder,
         modules: {
           mention: {
             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
@@ -118,11 +128,20 @@
       //   window.addEventListener('click', function (event) {
       //     self.getData();
       //   });
+      this.editorDom = document.querySelector('#editorRef .ql-editor');
+      this.editorDom.onblur = this.someBlur;
+      this.setPlaceholder();
     },
     computed: {
       options() {
         const self = this;
         return {};
+      },
+      notInput() {
+        const { prompt } = this;
+        return (
+          prompt.length < 2 && prompt[0].type === 'text' && prompt[0]?.properties?.value === '\n'
+        );
       },
     },
     async beforeUnmount() {
@@ -130,13 +149,37 @@
     },
     unmounted() {
       //   quill2 = null;
-      //   quill2 = new Quill('#editor2');
+      //   quill2 = new Quill('#editorRef');
+    },
+    watch: {
+      notInput() {
+        this.setPlaceholder();
+      },
+      firstBlur() {
+        this.setPlaceholder();
+      },
+      formItemsStatus: {
+        handler: 'updateRequire',
+        immediate: true,
+      },
+      deep: true,
     },
     methods: {
+      updateRequire(val) {
+        val == 'blur' && (this.firstBlur = true);
+      },
+      setPlaceholder() {
+        this.editorDom.dataset.placeholder =
+          this.notInput && this.firstBlur ? require_placeholder : def_placeholder;
+      },
       showMenu() {
         quill2.getModule('mention').openMenu('@');
       },
       someEvent() {
+        this.getData();
+      },
+      someBlur() {
+        this.firstBlur = true;
         this.getData();
       },
 
@@ -188,7 +231,7 @@
       },
       displayMention() {
         this.$nextTick(() => {
-          const dom = document.querySelector('#editor2 .ql-editor p');
+          const dom = document.querySelector('#editorRef .ql-editor p');
           // console.warn(dom.style, 'displayMention', dom.style.counterReset, this.prompt);
           const { prompt } = this;
           try {
@@ -224,7 +267,7 @@
           if (dom) dom.innerHTML = html || '';
           else {
             setTimeout(() => {
-              const dom = document.querySelector('#editor2 .ql-editor p');
+              const dom = document.querySelector('#editorRef .ql-editor p');
               dom.innerHTML = html || '';
             }, 800);
           }
@@ -236,10 +279,34 @@
 
 <style lang="scss">
   .expression-box {
-    // .ql-editor {
-    //   border: 1px solid #a3a3a3;
-    //   border-radius: 6px;
-    // }
+    color: #5b5d62;
+    background: #f3f3f7;
+    border-radius: 16px;
+    &.firstBlur {
+      border: 1px solid #dc504c;
+
+      .ql-editor.ql-blank::before {
+        color: #dc504c;
+      }
+    }
+    .ql-editor {
+      min-height: 94px;
+      // border: 1px solid #a3a3a3;
+      // border-radius: 6px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: #202226;
+    }
+    .ql-editor.ql-blank::before {
+      color: #abacae;
+      content: attr(data-placeholder);
+      font-style: normal;
+      left: 15px;
+      pointer-events: none;
+      position: absolute;
+      right: 15px;
+    }
 
     .ql-editor-disabled {
       border-radius: 6px;
@@ -247,32 +314,6 @@
       transition-duration: 0.5s;
     }
 
-    // .ql-editor:focus {
-    //   border: 1px solid #025fae;
-    // }
-    //   .expression {
-    //     // display: flex;
-    //     min-height: 42px;
-    //     word-break: break-all;
-    //     flex-wrap: wrap;
-    //     align-items: flex-start;
-    //     gap: 4px;
-    //     width: 100%;
-    //     box-sizing: border-box;
-    //     padding: 8px 16px;
-    //     font-size: 14px;
-    //     line-height: 24px;
-    //     margin: 0;
-    //     overflow: auto;
-    //     cursor: text;
-
-    //     span {
-    //       &.tag {
-    //         color: #5652ff;
-    //         border: 1px solid #5652ff;
-    //       }
-    //     }
-    //   }
     .expression {
       overflow-y: auto;
       max-height: 380px;
