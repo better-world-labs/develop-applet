@@ -29,6 +29,7 @@ textarea,
   display: flex;
   flex-direction: row;
   background: white;
+  box-shadow: 0px 12px 12px -12px rgba(211, 213, 235, 0.4);
   .highlight-btn {
     margin-top: 6px;
   }
@@ -172,9 +173,8 @@ i.default {
       cursor: pointer;
       font-weight: 400;
       padding-bottom: 2px;
-      &:hover{
-        text-decoration:underline;
-
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
