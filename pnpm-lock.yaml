@@ -23,7 +23,7 @@ specifiers:
   esno: ^0.16.3
   event-source-polyfill: ^1.0.31
   husky: ^8.0.1
-  light-websocket-client-ts: ^0.0.18
+  light-websocket-client-ts: ^0.0.22
   lint-staged: ^13.0.3
   lodash-es: ^4.17.21
   mockjs: ^1.1.0
@@ -60,7 +60,7 @@ dependencies:
   core-js: 3.30.2
   dayjs: 1.11.7
   event-source-polyfill: 1.0.31
-  light-websocket-client-ts: 0.0.18
+  light-websocket-client-ts: 0.0.22
   lodash-es: 4.17.21
   naive-ui: 2.34.3_vue@3.2.47
   pinia: 2.0.35_7h6e7cvei2rsgyre2mq4fyhehq
@@ -2639,8 +2639,8 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /light-websocket-client-ts/0.0.18:
-    resolution: {integrity: sha512-OT7sq/MieK9x4oEiqvQyYRf5rhUKf9aTnpLDC+9K40uDZr9KmNh3R3Q3m8p5yAtzPoAAo8n+gFmdtoGuMm/6Hg==}
+  /light-websocket-client-ts/0.0.22:
+    resolution: {integrity: sha512-1vVwslXe2dNFpsysguY1t4K3n84Dj3PhgMO7ETtNYoxPjcTCl9EGxW3eQmPDAvvL9Vwu5UyCxUeRm87Q3dZDHA==}
     dependencies:
       buffer: 6.0.3
     dev: false

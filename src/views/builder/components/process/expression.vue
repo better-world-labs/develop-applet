@@ -139,9 +139,12 @@
       },
       notInput() {
         const { prompt } = this;
-        return (
-          prompt.length < 2 && prompt[0].type === 'text' && prompt[0]?.properties?.value === '\n'
-        );
+        if (prompt.length < 2 && prompt[0].type === 'text') {
+          const text = prompt[0]?.properties?.value.trim();
+          return text.replaceAll('\n', '') == '';
+        } else {
+          return false;
+        }
       },
     },
     async beforeUnmount() {
@@ -169,8 +172,10 @@
         val == 'blur' && (this.firstBlur = true);
       },
       setPlaceholder() {
-        this.editorDom.dataset.placeholder =
-          this.notInput && this.firstBlur ? require_placeholder : def_placeholder;
+        if (this.editorDom) {
+          this.editorDom.dataset.placeholder =
+            this.notInput && this.firstBlur ? require_placeholder : def_placeholder;
+        }
       },
       showMenu() {
         quill2.getModule('mention').openMenu('@');

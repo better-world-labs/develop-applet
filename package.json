@@ -18,7 +18,7 @@
     "core-js": "^3.6.5",
     "dayjs": "^1.11.5",
     "event-source-polyfill": "^1.0.31",
-    "light-websocket-client-ts": "^0.0.18",
+    "light-websocket-client-ts": "^0.0.22",
     "lodash-es": "^4.17.21",
     "naive-ui": "^2.33.3",
     "pinia": "^2.0.22",
