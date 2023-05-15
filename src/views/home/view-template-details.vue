@@ -120,6 +120,11 @@
               </div>
             </div>
           </div>
+          <div class="advertising-space" v-if="advertisingList.length">
+            <div v-for="item in advertisingList">
+              <advertising-space-img :item="item"></advertising-space-img>
+            </div>
+          </div>
         </div>
 
         <div class="public-results" v-if="applicationStore.resultList.length > 0">
@@ -182,7 +187,7 @@ import { useApplicationStore } from '@/store/modules/application';
 import { useUserStore } from '@/store/modules/user';
 import $router from '@/router/index';
 import { useRouter } from 'vue-router';
-import { getAppInfo } from '@/api/application';
+import { getAppInfo, getSystemConfig } from '@/api/application';
 import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
@@ -216,12 +221,20 @@ const collected = ref(false); // 收藏状态
 const model = ref({});
 const rules = {};
 
-const showResult = ref(false);
+const showResult = ref(true); // 展示结果
 const showLoading = ref(false);
 const printContent = ref(''); // 结果内容
 const cacheContent = ref('');
 const timer = ref(0);
 const currentResult = ref({ hateTimes: 0, likeTimes: 0 });
+
+const advertisingList = ref([]); // 广告列表
+
+// 请求广告列表
+const getAdvertising = async () => {
+  const { data } = await getSystemConfig({ key: 'MINI_APP_AD_PLACEHOLDER_OUTPUT' });
+  advertisingList.value = data.value;
+}
 
 // 结果列表操作
 function resultOption(item = {}, val) {
@@ -460,7 +473,7 @@ onMounted(() => {
     type: 'app-viewed',
     args: [uuid.value],
   });
-
+  getAdvertising();// 请求广告位数据
   getAppResultList();
   // 获取应用信息
   getAppInfo(uuid.value).then(({ data }) => {
@@ -814,6 +827,19 @@ onUnmounted(() => {
         }
       }
 
+      // 广告位
+      .advertising-space {
+        padding: 16px 0px 0px 0px;
+        display: flex;
+        flex-direction: row;
+
+        >div {
+          margin-right: 16px;
+          height: 80px;
+          overflow: hidden;
+        }
+      }
+
       .option {
         height: 20px;
         margin-top: 12px;
@@ -932,4 +958,5 @@ onUnmounted(() => {
       }
     }
   }
-}</style>
+}
+</style>

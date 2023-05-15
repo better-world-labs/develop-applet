@@ -112,7 +112,7 @@ export function readMyLikeAppState(ids: string[]) {
   return http.request({
     method: 'post',
     url: `/api/apps/like`,
-    params: { appIds: ids },
+    data: { appIds: ids },
   });
 }
 // 点赞小程序
@@ -129,7 +129,7 @@ export function readMyHotAppState(ids: string[]) {
   return http.request({
     method: 'post',
     url: `/api/apps/get-recommends`,
-    params: { appIds: ids },
+    data: { appIds: ids },
   });
 }
 

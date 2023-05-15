@@ -6,19 +6,7 @@
 <template>
     <div v-if="show" class="home-marketing">
         <div v-for="item in list">
-            <n-popover v-if="item.target.type == 'image'" trigger="click" :show-arrow="false" class="popover-feed">
-                <template #trigger>
-                    <div>
-                        <img :src="item.thumbnail" alt="" />
-                    </div>
-                </template>
-                <div class="code-feed" style="height:112px">
-                    <img :src="item.target.url" alt="" />
-                </div>
-            </n-popover>
-            <div v-else>
-                <img :src="item.thumbnail" alt="" @click="openUrl(item.target.url)" />
-            </div>
+            <advertising-space-img :item="item"></advertising-space-img>
         </div>
     </div>
 </template>
@@ -33,10 +21,6 @@ const list = ref([])
 const init = async () => {
     const { data } = await getSystemConfig({ key: 'MINI_APP_AD_PLACEHOLDER_HOME' });
     list.value = data.value;
-}
-
-const openUrl = (url) => {
-    window.open(url, "_blank");
 }
 
 onBeforeRouteUpdate((to) => {
