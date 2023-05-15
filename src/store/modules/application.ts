@@ -12,6 +12,8 @@ import {
   getMineApp,
   getCollectApp,
   getResultsIsLike,
+  readMyLikeAppState,
+  readMyHotAppState,
 } from '@/api/application';
 import $router from '@/router/index';
 
@@ -25,8 +27,10 @@ interface ApplicationState {
   mineAppList: Application.appInfoItf[];
   collectAppList: Application.appInfoItf[];
   editorText: string;
-  finishCount: number,
-  mineAppCurrentTab: number,
+  finishCount: number;
+  mineAppCurrentTab: number;
+  appListLikeState: {};
+  appListHotState: {};
 }
 
 export const useApplicationStore = defineStore('application', {
@@ -43,6 +47,8 @@ export const useApplicationStore = defineStore('application', {
     finishCount: 0,
     resultStateList: new Map(),
     mineAppCurrentTab: 1, // 我的小程序，当前选中的tab
+    appListLikeState: {},
+    appListHotState: {},
   }),
   getters: {},
   actions: {
@@ -59,14 +65,20 @@ export const useApplicationStore = defineStore('application', {
     async getAppList() {
       const { data } = await getAppList(this.currentTab as number);
       this.appList = data.list;
+      const ids = this.appList.map((item) => item.uuid);
+      readMyLikeAppState(ids).then(({ data }) => {
+        this.appListLikeState = data;
+      });
+      readMyHotAppState(ids).then(({ data }) => {
+        this.appListHotState = data;
+      });
     },
-
     setCurrentTab(category: number) {
       this.currentTab = category;
       this.getAppList();
     },
     setMineAppCurrentTab(tab: number) {
-      this.mineAppCurrentTab = tab
+      this.mineAppCurrentTab = tab;
     },
     // 请求应用信息
     async getApp(uuid: string) {
@@ -94,6 +106,13 @@ export const useApplicationStore = defineStore('application', {
     async getCollectAppList() {
       const { data } = await getCollectApp();
       this.collectAppList = data.list;
+      const ids = this.collectAppList.map((item) => item.uuid);
+      readMyLikeAppState(ids).then(({ data }) => {
+        this.appListLikeState = data;
+      });
+      readMyHotAppState(ids).then(({ data }) => {
+        this.appListHotState = data;
+      });
     },
     // 更新输入框内容
     updateEditorText(info: string) {

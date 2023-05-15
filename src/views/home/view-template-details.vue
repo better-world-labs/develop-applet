@@ -50,13 +50,14 @@
               <n-gi>
                 <div class="icon" @click="collectTemplate">
                   <div>
-                    <icon-font-symbol :class="{'hide': !collected }" :name="collected ? 'icon-icon-yishoucang' : 'icon-icon-shoucang'" />
+                    <icon-font-symbol :class="{ 'hide': !collected }"
+                      :name="collected ? 'icon-icon-yishoucang' : 'icon-icon-shoucang'" />
                     <icon-font :class="{ 'show': !collected }" name="icon-icon-shoucang" />
                   </div>
                   <div :class="{ 'active-text': collected }">
-                    <div  v-if="appInfo.collectTimes > 0">{{ appInfo.collectTimes }}</div>
+                    <div v-if="appInfo.collectTimes > 0">{{ appInfo.collectTimes }}</div>
                     <div v-else>收藏</div>
-                  </div> 
+                  </div>
                 </div>
                 <div class="icon" @click="shareTemplate">
                   <div>
@@ -75,7 +76,8 @@
                 </div>
                 <div class="icon" @click="giveALike">
                   <div>
-                    <icon-font-symbol :class="{ 'hide': !isLike }" :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
+                    <icon-font-symbol :class="{ 'hide': !isLike }"
+                      :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
                     <icon-font :class="{ 'show': !isLike }" name="icon-icon-dianzan" />
                   </div>
                   <div :class="{ 'active-text': isLike }">
@@ -116,6 +118,11 @@
                   : 'icon-icon-cai'
                   " />
               </div>
+            </div>
+          </div>
+          <div class="advertising-space" v-if="advertisingList.length">
+            <div v-for="item in advertisingList">
+              <advertising-space-img :item="item"></advertising-space-img>
             </div>
           </div>
         </div>
@@ -180,7 +187,7 @@ import { useApplicationStore } from '@/store/modules/application';
 import { useUserStore } from '@/store/modules/user';
 import $router from '@/router/index';
 import { useRouter } from 'vue-router';
-import { getAppInfo } from '@/api/application';
+import { getAppInfo, getSystemConfig } from '@/api/application';
 import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
@@ -191,7 +198,7 @@ import {
   resultLike,
   getCollectStatus,
   setCollect,
-} from '@/api/application'; 
+} from '@/api/application';
 
 import { useMessage } from 'naive-ui';
 
@@ -214,12 +221,20 @@ const collected = ref(false); // 收藏状态
 const model = ref({});
 const rules = {};
 
-const showResult = ref(false);
+const showResult = ref(true); // 展示结果
 const showLoading = ref(false);
 const printContent = ref(''); // 结果内容
 const cacheContent = ref('');
 const timer = ref(0);
 const currentResult = ref({ hateTimes: 0, likeTimes: 0 });
+
+const advertisingList = ref([]); // 广告列表
+
+// 请求广告列表
+const getAdvertising = async () => {
+  const { data } = await getSystemConfig({ key: 'MINI_APP_AD_PLACEHOLDER_OUTPUT' });
+  advertisingList.value = data.value;
+}
 
 // 结果列表操作
 function resultOption(item = {}, val) {
@@ -268,7 +283,7 @@ async function collectTemplate() {
   } else {
     appInfo.value.collectTimes -= 1;
     message.warning('已从“收藏”中移除');
-  } 
+  }
 }
 // 获取 应用收藏状态
 async function getCollect() {
@@ -361,8 +376,8 @@ function requestSave() {
 }
 
 // 生成结果
-function receiveMessage(data) { 
-  if (!('EventSource' in window)) return; 
+function receiveMessage(data) {
+  if (!('EventSource' in window)) return;
   const eventSourceUrl = `/api/apps/${uuid.value}/run`;
   const eventData = new fetchEventSource(eventSourceUrl, {
     method: 'POST',
@@ -370,13 +385,13 @@ function receiveMessage(data) {
       Accept: 'text/event-stream',
       'Content-type': 'application/json; charset=utf-8',
       'X-CSRF-TOKEN': `${userStore.token}`,
-    }, 
-    openWhenHidden:true,
+    },
+    openWhenHidden: true,
     body: JSON.stringify(data),
     async onopen(response) {
       if (response.status == 200) {
         console.log('连接成功!');
-        printContent.value =""; // 结果内容
+        printContent.value = ""; // 结果内容
         cacheContent.value = "";
         showLoading.value = false;
         printout();
@@ -458,7 +473,7 @@ onMounted(() => {
     type: 'app-viewed',
     args: [uuid.value],
   });
-
+  getAdvertising();// 请求广告位数据
   getAppResultList();
   // 获取应用信息
   getAppInfo(uuid.value).then(({ data }) => {
@@ -655,7 +670,7 @@ onUnmounted(() => {
 
       .footer {
         font-weight: 400;
-        font-size: 14px; 
+        font-size: 14px;
         color: #5b5d62;
         margin-top: 20px;
 
@@ -678,16 +693,21 @@ onUnmounted(() => {
             box-sizing: border-box;
             text-align: center;
           }
+
           .iconfont {
             display: none;
             font-size: 24px;
             line-height: 24px;
-          } 
-          .iconfont.icon-icon-shoucang,.iconfont.icon-icon-fenxiang-hover,.iconfont.icon-icon-pinglun-hover,.iconfont.icon-icon-dianzan{
+          }
+
+          .iconfont.icon-icon-shoucang,
+          .iconfont.icon-icon-fenxiang-hover,
+          .iconfont.icon-icon-pinglun-hover,
+          .iconfont.icon-icon-dianzan {
             color: #525af6;
           }
 
-          .iconfont.icon-icon-fenxiang-hover{
+          .iconfont.icon-icon-fenxiang-hover {
             margin-left: 1px;
           }
 
@@ -701,11 +721,13 @@ onUnmounted(() => {
 
           &:hover {
             color: #202226;
+
             // .iconfont-svg.icon-icon-dianzan,.iconfont-svg.icon-icon-pinglun,.iconfont-svg.icon-icon-fenxiang,.iconfont-svg.icon-icon-shoucang{
-            .iconfont-svg.hide{
-              display: none;  
+            .iconfont-svg.hide {
+              display: none;
             }
-            .iconfont.show{
+
+            .iconfont.show {
               display: block;
             }
           }
@@ -802,6 +824,19 @@ onUnmounted(() => {
             height: 4px;
             background: #5f58ff;
           }
+        }
+      }
+
+      // 广告位
+      .advertising-space {
+        padding: 16px 0px 0px 0px;
+        display: flex;
+        flex-direction: row;
+
+        >div {
+          margin-right: 16px;
+          height: 80px;
+          overflow: hidden;
         }
       }
 
