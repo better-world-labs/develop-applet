@@ -58,6 +58,11 @@ import {
 } from '@/api/application';
 import { useApplicationStore } from '@/store/modules/application';
 import { storeToRefs } from 'pinia';
+import { useInit } from '@/hooks/useInit';
+import { useUserStore } from "@/store/modules/user"
+
+const { goAuth } = useInit()
+const userStore = useUserStore();
 
 const applicationStore = useApplicationStore();
 const { appListLikeState, appListHotState } = storeToRefs(applicationStore);
@@ -70,6 +75,7 @@ const showAnimation = ref(false);
 const showHotAnimation = ref(false);
 
 function giveALike(item) {
+  if (!userStore.token) goAuth();
   const newState = !appListLikeState.value[item.uuid];
   if (newState) {
     showAnimation.value = true
@@ -88,6 +94,7 @@ function giveALike(item) {
 }
 
 function giveAHot(item) {
+  if (!userStore.token) goAuth();
   const newState = !appListHotState.value[item.uuid];
   if (newState) {
     showHotAnimation.value = true
