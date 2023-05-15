@@ -66,14 +66,15 @@
   const refCoding = ref('');
   const state = reactive({
     uuid: uuid(),
-    name: '未命名模板',
+    name: '',
     category: undefined,
     description: '',
     duplicateFrom: '',
     form: [
       {
         id: '321',
-        label: '选项名1',
+        label: '',
+        status: 'normal', //blur
         type: 'text',
         properties: {
           placeholder: '',
@@ -83,7 +84,7 @@
     flow: [
       {
         id: uuid(),
-        type: '',
+        type: '', // 模型类别
         outputVisible: true,
         prompt: [
           {
@@ -119,6 +120,7 @@
     // "createdAt": "2023-03-22T07:08:02.851Z",
     // "updatedAt": "2023-03-22T07:08:02.851Z",
     status: 1, // 状态 (0.未发布 1.已发布)
+    formItemsStatus: 'normal', //blur  normal 全局表单校验状态
   });
 
   onMounted(async () => {
@@ -300,9 +302,10 @@
       flex: 1;
       display: flex;
       height: calc(100vh - 72px);
+      min-width: 600px;
 
       //小屏适应
-      @media screen and (max-width: 1636px) {
+      @media screen and (max-width: 1499px) {
         flex-direction: column;
         overflow-y: auto;
 
@@ -324,8 +327,9 @@
       .coding {
         padding: 48px 52px;
         box-sizing: border-box;
-        min-width: 712px;
-        width: 712px;
+        // min-width: 712px;
+        max-width: 1600px;
+        flex: 1;
         background: #f3f3f3;
         height: inherit;
         overflow-y: auto;

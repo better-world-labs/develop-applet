@@ -17,7 +17,7 @@
         <div class="n-collapse-item__header-main">{{ item.label }}</div>
         <div class="n-collapse-item__header-extra">
           <IconFont
-            :style="{ color: item.status ? '#5652FF' : '#E3E4E5', fontSize: '24px' }"
+            :style="{ color: item.status ? '#5652FF' : '#E3E4E5', fontSize: '20px' }"
             :name="item.status ? 'icon-icon-yitianwan' : 'icon-a-icon-weitianxiewanStroke'"
           ></IconFont>
         </div>
@@ -28,21 +28,39 @@
             <n-form
               ref="formRef"
               v-show="i == 0"
+              :rules="rules"
               :model="props.appData"
               label-placement="left"
               label-width="auto"
               require-mark-placement="right-hanging"
             >
-              <n-form-item path="age" label="小程序标题">
-                <n-input v-model:value="props.appData.name" @keydown.enter.prevent />
+              <n-form-item
+                path="age"
+                label="小程序标题"
+                :class="{ require: props.appData.name == '' && appNameStatus == 'blur' }"
+              >
+                <n-input
+                  :status="props.appData.name == '' && appNameStatus == 'blur' ? 'error' : ''"
+                  type="textarea"
+                  :autosize="{
+                    minRows: 1,
+                  }"
+                  @blur="appNameStatus = 'blur'"
+                  style="border-radius: 21px"
+                  v-model:value="props.appData.name"
+                  :placeholder="
+                    props.appData.name == '' && appNameStatus == 'blur' ? '请填写标题' : '旅行攻略'
+                  "
+                  @keydown.enter.prevent
+                />
               </n-form-item>
               <n-form-item path="age" label="小程序描述">
                 <n-input
                   v-model:value="props.appData.description"
+                  placeholder="输入出发地、目的地、天数和预算，给你生成一个诚意和细节都满满的行程安排"
                   type="textarea"
                   :autosize="{
                     minRows: 3,
-                    maxRows: 5,
                   }"
                 />
               </n-form-item>
@@ -63,7 +81,7 @@
   import DiyForm from './process/diy-form.vue';
   import Flow from './process/flow.vue';
   import { putApp } from '@/api/application';
-  import { useBizDialog } from '@/plugins'; 
+  import { useBizDialog } from '@/plugins';
   const props = defineProps(['appData']);
   const emit = defineEmits(['back']);
   const message = useMessage();
@@ -90,17 +108,16 @@
       key: '',
     },
   ]);
+  const appNameStatus = ref('normal'); //blur
+
   const current = ref(0);
   const rules = {
     name: {
       required: true,
-      min: 1,
       message: '最短长度为 1',
     },
     description: {
-      required: true,
-      min: 2,
-      message: '最短长度为 2',
+      required: false,
     },
   };
   watchEffect(() => {
@@ -117,6 +134,8 @@
     current.value = i;
   };
   const publishApp = async (isBack = true) => {
+    props.appData.formItemsStatus = 'blur';
+    appNameStatus.value = 'blur';
     if (current.value === 2) current.value = 0;
     // return console.log(props.appData);
     if (cardList.some((a) => a.status != true)) {
@@ -128,7 +147,7 @@
         return message.warning('小程序编辑中使用了不存在的选项,请检查修改');
       }
     } catch (error) {}
-     
+
     try {
       await putApp(props.appData.uuid, props.appData);
       if (isBack) {
@@ -139,7 +158,7 @@
       dialog.open('insufficient', {
         class: 'insufficient-dialog',
         title: '积分不够啦',
-      });    
+      });
     }
   };
   defineExpose({ publishApp });
@@ -173,20 +192,20 @@
     }
 
     :deep(.n-collapse-item__content-inner) {
-      padding: 24px 0 !important;
+      padding: 16px 0 !important;
       //   margin-top: 24px !important;
       border-top: 1px solid rgba(0, 0, 0, 0.1);
     }
 
     :deep(.n-collapse-item__header-main) {
       font-weight: 500;
-      font-size: 20px;
+      font-size: 18px;
       line-height: 20px;
       color: #181d24;
     }
 
     :deep(.n-collapse-item__header) {
-      padding: 24px 0 !important;
+      padding: 18px 0 !important;
       display: flex;
       align-items: center;
       .n-collapse-item__header-extra {
@@ -202,10 +221,41 @@
         color: #5b5d62;
       }
 
+      .n-form-item {
+        .n-form-item-label {
+          padding-right: 6px !important;
+          .n-form-item-label__text {
+            position: relative;
+            &::after {
+              position: absolute;
+              content: '';
+              top: 50%;
+              right: -9px;
+              color: #dc504c;
+              font-weight: 400;
+              transform: translateY(-50%);
+              font-size: 16px;
+            }
+          }
+        }
+        &.require {
+          .n-form-item-label {
+            .n-form-item-label__text {
+              &::after {
+                content: '*';
+              }
+            }
+          }
+          .n-input__placeholder {
+            color: #dc504c;
+          }
+        }
+      }
+
       .n-input {
-        font-size: 16px;
-        --n-border-radius: 21px !important;
-        --n-font-size: 16px !important;
+        font-size: 14px;
+        --n-border-radius: 12px !important;
+        --n-font-size: 14px !important;
         --n-height: 42px !important;
         background: #f3f3f7;
         --n-caret-color: rgb(51, 54, 57) !important;
@@ -213,10 +263,18 @@
         --n-border-focus: 1px solid transparent !important;
         --n-loading-color: transparent !important;
         --n-box-shadow-focus: 0 0 0 2px transparent !important;
+        --n-caret-color-error: #dc504c !important;
+        --n-border-error: 1px solid #dc504c !important;
         // --n-caret-color: #5652FF !important;
         // --n-border-hover: 1px solid #5652FF !important;
         // --n-border-focus: 1px solid #5652FF !important;
         // --n-loading-color: #5652FF !important;
+        .n-input__border {
+          border: 0 none !important;
+        }
+        .n-input__state-border {
+          box-shadow: none;
+        }
       }
 
       --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);
@@ -246,13 +304,13 @@
       --n-border-focus-warning: 1px solid #fcb040;
       --n-border-hover-warning: 1px solid #fcb040;
       --n-loading-color-warning: #f0a020;
-      --n-caret-color-error: #d03050;
+      --n-caret-color-error: #dc504c;
       --n-color-focus-error: rgba(255, 255, 255, 1);
       --n-box-shadow-focus-error: 0 0 0 2px rgba(208, 48, 80, 0.2);
-      --n-border-error: 1px solid #d03050;
-      --n-border-focus-error: 1px solid #de576d;
-      --n-border-hover-error: 1px solid #de576d;
-      --n-loading-color-error: #d03050;
+      --n-border-error: 1px solid #dc504c;
+      --n-border-focus-error: 1px solid #dc504c;
+      --n-border-hover-error: 1px solid #dc504c;
+      --n-loading-color-error: #dc504c;
       --n-clear-color: rgba(194, 194, 194, 1);
       --n-clear-size: 16px;
       --n-clear-color-hover: rgba(146, 146, 146, 1);

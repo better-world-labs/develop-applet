@@ -21,6 +21,10 @@
         <n-form ref="formRef" :model="props.appData.form">
           <n-form-item :label="item.label" v-for="(item, i) in props.appData.form" :key="item.id">
             <n-input
+              type="textarea"
+              :autosize="{
+                minRows: 1,
+              }"
               v-model:value="state.form[i]"
               :placeholder="item.properties.placeholder"
               @keydown.enter.prevent
@@ -71,7 +75,7 @@
     background: linear-gradient(132.93deg, #f1f7ff 5.27%, #faf8ff 59.89%, #eeedfe 98.91%);
   }
   .preview-box {
-    min-width: 600px;
+    // min-width: 600px;
     max-width: 1200px;
     padding: 56px 80px;
     height: calc(100% - 50px);
@@ -183,19 +187,25 @@
         }
 
         .n-input {
-          height: 78px !important;
-          line-height: 78px !important;
+          min-height: 78px !important;
+          line-height: 31px !important;
           background: #ffffff;
           box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
           border-radius: 12px !important;
           margin-bottom: 8px !important;
           font-size: 22px !important;
           color: #202226 !important;
-          padding: 0 24px !important;
+          padding: 16px 24px !important;
           --n-caret-color: #5652ff !important;
           --n-border-hover: 1px solid #5652ff !important;
           --n-border-focus: 1px solid #5652ff !important;
           --n-loading-color: #5652ff !important;
+          .n-input__border {
+            border: 0 none !important;
+          }
+          .n-input__state-border {
+            box-shadow: none;
+          }
         }
       }
     }
