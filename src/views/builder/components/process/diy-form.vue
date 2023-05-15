@@ -8,7 +8,10 @@
   <n-dynamic-input v-model:value="props.appData.form" :on-create="onCreate" :min="1">
     <template #create-button-default> 随便搞点啥 </template>
     <template #default="{ value, index }">
-      <div class="diy-body" :class="{ require: value.label == '' && value.status == 'blur' }">
+      <div
+        class="diy-body"
+        :class="{ require: true, firstBlur: value.label == '' && value.status == 'blur' }"
+      >
         <div class="index">选项{{ index + 1 }}</div>
         <div class="diy-group">
           <n-input
@@ -86,10 +89,12 @@
           font-size: 16px;
         }
       }
-      :deep(.n-input) {
-        &:first-child {
-          .n-input__placeholder {
-            color: #dc504c;
+      &.firstBlur {
+        :deep(.n-input) {
+          &:first-child {
+            .n-input__placeholder {
+              color: #dc504c;
+            }
           }
         }
       }
