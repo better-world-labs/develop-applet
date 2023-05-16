@@ -37,7 +37,10 @@
               <n-form-item
                 path="age"
                 label="小程序标题"
-                :class="{ require: props.appData.name == '' && appNameStatus == 'blur' }"
+                :class="{
+                  require: true,
+                  firstBlur: props.appData.name == '' && appNameStatus == 'blur',
+                }"
               >
                 <n-input
                   :status="props.appData.name == '' && appNameStatus == 'blur' ? 'error' : ''"
@@ -121,8 +124,9 @@
     },
   };
   watchEffect(() => {
-    cardList[0].status = props.appData.name && props.appData.description && true;
-    cardList[1].status = props.appData.form && props.appData.form.length > 0;
+    cardList[0].status = props.appData.name && true;
+    cardList[1].status =
+      props.appData.form && props.appData.form.length && props.appData.form.every((a) => a.label);
     cardList[2].status =
       props.appData.flow &&
       props.appData.flow[0] &&
@@ -135,6 +139,10 @@
   };
   const publishApp = async (isBack = true) => {
     props.appData.formItemsStatus = 'blur';
+    props.appData.form = props.appData.form.map((element) => {
+      element.status = 'blur';
+      return element;
+    });
     appNameStatus.value = 'blur';
     if (current.value === 2) current.value = 0;
     // return console.log(props.appData);
@@ -246,8 +254,10 @@
               }
             }
           }
-          .n-input__placeholder {
-            color: #dc504c;
+          &.firstBlur {
+            .n-input__placeholder {
+              color: #dc504c;
+            }
           }
         }
       }

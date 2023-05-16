@@ -88,3 +88,13 @@ export function makeRegistration() {
     url: `/api/sign-in`,
   });
 }
+
+// 登出
+export function postLogout(): Promise<Result> {
+  return http.request({ method: 'POST', url: '/api/users/logout ' });
+}
+
+// 修改用户头像 昵称
+export function putInfo(data: { nickname?: string, avatar?: string }): Promise<Result> {
+  return http.request({ method: 'put', url: '/api/users/me/info', data });
+}

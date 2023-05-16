@@ -7,46 +7,11 @@
 <template>
   <div>
     <div class="not-model" v-show="!props.appData.flow[0].type">
-      <p @click="addModel">
-        <icon-font-symbol :size="24" name="icon-icon-tianjiaxuanxiang" />
-      </p>
-    </div>
-    <div class="has-model" v-show="props.appData.flow[0].type">
-      <div class="flow">
-        <p>
-          <span>输入提示词</span>
-          <IconFont :size="18" name="icon-icon-jiantou" />
-          <span>
-            <IconFont name="icon-icon-ChatGPT" style="color: #5652ff" />
-            ChatGPT
-          </span>
-          <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
-        </p>
-        <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
+      <div class="header">
+        <div>选择AI模型<span>*</span></div>
       </div>
-      <div class="description">
-        <!-- <mention @input="handleComment"></mention> -->
-        <expression
-          ref="expressionRef"
-          @refreshPromptData="refreshPromptData"
-          :tagList="props.appData.form"
-          :prompt="props.appData.flow[0].prompt"
-        ></expression>
-      </div>
-    </div>
-    <n-modal
-      v-model:show="showModal"
-      preset="dialog"
-      title="Dialog"
-      class="model-box"
-      :trap-focus="false"
-      :show-icon="false"
-    >
-      <template #header>
-        <div>选择AI模型</div>
-      </template>
       <div class="body">
-        <template v-for="item in state.aiList" :key="item.id">
+        <div v-for="item in state.aiList" :key="item.id">
           <div class="label">{{ item['category'] }}</div>
           <div class="items">
             <div
@@ -60,8 +25,40 @@
               <span>{{ model.name }}</span>
             </div>
           </div>
-        </template>
+        </div>
+        <p v-if="props.appData.formItemsStatus == 'blur' && !props.appData.flow[0].type">
+          请选择模型
+        </p>
       </div>
+    </div>
+    <div class="has-model" v-show="props.appData.flow[0].type">
+      <div class="flow">
+        <p>
+          <span>输入提示词</span>
+          <IconFont :size="18" name="icon-icon-jiantou" />
+          <span> <IconFont name="icon-icon-ChatGPT" style="color: #5652ff" />ChatGPT</span>
+          <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
+        </p>
+        <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />
+      </div>
+      <div class="description">
+        <!-- <mention @input="handleComment"></mention> -->
+        <expression
+          ref="expressionRef"
+          @refreshPromptData="refreshPromptData"
+          :formItemsStatus="props.appData.formItemsStatus"
+          :tagList="props.appData.form"
+          :prompt="props.appData.flow[0].prompt"
+        ></expression>
+      </div>
+    </div>
+    <n-modal
+      v-model:show="showModal"
+      preset="dialog"
+      title="Dialog"
+      :trap-focus="false"
+      :show-icon="false"
+    >
     </n-modal>
   </div>
 </template>
@@ -266,19 +263,108 @@
 </script>
 <style lang="scss" scoped>
   .not-model {
-    p {
-      color: #d9d9d9;
-      border-top: 2px dashed rgba(0, 0, 0, 0.2);
-      position: relative;
-      cursor: pointer;
+    .header {
+      font-weight: 400;
+      font-size: 18px;
+      line-height: 20px;
+      color: #181d24;
+      span {
+        color: #dc504c;
+        font-weight: 400;
+        font-size: 16px;
+      }
+    }
 
-      svg {
+    .body {
+      padding-bottom: 8px;
+      padding-bottom: 28px;
+      position: relative;
+
+      .label {
+        margin-top: 32px;
+        margin-bottom: 8px;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 16px;
+        color: #5b5d62;
+      }
+      > div:first-child .label {
+        margin-top: 24px;
+      }
+
+      .items {
+        .item {
+          width: 124px;
+          height: 112px;
+          // border: 1px solid #5b5d62;
+          border-radius: 8px;
+          display: inline-flex;
+          flex-direction: column;
+          align-items: center;
+          background: #f6f6fc;
+          cursor: default;
+          position: relative;
+
+          & + .item {
+            margin-left: 16px;
+          }
+
+          &.available {
+            cursor: pointer;
+            img,
+            span {
+              opacity: 1;
+            }
+            &:hover {
+              background: #eeedfe;
+            }
+            &:active {
+              border: 1px solid #5652ff;
+            }
+          }
+          &:not(.available)::after {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            content: '敬请期待';
+            background: #abacae;
+            border-radius: 10px;
+            padding: 0 6px;
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 20px;
+            height: 20px;
+            color: #ffffff;
+          }
+
+          img {
+            margin-bottom: 6px;
+            width: 40px;
+            height: 40px;
+            opacity: 0.5;
+            margin-top: 26px;
+          }
+
+          span {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 24px;
+            color: #5b5d62;
+            opacity: 0.5;
+          }
+        }
+      }
+      p {
         position: absolute;
+        bottom: -4px;
         left: 0;
-        top: -12px;
-        width: 24px;
-        height: 24px;
-        margin-left: 13px;
+        padding: 0;
+        margin: 0;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #dc504c;
       }
     }
   }
@@ -321,9 +407,7 @@
     }
 
     .description {
-      color: #5b5d62;
-      background: #f3f3f7;
-      border-radius: 21px;
+      border-radius: 16px;
     }
 
     :deep(.diy-group) {
@@ -386,72 +470,5 @@
     /*滚动条里面轨道*/
     border-radius: 4px;
     background: transparent;
-  }
-</style>
-
-<style lang="scss">
-  .model-box.n-dialog.n-modal {
-    background: #fff !important;
-    padding: 32px !important;
-    width: 624px;
-
-    .n-dialog__title {
-      font-weight: 500;
-      font-size: 20px;
-      line-height: 20px;
-      color: #181d24;
-    }
-
-    .n-dialog__content {
-      margin-top: 0 !important;
-
-      .label {
-        margin-top: 32px;
-        margin-bottom: 16px;
-        font-weight: 500;
-        font-size: 16px;
-        line-height: 16px;
-        color: #5b5d62;
-      }
-
-      .items {
-        .item {
-          width: 124px;
-          height: 112px;
-          border: 1px solid #5b5d62;
-          border-radius: 8px;
-          display: inline-flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          opacity: 0.5;
-
-          & + .item {
-            margin-left: 16px;
-          }
-
-          &.available {
-            opacity: 1;
-            cursor: pointer;
-            &:hover {
-              background: #eeedfe;
-            }
-          }
-
-          img {
-            margin-bottom: 6px;
-            width: 40px;
-            height: 40px;
-          }
-
-          span {
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 24px;
-            color: #5b5d62;
-          }
-        }
-      }
-    }
   }
 </style>
