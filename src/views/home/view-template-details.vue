@@ -127,53 +127,7 @@
             </div>
           </div>
         </div>
-
-        <div class="public-results" v-if="applicationStore.resultList.length > 0">
-          <n-carousel :space-between="20" :loop="false" slides-per-view="auto" draggable>
-            <n-carousel-item style="width: 40%" v-for="result in applicationStore.resultList" :key="result.id">
-              <div class="result-item">
-                <div class="user">
-                  <div>
-                    <img width="36" :src="result.createdBy.avatar || '@/assets/default-user.jpg'" />
-                  </div>
-                  <div>{{ result.createdBy.nickname }}</div>
-                </div>
-                <div class="label">
-                  <span>
-                    {{ result.inputArgs.join('·') }}
-                  </span>
-                </div>
-                <div class="content">
-                  {{ result.content }}
-                </div>
-                <div class="option">
-                  <div>
-                    <icon-font-symbol @click="resultOption(result, 1)" :name="applicationStore.resultStateList?.get(result.id) == 1
-                      ? 'icon-icon-yidianzan'
-                      : 'icon-icon-dianzan'
-                      " />
-                    <div :class="{
-                      'active-text': applicationStore.resultStateList?.get(result.id) == 1,
-                    }">
-                      {{ result.likeTimes }}
-                    </div>
-                  </div>
-                  <div>
-                    <icon-font-symbol @click="resultOption(result, -1)" :name="applicationStore.resultStateList?.get(result.id) == -1
-                      ? 'icon-icon-yicai'
-                      : 'icon-icon-cai'
-                      " />
-                    <div :class="{
-                      'active-text': applicationStore.resultStateList?.get(result.id) == -1,
-                    }">
-                      {{ result.hateTimes }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </n-carousel-item>
-          </n-carousel>
-        </div>
+        <result-list @result="resultOption" :uuid="uuid"></result-list>
         <!-- 评论 -->
         <div style="margin-top: 16px">
           <comment-box v-if="uuid" :uuid="uuid"></comment-box>
@@ -183,6 +137,7 @@
   </div>
 </template>
 <script setup>
+import ResultList from "./components/result/result-list.vue"
 import CommentBox from './components/comment-box.vue';
 import { useApplicationStore } from '@/store/modules/application';
 import { useUserStore } from '@/store/modules/user';
@@ -193,6 +148,7 @@ import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
 import { marked } from 'marked';
+
 
 import {
   readStateApp,
@@ -445,7 +401,7 @@ async function shareTemplate() {
 
 // 请求结果列表
 function getAppResultList() {
-  applicationStore.getAppResult(uuid.value);
+  applicationStore.getAppResult(uuid.value, true);
 }
 
 // 返回上一页
@@ -767,7 +723,6 @@ onUnmounted(() => {
           &:hover {
             color: #202226;
 
-            // .iconfont-svg.icon-icon-dianzan,.iconfont-svg.icon-icon-pinglun,.iconfont-svg.icon-icon-fenxiang,.iconfont-svg.icon-icon-shoucang{
             .iconfont-svg.hide {
               display: none;
             }
@@ -781,46 +736,6 @@ onUnmounted(() => {
             color: #5652ff;
           }
         }
-
-        // .n-button {
-        //   background: linear-gradient(101.85deg, #957bfb 0%, #5652ff 98.88%);
-        //   border: none;
-        //   border-radius: 8px;
-        //   height: 54px;
-        //   box-sizing: border-box;
-        //   font-weight: 500 !important;
-        //   font-size: 16px;
-        //   line-height: 16px !important;
-        //   color: #ffffff;
-        //   float: right;
-        //   --n-border: none !important;
-        //   --n-border-hover: none !important;
-        //   --n-border-focus: none !important;
-
-        //   &:hover {
-        //     background: linear-gradient(109.65deg, #a994ff 30.38%, #657eff 98.29%);
-        //   }
-
-        //   span {
-        //     display: flex !important;
-        //     flex-direction: column;
-        //     font-weight: 500;
-        //     font-size: 16px;
-        //     line-height: 16px;
-        //     color: #ffffff;
-        //   }
-
-        //   em {
-        //     display: flex !important;
-        //     flex-direction: column;
-        //     font-weight: 400;
-        //     font-size: 12px;
-        //     line-height: 12px;
-        //     margin-top: 6px;
-        //     color: #ffffff;
-        //     font-style: normal;
-        //   }
-        // }
       }
     }
 
@@ -888,110 +803,6 @@ onUnmounted(() => {
           height: 24px;
           margin-right: 8px;
           cursor: pointer;
-        }
-      }
-    }
-
-    .public-results {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 16px;
-      margin-top: 16px;
-      height: 280px;
-
-      .result-item {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        color: #202226;
-        background: #f7f7fb;
-        border-radius: 12px;
-        padding: 16px;
-        height: 242px;
-        box-sizing: border-box;
-
-        .user {
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 24px;
-          color: #5b5d62;
-          display: flex;
-          flex-direction: row;
-
-          img {
-            width: 24px;
-            height: 24px;
-            border-radius: 24px;
-            margin-right: 8px;
-          }
-        }
-
-        .label {
-          border-radius: 4px;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 30px;
-          color: #000000;
-          margin: 12px 0;
-          height: 30px;
-
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 1;
-          -webkit-box-orient: vertical;
-          white-space: pre-line;
-
-          span {
-            display: inline-block;
-            background: #ffffff;
-            padding: 0 8px;
-          }
-        }
-
-        .content {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
-          white-space: pre-line;
-          height: 96px;
-          margin-bottom: 6px;
-        }
-
-        .option {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          align-content: center;
-          justify-content: right;
-          cursor: pointer;
-
-          >div {
-            background: #f7f7fb;
-            margin-right: 4px;
-            padding: 4px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: row;
-
-            .iconfont-svg {
-              width: 24px;
-              height: 24px;
-              display: flex;
-              flex-direction: row;
-              margin-right: 6px;
-            }
-
-            &:hover {
-              color: #202226;
-            }
-
-            .active-text {
-              color: #5652ff;
-            }
-          }
         }
       }
     }

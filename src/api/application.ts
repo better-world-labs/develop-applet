@@ -69,10 +69,11 @@ export function getAppInfo(uuid: string) {
 }
 
 // 读取应用的结果列表
-export function getAppResultList(uuid: string) {
+export function getAppResultList(uuid: string, params?: { cursor: string | undefined }) {
   return http.request({
     method: 'get',
     url: `/api/apps/${uuid}/outputs`,
+    params: params,
   });
 }
 
@@ -111,7 +112,7 @@ export function readStateApp(uuid: string) {
 export function readMyLikeAppState(ids: string[]) {
   return http.request({
     method: 'post',
-    url: `/api/apps/like`,
+    url: `/api/apps/is-liked`,
     data: { appIds: ids },
   });
 }
@@ -128,7 +129,7 @@ export function giveLikeApp(uuid: string, data: { like: boolean }) {
 export function readMyHotAppState(ids: string[]) {
   return http.request({
     method: 'post',
-    url: `/api/apps/get-recommends`,
+    url: `/api/apps/is-recommended`,
     data: { appIds: ids },
   });
 }
