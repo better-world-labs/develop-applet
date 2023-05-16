@@ -20,7 +20,9 @@
         <div>
           <div class="info-header">
             {{ userStore.info.nickname }}
-            <span><IconFont name="icon-icon-xiugainicheng" :size="16" />修改昵称</span>
+            <span @click="putInfo"
+              ><IconFont name="icon-icon-xiugainicheng" :size="16" />修改昵称</span
+            >
           </div>
           <p v-if="userStore.info?.id">ID：#{{ String(userStore.info?.id).slice(1) }}</p>
           <div class="logout-btn" @click="logOff">退出登录</div>
@@ -62,6 +64,16 @@
         title: '',
       },
       orderData.data
+    );
+  };
+  const putInfo = async (data) => {
+    dialog.open(
+      'update-nickname',
+      {
+        class: 'update-nickname-dialog',
+        title: '',
+      },
+      {}
     );
   };
 
