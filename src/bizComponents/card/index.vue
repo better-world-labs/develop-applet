@@ -25,11 +25,12 @@
         </div>
       </div>
       <div class="right">
-        <div class="text-box" @click="giveAHot" style="margin-right: 24px">
-          <IconFontSymbol :class="{ 'hide': !appListHotState[item.uuid] }" name="icon-icon-dianzan" />
-          <IconFont :class="{ 'show': !appListHotState[item.uuid] }" name="icon-icon-dianzan" />
+        <div class="text-box" @click="giveAHot(item)" style="margin-right: 24px">
+          <IconFontSymbol :class="{ 'hide': !appListHotState[item.uuid] }"
+            :name="appListHotState[item.uuid] ? 'icon-icon-yituijian' : 'icon-icon-tuijian'" />
+          <IconFont :class="{ 'show': !appListHotState[item.uuid] }" name="icon-icon-tuijian" />
           <div>
-            {{ item.hot || 0 }}
+            {{ item.recommendTimes || 0 }}
           </div>
           <div v-if="showHotAnimation" class="add-hot">
             <img src="@/assets/rocket.png" alt="">
@@ -105,9 +106,9 @@ function giveAHot(item) {
   giveHotApp(item.uuid, newState).then(() => {
     appListHotState.value[item.uuid] = newState;
     if (appListHotState.value[item.uuid]) {
-      item.hot += 1;
+      item.recommendTimes += 1;
     } else {
-      item.hot -= 1;
+      item.recommendTimes -= 1;
     }
   });
 }
@@ -275,7 +276,6 @@ function giveAHot(item) {
         width: 24px;
         height: 28px;
         padding-left: 10px;
-        font-family: "DIN Alternate";
         font-style: normal;
         font-weight: 700;
         font-size: 30rpx;
