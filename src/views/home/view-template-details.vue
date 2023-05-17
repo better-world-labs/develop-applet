@@ -137,7 +137,7 @@
   </div>
 </template>
 <script setup>
-import ResultList from "./components/result/result-list.vue"
+import ResultList from "./components/result-list.vue"
 import CommentBox from './components/comment-box.vue';
 import { useApplicationStore } from '@/store/modules/application';
 import { useUserStore } from '@/store/modules/user';
@@ -147,9 +147,8 @@ import { getAppInfo, getSystemConfig } from '@/api/application';
 import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
-import { marked } from 'marked';
-
-
+import { marked } from 'marked';  
+ 
 import {
   readStateApp,
   giveLikeApp,
@@ -159,7 +158,7 @@ import {
   setCollect,
 } from '@/api/application';
 
-import { useMessage } from 'naive-ui';
+import { useMessage } from 'naive-ui'; 
 
 const dialog = useBizDialog();
 
@@ -256,9 +255,10 @@ async function getCollect() {
 function printout() {
   const cursorSpan = `｜`
   timer.value = setInterval(() => {
-    if (cacheContent.value.length > printContent.value.length) {
+    if (cacheContent.value.length > printContent.value.length) { 
       printContent.value = cacheContent.value.slice(0, printContent.value.length + 2);
       document.getElementById('printContent').innerHTML = marked.parse(printContent.value);
+      
     }
   }, 80);
 }
@@ -588,6 +588,11 @@ onUnmounted(() => {
     line-height: 52px;
     color: #5b5d62;
     cursor: pointer;
+     .iconfont {
+          color:#5B5D62;
+          font-size: 16px;
+          margin-right: 4px; 
+        }
   }
 }
 

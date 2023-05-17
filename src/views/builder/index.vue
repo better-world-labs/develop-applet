@@ -247,9 +247,10 @@
         display: flex;
         align-items: center;
         cursor: pointer;
-
-        i {
-          font-size: 20px;
+         
+        .iconfont {
+          color:#5B5D62;
+          font-size: 16px;
           margin-right: 4px;
         }
       }

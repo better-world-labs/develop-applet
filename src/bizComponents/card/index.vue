@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="footer-options">
-      <div class="left">
+      <div class="left" @click="toIntegral">
         <img :src="item.createdBy.avatar || '../../assets/default-user.jpg'" />
         <div>
           {{ item.createdBy.nickname }}
@@ -111,6 +111,11 @@ function giveAHot(item) {
       item.recommendTimes -= 1;
     }
   });
+}
+
+// 跳转到积分
+function toIntegral() {
+      
 }
 </script>
 
