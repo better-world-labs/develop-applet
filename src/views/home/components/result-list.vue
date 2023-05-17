@@ -29,8 +29,9 @@
                                 {{ result.inputArgs.join('·') }}
                             </span>
                         </div>
-                        <div :class="[slidesPerView == 1 ? 'content-container' : 'content']"
-                            v-html="marked.parse(result.content)">
+                        <div v-if="slidesPerView == 2" class="content" v-html="marked.parse(result.content)">
+                        </div>
+                        <div v-else class="content-container"  v-html="marked.parse(result.content)">
                         </div>
                         <div class="option">
                             <div class="count">
@@ -72,12 +73,12 @@
 </template>
 <script setup>
 import { useApplicationStore } from '@/store/modules/application';
-import { marked } from 'marked';
+import { marked } from 'marked'; 
 
 const applicationStore = useApplicationStore();
 const props = defineProps(['uuid']);
 const emit = defineEmits(['result']);
-
+ 
 const currentIndex = ref(0);
 const slidesPerView = ref(2);
 const autoplay = ref(true);
@@ -117,7 +118,7 @@ const fullScreen = (index) => {
         autoplay.value = false;
         slidesPerView.value = 1;
         currentIndex.value = index;
-    } else {// 两个展示
+    } else {// 两个展示 
         autoplay.value = true;
         slidesPerView.value = 2;
         if ((index % 2) === 0) {

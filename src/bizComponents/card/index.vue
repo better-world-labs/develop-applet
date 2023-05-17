@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="footer-options">
-      <div class="left">
+      <div class="left" @click="toIntegral(item.createdBy.id)">
         <img :src="item.createdBy.avatar || '../../assets/default-user.jpg'" />
         <div>
           {{ item.createdBy.nickname }}
@@ -53,6 +53,7 @@
 </template>
 
 <script setup>
+import $router from '@/router/index';
 import {
   giveLikeApp,
   giveHotApp
@@ -60,7 +61,7 @@ import {
 import { useApplicationStore } from '@/store/modules/application';
 import { storeToRefs } from 'pinia';
 import { useInit } from '@/hooks/useInit';
-import { useUserStore } from "@/store/modules/user"
+import { useUserStore } from "@/store/modules/user" 
 
 const { goAuth } = useInit()
 const userStore = useUserStore();
@@ -112,6 +113,12 @@ function giveAHot(item) {
     }
   });
 }
+
+// 跳转到积分
+function toIntegral(userId) { 
+    $router.push({ name: 'introduction', query: { id: userId } });
+}
+
 </script>
 
 <style lang="scss" scoped>
