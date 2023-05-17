@@ -55,6 +55,14 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('@/views/my-integral/index.vue'),
       },
+      {
+        path: 'introduction',
+        name: 'introduction',
+        meta: {
+          title: '个人主页',
+        },
+        component: () => import('@/views/introduction/index.vue'),
+      },
     ],
   },
 ];
