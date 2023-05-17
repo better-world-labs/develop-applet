@@ -10,6 +10,7 @@ declare module '@vue/runtime-core' {
     AdvertisingSpaceImg: typeof import('./../src/bizComponents/advertising-space-img/index.vue')['default']
     BuyWx: typeof import('./../src/bizComponents/dialogs/buy-wx.vue')['default']
     Card: typeof import('./../src/bizComponents/card/index.vue')['default']
+    copy: typeof import('./../src/bizComponents/dialogs/insufficient copy.vue')['default']
     DefaultComposition: typeof import('./../src/components/default-composition/default-composition.vue')['default']
     DialogContent: typeof import('./../src/components/dialog-content/index.vue')['default']
     GuideEditPopup: typeof import('./../src/bizComponents/dialogs/guide-edit-popup.vue')['default']
@@ -60,6 +61,7 @@ declare module '@vue/runtime-core' {
     ScoreAddCopy: typeof import('./../src/bizComponents/dialogs/score-add-copy.vue')['default']
     ShareInput: typeof import('./../src/bizComponents/dialogs/components/share-input.vue')['default']
     ShareLink: typeof import('./../src/bizComponents/dialogs/share-link.vue')['default']
+    UpdateNickname: typeof import('./../src/bizComponents/dialogs/update-nickname.vue')['default']
     UploadImage: typeof import('./../src/bizComponents/dialogs/upload-image.vue')['default']
     UserIntegral: typeof import('./../src/bizComponents/user-integral/user-integral.vue')['default']
   }
