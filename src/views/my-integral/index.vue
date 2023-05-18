@@ -17,7 +17,10 @@
     <div class="integral-wrap-box">
       <div class="integral-wrap">
         <div class="info">
-          <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
+          <img
+            :src="userStore.info.avatar || '@/assets/default-user.jpg'"
+            @click="$router.push({ name: 'introduction' })"
+          />
           <div>
             <div class="info-header">
               {{ userStore.info.nickname }}
@@ -149,6 +152,7 @@
       height: 96px;
       margin-right: 24px;
       border-radius: 50%;
+      cursor: pointer;
     }
     > div {
       display: flex;
