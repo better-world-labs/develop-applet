@@ -81,6 +81,14 @@ export function getSignInState() {
   });
 }
 
+// 读取用户个人统计
+export function getStatistic(userId: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/users/${userId}/statistic`,
+  });
+}
+
 // 用户发起签到
 export function makeRegistration() {
   return http.request({

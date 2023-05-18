@@ -26,17 +26,25 @@
         </div>
       </div>
       <div class="bar-items">
-        <div class="item" data-placeholder="1">
+        <div class="item item01">
           <p>作品数</p>
-          <span>56</span>
+          <span>{{ state.statistic.apps }}</span>
         </div>
-        <div class="item" data-placeholder="2">
-          <p>作品数</p>
-          <span>56</span>
+        <div class="item item02">
+          <p>成为创作者天数</p>
+          <span>{{ state.statistic.registeredDays }}</span>
         </div>
-        <div class="item">
-          <p>作品数</p>
-          <span>56</span>
+        <div class="item item03">
+          <p>积分</p>
+          <span>{{ state.statistic.points }}</span>
+        </div>
+        <div class="item item04">
+          <p>作品使用量</p>
+          <span>{{ state.statistic.appUses }}</span>
+        </div>
+        <div class="item item05">
+          <p>作品点赞数</p>
+          <span>{{ state.statistic.appLikes }}</span>
         </div>
       </div>
       <div class="pro-list">
@@ -49,12 +57,17 @@
   import { useInit } from '@/hooks/useInit';
   import { useUserStore } from '@/store/modules/user';
   import $router from '@/router/index';
+  import { useRoute } from 'vue-router';
+  import { getStatistic } from '@/api/user';
   import { sendLog } from '@/utils/sls-logger/sendLog';
   import { useBizDialog } from '@/plugins';
   const dialog = useBizDialog();
 
   const userStore = useUserStore();
   const { goAuth, logout } = useInit();
+  const state = reactive({
+    statistic: {},
+  });
 
   // 返回上一页
   function backPrePage() {
@@ -65,8 +78,14 @@
     if (!userStore.token) goAuth();
     $router.push({ name: 'builder' });
   }
-  onMounted(() => {
+  onMounted(async () => {
     if (!userStore.token) goAuth();
+    const route = useRoute();
+    const id = route.query.id * 1;
+    const { userId } = useUserStore();
+    // 未传入用户id 拉取自己的
+    const getStatisticData = await getStatistic(id || userId);
+    state.statistic = getStatisticData.data;
   });
 </script>
 <style lang="scss">
@@ -88,11 +107,15 @@
 
   .introduction {
     margin: 48px 52px;
+    min-width: 804px; //908px;
     .top-bar {
       height: 144px;
       background: rgba(255, 255, 255, 0.5);
       border-radius: 8px;
-      background-size: 100% 100%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: right bottom;
+      //   background-size: 100% 100%;
       background-image: url('https://moyu-chat.oss-cn-hangzhou.aliyuncs.com/develop-applet/images/img_introduction_bg.png');
       display: flex;
       padding: 24px;
@@ -149,6 +172,21 @@
           background-size: 100% 100%;
           background-image: url('@/assets/img_introduction_01.png');
         }
+        &.item01:after {
+          background-image: url('@/assets/img_introduction_01.png');
+        }
+        &.item02:after {
+          background-image: url('@/assets/img_introduction_02.png');
+        }
+        &.item03:after {
+          background-image: url('@/assets/img_introduction_03.png');
+        }
+        &.item04:after {
+          background-image: url('@/assets/img_introduction_04.png');
+        }
+        &.item05:after {
+          background-image: url('@/assets/img_introduction_05.png');
+        }
         p {
           font-size: 16px;
           line-height: 22px;
@@ -163,6 +201,15 @@
           line-height: 34px;
           color: #181d24;
         }
+      }
+    }
+    .pro-list {
+      p {
+        margin: 40px 0 24px;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 25px;
+        color: #181d24;
       }
     }
   }
