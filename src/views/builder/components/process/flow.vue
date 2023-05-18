@@ -36,7 +36,9 @@
         <p>
           <span>输入提示词</span>
           <IconFont :size="18" name="icon-icon-jiantou" />
-          <span> <IconFont name="icon-icon-ChatGPT" style="color: #5652ff" />ChatGPT</span>
+          <span>
+            <IconFont name="icon-icon-ChatGPT" :size="16" style="color: #5652ff" />ChatGPT</span
+          >
           <IconFont :size="18" name="icon-icon-jiantou" /><span>生成结果（ChatGPT）</span>
         </p>
         <IconFont name="icon-icon-shanchu" class="default" @click="clear()" />

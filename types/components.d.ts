@@ -21,6 +21,8 @@ declare module '@vue/runtime-core' {
     InvitedFriendAddScore: typeof import('./../src/bizComponents/dialogs/invited-friend-add-score.vue')['default']
     MessageContent: typeof import('./../src/components/message-content/index.vue')['default']
     NButton: typeof import('naive-ui')['NButton']
+    NCarousel: typeof import('naive-ui')['NCarousel']
+    NCarouselItem: typeof import('naive-ui')['NCarouselItem']
     NCheckbox: typeof import('naive-ui')['NCheckbox']
     NCollapseTransition: typeof import('naive-ui')['NCollapseTransition']
     NConfigProvider: typeof import('naive-ui')['NConfigProvider']
