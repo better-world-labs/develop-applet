@@ -19,10 +19,10 @@
     </div>
     <div class="introduction">
       <div class="top-bar">
-        <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
+        <img :src="state.userInfo.avatar || '@/assets/default-user.jpg'" />
         <div class="info-header">
-          {{ userStore.info.nickname }}
-          <p v-if="userStore.info?.id">ID：#{{ String(userStore.info?.id).slice(1) }}</p>
+          {{ state.userInfo.nickname }}
+          <p v-if="state.userInfo?.id">ID：#{{ String(state.userInfo?.id).slice(1) }}</p>
         </div>
       </div>
       <div class="bar-items">
@@ -59,7 +59,7 @@
   import { useUserStore } from '@/store/modules/user';
   import $router from '@/router/index';
   import { useRoute } from 'vue-router';
-  import { getStatistic } from '@/api/user';
+  import { getStatistic, getUsersList } from '@/api/user';
   import { getAppListByUser } from '@/api/application';
   import { sendLog } from '@/utils/sls-logger/sendLog';
   import { useBizDialog } from '@/plugins';
@@ -70,6 +70,7 @@
   const state = reactive({
     statistic: {},
     appList: [],
+    userInfo: {},
   });
 
   // 返回上一页
@@ -89,8 +90,10 @@
     // 未传入用户id 拉取自己的
     const getStatisticData = await getStatistic(id || userId);
     const getApps = await getAppListByUser(id || userId);
+    const userInfoData = await getUsersList({ ids: [id || userId] });
     state.statistic = getStatisticData.data;
     state.appList = getApps.data.list;
+    state.userInfo = userInfoData.data.list[0];
   });
 </script>
 <style lang="scss">
