@@ -123,7 +123,7 @@
     position: absolute;
     .top-bar {
       height: 144px;
-      background: rgba(255, 255, 255, 0.5);
+      background: #fff; //rgba(255, 255, 255, 0.5);
       border-radius: 8px;
       background-size: cover;
       background-repeat: no-repeat;
