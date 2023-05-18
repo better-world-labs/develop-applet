@@ -32,7 +32,7 @@
       <div class="content">
         💡为了让社区更稳定地运转，我们提供了积分充值方式。用较低的价格，你就可以获得大量积分！这些资金将用于维护
         API 接口的稳定和可持续性，为大家提供更优质的服务！🌈
-      </div> 
+      </div>
     </div>
     <shop v-if="isShop" @selective="selective"></shop>
     <realization></realization>
@@ -164,39 +164,37 @@
     }
   }
 
-
-.integral-get {
-  margin-top: 40px;
-  color: #181d24;
-  font-size: 16px;
-  margin-top: 40px;
-  margin-bottom: 16px;
-  font-weight: 500;
-}
-
-.strategy {
-  position: absolute;
-  max-height: calc(100% - 450px);
-  max-width: 680px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  border-radius: 12px;
-  padding: 20px; 
-  box-sizing: border-box;
-  background: linear-gradient(180deg, rgba(211, 210, 252, 0.7) 0%, rgba(255, 255, 255, 1) 45.04%);
-
-  .title {
-    color: #202226;
-    font-weight: 500;
+  .integral-get {
+    margin-top: 40px;
+    color: #181d24;
     font-size: 16px;
-  }
-  .title:not(:first-child) {
-    margin-top: 20px;
+    margin-top: 40px;
+    margin-bottom: 16px;
+    font-weight: 500;
   }
 
-  .content {
-    margin-top: 8px;
-    color: #5B5D62;
+  .strategy {
+    position: relative;
+    max-width: 680px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    border-radius: 12px;
+    padding: 20px;
+    box-sizing: border-box;
+    background: linear-gradient(180deg, rgba(211, 210, 252, 0.7) 0%, rgba(255, 255, 255, 1) 45.04%);
+
+    .title {
+      color: #202226;
+      font-weight: 500;
+      font-size: 16px;
+    }
+    .title:not(:first-child) {
+      margin-top: 20px;
+    }
+
+    .content {
+      margin-top: 8px;
+      color: #5b5d62;
+    }
   }
-}
 </style>

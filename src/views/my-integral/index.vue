@@ -14,25 +14,27 @@
       </n-button>
       <user-integral></user-integral>
     </div>
-    <div class="integral-wrap">
-      <div class="info">
-        <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
-        <div>
-          <div class="info-header">
-            {{ userStore.info.nickname }}
-            <span @click="putInfo"
-              ><IconFont name="icon-icon-xiugainicheng" :size="16" />修改昵称</span
-            >
+    <div class="integral-wrap-box">
+      <div class="integral-wrap">
+        <div class="info">
+          <img :src="userStore.info.avatar || '@/assets/default-user.jpg'" />
+          <div>
+            <div class="info-header">
+              {{ userStore.info.nickname }}
+              <span @click="putInfo"
+                ><IconFont name="icon-icon-xiugainicheng" :size="16" />修改昵称</span
+              >
+            </div>
+            <p v-if="userStore.info?.id">ID：#{{ String(userStore.info?.id).slice(1) }}</p>
+            <div class="logout-btn" @click="logOff">退出登录</div>
           </div>
-          <p v-if="userStore.info?.id">ID：#{{ String(userStore.info?.id).slice(1) }}</p>
-          <div class="logout-btn" @click="logOff">退出登录</div>
         </div>
+        <n-tabs type="line">
+          <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name">
+            <component :is="item.compo"></component>
+          </n-tab-pane>
+        </n-tabs>
       </div>
-      <n-tabs type="line">
-        <n-tab-pane v-for="item in tabList" :name="item.name" :key="item.name">
-          <component :is="item.compo"></component>
-        </n-tab-pane>
-      </n-tabs>
     </div>
   </div>
 </template>
@@ -118,6 +120,14 @@
     .back-btn {
       flex: 1;
     }
+  }
+
+  .integral-wrap-box {
+    width: 100%;
+    height: calc(100% - 72px);
+    box-sizing: border-box;
+    overflow-y: scroll;
+    position: absolute;
   }
 
   .integral-wrap {
