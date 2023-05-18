@@ -15,7 +15,7 @@
         </div>
       </div>
     </div>
-    <p>模版分类</p>
+    <p>分类<span class="require">*</span></p>
     <div class="tags">
       <n-radio-group v-model:value="props.appData.category">
         <n-radio :value="tag.id" v-for="tag in categoryList" :key="tag.id">
@@ -25,6 +25,12 @@
         </n-radio>
       </n-radio-group>
     </div>
+    <p
+      class="status-error"
+      v-if="props.appData.formItemsStatus == 'blur' && !props.appData.category"
+    >
+      请选择分类
+    </p>
     <div class="submit" @click="$emit('submit')">
       <IconFont name="icon-icon-fabu"></IconFont>发布<span v-if="isCopy" class="integral-num"
         >（20积分）</span
@@ -131,6 +137,18 @@
       color: #5b5d62;
       margin-top: 32px;
       margin-bottom: 16px;
+      .require {
+        color: #dc504c;
+        font-weight: 400;
+        font-size: 16px;
+      }
+      &.status-error {
+        color: #dc504c;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 20px;
+        margin: 12px 0 0;
+      }
     }
 
     .n-button {
@@ -139,6 +157,9 @@
     }
 
     .tags {
+      :deep(.n-radio__label) {
+        padding: 0;
+      }
       .tag {
         font-size: 16px;
         line-height: 16px;
@@ -146,6 +167,7 @@
         padding: 12px 24px;
         border: 1px solid #abacae;
         border-radius: 8px;
+        margin-right: 8px;
 
         &.active {
           background: #eeedfe;
@@ -155,14 +177,6 @@
 
       :deep(.n-radio__dot-wrapper) {
         display: none;
-      }
-
-      :deep(.n-radio) {
-        &:first-child {
-          padding-left: 0px;
-        }
-
-        --n-label-padding: 0 4px !important;
       }
     }
   }

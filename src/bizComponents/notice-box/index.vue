@@ -325,7 +325,9 @@ const {
         margin-left: 16px;
         margin-top: -16px;
     }
-
+    .iconfont{
+      color: #202226;  
+    }
     .iconfont:hover {
         color: #5652FF;
     }

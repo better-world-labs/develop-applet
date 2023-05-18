@@ -7,6 +7,8 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AdvertisingSpaceImg: typeof import('./../src/bizComponents/advertising-space-img/index.vue')['default']
+    AppList: typeof import('./../src/bizComponents/app-list/index.vue')['default']
     BuyWx: typeof import('./../src/bizComponents/dialogs/buy-wx.vue')['default']
     Card: typeof import('./../src/bizComponents/card/index.vue')['default']
     DefaultComposition: typeof import('./../src/components/default-composition/default-composition.vue')['default']
@@ -58,6 +60,7 @@ declare module '@vue/runtime-core' {
     ScoreAddCopy: typeof import('./../src/bizComponents/dialogs/score-add-copy.vue')['default']
     ShareInput: typeof import('./../src/bizComponents/dialogs/components/share-input.vue')['default']
     ShareLink: typeof import('./../src/bizComponents/dialogs/share-link.vue')['default']
+    UpdateNickname: typeof import('./../src/bizComponents/dialogs/update-nickname.vue')['default']
     UploadImage: typeof import('./../src/bizComponents/dialogs/upload-image.vue')['default']
     UserIntegral: typeof import('./../src/bizComponents/user-integral/user-integral.vue')['default']
   }

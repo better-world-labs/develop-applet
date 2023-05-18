@@ -55,7 +55,7 @@
 <style lang="scss">
   .integral-detail-box {
     position: absolute;
-    height: calc(100% - 72px - 96px - 48px);
+    height: calc(100% - 72px - 96px - 112px);
     width: calc(100% - 312px - 104px);
     max-width: 680px;
     background-color: #fff;

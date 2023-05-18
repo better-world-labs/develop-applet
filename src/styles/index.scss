@@ -24,14 +24,15 @@ textarea,
 // 公共header
 .home-header {
   height: 72px;
-  padding: 10px 32px 10px 44px;
+  padding: 10px 32px 10px 30px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   background: white;
+  box-shadow: 0px 12px 12px -12px rgba(211, 213, 235, 0.4);
   .highlight-btn {
     margin-top: 6px;
-  }
+  } 
 }
 
 // 全局滚动条样式
@@ -172,9 +173,8 @@ i.default {
       cursor: pointer;
       font-weight: 400;
       padding-bottom: 2px;
-      &:hover{
-        text-decoration:underline;
-
+      &:hover {
+        text-decoration: underline;
       }
     }
   }
