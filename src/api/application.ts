@@ -14,6 +14,13 @@ export function getAppList(categoryId: number) {
     url: `/api/apps?category=${categoryId}`,
   });
 }
+// 读取应用列表
+export function getAppListByUser(userId: number) {
+  return http.request({
+    method: 'get',
+    url: `/api/users/${userId}/apps`,
+  });
+}
 //  读取AI模型列表
 export function getAIList() {
   return http.request({

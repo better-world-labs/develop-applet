@@ -49,6 +49,7 @@
       </div>
       <div class="pro-list">
         <p>作品列表</p>
+        <app-list :appList="state.appList"></app-list>
       </div>
     </div>
   </div>
@@ -59,6 +60,7 @@
   import $router from '@/router/index';
   import { useRoute } from 'vue-router';
   import { getStatistic } from '@/api/user';
+  import { getAppListByUser } from '@/api/application';
   import { sendLog } from '@/utils/sls-logger/sendLog';
   import { useBizDialog } from '@/plugins';
   const dialog = useBizDialog();
@@ -67,6 +69,7 @@
   const { goAuth, logout } = useInit();
   const state = reactive({
     statistic: {},
+    appList: [],
   });
 
   // 返回上一页
@@ -81,11 +84,13 @@
   onMounted(async () => {
     if (!userStore.token) goAuth();
     const route = useRoute();
-    const id = route.query.id * 1;
+    const id = Number(route.query.id || 0);
     const { userId } = useUserStore();
     // 未传入用户id 拉取自己的
     const getStatisticData = await getStatistic(id || userId);
+    const getApps = await getAppListByUser(id || userId);
     state.statistic = getStatisticData.data;
+    state.appList = getApps.data.list;
   });
 </script>
 <style lang="scss">
@@ -106,8 +111,12 @@
   }
 
   .introduction {
-    margin: 48px 52px;
-    min-width: 804px; //908px;
+    padding: 48px 52px;
+    min-width: 908px;
+    height: calc(100% - 72px);
+    box-sizing: border-box;
+    overflow-y: scroll;
+    position: absolute;
     .top-bar {
       height: 144px;
       background: rgba(255, 255, 255, 0.5);

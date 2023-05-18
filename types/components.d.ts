@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     AdvertisingSpaceImg: typeof import('./../src/bizComponents/advertising-space-img/index.vue')['default']
+    AppList: typeof import('./../src/bizComponents/app-list/index.vue')['default']
     BuyWx: typeof import('./../src/bizComponents/dialogs/buy-wx.vue')['default']
     Card: typeof import('./../src/bizComponents/card/index.vue')['default']
     DefaultComposition: typeof import('./../src/components/default-composition/default-composition.vue')['default']
