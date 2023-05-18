@@ -5,7 +5,7 @@
 -->
 <template>
   <default-composition v-if="appList.length <= 0" content="暂无小程序哦~"></default-composition>
-  <n-grid :x-gap="12" cols="1 860:2 1200:3 1666:4 2000:4">
+  <n-grid :x-gap="32" cols="1 860:2 1200:3 1666:4 2000:4">
     <n-grid-item v-for="item in appList" :key="item.id">
       <card :item="item" @useTemplate="useTemplate"></card>
     </n-grid-item>

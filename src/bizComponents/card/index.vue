@@ -124,8 +124,7 @@
     background: #ffffff;
     box-shadow: 0px 6px 16px rgba(211, 213, 235, 0.4);
     border-radius: 16px;
-    margin-bottom: 24px;
-    margin-right: 20px;
+    margin-bottom: 32px;
 
     .desc-text {
       padding: 24px 24px 16px 24px;
