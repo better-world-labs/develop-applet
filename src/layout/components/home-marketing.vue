@@ -48,6 +48,7 @@ onMounted(() => {
         height: 80px;
         margin: 16px 16px 0px 16px;
         cursor: pointer;
+        border-radius: 8px;
     }
 
     img {
@@ -55,6 +56,7 @@ onMounted(() => {
         height: 80px;
         padding-bottom: 0px;
         border: none;
+        border-radius: 8px;
     }
 
     .popover-feed {

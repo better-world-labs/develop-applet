@@ -15,7 +15,7 @@
                 <img :src="props.item.target.url" alt="" />
             </div>
         </n-popover>
-        <div v-else>
+        <div v-else style="border-radius: 8px;">
             <img :src="props.item.thumbnail" alt="" @click="openUrl(props.item.target.url)" />
         </div>
     </div>
@@ -33,12 +33,15 @@ img {
     height: 80px;
     padding-bottom: 0px;
     border: none;
+    border-radius: 8px;
 }
 
 .popover-feed {
     padding: 8px !important;
 
     .code-feed {
+        border-radius: 8px;
+
         img {
             width: 112px;
             height: 112px;
