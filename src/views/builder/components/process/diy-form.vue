@@ -115,9 +115,9 @@
       align-items: center;
 
       .n-input {
-        font-size: 16px;
+        font-size: 14px;
         --n-border-radius: 21px !important;
-        --n-font-size: 16px !important;
+        --n-font-size: 14px !important;
         --n-height: 42px !important;
         background: #f3f3f7;
         margin-bottom: 16px;
