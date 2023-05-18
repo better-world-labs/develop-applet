@@ -11,7 +11,7 @@
     </blank-compo>
     <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
       <n-grid-item v-for="item in applicationStore.collectAppList" :key="item.id">
-        <card :item="item" @click="toDetail(item)"></card>
+        <card :item="item" @useTemplate="toDetail(item)"></card>
       </n-grid-item>
     </n-grid>
   </div>
