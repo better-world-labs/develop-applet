@@ -112,7 +112,6 @@
 
   .introduction {
     padding: 48px 52px;
-    min-width: 908px;
     height: calc(100% - 72px);
     box-sizing: border-box;
     overflow-y: scroll;
