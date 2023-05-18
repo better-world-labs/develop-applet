@@ -31,15 +31,15 @@
                         </div>
                         <div v-if="slidesPerView == 2" class="content" v-html="marked.parse(result.content)">
                         </div>
-                        <div v-else class="content-container"  v-html="marked.parse(result.content)">
+                        <div v-else class="content-container" v-html="marked.parse(result.content)">
                         </div>
                         <div class="option">
                             <div class="count">
                                 {{ index + 1 }}/{{ applicationStore.resultTotal }}
                             </div>
                             <div class="right">
-                                <div>
-                                    <icon-font-symbol @click="option(result, 1)" :name="applicationStore.resultStateList?.get(result.id) == 1
+                                <div @click="option(result, 1)">
+                                    <icon-font-symbol :name="applicationStore.resultStateList?.get(result.id) == 1
                                         ? 'icon-icon-yidianzan'
                                         : 'icon-icon-dianzan'
                                         " />
@@ -50,8 +50,8 @@
                                         {{ result.likeTimes }}
                                     </div>
                                 </div>
-                                <div>
-                                    <icon-font-symbol @click="option(result, -1)" :name="applicationStore.resultStateList?.get(result.id) == -1
+                                <div @click="option(result, -1)">
+                                    <icon-font-symbol :name="applicationStore.resultStateList?.get(result.id) == -1
                                         ? 'icon-icon-yicai'
                                         : 'icon-icon-cai'
                                         " />
@@ -73,12 +73,12 @@
 </template>
 <script setup>
 import { useApplicationStore } from '@/store/modules/application';
-import { marked } from 'marked'; 
+import { marked } from 'marked';
 
 const applicationStore = useApplicationStore();
 const props = defineProps(['uuid']);
 const emit = defineEmits(['result']);
- 
+
 const currentIndex = ref(0);
 const slidesPerView = ref(2);
 const autoplay = ref(true);
@@ -114,11 +114,11 @@ const requestNextData = () => {
 }
 
 const fullScreen = (index) => {
-    if (slidesPerView.value == 2) { // 展开成一个
+    if (slidesPerView.value == 2) { // 展开成一个 
         autoplay.value = false;
-        slidesPerView.value = 1;
         currentIndex.value = index;
-    } else {// 两个展示 
+        slidesPerView.value = 1;
+    } else {// 两个展示  
         autoplay.value = true;
         slidesPerView.value = 2;
         if ((index % 2) === 0) {
