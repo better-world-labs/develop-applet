@@ -34,6 +34,7 @@ img {
     padding-bottom: 0px;
     border: none;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .popover-feed {

@@ -121,6 +121,8 @@ function toIntegral(userId) {
   box-shadow: 0px 6px 16px rgba(211, 213, 235, 0.4);
   border-radius: 16px;
   margin-bottom: 32px;
+  height: 308px;
+  box-sizing: border-box;
 
   .desc-text {
     padding: 24px 24px 16px 24px;
@@ -143,6 +145,7 @@ function toIntegral(userId) {
     >div {
       margin: 0px 24px 0 24px;
       height: 170px;
+      box-sizing: border-box;
       background-color: #f3f3f7;
       border-radius: 10px;
       padding: 20px 12px;

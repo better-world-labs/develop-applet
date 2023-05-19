@@ -38,7 +38,9 @@
                 <n-form ref="formRef" :model="model" :rules="rules">
                   <n-form-item class="form-item" :path="form.label" :label="form.label"
                     v-for="(form, index) in appInfo.form" :key="index">
-                    <n-input v-model:value="model[form.label]" @keydown.enter.prevent
+                    <n-input type="textarea" :autosize="{
+                      minRows: 1,
+                    }" v-model:value="model[form.label]" @keydown.enter.prevent
                       :placeholder="form?.properties?.placeholder" />
                   </n-form-item>
                 </n-form>
@@ -147,8 +149,8 @@ import { getAppInfo, getSystemConfig } from '@/api/application';
 import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
-import { marked } from 'marked';  
- 
+import { marked } from 'marked';
+
 import {
   readStateApp,
   giveLikeApp,
@@ -158,7 +160,7 @@ import {
   setCollect,
 } from '@/api/application';
 
-import { useMessage } from 'naive-ui'; 
+import { useMessage } from 'naive-ui';
 
 const dialog = useBizDialog();
 
@@ -255,10 +257,10 @@ async function getCollect() {
 function printout() {
   const cursorSpan = `｜`
   timer.value = setInterval(() => {
-    if (cacheContent.value.length > printContent.value.length) { 
+    if (cacheContent.value.length > printContent.value.length) {
       printContent.value = cacheContent.value.slice(0, printContent.value.length + 2);
       document.getElementById('printContent').innerHTML = marked.parse(printContent.value);
-      
+
     }
   }, 80);
 }
@@ -523,26 +525,30 @@ onUnmounted(() => {
       }
 
       .n-input {
-        height: 56px !important;
-        line-height: 56px !important;
+        min-height: 56px !important;
         background: #ffffff;
         box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
         border-radius: 12px !important;
         margin-bottom: 8px !important;
         font-size: 18px !important;
         color: #202226 !important;
-        padding: 0 24px !important;
+        padding: 8px 16px !important;
         --n-caret-color: #5652ff !important;
         --n-border-hover: 1px solid #5652ff !important;
         --n-border-focus: 1px solid #5652ff !important;
         --n-loading-color: #5652ff !important;
+
+        .n-input__border {
+          border: 0 none !important;
+        }
+
+        .n-input__state-border {
+          box-shadow: none;
+        }
       }
     }
   }
 
-  // .n-button .n-button__content {
-  //   display: block;
-  // }
 }
 </style>
 <style scoped lang="scss">
@@ -588,11 +594,12 @@ onUnmounted(() => {
     line-height: 52px;
     color: #5b5d62;
     cursor: pointer;
-     .iconfont {
-          color:#5B5D62;
-          font-size: 16px;
-          margin-right: 4px; 
-        }
+
+    .iconfont {
+      color: #5B5D62;
+      font-size: 16px;
+      margin-right: 4px;
+    }
   }
 }
 

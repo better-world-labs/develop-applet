@@ -6,16 +6,16 @@
 
 <template>
   <div class="home-guide">
-    <n-popover trigger="hover" placement="left" class="popover" >
-        <template #trigger>
-            <div class="icon-wrap" style="margin-bottom: 16px" @click="shareLink">
-            <IconFont name="icon-icon-yemianfenxiang" />
-          </div>    
-        </template>
-        <div class="large-text">
-            分享
+    <n-popover trigger="hover" placement="left" class="popover">
+      <template #trigger>
+        <div class="icon-wrap" style="margin-bottom: 16px" @click="shareLink">
+          <IconFont name="icon-icon-yemianfenxiang" />
         </div>
-    </n-popover> 
+      </template>
+      <div class="large-text">
+        分享
+      </div>
+    </n-popover>
     <n-popover trigger="click" :show-arrow="false" placement="left-end" @update:show="updatePopover" class="popover-feed">
       <template #trigger>
         <n-popover @update:show="updateHover" trigger="hover" placement="left" class="popover" :disabled="popFeedBack">
@@ -107,7 +107,7 @@ const shareLink = () => {
   report({
     type: 'Click',
     node: 'share',
-    block: 'help_share' 
+    block: 'help_share'
   })
   dialog.open(
     'share-link',
@@ -158,6 +158,7 @@ function showFirstDialog() {
   position: fixed;
   right: 10px;
   bottom: 40px;
+  z-index: 3;
 
   .msg {
     width: 20px;

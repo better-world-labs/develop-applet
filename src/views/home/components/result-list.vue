@@ -29,7 +29,8 @@
                                 {{ result.inputArgs.join('·') }}
                             </span>
                         </div>
-                        <div v-if="slidesPerView == 2" class="content" v-html="marked.parse(result.content)">
+                        <div v-if="slidesPerView == 2" class="content">
+                            {{ result.content }}
                         </div>
                         <div v-else class="content-container" v-html="marked.parse(result.content)">
                         </div>
@@ -173,6 +174,7 @@ const fullScreen = (index) => {
 
                 .iconfont {
                     font-size: 20px;
+                    color: #ABACAE;
 
                     &:hover {
                         cursor: pointer;
@@ -200,7 +202,8 @@ const fullScreen = (index) => {
 
             span {
                 display: inline-block;
-                background: #ffffff;
+                background: white;
+                border-radius: 4px;
                 padding: 0 8px;
             }
         }
@@ -209,11 +212,15 @@ const fullScreen = (index) => {
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 4;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             white-space: pre-line;
             height: 96px;
             margin-bottom: 6px;
+
+            h1 {
+                line-height: 32px;
+            }
         }
 
         .content-container {
