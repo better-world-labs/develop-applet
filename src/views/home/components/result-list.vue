@@ -115,13 +115,14 @@ const requestNextData = () => {
 }
 
 const fullScreen = (index) => {
-    debugger
+    console.log(11111)
     if (slidesPerView.value == 2) { // 展开成一个  
+        console.log(333333)
         autoplay.value = false;
         currentIndex.value = index;
         slidesPerView.value = 1;
-    } else {// 两个展示   
-        debugger
+    } else {// 两个展示    
+        console.log(44444)
         autoplay.value = true;
         slidesPerView.value = 2;
         if ((index % 2) === 0) {
