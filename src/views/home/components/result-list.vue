@@ -11,7 +11,7 @@
         </div>
         <div>
             <n-carousel :slides-per-view="slidesPerView" :loop="false" :autoplay="autoplay" :show-dots="false"
-                :current-index="currentIndex">
+                :current-index="currentIndex" @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id">
                     <div class="result-item">
                         <div class="user">
@@ -115,11 +115,11 @@ const requestNextData = () => {
 }
 
 const fullScreen = (index) => {
-    if (slidesPerView.value == 2) { // 展开成一个 
+    if (slidesPerView.value == 2) { // 展开成一个  
         autoplay.value = false;
         currentIndex.value = index;
         slidesPerView.value = 1;
-    } else {// 两个展示  
+    } else {// 两个展示   
         autoplay.value = true;
         slidesPerView.value = 2;
         if ((index % 2) === 0) {
@@ -130,6 +130,9 @@ const fullScreen = (index) => {
     }
 }
 
+const changeCurrent = (val) => {
+    currentIndex.value = val;
+}
 
 </script>
 <style lang="scss">
