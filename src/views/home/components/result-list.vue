@@ -19,9 +19,11 @@
                                 <img width="36" :src="result.createdBy.avatar || '@/assets/default-user.jpg'" />
                             </div>
                             <div>{{ result.createdBy.nickname }}</div>
-                            <div @click="fullScreen(index)">
-                                <icon-font
-                                    :name="slidesPerView == 2 ? 'icon-icon-zhankaikapian' : 'icon-icon-shouqikapian'" />
+                            <div v-if="slidesPerView == 2" @click="setFullScreen(index)">
+                                <icon-font name="icon-icon-zhankaikapian" />
+                            </div>
+                            <div v-else @click="setFullScreen(index)">
+                                <icon-font name="icon-icon-shouqikapian" />
                             </div>
                         </div>
                         <div class="label">
@@ -114,15 +116,12 @@ const requestNextData = () => {
     applicationStore.getAppResult(props.uuid);
 }
 
-const fullScreen = (index) => {
-    console.log(11111)
-    if (slidesPerView.value == 2) { // 展开成一个  
-        console.log(333333)
+const setFullScreen = (index) => {
+    if (slidesPerView.value == 2) { // 展开成一个   
         autoplay.value = false;
         currentIndex.value = index;
         slidesPerView.value = 1;
-    } else {// 两个展示    
-        console.log(44444)
+    } else {// 两个展示     
         autoplay.value = true;
         slidesPerView.value = 2;
         if ((index % 2) === 0) {
