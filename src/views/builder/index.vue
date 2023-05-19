@@ -268,6 +268,7 @@ function report(params) {
         i {
           font-size: 18px;
           margin-right: 9px;
+          color: #5652ff;
         }
 
         border: 1px solid #5652ff;
