@@ -18,8 +18,8 @@
                     </result>
                 </n-carousel-item>
             </n-carousel>
-            <n-carousel v-if="slidesPerView == 1" slides-per-view="1" :loop="false" :show-dots="false"
-                :current-index="currentIndex" @update:current-index="changeCurrent">
+            <n-carousel v-else slides-per-view="1" :loop="false" :show-dots="false" :current-index="currentIndex"
+                @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id">
                     <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
@@ -30,7 +30,6 @@
     </div>
 </template>
 <script setup>
-import result from "./result.vue"
 import { useApplicationStore } from '@/store/modules/application';
 
 const applicationStore = useApplicationStore();
