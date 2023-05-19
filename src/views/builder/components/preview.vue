@@ -89,6 +89,7 @@
       font-size: 40px;
       line-height: 40px;
       color: #181d24;
+      word-break: break-all;
     }
 
     .user {
