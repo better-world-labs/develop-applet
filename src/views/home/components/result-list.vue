@@ -10,73 +10,28 @@
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--right" @click="next" />
         </div>
         <div>
-            <n-carousel :slides-per-view="slidesPerView" :loop="false" :autoplay="autoplay" :show-dots="false"
+            <n-carousel v-if="slidesPerView == 2" slides-per-view="2" :loop="false" autoplay :show-dots="false"
                 :current-index="currentIndex" @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id">
-                    <div class="result-item">
-                        <div class="user">
-                            <div>
-                                <img width="36" :src="result.createdBy.avatar || '@/assets/default-user.jpg'" />
-                            </div>
-                            <div>{{ result.createdBy.nickname }}</div>
-                            <div>
-                                <icon-font @click="setExpansion(index)" name="icon-icon-zhankaikapian" />
-                            </div>
-                            <div>
-                                <icon-font @click="setContraction(index)" name="icon-icon-shouqikapian" />
-                            </div>
-                        </div>
-                        <div class="label">
-                            <span>
-                                {{ result.inputArgs.join('·') }}
-                            </span>
-                        </div>
-                        <div v-if="slidesPerView == 2" class="content">
-                            {{ result.content }}
-                        </div>
-                        <div v-else class="content-container" v-html="marked.parse(result.content)">
-                        </div>
-                        <div class="option">
-                            <div class="count">
-                                {{ index + 1 }}/{{ applicationStore.resultTotal }}
-                            </div>
-                            <div class="right">
-                                <div @click="option(result, 1)">
-                                    <icon-font-symbol :name="applicationStore.resultStateList?.get(result.id) == 1
-                                        ? 'icon-icon-yidianzan'
-                                        : 'icon-icon-dianzan'
-                                        " />
-
-                                    <div :class="{
-                                        'active-text': applicationStore.resultStateList?.get(result.id) == 1,
-                                    }">
-                                        {{ result.likeTimes }}
-                                    </div>
-                                </div>
-                                <div @click="option(result, -1)">
-                                    <icon-font-symbol :name="applicationStore.resultStateList?.get(result.id) == -1
-                                        ? 'icon-icon-yicai'
-                                        : 'icon-icon-cai'
-                                        " />
-
-                                    <div :class="{
-                                        'active-text': applicationStore.resultStateList?.get(result.id) == -1,
-                                    }">
-                                        {{ result.hateTimes }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                        :option="option" :num="index" @updatePerView="updatePerView">
+                    </result>
                 </n-carousel-item>
-
+            </n-carousel>
+            <n-carousel v-if="slidesPerView == 1" slides-per-view="1" :loop="false" :show-dots="false"
+                :current-index="currentIndex" @update:current-index="changeCurrent">
+                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id">
+                    <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                        :option="option" :num="index" @updatePerView="updatePerView">
+                    </result>
+                </n-carousel-item>
             </n-carousel>
         </div>
     </div>
 </template>
 <script setup>
+import result from "./result.vue"
 import { useApplicationStore } from '@/store/modules/application';
-import { marked } from 'marked';
 
 const applicationStore = useApplicationStore();
 const props = defineProps(['uuid']);
@@ -84,11 +39,23 @@ const emit = defineEmits(['result']);
 
 const currentIndex = ref(0);
 const slidesPerView = ref(2);
-const autoplay = ref(true);
 
 
 const option = (item, state) => {
     emit('result', item, state);
+}
+
+const updatePerView = (currentNum, index) => {
+    if (index == 2) {
+        currentIndex.value = currentNum;
+    } else {
+        if ((currentNum % 2) === 0) {
+            currentIndex.value = currentNum;
+        } else {
+            currentIndex.value = currentNum - 1;
+        }
+    }
+    slidesPerView.value = index;
 }
 
 // 上一页
@@ -116,23 +83,6 @@ const requestNextData = () => {
     applicationStore.getAppResult(props.uuid);
 }
 
-const setContraction = (index) => {
-    console.log(1111, '收起来')
-    autoplay.value = true;
-    if ((index % 2) === 0) {
-        currentIndex.value = index;
-    } else {
-        currentIndex.value = index - 1;
-    }
-    slidesPerView.value = 2;
-}
-const setExpansion = (index) => {
-    console.log(33333, '展开')
-    autoplay.value = false;
-    currentIndex.value = index;
-    slidesPerView.value = 1;
-}
-
 
 const changeCurrent = (val) => {
     currentIndex.value = val;
@@ -149,145 +99,7 @@ const changeCurrent = (val) => {
     height: 274px;
     box-sizing: border-box;
 
-    .result-item {
-        margin: 0 8px;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        color: #202226;
-        background: #f7f7fb;
-        border-radius: 12px;
-        padding: 16px;
-        height: 242px;
-        box-sizing: border-box;
 
-        .user {
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 24px;
-            color: #5b5d62;
-            display: flex;
-            flex-direction: row;
-
-            img {
-                width: 24px;
-                height: 24px;
-                border-radius: 24px;
-                margin-right: 8px;
-            }
-
-            >div:last-child {
-                margin-left: auto;
-
-                .iconfont {
-                    font-size: 20px;
-                    color: #ABACAE;
-
-                    &:hover {
-                        cursor: pointer;
-                        color: #5652FF;
-                    }
-                }
-            }
-        }
-
-        .label {
-            border-radius: 4px;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 30px;
-            color: #000000;
-            margin: 12px 0;
-            height: 30px;
-
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            white-space: pre-line;
-
-            span {
-                display: inline-block;
-                background: white;
-                border-radius: 4px;
-                padding: 0 8px;
-            }
-        }
-
-        .content {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            white-space: pre-line;
-            height: 96px;
-            margin-bottom: 6px;
-
-            h1 {
-                line-height: 32px;
-            }
-        }
-
-        .content-container {
-            height: 96px;
-            margin-bottom: 6px;
-            overflow-x: hidden;
-            overflow-y: scroll;
-        }
-
-        .option {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            align-content: center;
-
-
-            .count {
-                color: #ABACAE;
-                font-style: normal;
-                font-weight: 400;
-                font-size: 16px;
-                line-height: 18px;
-            }
-
-            .right {
-                margin-left: auto;
-                cursor: pointer;
-                color: #5B5D62;
-                display: flex;
-                flex-direction: row;
-
-
-
-                >div {
-                    background: #f7f7fb;
-                    margin-right: 4px;
-                    padding: 4px;
-                    box-sizing: border-box;
-                    display: flex;
-                    flex-direction: row;
-
-                    .iconfont-svg {
-                        width: 24px;
-                        height: 24px;
-                        display: flex;
-                        flex-direction: row;
-                        margin-right: 6px;
-                    }
-
-                    &:hover {
-                        color: #202226;
-                    }
-
-                    .active-text {
-                        color: #5652ff;
-                    }
-                }
-            }
-        }
-    }
 }
 
 .custom-arrow {
