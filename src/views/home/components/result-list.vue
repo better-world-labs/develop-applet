@@ -19,11 +19,11 @@
                                 <img width="36" :src="result.createdBy.avatar || '@/assets/default-user.jpg'" />
                             </div>
                             <div>{{ result.createdBy.nickname }}</div>
-                            <div v-if="slidesPerView == 2" @click="setFullScreen(index)">
-                                <icon-font name="icon-icon-zhankaikapian" />
+                            <div>
+                                <icon-font @click="setExpansion(index)" name="icon-icon-zhankaikapian" />
                             </div>
-                            <div v-else @click="setFullScreen(index)">
-                                <icon-font name="icon-icon-shouqikapian" />
+                            <div>
+                                <icon-font @click="setContraction(index)" name="icon-icon-shouqikapian" />
                             </div>
                         </div>
                         <div class="label">
@@ -116,21 +116,23 @@ const requestNextData = () => {
     applicationStore.getAppResult(props.uuid);
 }
 
-const setFullScreen = (index) => {
-    if (slidesPerView.value == 2) { // 展开成一个   
-        autoplay.value = false;
+const setContraction = (index) => {
+    console.log(1111, '收起来')
+    autoplay.value = true;
+    if ((index % 2) === 0) {
         currentIndex.value = index;
-        slidesPerView.value = 1;
-    } else {// 两个展示     
-        autoplay.value = true;
-        slidesPerView.value = 2;
-        if ((index % 2) === 0) {
-            currentIndex.value = index;
-        } else {
-            currentIndex.value = index - 1;
-        }
+    } else {
+        currentIndex.value = index - 1;
     }
+    slidesPerView.value = 2;
 }
+const setExpansion = (index) => {
+    console.log(33333, '展开')
+    autoplay.value = false;
+    currentIndex.value = index;
+    slidesPerView.value = 1;
+}
+
 
 const changeCurrent = (val) => {
     currentIndex.value = val;
