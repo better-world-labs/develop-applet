@@ -9,7 +9,7 @@
       <div>还未收藏哦，快去广场体验小程序吧！</div>
       <div>更多玩法等你来解锁～ <a href="/my-integral" class="link"> 点击了解>> </a></div>
     </blank-compo>
-    <n-grid :x-gap="12" v-else cols="1 860:2 1200:3 1666:4 2000:4">
+    <n-grid :x-gap="32" v-else cols="1 860:2 1200:3 1666:4 2000:4">
       <n-grid-item v-for="item in applicationStore.collectAppList" :key="item.id">
         <card :item="item" @useTemplate="toDetail(item)"></card>
       </n-grid-item>
