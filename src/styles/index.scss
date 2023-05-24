@@ -182,3 +182,25 @@ i.default {
     }
   }
 }
+
+.result-content,
+.result-item {
+  table {
+    min-width: 300px;
+    border: 1px solid #999999;
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    border: 1px solid #999999;
+    text-align: center;
+    padding: 8px 2px;
+  }
+
+  // pre {
+  //   color: #333333;
+  //   padding: 12px;
+  //   border-radius: 8px;
+  //   background: #999999;
+  // }
+}

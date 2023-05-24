@@ -107,7 +107,7 @@
                 processing />
             </div>
             <div v-else>
-              <p style="white-space: pre-line">
+              <p>
               <div id="printContent"
                 :class="{ 'print-stop': !receiveMessaging && cacheContent.length == printContent.length }"></div>
               </p>
@@ -123,7 +123,8 @@
               </div>
             </div>
           </div>
-          <div class="advertising-space" v-if="advertisingList.length">
+          <div class="advertising-space"
+            v-if="advertisingList.length && !receiveMessaging && !showLoading && cacheContent.length == printContent.length">
             <div v-for="item in advertisingList">
               <advertising-space-img :item="item"></advertising-space-img>
             </div>
@@ -774,6 +775,7 @@ onUnmounted(() => {
         background: linear-gradient(132.93deg, #f1f7ff 5.27%, #faf8ff 59.89%, #eeedfe 98.91%);
         border-radius: 16px;
         min-height: 128px;
+
 
         .loading {
           padding: 40px 64px;
