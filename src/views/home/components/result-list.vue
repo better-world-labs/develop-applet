@@ -9,16 +9,19 @@
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--left" @click="prev" />
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--right" @click="next" />
         </div>
-        <div>
-            <n-carousel v-if="slidesPerView == 2" slides-per-view="2" :loop="true" autoplay :show-dots="false"
-                :current-index="currentIndex" @update:current-index="changeCurrent">
+        <div v-if="slidesPerView == 2" :key="2">
+            <n-carousel slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
+                @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id">
                     <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
                     </result>
                 </n-carousel-item>
             </n-carousel>
-            <n-carousel v-else slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
+
+        </div>
+        <div v-else :key="1">
+            <n-carousel slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id">
                     <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
