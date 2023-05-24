@@ -45,7 +45,7 @@ const option = (item, state) => {
 }
 
 const updatePerView = (currentNum, index) => {
-    if (index == 2) {
+    if (index == 1) {
         currentIndex.value = currentNum;
     } else {
         if ((currentNum % 2) === 0) {

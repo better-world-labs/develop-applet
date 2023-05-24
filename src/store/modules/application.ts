@@ -92,7 +92,7 @@ export const useApplicationStore = defineStore('application', {
     // 请求应用结果列表
     async getAppResult(uuid: string, onePageLoading: boolean = false) {
       const params: { cursor?: string | undefined } = {};
-      if (this.resultNextCursor) {
+      if (this.resultNextCursor && !onePageLoading) {
         params.cursor = this.resultNextCursor;
       } else if (!this.resultNextCursor && !onePageLoading) {
         // 最后一页不再加载 ｜ 非首页加载

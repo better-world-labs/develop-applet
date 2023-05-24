@@ -15,8 +15,13 @@
             </div>
         </div>
         <div class="label">
-            <span>
+            <span v-if="props.slidesPerView == 2">
                 {{ props.result?.inputArgs.join('·') }}
+            </span>
+            <span v-else>
+                <template v-for="(arg, index) in props.result?.inputArgs" :key="index">
+                    {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
+                </template>
             </span>
         </div>
         <div v-if="props.slidesPerView == 2" class="content">
