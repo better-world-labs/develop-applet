@@ -20,7 +20,7 @@
             @blur="value.status = 'blur'"
             :placeholder="
               value.label == '' && value.status == 'blur'
-                ? '请填写标题'
+                ? '请填写选项名称'
                 : `${index == 0 ? '出发地' : '选项' + (index + 1)}`
             "
             type="text"
