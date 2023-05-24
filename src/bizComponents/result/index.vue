@@ -73,144 +73,145 @@ const setExpansion = (index) => {
     }
 }
 </script>
-<style lang="scss" scoped>
-.result-item {
-    margin: 0 8px;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    color: #202226;
-    background: #f7f7fb;
-    border-radius: 12px;
-    padding: 16px;
-    height: 242px;
-    box-sizing: border-box;
+<style lang="scss" scoped> .result-item {
+     margin: 0 8px;
+     font-weight: 400;
+     font-size: 16px;
+     line-height: 24px;
+     color: #202226;
+     background: #f7f7fb;
+     border-radius: 12px;
+     padding: 16px;
+     height: 242px;
+     box-sizing: border-box;
 
-    .user {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        color: #5b5d62;
-        display: flex;
-        flex-direction: row;
+     .user {
+         font-weight: 400;
+         font-size: 16px;
+         line-height: 24px;
+         color: #5b5d62;
+         display: flex;
+         flex-direction: row;
 
-        img {
-            width: 24px;
-            height: 24px;
-            border-radius: 24px;
-            margin-right: 8px;
-        }
+         img {
+             width: 24px;
+             height: 24px;
+             border-radius: 24px;
+             margin-right: 8px;
+         }
 
-        >div:last-child {
-            margin-left: auto;
+         >div:last-child {
+             margin-left: auto;
 
-            .iconfont {
-                font-size: 20px;
-                color: #ABACAE;
+             .iconfont {
+                 font-size: 20px;
+                 color: #ABACAE;
 
-                &:hover {
-                    cursor: pointer;
-                    color: #5652FF;
-                }
-            }
-        }
-    }
+                 &:hover {
+                     cursor: pointer;
+                     color: #5652FF;
+                 }
+             }
+         }
+     }
 
-    .label {
-        border-radius: 4px;
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 30px;
-        color: #000000;
-        margin: 12px 0;
-        height: 30px;
+     .label {
+         border-radius: 4px;
+         font-weight: 400;
+         font-size: 14px;
+         line-height: 30px;
+         color: #000000;
+         margin: 12px 0;
+         height: 30px;
 
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
-        white-space: pre-line;
+         overflow: hidden;
+         text-overflow: ellipsis;
+         display: -webkit-box;
+         -webkit-line-clamp: 1;
+         -webkit-box-orient: vertical;
+         white-space: pre-line;
 
-        span {
-            display: inline-block;
-            background: white;
-            border-radius: 4px;
-            padding: 0 8px;
-        }
-    }
+         span {
+             display: inline-block;
+             background: white;
+             border-radius: 4px;
+             padding: 0 8px;
+         }
+     }
 
-    .content {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        white-space: pre-line;
-        height: 96px;
-        margin-bottom: 6px;
+     .content {
+         overflow: hidden;
+         text-overflow: ellipsis;
+         display: -webkit-box;
+         -webkit-line-clamp: 3;
+         -webkit-box-orient: vertical;
+         white-space: pre-line;
+         height: 96px;
+         margin-bottom: 6px;
 
-        h1 {
-            line-height: 32px;
-        }
-    }
+         h1 {
+             line-height: 32px;
+         }
+     }
 
-    .content-container {
-        height: 96px;
-        margin-bottom: 6px;
-        overflow-x: hidden;
-        overflow-y: scroll;
-    }
-
-    .option {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        align-content: center;
+     .content-container {
+         height: 96px;
+         margin-bottom: 6px;
+         overflow-x: hidden;
+         overflow-y: scroll;
 
 
-        .count {
-            color: #ABACAE;
-            font-style: normal;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 18px;
-        }
+     }
 
-        .right {
-            margin-left: auto;
-            cursor: pointer;
-            color: #5B5D62;
-            display: flex;
-            flex-direction: row;
+     .option {
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+         align-content: center;
 
 
+         .count {
+             color: #ABACAE;
+             font-style: normal;
+             font-weight: 400;
+             font-size: 16px;
+             line-height: 18px;
+         }
 
-            >div {
-                background: #f7f7fb;
-                margin-right: 4px;
-                padding: 4px;
-                box-sizing: border-box;
-                display: flex;
-                flex-direction: row;
+         .right {
+             margin-left: auto;
+             cursor: pointer;
+             color: #5B5D62;
+             display: flex;
+             flex-direction: row;
 
-                .iconfont-svg {
-                    width: 24px;
-                    height: 24px;
-                    display: flex;
-                    flex-direction: row;
-                    margin-right: 6px;
-                }
 
-                &:hover {
-                    color: #202226;
-                }
 
-                .active-text {
-                    color: #5652ff;
-                }
-            }
-        }
-    }
-}
+             >div {
+                 background: #f7f7fb;
+                 margin-right: 4px;
+                 padding: 4px;
+                 box-sizing: border-box;
+                 display: flex;
+                 flex-direction: row;
+
+                 .iconfont-svg {
+                     width: 24px;
+                     height: 24px;
+                     display: flex;
+                     flex-direction: row;
+                     margin-right: 6px;
+                 }
+
+                 &:hover {
+                     color: #202226;
+                 }
+
+                 .active-text {
+                     color: #5652ff;
+                 }
+             }
+         }
+     }
+ }
 </style>
