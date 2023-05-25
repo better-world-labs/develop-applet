@@ -5,37 +5,37 @@
 -->
 <template>
     <div class="public-results" v-if="applicationStore.resultList.length > 0">
-        <div class="custom-arrow">
-            <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--left" @click="prev" />
-            <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--right" @click="next" />
-        </div> 
-         <result-com-one :result="applicationStore.resultList[0]"
-             :option="option" :num="index" @updatePerView="updatePerView">
-         </result-com-one> 
-        <div v-if="slidesPerView == 2">
-            <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
-                @update:current-index="changeCurrent">
-                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
-                    <component :is="resultComTwo" :key="'resultComTwo' + index + '1'" :result="result"
-                        :option="option" :num="index" @updatePerView="updatePerView">
-                    </component>
-                </n-carousel-item>
-            </n-carousel> 
-        </div>
-        <div> 
-            <n-carousel key="slidesPerView2" :show-dots="false" :current-index="currentIndex"
-                @update:current-index="changeCurrent">
-                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'"> 
-                    <div style="min-height: 200rpx;color:red">
-                        {{ index }}
-                        <button>{{ index }}</button>
-                        <result-com-one :key="'resultComOne' + index + '2'"  :result="result"
+            <div class="custom-arrow">
+                <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--left" @click="prev" />
+                <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--right" @click="next" />
+            </div> 
+             <ResultComTwo :result="applicationStore.resultList[0]"
+                 :option="option" :num="index" @updatePerView="updatePerView">
+             </ResultComTwo> 
+            <div v-if="slidesPerView == 2">
+                <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
+                    @update:current-index="changeCurrent">
+                    <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
+                        <ResultComTwo :key="'resultComTwo' + index + '1'" :result="result"
                             :option="option" :num="index" @updatePerView="updatePerView">
-                        </result-com-one>
-                    </div>
-                </n-carousel-item>
-            </n-carousel>
-        </div>
+                        </ResultComTwo>
+                    </n-carousel-item>
+                </n-carousel> 
+            </div>
+            <div> 
+                <n-carousel key="slidesPerView2" :show-dots="false" :current-index="currentIndex"
+                    @update:current-index="changeCurrent">
+                    <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'"> 
+                        <div style="min-height: 200rpx;color:red">
+                            {{ index }}
+                            <button>{{ index }}</button>
+                            <ResultComTwo :key="'resultComOne' + index + '2'"  :result="result"
+                                :option="option" :num="index" @updatePerView="updatePerView">
+                            </ResultComTwo>
+                        </div>
+                    </n-carousel-item>
+                </n-carousel>
+            </div>
     </div>
 </template>
 <script setup>
