@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="label">
-            <span  v-if="props.slidesPerView === 2">
+            <span  v-if="props.quantity == 2">
                 {{ props.result?.inputArgs.join('·') }}
             </span>
              <span v-else>
@@ -25,7 +25,7 @@
                 </span>
             
         </div> 
-        <div v-if="props.slidesPerView === 2" class="content">
+        <div v-if="props.quantity == 2" class="content">
                 {{ props.result?.content }}
         </div>
          <div v-else class="content-container" v-html="marked.parse(props.result?.content)">
@@ -67,11 +67,11 @@
 import { useApplicationStore } from '@/store/modules/application'; 
 import { marked } from 'marked';
 const applicationStore = useApplicationStore();
-const props = defineProps(['result', 'num', 'option','slidesPerView']);
+const props = defineProps(['result', 'num', 'option','quantity']);
 const emit = defineEmits(['updatePerView'])
 
 const setExpansion = (index) => { 
-    if (props.slidesPerView == 2) {
+    if (props.quantity == 2) {
         emit('updatePerView', index, 1);
     } else {
         emit('updatePerView', index, 2);

@@ -13,7 +13,7 @@
                 <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                     @update:current-index="changeCurrent">
                     <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
-                        <ResultComTwo :key="'resultComTwo' + index + ''" :result="result" :slidesPerView="slidesPerView"
+                        <ResultComTwo :key="'resultComTwo' + index + ''" :result="result" :quantity="2"
                             :option="option" :num="index" @updatePerView="updatePerView">
                         </ResultComTwo>
                     </n-carousel-item>
@@ -23,7 +23,7 @@
                 <n-carousel key="slidesPerView2" :show-dots="false" :current-index="currentIndex"
                     @update:current-index="changeCurrent">
                     <n-carousel-item v-for="(result, index) in applicationStore.resultList"  :key="index + '2'"> 
-                        <ResultComTwo :key="'resultComOne' + index + '2'"  :result="result" :slidesPerView="slidesPerView"
+                        <ResultComTwo :key="'resultComOne' + index + '2'"  :result="result" :quantity="1"
                                 :option="option" :num="index" @updatePerView="updatePerView">
                         </ResultComTwo>
                     </n-carousel-item>
