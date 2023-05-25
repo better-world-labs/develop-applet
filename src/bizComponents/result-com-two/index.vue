@@ -14,22 +14,24 @@
                 <icon-font name="icon-icon-zhankaikapian" />
             </div>
         </div>
-        <!-- <div class="label">
-            <span  v-if="props.quantity == 2">
+        <template v-if="props.quantity == 2">
+            <div class="label">
                 {{ props.result?.inputArgs.join('·') }}
-            </span>
-             <span v-else>
-                    <template v-for="(arg, index) in props.result?.inputArgs" :key="index">
-                        {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
-                    </template>
-                </span>
-            
-        </div> 
-        <div v-if="props.quantity == 2" class="content">
+            </div>
+            <div class="content">
                 {{ props.result?.content }}
-        </div>
-         <div v-else class="content-container" v-html="marked.parse(props.result?.content)">
-        </div> -->
+            </div>
+        </template>
+        <template v-if="props.quantity == 1">
+            <div class="label">
+                <template v-for="(arg, index) in props.result?.inputArgs" :key="index">
+                    {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
+                </template>
+            </div>
+            <!-- <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
+            </div> -->
+        </template>
+
         <div class="option">
             <div class="count">
                 {{ props.num + 1 }}/{{ applicationStore.resultTotal }}
@@ -64,13 +66,13 @@
     </div>
 </template>
 <script setup>
-import { useApplicationStore } from '@/store/modules/application'; 
-// import { marked } from 'marked';
+import { useApplicationStore } from '@/store/modules/application';
+import { marked } from 'marked';
 const applicationStore = useApplicationStore();
-const props = defineProps(['result', 'num', 'option','quantity']);
+const props = defineProps(['result', 'num', 'option', 'quantity']);
 const emit = defineEmits(['updatePerView'])
 
-const setExpansion = (index) => { 
+const setExpansion = (index) => {
     if (props.quantity == 2) {
         emit('updatePerView', index, 1);
     } else {
