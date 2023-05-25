@@ -14,7 +14,7 @@
                 <icon-font name="icon-icon-zhankaikapian" />
             </div>
         </div>
-        <template>
+        <template v-show="props.quantity == 2">
             <div class="label">
                 {{ props.result?.inputArgs.join('·') }}
             </div>
