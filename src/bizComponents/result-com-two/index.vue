@@ -14,24 +14,23 @@
                 <icon-font name="icon-icon-zhankaikapian" />
             </div>
         </div>
-        <template v-show="props.quantity == 2">
+        <div v-if="props.quantity == 2">
             <div class="label">
                 {{ props.result?.inputArgs.join('·') }}
             </div>
             <div class="content">
                 {{ props.result?.content }}
             </div>
-        </template>
-        <template v-show="props.quantity == 1">
-            <!-- <div class="label" v-if="props.result?.inputArgs">
-                <template v-for="(arg, index) in props.result?.inputArgs" :key="index">
+        </div>
+        <div v-if="props.quantity == 1">
+            <div class="label" v-if="props.result.inputArgs">
+                <span v-for="(arg, index) in props.result?.inputArgs" :key="index">
                     {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
-                </template>
-            </div> -->
+                </span>
+            </div>
             <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
             </div>
-        </template>
-
+        </div>
         <div class="option">
             <div class="count">
                 {{ props.num + 1 }}/{{ applicationStore.resultTotal }}
@@ -72,6 +71,7 @@ const applicationStore = useApplicationStore();
 const props = defineProps(['result', 'num', 'option', 'quantity']);
 const emit = defineEmits(['updatePerView'])
 
+console.log(111111, props.quantity == 1)
 const setExpansion = (index) => {
     if (props.quantity == 2) {
         emit('updatePerView', index, 1);
