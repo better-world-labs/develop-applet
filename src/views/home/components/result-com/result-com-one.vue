@@ -1,4 +1,4 @@
-<!--
+ <!--
  * @Author: Lemon
  * @Date: 2023-05-19 14:45:27
  * @Description: 
@@ -11,23 +11,17 @@
             </div>
             <div>{{ props.result?.createdBy.nickname }}</div>
             <div @click="setExpansion(props.num)">
-                <icon-font :name="props.slidesPerView == 2 ? 'icon-icon-zhankaikapian' : 'icon-icon-shouqikapian'" />
-            </div>
+                <icon-font name="icon-icon-shouqikapian" />
+            </div>            
         </div>
-        <div class="label">
-            <span v-if="props.slidesPerView == 2">
-                {{ props.result?.inputArgs.join('·') }}
-            </span>
-            <span v-else>
+        <div class="label"> 
+            <span >
                 <template v-for="(arg, index) in props.result?.inputArgs" :key="index">
                     {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
                 </template>
             </span>
-        </div>
-        <div v-if="props.slidesPerView == 2" class="content">
-            {{ props.result?.content }}
-        </div>
-        <div v-else class="content-container" v-html="marked.parse(props.result?.content)">
+        </div> 
+        <div class="content-container" v-html="marked.parse(props.result?.content)">
         </div>
         <div class="option">
             <div class="count">
@@ -67,15 +61,11 @@ import { useApplicationStore } from '@/store/modules/application';
 import { marked } from 'marked';
 
 const applicationStore = useApplicationStore();
-const props = defineProps(['slidesPerView', 'currentIndex', 'result', 'num', 'option']);
+const props = defineProps(['result', 'num', 'option']);
 const emit = defineEmits(['updatePerView'])
 
 const setExpansion = (index) => {
-    if (props.slidesPerView == 2) {
-        emit('updatePerView', index, 1)
-    } else {
-        emit('updatePerView', index, 2)
-    }
+    emit('updatePerView', index, 2);
 } 
 </script>
 <style lang="scss" scoped> .result-item {
