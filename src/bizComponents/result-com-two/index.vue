@@ -23,7 +23,7 @@
             </div>
         </div>
         <div v-if="props.quantity == 1">
-            <div class="label" v-if="props.result.inputArgs">
+            <div class="label">
                 {{ getStr() }}
             </div>
             <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
@@ -78,10 +78,13 @@ const setExpansion = (index) => {
     }
 }
 const getStr = () => {
+    console.log(111111, props.result)
     let str = ""
-    for (let i = 0; i < props.result.inputArgs.length; i++) {
-        if (props.result?.inputForm[i]?.label) {
-            str += `${props.result?.inputForm[i]?.label}:${props.result.inputArgs[i]};`
+    if (props.result?.inputArgs && props.result?.inputForm) {
+        for (let i = 0; i < props.result.inputArgs.length; i++) {
+            if (props.result?.inputForm[i]?.label) {
+                str += `${props.result?.inputForm[i]?.label}:${props.result.inputArgs[i]};`
+            }
         }
     }
     return str
