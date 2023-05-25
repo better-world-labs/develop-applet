@@ -13,13 +13,13 @@
                 <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                     @update:current-index="changeCurrent">
                     <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
-                        <ResultComTwo :key="'resultComTwo' + index + '1'" :result="result"
+                        <ResultComTwo :key="'resultComTwo' + index + ''" :result="result"
                             :option="option" :num="index" @updatePerView="updatePerView">
                         </ResultComTwo>
                     </n-carousel-item>
                 </n-carousel> 
             </div>
-            <div> 
+            <div v-else> 
                 <n-carousel key="slidesPerView2" :show-dots="false" :current-index="currentIndex"
                     @update:current-index="changeCurrent">
                     <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'"> 
