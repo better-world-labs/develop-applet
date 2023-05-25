@@ -27,15 +27,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
   const root = process.cwd();
   const env = loadEnv(mode, root);
   const viteEnv = wrapperEnv(env);
-  const {
-    VITE_PUBLIC_PATH,
-    VITE_ENV_MODE,
-    VITE_DROP_CONSOLE,
-    VITE_SOURCEMAP,
-    VITE_PORT,
-    VITE_GLOB_PROD_MOCK,
-    VITE_PROXY,
-  } = viteEnv;
+  const { VITE_PUBLIC_PATH, VITE_DROP_CONSOLE, VITE_SOURCEMAP, VITE_PORT } = viteEnv;
   const isBuild = command === 'build';
   return {
     base: VITE_PUBLIC_PATH,

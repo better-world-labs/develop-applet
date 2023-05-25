@@ -14,8 +14,7 @@
 </template>
 
 <script lang="ts" setup>
-import Sidebar from './components/sidebar.vue';
-import NoviceGuide from '@/bizComponents/novice-guide/index.vue';
+import Sidebar from './components/sidebar.vue'; 
 </script>
 
 <style scoped lang="scss">
@@ -31,5 +30,6 @@ import NoviceGuide from '@/bizComponents/novice-guide/index.vue';
   background: var(--app-bg-color);
   flex: 1;
   transition: var(--theme-transition);
+  margin-top: 72px;
 }
 </style>

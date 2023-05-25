@@ -38,7 +38,9 @@
                 <n-form ref="formRef" :model="model" :rules="rules">
                   <n-form-item class="form-item" :path="form.label" :label="form.label"
                     v-for="(form, index) in appInfo.form" :key="index">
-                    <n-input v-model:value="model[form.label]" @keydown.enter.prevent
+                    <n-input type="textarea" :autosize="{
+                      minRows: 1,
+                    }" v-model:value="model[form.label]" @keydown.enter.prevent
                       :placeholder="form?.properties?.placeholder" />
                   </n-form-item>
                 </n-form>
@@ -50,13 +52,14 @@
               <n-gi>
                 <div class="icon" @click="collectTemplate">
                   <div>
-                    <icon-font-symbol :class="{'hide': !collected }" :name="collected ? 'icon-icon-yishoucang' : 'icon-icon-shoucang'" />
+                    <icon-font-symbol :class="{ 'hide': !collected }"
+                      :name="collected ? 'icon-icon-yishoucang' : 'icon-icon-shoucang'" />
                     <icon-font :class="{ 'show': !collected }" name="icon-icon-shoucang" />
                   </div>
                   <div :class="{ 'active-text': collected }">
-                    <div  v-if="appInfo.collectTimes > 0">{{ appInfo.collectTimes }}</div>
+                    <div v-if="appInfo.collectTimes > 0">{{ appInfo.collectTimes }}</div>
                     <div v-else>收藏</div>
-                  </div> 
+                  </div>
                 </div>
                 <div class="icon" @click="shareTemplate">
                   <div>
@@ -75,7 +78,8 @@
                 </div>
                 <div class="icon" @click="giveALike">
                   <div>
-                    <icon-font-symbol :class="{ 'hide': !isLike }" :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
+                    <icon-font-symbol :class="{ 'hide': !isLike }"
+                      :name="isLike ? 'icon-icon-yidianzan' : 'icon-icon-dianzan'" />
                     <icon-font :class="{ 'show': !isLike }" name="icon-icon-dianzan" />
                   </div>
                   <div :class="{ 'active-text': isLike }">
@@ -103,8 +107,9 @@
                 processing />
             </div>
             <div v-else>
-              <p style="white-space: pre-line">
-                {{ printContent }} <span v-if="cacheContent.length != printContent.length"></span>
+              <p>
+              <div id="printContent"
+                :class="{ 'print-stop': !receiveMessaging && cacheContent.length == printContent.length }"></div>
               </p>
               <div class="option">
                 <icon-font-symbol @click="resultOption(currentResult, 1)" :name="applicationStore.resultStateList?.get(currentResult.id) == 1
@@ -118,54 +123,14 @@
               </div>
             </div>
           </div>
+          <div class="advertising-space"
+            v-if="advertisingList.length && !receiveMessaging && !showLoading && cacheContent.length == printContent.length">
+            <div v-for="item in advertisingList">
+              <advertising-space-img :item="item"></advertising-space-img>
+            </div>
+          </div>
         </div>
-
-        <div class="public-results" v-if="applicationStore.resultList.length > 0">
-          <n-carousel :space-between="20" :loop="false" slides-per-view="auto" draggable>
-            <n-carousel-item style="width: 40%" v-for="result in applicationStore.resultList" :key="result.id">
-              <div class="result-item">
-                <div class="user">
-                  <div>
-                    <img width="36" :src="result.createdBy.avatar || '@/assets/default-user.jpg'" />
-                  </div>
-                  <div>{{ result.createdBy.nickname }}</div>
-                </div>
-                <div class="label">
-                  <span>
-                    {{ result.inputArgs.join('·') }}
-                  </span>
-                </div>
-                <div class="content">
-                  {{ result.content }}
-                </div>
-                <div class="option">
-                  <div>
-                    <icon-font-symbol @click="resultOption(result, 1)" :name="applicationStore.resultStateList?.get(result.id) == 1
-                      ? 'icon-icon-yidianzan'
-                      : 'icon-icon-dianzan'
-                      " />
-                    <div :class="{
-                      'active-text': applicationStore.resultStateList?.get(result.id) == 1,
-                    }">
-                      {{ result.likeTimes }}
-                    </div>
-                  </div>
-                  <div>
-                    <icon-font-symbol @click="resultOption(result, -1)" :name="applicationStore.resultStateList?.get(result.id) == -1
-                      ? 'icon-icon-yicai'
-                      : 'icon-icon-cai'
-                      " />
-                    <div :class="{
-                      'active-text': applicationStore.resultStateList?.get(result.id) == -1,
-                    }">
-                      {{ result.hateTimes }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </n-carousel-item>
-          </n-carousel>
-        </div>
+        <result-list @result="resultOption" :uuid="uuid"></result-list>
         <!-- 评论 -->
         <div style="margin-top: 16px">
           <comment-box v-if="uuid" :uuid="uuid"></comment-box>
@@ -175,15 +140,18 @@
   </div>
 </template>
 <script setup>
+import ResultList from "./components/result-list.vue"
 import CommentBox from './components/comment-box.vue';
 import { useApplicationStore } from '@/store/modules/application';
 import { useUserStore } from '@/store/modules/user';
 import $router from '@/router/index';
 import { useRouter } from 'vue-router';
-import { getAppInfo } from '@/api/application';
+import { getAppInfo, getSystemConfig } from '@/api/application';
 import { ref } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
+import { marked } from 'marked';
+
 import {
   readStateApp,
   giveLikeApp,
@@ -191,7 +159,7 @@ import {
   resultLike,
   getCollectStatus,
   setCollect,
-} from '@/api/application'; 
+} from '@/api/application';
 
 import { useMessage } from 'naive-ui';
 
@@ -216,10 +184,20 @@ const rules = {};
 
 const showResult = ref(false);
 const showLoading = ref(false);
+const receiveMessaging = ref(false);
+
 const printContent = ref(''); // 结果内容
 const cacheContent = ref('');
 const timer = ref(0);
 const currentResult = ref({ hateTimes: 0, likeTimes: 0 });
+
+const advertisingList = ref([]); // 广告列表
+
+// 请求广告列表
+const getAdvertising = async () => {
+  const { data } = await getSystemConfig({ key: 'MINI_APP_AD_PLACEHOLDER_OUTPUT' });
+  advertisingList.value = data.value;
+}
 
 // 结果列表操作
 function resultOption(item = {}, val) {
@@ -268,7 +246,7 @@ async function collectTemplate() {
   } else {
     appInfo.value.collectTimes -= 1;
     message.warning('已从“收藏”中移除');
-  } 
+  }
 }
 // 获取 应用收藏状态
 async function getCollect() {
@@ -278,9 +256,12 @@ async function getCollect() {
 
 // 打印内容
 function printout() {
+  const cursorSpan = `｜`
   timer.value = setInterval(() => {
     if (cacheContent.value.length > printContent.value.length) {
       printContent.value = cacheContent.value.slice(0, printContent.value.length + 2);
+      document.getElementById('printContent').innerHTML = marked.parse(printContent.value);
+
     }
   }, 80);
 }
@@ -361,8 +342,8 @@ function requestSave() {
 }
 
 // 生成结果
-function receiveMessage(data) { 
-  if (!('EventSource' in window)) return; 
+function receiveMessage(data) {
+  if (!('EventSource' in window)) return;
   const eventSourceUrl = `/api/apps/${uuid.value}/run`;
   const eventData = new fetchEventSource(eventSourceUrl, {
     method: 'POST',
@@ -370,15 +351,16 @@ function receiveMessage(data) {
       Accept: 'text/event-stream',
       'Content-type': 'application/json; charset=utf-8',
       'X-CSRF-TOKEN': `${userStore.token}`,
-    }, 
-    openWhenHidden:true,
+    },
+    openWhenHidden: true,
     body: JSON.stringify(data),
     async onopen(response) {
       if (response.status == 200) {
         console.log('连接成功!');
-        printContent.value =""; // 结果内容
+        printContent.value = ""; // 结果内容
         cacheContent.value = "";
         showLoading.value = false;
+        receiveMessaging.value = true; // 正在接收消息
         printout();
       }
     },
@@ -401,6 +383,8 @@ function receiveMessage(data) {
     },
     onclose() {
       console.log('连接关闭!');
+      receiveMessaging.value = false; // 停止接收消息
+      // document.getElementById('printContent').innerHTML = marked.parse(`${printContent.value}`);
       // 刷新结果列表
       getAppResultList();
     },
@@ -420,7 +404,7 @@ async function shareTemplate() {
 
 // 请求结果列表
 function getAppResultList() {
-  applicationStore.getAppResult(uuid.value);
+  applicationStore.getAppResult(uuid.value, true);
 }
 
 // 返回上一页
@@ -452,13 +436,14 @@ function addComment() {
 }
 
 onMounted(() => {
+
   const router = useRouter();
   uuid.value = router.currentRoute.value.query.uuid;
   addEvents({
     type: 'app-viewed',
     args: [uuid.value],
   });
-
+  getAdvertising();// 请求广告位数据
   getAppResultList();
   // 获取应用信息
   getAppInfo(uuid.value).then(({ data }) => {
@@ -541,29 +526,67 @@ onUnmounted(() => {
       }
 
       .n-input {
-        height: 56px !important;
-        line-height: 56px !important;
+        min-height: 56px !important;
         background: #ffffff;
         box-shadow: 0px 4px 8px rgba(215, 212, 225, 0.5);
         border-radius: 12px !important;
         margin-bottom: 8px !important;
         font-size: 18px !important;
         color: #202226 !important;
-        padding: 0 24px !important;
+        padding: 8px 16px !important;
         --n-caret-color: #5652ff !important;
         --n-border-hover: 1px solid #5652ff !important;
         --n-border-focus: 1px solid #5652ff !important;
         --n-loading-color: #5652ff !important;
+
+        .n-input__border {
+          border: 0 none !important;
+        }
+
+        .n-input__state-border {
+          box-shadow: none;
+        }
       }
     }
   }
 
-  // .n-button .n-button__content {
-  //   display: block;
-  // }
 }
 </style>
 <style scoped lang="scss">
+// 光标动画
+@keyframes blink {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+// 设置光标
+#printContent>:not(ol):not(ul):not(pre):last-child:after,
+#printContent>ol:last-child li:last-child:after,
+#printContent>pre:last-child code:after,
+#printContent>ul:last-child li:last-child:after {
+  -webkit-animation: blink 1s steps(1, start) infinite;
+  animation: blink 1s steps(1, start) infinite;
+  content: "▋";
+  margin-left: .25rem;
+  vertical-align: baseline;
+  color: #5652ff;
+}
+
+// 隐藏光标
+#printContent.print-stop>:not(ol):not(ul):not(pre):last-child:after,
+#printContent.print-stop>ol:last-child li:last-child:after,
+#printContent.print-stop>pre:last-child code:after,
+#printContent.print-stop>ul:last-child li:last-child:after {
+  display: none;
+}
+
 .home-header {
   .back-btn {
     flex: 1;
@@ -572,6 +595,12 @@ onUnmounted(() => {
     line-height: 52px;
     color: #5b5d62;
     cursor: pointer;
+
+    .iconfont {
+      color: #5B5D62;
+      font-size: 16px;
+      margin-right: 4px;
+    }
   }
 }
 
@@ -655,7 +684,7 @@ onUnmounted(() => {
 
       .footer {
         font-weight: 400;
-        font-size: 14px; 
+        font-size: 14px;
         color: #5b5d62;
         margin-top: 20px;
 
@@ -678,16 +707,21 @@ onUnmounted(() => {
             box-sizing: border-box;
             text-align: center;
           }
+
           .iconfont {
             display: none;
             font-size: 24px;
             line-height: 24px;
-          } 
-          .iconfont.icon-icon-shoucang,.iconfont.icon-icon-fenxiang-hover,.iconfont.icon-icon-pinglun-hover,.iconfont.icon-icon-dianzan{
+          }
+
+          .iconfont.icon-icon-shoucang,
+          .iconfont.icon-icon-fenxiang-hover,
+          .iconfont.icon-icon-pinglun-hover,
+          .iconfont.icon-icon-dianzan {
             color: #525af6;
           }
 
-          .iconfont.icon-icon-fenxiang-hover{
+          .iconfont.icon-icon-fenxiang-hover {
             margin-left: 1px;
           }
 
@@ -701,11 +735,12 @@ onUnmounted(() => {
 
           &:hover {
             color: #202226;
-            // .iconfont-svg.icon-icon-dianzan,.iconfont-svg.icon-icon-pinglun,.iconfont-svg.icon-icon-fenxiang,.iconfont-svg.icon-icon-shoucang{
-            .iconfont-svg.hide{
-              display: none;  
+
+            .iconfont-svg.hide {
+              display: none;
             }
-            .iconfont.show{
+
+            .iconfont.show {
               display: block;
             }
           }
@@ -714,46 +749,6 @@ onUnmounted(() => {
             color: #5652ff;
           }
         }
-
-        // .n-button {
-        //   background: linear-gradient(101.85deg, #957bfb 0%, #5652ff 98.88%);
-        //   border: none;
-        //   border-radius: 8px;
-        //   height: 54px;
-        //   box-sizing: border-box;
-        //   font-weight: 500 !important;
-        //   font-size: 16px;
-        //   line-height: 16px !important;
-        //   color: #ffffff;
-        //   float: right;
-        //   --n-border: none !important;
-        //   --n-border-hover: none !important;
-        //   --n-border-focus: none !important;
-
-        //   &:hover {
-        //     background: linear-gradient(109.65deg, #a994ff 30.38%, #657eff 98.29%);
-        //   }
-
-        //   span {
-        //     display: flex !important;
-        //     flex-direction: column;
-        //     font-weight: 500;
-        //     font-size: 16px;
-        //     line-height: 16px;
-        //     color: #ffffff;
-        //   }
-
-        //   em {
-        //     display: flex !important;
-        //     flex-direction: column;
-        //     font-weight: 400;
-        //     font-size: 12px;
-        //     line-height: 12px;
-        //     margin-top: 6px;
-        //     color: #ffffff;
-        //     font-style: normal;
-        //   }
-        // }
       }
     }
 
@@ -781,6 +776,7 @@ onUnmounted(() => {
         border-radius: 16px;
         min-height: 128px;
 
+
         .loading {
           padding: 40px 64px;
           font-weight: 400;
@@ -795,13 +791,19 @@ onUnmounted(() => {
 
         p {
           min-height: 80px;
+        }
+      }
 
-          span {
-            display: inline-block;
-            width: 16px;
-            height: 4px;
-            background: #5f58ff;
-          }
+      // 广告位
+      .advertising-space {
+        padding: 16px 0px 0px 0px;
+        display: flex;
+        flex-direction: row;
+
+        >div {
+          margin-right: 16px;
+          height: 80px;
+          overflow: hidden;
         }
       }
 
@@ -815,110 +817,6 @@ onUnmounted(() => {
           height: 24px;
           margin-right: 8px;
           cursor: pointer;
-        }
-      }
-    }
-
-    .public-results {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 16px;
-      margin-top: 16px;
-      height: 280px;
-
-      .result-item {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        color: #202226;
-        background: #f7f7fb;
-        border-radius: 12px;
-        padding: 16px;
-        height: 242px;
-        box-sizing: border-box;
-
-        .user {
-          font-weight: 400;
-          font-size: 16px;
-          line-height: 24px;
-          color: #5b5d62;
-          display: flex;
-          flex-direction: row;
-
-          img {
-            width: 24px;
-            height: 24px;
-            border-radius: 24px;
-            margin-right: 8px;
-          }
-        }
-
-        .label {
-          border-radius: 4px;
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 30px;
-          color: #000000;
-          margin: 12px 0;
-          height: 30px;
-
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 1;
-          -webkit-box-orient: vertical;
-          white-space: pre-line;
-
-          span {
-            display: inline-block;
-            background: #ffffff;
-            padding: 0 8px;
-          }
-        }
-
-        .content {
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 4;
-          -webkit-box-orient: vertical;
-          white-space: pre-line;
-          height: 96px;
-          margin-bottom: 6px;
-        }
-
-        .option {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          align-content: center;
-          justify-content: right;
-          cursor: pointer;
-
-          >div {
-            background: #f7f7fb;
-            margin-right: 4px;
-            padding: 4px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: row;
-
-            .iconfont-svg {
-              width: 24px;
-              height: 24px;
-              display: flex;
-              flex-direction: row;
-              margin-right: 6px;
-            }
-
-            &:hover {
-              color: #202226;
-            }
-
-            .active-text {
-              color: #5652ff;
-            }
-          }
         }
       }
     }

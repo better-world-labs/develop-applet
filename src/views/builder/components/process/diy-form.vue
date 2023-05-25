@@ -5,30 +5,31 @@
 -->
 
 <template>
-  <!-- <n-form ref="formRef" :model="props.appData.form" :rules="rules" label-placement="left" label-width="auto"
-        require-mark-placement="right-hanging">
-        <n-form-item path="age" label="小程序标题">
-            <n-input v-model:value="props.appData.name" @keydown.enter.prevent />
-        </n-form-item>
-        <n-form-item path="age" label="小程序描述">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <n-input v-model:value="props.appData.description" @keydown.enter.prevent type="textarea" :autosize="{
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                minRows: 3,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                maxRows: 5
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }" />
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </n-form-item>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </n-form> -->
-
-  <!-- <n-dynamic-input v-model:value="props.appData.form" preset="pair" key-placeholder="环境变量名" value-placeholder="环境变量值" /> -->
   <n-dynamic-input v-model:value="props.appData.form" :on-create="onCreate" :min="1">
     <template #create-button-default> 随便搞点啥 </template>
     <template #default="{ value, index }">
-      <div class="diy-body">
+      <div
+        class="diy-body"
+        :class="{ require: true, firstBlur: value.label == '' && value.status == 'blur' }"
+      >
         <div class="index">选项{{ index + 1 }}</div>
         <div class="diy-group">
-          <n-input v-model:value="value.label" :placeholder="`选项${index + 1}-名称`" type="text" />
+          <n-input
+            :status="value.label == '' && value.status == 'blur' ? 'error' : ''"
+            v-model:value="value.label"
+            @blur="value.status = 'blur'"
+            :placeholder="
+              value.label == '' && value.status == 'blur'
+                ? '请填写选项名称'
+                : `${index == 0 ? '出发地' : '选项' + (index + 1)}`
+            "
+            type="text"
+          />
           <n-input
             v-model:value="value.properties.placeholder"
-            :placeholder="`选项${index + 1}-说明（非必填）`"
+            :placeholder="`${
+              index == 0 ? '请输入出发地' : '选项' + (index + 1) + '-说明（非必填）'
+            }`"
             type="text"
           />
         </div>
@@ -49,6 +50,7 @@
     return {
       id: uuid(),
       label: '',
+      status: 'normal', //blur
       type: 'text',
       properties: {
         placeholder: '',
@@ -78,6 +80,26 @@
     width: 100%;
     margin-bottom: 12px;
 
+    &.require {
+      .index {
+        &::after {
+          content: '*';
+          color: #dc504c;
+          font-weight: 400;
+          font-size: 16px;
+        }
+      }
+      &.firstBlur {
+        :deep(.n-input) {
+          &:first-child {
+            .n-input__placeholder {
+              color: #dc504c;
+            }
+          }
+        }
+      }
+    }
+
     .index {
       font-weight: 500;
       font-size: 16px;
@@ -93,9 +115,9 @@
       align-items: center;
 
       .n-input {
-        font-size: 16px;
+        font-size: 14px;
         --n-border-radius: 21px !important;
-        --n-font-size: 16px !important;
+        --n-font-size: 14px !important;
         --n-height: 42px !important;
         background: #f3f3f7;
         margin-bottom: 16px;
@@ -108,6 +130,12 @@
         --n-border-focus: 1px solid transparent !important;
         --n-loading-color: transparent !important;
         --n-box-shadow-focus: 0 0 0 2px transparent !important;
+        .n-input__border {
+          border: 0 none !important;
+        }
+        .n-input__state-border {
+          box-shadow: none;
+        }
       }
     }
   }

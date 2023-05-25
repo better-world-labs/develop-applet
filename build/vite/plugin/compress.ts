@@ -1,8 +1,16 @@
+/*
+ * @Author: Lemon
+ * @Date: 2023-04-17 15:34:50
+ * @Description:
+ */
 import type { Plugin } from 'vite';
 import compressPlugin from 'vite-plugin-compression';
 
-export function configCompressPlugin(compress: 'gzip' | 'brotli' | 'none', deleteOriginFile = false): Plugin | Plugin[] {
-  const compressList = compress.split(',');
+export function configCompressPlugin(
+  compress: 'gzip' | 'brotli' | 'none',
+  deleteOriginFile = false
+): Plugin | Plugin[] {
+  const compressList = compress?.split(',') || [];
 
   const plugins: Plugin[] = [];
 

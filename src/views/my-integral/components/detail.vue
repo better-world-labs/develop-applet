@@ -25,94 +25,93 @@
 </template>
 
 <script setup>
-import { useUserStore } from '@/store/modules/user';
-import { getIntegralDetails } from '@/api/user';
-const userStore = useUserStore();
-import dayjs from 'dayjs';
-const dataList = ref([]);
+  import { useUserStore } from '@/store/modules/user';
+  import { getIntegralDetails } from '@/api/user';
+  const userStore = useUserStore();
+  import dayjs from 'dayjs';
+  const dataList = ref([]);
 
-onMounted(() => {
-  if (!userStore.token) goAuth();
-  // 明细
-  getIntegralDetails().then(({ data }) => {
-    dataList.value = data.list;
+  onMounted(() => {
+    if (!userStore.token) goAuth();
+    // 明细
+    getIntegralDetails().then(({ data }) => {
+      dataList.value = data.list;
+    });
   });
-})
 </script>
 
-
 <style lang="scss" scoped>
-.integral-detail {
-  background-color: #FFF;
-  border-radius: 8px;
-  padding: 24px;
-  position: absolute;
-  height: calc(100% - 72px - 96px - 48px);
-  width: calc(100% - 312px - 104px);
-  max-width: 680px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  box-sizing: border-box;
-  
-  .no-data {
-    display: flex;
-    flex-direction: column;
-    img {
-      width: 82px;
-      height: 82px;
-      margin: 68px auto 12px;
-    }
-    p {
-      text-align: center;
-      font-size: 14px;
-      line-height: 20px;
-      color: #abacae;
-      margin: 0;
-      padding: 0;
-    }
-  }
-  .item {
-    border-bottom: 1px solid rgba(171, 172, 174, 0.2);
-    padding-bottom: 8px;
-    color: #202226;
+  .integral-detail {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    position: absolute;
+    height: calc(100% - 72px - 96px - 112px);
+    width: calc(100% - 312px - 104px);
+    max-width: 680px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    box-sizing: border-box;
 
-    .item-one-line {
+    .no-data {
       display: flex;
-      flex-direction: row;
-      margin-bottom: 2px;
-      padding-top: 8px;
-
-      >div:first-child {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;
+      flex-direction: column;
+      img {
+        width: 82px;
+        height: 82px;
+        margin: 68px auto 12px;
       }
-
-      >div:last-child {
-        margin-left: auto;
-        padding-left: 30px;
-        white-space: nowrap;
-        color: #5b5d62;
-      }
-
-      >div.active-text:last-child {
-        color: rgba(86, 82, 255, 1);
+      p {
+        text-align: center;
+        font-size: 14px;
+        line-height: 20px;
+        color: #abacae;
+        margin: 0;
+        padding: 0;
       }
     }
-  }
+    .item {
+      border-bottom: 1px solid rgba(171, 172, 174, 0.2);
+      padding-bottom: 8px;
+      color: #202226;
 
-  .active-text {
-    color: rgba(86, 82, 255, 1);
-  }
+      .item-one-line {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 2px;
+        padding-top: 8px;
 
-  .small {
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 17px;
+        > div:first-child {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+        }
 
-    color: #abacae;
+        > div:last-child {
+          margin-left: auto;
+          padding-left: 30px;
+          white-space: nowrap;
+          color: #5b5d62;
+        }
+
+        > div.active-text:last-child {
+          color: rgba(86, 82, 255, 1);
+        }
+      }
+    }
+
+    .active-text {
+      color: rgba(86, 82, 255, 1);
+    }
+
+    .small {
+      font-weight: 400;
+      font-size: 12px;
+      line-height: 17px;
+
+      color: #abacae;
+    }
   }
-}
 </style>

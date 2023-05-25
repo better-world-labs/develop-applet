@@ -14,6 +14,13 @@ export function getAppList(categoryId: number) {
     url: `/api/apps?category=${categoryId}`,
   });
 }
+// 读取应用列表
+export function getAppListByUser(userId: number) {
+  return http.request({
+    method: 'get',
+    url: `/api/users/${userId}/apps`,
+  });
+}
 //  读取AI模型列表
 export function getAIList() {
   return http.request({
@@ -69,10 +76,11 @@ export function getAppInfo(uuid: string) {
 }
 
 // 读取应用的结果列表
-export function getAppResultList(uuid: string) {
+export function getAppResultList(uuid: string, params?: { cursor: string | undefined }) {
   return http.request({
     method: 'get',
     url: `/api/apps/${uuid}/outputs`,
+    params: params,
   });
 }
 
@@ -107,12 +115,38 @@ export function readStateApp(uuid: string) {
     url: `/api/apps/${uuid}/like`,
   });
 }
+// 批量读取我对应用的点赞状态
+export function readMyLikeAppState(ids: string[]) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/is-liked`,
+    data: { appIds: ids },
+  });
+}
 // 点赞小程序
 export function giveLikeApp(uuid: string, data: { like: boolean }) {
   return http.request({
     method: 'post',
     url: `/api/apps/${uuid}/like`,
     data: data,
+  });
+}
+
+// 批量读取我对应用的热点状态
+export function readMyHotAppState(ids: string[]) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/is-recommended`,
+    data: { appIds: ids },
+  });
+}
+
+// 点赞热度/推荐 小程序
+export function giveHotApp(uuid: string, state: boolean) {
+  return http.request({
+    method: 'post',
+    url: `/api/apps/${uuid}/recommend`,
+    data: { recommend: state },
   });
 }
 

@@ -8,16 +8,14 @@ import { Result, ResultList } from '@/utils/http/types';
 import { RequestOptions } from '@/utils/http/types';
 
 export function getUsersList(
-  data: { ids: number[] },
-  requestOptions?: RequestOptions
+  data: { ids: number[] }
 ): Promise<ResultList<User.UserInfoItf>> {
   return http.request(
     {
       method: 'POST',
       url: `/api/users/list`,
       data,
-    },
-    requestOptions
+    }
   );
 }
 
@@ -81,10 +79,28 @@ export function getSignInState() {
   });
 }
 
+// 读取用户个人统计
+export function getStatistic(userId: string) {
+  return http.request({
+    method: 'get',
+    url: `/api/users/${userId}/statistic`,
+  });
+}
+
 // 用户发起签到
 export function makeRegistration() {
   return http.request({
     method: 'post',
     url: `/api/sign-in`,
   });
+}
+
+// 登出
+export function postLogout(): Promise<Result> {
+  return http.request({ method: 'POST', url: '/api/users/logout ' });
+}
+
+// 修改用户头像 昵称
+export function putInfo(data: { nickname?: string, avatar?: string }): Promise<Result> {
+  return http.request({ method: 'put', url: '/api/users/me/info', data });
 }
