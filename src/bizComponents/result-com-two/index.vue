@@ -24,7 +24,7 @@
         </div>
         <div v-if="props.quantity == 1">
             <div class="label">
-                {{ getStr() }}
+                <span> {{ getStr() }} </span>
             </div>
             <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
             </div>
@@ -78,7 +78,6 @@ const setExpansion = (index) => {
     }
 }
 const getStr = () => {
-    console.log(111111, props.result)
     let str = ""
     if (props.result?.inputArgs && props.result?.inputForm) {
         for (let i = 0; i < props.result.inputArgs.length; i++) {
