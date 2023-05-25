@@ -12,20 +12,20 @@
         <div v-if="slidesPerView == 2">
             <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
-                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id + '1'">
-                    <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
+                    <result-com :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
-                    </result>
+                    </result-com>
                 </n-carousel-item>
             </n-carousel> 
         </div>
         <div v-else>
             <n-carousel key="slidesPerView2" slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
-                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id + '2'">
-                    <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'">
+                    <result-com :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
-                    </result>
+                    </result-com>
                 </n-carousel-item>
             </n-carousel>
         </div>
