@@ -23,9 +23,9 @@
                 <n-carousel key="slidesPerView2" :show-dots="false" :current-index="currentIndex"
                     @update:current-index="changeCurrent">
                     <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'"> 
-                        <ResultComOne :key="'resultComOne' + index + '2'"  :result="result"
+                        <ResultComTwo :key="'resultComOne' + index + '2'"  :result="result"
                                 :option="option" :num="index" @updatePerView="updatePerView">
-                        </ResultComOne>
+                        </ResultComTwo>
                     </n-carousel-item>
                 </n-carousel>
             </div>
@@ -38,7 +38,7 @@ const props = defineProps(['uuid']);
 const emit = defineEmits(['result']);
  
 const currentIndex = ref(0);
-const slidesPerView = ref(2); 
+const slidesPerView = ref(1); 
  
 const option = (item, state) => {
     emit('result', item, state);

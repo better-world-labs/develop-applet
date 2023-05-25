@@ -4,7 +4,7 @@
  * @Description: 
 -->
 <template>
-    <div class="result-item">
+    <div class="result-item1">
         <div class="user">
             <div>
                 <img width="36" :src="props.result?.createdBy.avatar || '@/assets/default-user.jpg'" />
@@ -21,8 +21,8 @@
                 </template>
             </span>
         </div> 
-        <div class="content-container" v-html="marked.parse(props.result?.content)">
-        </div>
+        <!-- <div class="content-container" v-html="marked.parse(props.result?.content)">
+        </div> -->
         <div class="option">
             <div class="count">
                 {{ props.num + 1 }}/{{ applicationStore.resultTotal }}
@@ -68,7 +68,7 @@ const setExpansion = (index) => {
     emit('updatePerView', index, 2);
 } 
 </script>
-<style lang="scss" scoped> .result-item {
+<style lang="scss" scoped> .result-item1 {
      margin: 0 8px;
      font-weight: 400;
      font-size: 16px;
