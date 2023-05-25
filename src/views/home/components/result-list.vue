@@ -9,7 +9,7 @@
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--left" @click="prev" />
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--right" @click="next" />
         </div> 
-        <div  v-if="slidesPerView === 2">
+        <!-- <div>
             <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
@@ -18,13 +18,14 @@
                     </component>
                 </n-carousel-item>
             </n-carousel> 
-        </div>
-        <div v-else> 
-            <n-carousel key="slidesPerView2" :loop="true" :show-dots="false" :current-index="currentIndex"
+        </div> -->
+        <div> 
+            <n-carousel key="slidesPerView2" :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'"> 
                     <div style="min-height: 200rpx;color:red">
                         {{ index }}
+                        <button>{{ index }}</button>
                         <result-com-one :key="'resultComOne' + index + '2'"  :result="result"
                             :option="option" :num="index" @updatePerView="updatePerView">
                         </result-com-one>
@@ -37,7 +38,7 @@
 <script setup>
 import { useApplicationStore } from '@/store/modules/application';
 import resultComOne from "./result-com/result-com-one.vue"
-import resultComTwo from "./result-com/result-com-two.vue"
+// import resultComTwo from "./result-com/result-com-two.vue"
 const applicationStore = useApplicationStore();
 const props = defineProps(['uuid']);
 const emit = defineEmits(['result']);
