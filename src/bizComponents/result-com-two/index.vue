@@ -22,15 +22,15 @@
                 {{ props.result?.content }}
             </div>
         </template>
-        <!-- <template v-if="props.quantity == 1">
-            <div class="label">
+        <template v-show="props.quantity == 1">
+            <div class="label" v-if="props.result?.inputArgs">
                 <template v-for="(arg, index) in props.result?.inputArgs" :key="index">
                     {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
                 </template>
             </div>
             <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
             </div>
-        </template> -->
+        </template>
 
         <div class="option">
             <div class="count">
