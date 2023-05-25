@@ -24,10 +24,7 @@
         </div>
         <div v-if="props.quantity == 1">
             <div class="label" v-if="props.result.inputArgs">
-                {{ props.result?.inputArgs.join(',') }}
-                <!-- <span v-for="(arg, index) in props.result?.inputArgs" :key="index">
-                    {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
-                </span> -->
+                {{ getStr() }}
             </div>
             <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
             </div>
@@ -70,16 +67,25 @@ import { useApplicationStore } from '@/store/modules/application';
 import { marked } from 'marked';
 const applicationStore = useApplicationStore();
 const props = defineProps(['result', 'num', 'option', 'quantity']);
+
 const emit = defineEmits(['updatePerView'])
 
-console.log(111111, props.quantity == 1)
 const setExpansion = (index) => {
     if (props.quantity == 2) {
         emit('updatePerView', index, 1);
     } else {
         emit('updatePerView', index, 2);
     }
-} 
+}
+const getStr = () => {
+    let str = ""
+    for (let i = 0; i < props.result.inputArgs.length; i++) {
+        if (props.result?.inputForm[i]?.label) {
+            str += `${props.result?.inputForm[i]?.label}:${props.result.inputArgs[i]};`
+        }
+    }
+    return str
+}
 </script>
 <style lang="scss" scoped> .result-item {
      margin: 0 8px;
