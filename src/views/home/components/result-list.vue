@@ -13,9 +13,9 @@
             <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
-                    <result-com :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                    <result-com-one key="resultComOne" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
-                    </result-com>
+                    </result-com-one>
                 </n-carousel-item>
             </n-carousel> 
         </div>
@@ -23,9 +23,9 @@
             <n-carousel key="slidesPerView2" slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'">
-                    <result-com :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                    <result-com-two key="resultComTwo" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
-                    </result-com>
+                    </result-com-two>
                 </n-carousel-item>
             </n-carousel>
         </div>
@@ -33,7 +33,8 @@
 </template>
 <script setup>
 import { useApplicationStore } from '@/store/modules/application';
-
+import resultComOne from "./result-com/index.vue"
+import resultComTwo from "./result-com/index.vue"
 const applicationStore = useApplicationStore();
 const props = defineProps(['uuid']);
 const emit = defineEmits(['result']);
