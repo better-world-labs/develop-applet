@@ -55,6 +55,7 @@ declare module '@vue/runtime-core' {
     Provider: typeof import('./../src/components/app-provider/provider.vue')['default']
     Registered: typeof import('./../src/bizComponents/dialogs/registered.vue')['default']
     Result: typeof import('./../src/bizComponents/result/index.vue')['default']
+    ResultCom: typeof import('./../src/bizComponents/result-com/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     RunTemplate: typeof import('./../src/bizComponents/dialogs/run-template.vue')['default']

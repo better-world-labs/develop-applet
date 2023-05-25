@@ -9,21 +9,23 @@
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--left" @click="prev" />
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--right" @click="next" />
         </div>
-        <div>
-            <n-carousel v-if="slidesPerView == 2" slides-per-view="2" :loop="true" autoplay :show-dots="false"
-                :current-index="currentIndex" @update:current-index="changeCurrent">
-                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id">
-                    <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
-                        :option="option" :num="index" @updatePerView="updatePerView">
-                    </result>
-                </n-carousel-item>
-            </n-carousel>
-            <n-carousel v-else slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
+        <div v-if="slidesPerView == 2">
+            <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
-                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="result.id">
-                    <result v-if="result" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
+                    <result-com-one key="resultComOne" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
-                    </result>
+                    </result-com-one>
+                </n-carousel-item>
+            </n-carousel> 
+        </div>
+        <div v-else>
+            <n-carousel key="slidesPerView2" slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
+                @update:current-index="changeCurrent">
+                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'">
+                    <result-com-two key="resultComTwo" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                        :option="option" :num="index" @updatePerView="updatePerView">
+                    </result-com-two>
                 </n-carousel-item>
             </n-carousel>
         </div>
@@ -31,20 +33,20 @@
 </template>
 <script setup>
 import { useApplicationStore } from '@/store/modules/application';
-
+import resultComOne from "./result-com/index.vue"
+import resultComTwo from "./result-com/index.vue"
 const applicationStore = useApplicationStore();
 const props = defineProps(['uuid']);
 const emit = defineEmits(['result']);
 
 const currentIndex = ref(0);
 const slidesPerView = ref(2);
-
-
+ 
 const option = (item, state) => {
     emit('result', item, state);
 }
 
-const updatePerView = (currentNum, index) => {
+const updatePerView = (currentNum, index) => { 
     if (index == 1) {
         currentIndex.value = currentNum;
     } else {
@@ -53,8 +55,10 @@ const updatePerView = (currentNum, index) => {
         } else {
             currentIndex.value = currentNum - 1;
         }
-    }
-    slidesPerView.value = index;
+    } 
+    nextTick(() => {
+        slidesPerView.value = index;
+    },100)
 }
 
 // 上一页
@@ -83,7 +87,7 @@ const requestNextData = () => {
 }
 
 
-const changeCurrent = (val) => {
+const changeCurrent = (val) => { 
     currentIndex.value = val;
 }
 

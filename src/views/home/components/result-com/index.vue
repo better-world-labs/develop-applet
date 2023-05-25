@@ -76,7 +76,7 @@ const setExpansion = (index) => {
     } else {
         emit('updatePerView', index, 2)
     }
-}
+} 
 </script>
 <style lang="scss" scoped> .result-item {
      margin: 0 8px;
