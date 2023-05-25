@@ -21,7 +21,7 @@
                 </template>
             </span>
         </div> 
-        <!-- <div class="content-container" v-html="marked.parse(props.result?.content)">
+        <!-- <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
         </div> -->
         <div class="option">
             <div class="count">

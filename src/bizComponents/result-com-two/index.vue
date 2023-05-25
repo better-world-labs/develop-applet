@@ -15,14 +15,21 @@
             </div>
         </div>
         <div class="label">
-            <span  >
+            <span  v-if="props.slidesPerView === 2">
                 {{ props.result?.inputArgs.join('·') }}
             </span>
+             <span v-else>
+                    <template v-for="(arg, index) in props.result?.inputArgs" :key="index">
+                        {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
+                    </template>
+                </span>
             
         </div> 
-        <div class="content">
+        <div v-if="props.slidesPerView === 2" class="content">
                 {{ props.result?.content }}
-            </div>
+        </div>
+         <div v-else class="content-container" v-html="marked.parse(props.result?.content)">
+        </div>
         <div class="option">
             <div class="count">
                 {{ props.num + 1 }}/{{ applicationStore.resultTotal }}
@@ -58,13 +65,17 @@
 </template>
 <script setup>
 import { useApplicationStore } from '@/store/modules/application'; 
-
+import { marked } from 'marked';
 const applicationStore = useApplicationStore();
-const props = defineProps(['result', 'num', 'option']);
+const props = defineProps(['result', 'num', 'option','slidesPerView']);
 const emit = defineEmits(['updatePerView'])
 
-const setExpansion = (index) => {
-    emit('updatePerView', index, 1);
+const setExpansion = (index) => { 
+    if (props.slidesPerView == 2) {
+        emit('updatePerView', index, 1);
+    } else {
+        emit('updatePerView', index, 2);
+    }
 } 
 </script>
 <style lang="scss" scoped> .result-item {

@@ -13,7 +13,7 @@
                 <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                     @update:current-index="changeCurrent">
                     <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
-                        <ResultComTwo :key="'resultComTwo' + index + ''" :result="result"
+                        <ResultComTwo :key="'resultComTwo' + index + ''" :result="result" :slidesPerView="slidesPerView"
                             :option="option" :num="index" @updatePerView="updatePerView">
                         </ResultComTwo>
                     </n-carousel-item>
@@ -22,10 +22,10 @@
             <div v-else> 
                 <n-carousel key="slidesPerView2" :show-dots="false" :current-index="currentIndex"
                     @update:current-index="changeCurrent">
-                    <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'"> 
-                        <ResultComOne :key="'resultComOne' + index + '2'"  :result="result"
+                    <n-carousel-item v-for="(result, index) in applicationStore.resultList"  :key="index + '2'"> 
+                        <ResultComTwo :key="'resultComOne' + index + '2'"  :result="result" :slidesPerView="slidesPerView"
                                 :option="option" :num="index" @updatePerView="updatePerView">
-                        </ResultComOne>
+                        </ResultComTwo>
                     </n-carousel-item>
                 </n-carousel>
             </div>
@@ -44,7 +44,7 @@ const option = (item, state) => {
     emit('result', item, state);
 }
 
-const updatePerView = (currentNum, index) => {  
+const updatePerView = (currentNum, index) => {   
     if (index === 1) { 
         currentIndex.value = currentNum; 
     } else {
