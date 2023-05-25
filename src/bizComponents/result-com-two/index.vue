@@ -14,7 +14,7 @@
                 <icon-font name="icon-icon-zhankaikapian" />
             </div>
         </div>
-        <template v-if="props.quantity == 2">
+        <template>
             <div class="label">
                 {{ props.result?.inputArgs.join('·') }}
             </div>
@@ -22,15 +22,15 @@
                 {{ props.result?.content }}
             </div>
         </template>
-        <template v-if="props.quantity == 1">
+        <!-- <template v-if="props.quantity == 1">
             <div class="label">
                 <template v-for="(arg, index) in props.result?.inputArgs" :key="index">
                     {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
                 </template>
             </div>
-            <!-- <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
-            </div> -->
-        </template>
+            <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
+            </div>
+        </template> -->
 
         <div class="option">
             <div class="count">
