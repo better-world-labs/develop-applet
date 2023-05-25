@@ -13,9 +13,9 @@
             <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
-                    <result-com-one key="resultComOne" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                    <component :is="resultComOne" :key="'resultComOne' + index + '1'" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
-                    </result-com-one>
+                    </component>
                 </n-carousel-item>
             </n-carousel> 
         </div>
@@ -23,9 +23,9 @@
             <n-carousel key="slidesPerView2" slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'">
-                    <result-com-two key="resultComTwo" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                    <component :is="resultComTwo" :key="'resultComTwo' + index + '2'" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
-                    </result-com-two>
+                    </component>
                 </n-carousel-item>
             </n-carousel>
         </div>
@@ -38,9 +38,9 @@ import resultComTwo from "./result-com/index.vue"
 const applicationStore = useApplicationStore();
 const props = defineProps(['uuid']);
 const emit = defineEmits(['result']);
-
+ 
 const currentIndex = ref(0);
-const slidesPerView = ref(2);
+const slidesPerView = ref(1);
  
 const option = (item, state) => {
     emit('result', item, state);
@@ -89,8 +89,7 @@ const requestNextData = () => {
 
 const changeCurrent = (val) => { 
     currentIndex.value = val;
-}
-
+} 
 </script>
 <style lang="scss">
 .public-results {
