@@ -24,9 +24,10 @@
         </div>
         <div v-if="props.quantity == 1">
             <div class="label" v-if="props.result.inputArgs">
-                <span v-for="(arg, index) in props.result?.inputArgs" :key="index">
+                {{ props.result?.inputArgs.join(',') }}
+                <!-- <span v-for="(arg, index) in props.result?.inputArgs" :key="index">
                     {{ props.result?.inputForm[index].label || '' }} : {{ arg }};
-                </span>
+                </span> -->
             </div>
             <div v-if="props.result?.content" class="content-container" v-html="marked.parse(props.result?.content)">
             </div>
