@@ -8,23 +8,22 @@
         <div class="custom-arrow">
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--left" @click="prev" />
             <icon-font name="icon-icon-qiehuanjiantou" class="custom-arrow--right" @click="next" />
-        </div>
-        <div v-if="slidesPerView == 2">
+        </div> 
+        <div  v-if="slidesPerView === 2">
             <n-carousel key="slidesPerView1" slides-per-view="2" :loop="true" autoplay :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '1'">
-                    <component :is="resultComOne" :key="'resultComOne' + index + '1'" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                    <component :is="resultComTwo" :key="'resultComOne' + index + '1'" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
                     </component>
                 </n-carousel-item>
             </n-carousel> 
         </div>
-        <div v-else>
-            <n-carousel key="slidesPerView2" slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
+        <div v-else> 
+            <n-carousel key="slidesPerView2" :loop="true" :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
-                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'">
-                   <span style="color:red"> {{ result }}</span>
-                    <component :is="resultComTwo" :key="'resultComTwo' + index + '2'" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
+                <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'"> 
+                    <component :is="resultComOne" :key="'resultComTwo' + index + '2'"  :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
                     </component>
                 </n-carousel-item>
@@ -34,32 +33,30 @@
 </template>
 <script setup>
 import { useApplicationStore } from '@/store/modules/application';
-import resultComOne from "./result-com/index.vue"
-import resultComTwo from "./result-com/index.vue"
+import resultComOne from "./result-com/result-com-one.vue"
+import resultComTwo from "./result-com/result-com-two.vue"
 const applicationStore = useApplicationStore();
 const props = defineProps(['uuid']);
 const emit = defineEmits(['result']);
  
 const currentIndex = ref(0);
-const slidesPerView = ref(1);
+const slidesPerView = ref(2); 
  
 const option = (item, state) => {
     emit('result', item, state);
 }
 
-const updatePerView = (currentNum, index) => { 
-    if (index == 1) {
-        currentIndex.value = currentNum;
+const updatePerView = (currentNum, index) => {  
+    if (index === 1) { 
+        currentIndex.value = currentNum; 
     } else {
         if ((currentNum % 2) === 0) {
             currentIndex.value = currentNum;
         } else {
             currentIndex.value = currentNum - 1;
-        }
+        }  
     } 
-    nextTick(() => {
-        slidesPerView.value = index;
-    },100)
+     slidesPerView.value = index;
 }
 
 // 上一页
