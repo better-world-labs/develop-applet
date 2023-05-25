@@ -14,7 +14,7 @@
                 <icon-font name="icon-icon-zhankaikapian" />
             </div>
         </div>
-        <div class="label">
+        <!-- <div class="label">
             <span  v-if="props.quantity == 2">
                 {{ props.result?.inputArgs.join('·') }}
             </span>
@@ -29,7 +29,7 @@
                 {{ props.result?.content }}
         </div>
          <div v-else class="content-container" v-html="marked.parse(props.result?.content)">
-        </div>
+        </div> -->
         <div class="option">
             <div class="count">
                 {{ props.num + 1 }}/{{ applicationStore.resultTotal }}
@@ -65,7 +65,7 @@
 </template>
 <script setup>
 import { useApplicationStore } from '@/store/modules/application'; 
-import { marked } from 'marked';
+// import { marked } from 'marked';
 const applicationStore = useApplicationStore();
 const props = defineProps(['result', 'num', 'option','quantity']);
 const emit = defineEmits(['updatePerView'])
