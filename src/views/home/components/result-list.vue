@@ -23,6 +23,7 @@
             <n-carousel key="slidesPerView2" slides-per-view="1" :loop="true" :show-dots="false" :current-index="currentIndex"
                 @update:current-index="changeCurrent">
                 <n-carousel-item v-for="(result, index) in applicationStore.resultList" :key="index + '2'">
+                   <span style="color:red"> {{ result }}</span>
                     <component :is="resultComTwo" :key="'resultComTwo' + index + '2'" :currentIndex="currentIndex" :slidesPerView="slidesPerView" :result="result"
                         :option="option" :num="index" @updatePerView="updatePerView">
                     </component>
