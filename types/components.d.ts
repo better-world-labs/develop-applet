@@ -54,7 +54,6 @@ declare module '@vue/runtime-core' {
     PointerPopover: typeof import('./../src/components/pointer-popover/index.vue')['default']
     Provider: typeof import('./../src/components/app-provider/provider.vue')['default']
     Registered: typeof import('./../src/bizComponents/dialogs/registered.vue')['default']
-    ResultComOne: typeof import('./../src/bizComponents/result-com-one/index.vue')['default']
     ResultComTwo: typeof import('./../src/bizComponents/result-com-two/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
