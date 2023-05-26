@@ -147,7 +147,7 @@ import { useUserStore } from '@/store/modules/user';
 import $router from '@/router/index';
 import { useRouter } from 'vue-router';
 import { getAppInfo, getSystemConfig } from '@/api/application';
-import { ref } from 'vue';
+import { ref, onUnmounted } from 'vue';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 import { useBizDialog } from '@/plugins';
 import { marked } from 'marked';
@@ -195,8 +195,12 @@ const advertisingList = ref([]); // 广告列表
 
 // 请求广告列表
 const getAdvertising = async () => {
-  const { data } = await getSystemConfig({ key: 'MINI_APP_AD_PLACEHOLDER_OUTPUT' });
-  advertisingList.value = data.value;
+  try {
+    const { data } = await getSystemConfig({ key: 'MINI_APP_AD_PLACEHOLDER_OUTPUT' });
+    advertisingList.value = data?.value || [];
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 // 结果列表操作

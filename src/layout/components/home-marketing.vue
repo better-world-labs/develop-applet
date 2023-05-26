@@ -19,8 +19,13 @@ const router = useRouter()
 const list = ref([])
 
 const init = async () => {
-    const { data } = await getSystemConfig({ key: 'MINI_APP_AD_PLACEHOLDER_HOME' });
-    list.value = data.value;
+    try {
+        const { data } = await getSystemConfig({ key: 'MINI_APP_AD_PLACEHOLDER_HOME' });
+        list.value = data?.value || [];
+    } catch (error) {
+        console.log(error)
+    }
+
 }
 
 onBeforeRouteUpdate((to) => {
