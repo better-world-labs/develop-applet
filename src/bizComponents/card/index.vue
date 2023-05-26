@@ -125,7 +125,8 @@ function toIntegral(userId) {
   box-sizing: border-box;
 
   .desc-text {
-    padding: 24px 24px 16px 24px;
+    padding-top: 24px;
+    margin: 0 24px 16px 24px;
     font-weight: 500;
     font-size: 24px;
     line-height: 34px;
