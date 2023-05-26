@@ -16,7 +16,7 @@
         </div>
         <div v-if="props.quantity == 2">
             <div class="label">
-                {{ props.result?.inputArgs.join('·') }}
+                <span>{{ props.result?.inputArgs.join('·') }}</span>
             </div>
             <div class="content">
                 {{ props.result?.content }}
