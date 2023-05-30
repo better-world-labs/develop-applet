@@ -30,7 +30,7 @@
             :name="appListHotState[item.uuid] ? 'icon-icon-yituijian' : 'icon-icon-tuijian'" />
           <IconFont :class="{ show: !appListHotState[item.uuid] }" name="icon-icon-tuijian" />
           <div>
-            {{ item.recommendTimes || 0 }}
+            {{ item.recommendTimes + item.degreeOfHeat || 0 }}
           </div>
           <div v-if="showHotAnimation" class="add-hot">
             <img src="@/assets/rocket.png" alt="" />
