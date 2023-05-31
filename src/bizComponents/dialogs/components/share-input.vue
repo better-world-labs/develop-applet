@@ -25,10 +25,9 @@ import { useMessage } from 'naive-ui';
 const message = useMessage();
 const { toClipboard } = useClipboard();
 const userStore = useUserStore();
-const url = ref("");
+const url = ref(""); 
 
-async function onCopy(e) {
-    const str = url.value.indexOf('?') == -1 ? `${url.value}?invitedBy=${userStore.userId}`: `${url.value}&invitedBy=${userStore.userId}`;
+async function onCopy(e) {  
     try { 
         sendLog({
             action_type: 'Click',
@@ -37,7 +36,7 @@ async function onCopy(e) {
             node: 'copy',
             data: ''
         })
-        await toClipboard(str, document.getElementById('share-input'));
+        await toClipboard(url.value, document.getElementById('share-input'));
         message.success('已复制，快去分享给朋友吧~');
     } catch (e) {
         console.error(e);
@@ -45,7 +44,8 @@ async function onCopy(e) {
 } 
 
 onMounted(() => { 
-    url.value =  window.location.href;
+    const path = window.location.href;
+    url.value = path.indexOf('?') == -1 ? `${path}?invitedBy=${userStore.userId}` : `${path}&invitedBy=${userStore.userId}`;;
 })
 </script>  
 <style lang="scss" scoped>
