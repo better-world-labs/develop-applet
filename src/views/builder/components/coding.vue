@@ -159,14 +159,18 @@
     try {
       await putApp(props.appData.uuid, props.appData);
       if (isBack) {
-        message.success('发布成功');
+        message.success('发布成功'); 
         emit('back');
       }
-    } catch (error) {
-      dialog.open('insufficient', {
-        class: 'insufficient-dialog',
-        title: '积分不够啦',
-      });
+    } catch (error) { 
+      if (error?.response?.code == 500000) {
+        dialog.open('insufficient', {
+          class: 'insufficient-dialog',
+          title: '积分不够啦',
+        });
+      } else {
+        message.error(error?.response?.msg);
+      }
     }
   };
   defineExpose({ publishApp });
